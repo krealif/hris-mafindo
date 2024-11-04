@@ -1,0 +1,4 @@
+traefik.enable=true
+traefik.http.routers.app.rule=Host(`hris.localhost`)
+traefik.http.routers.app.entrypoints=http
+traefik.http.services.app.loadbalancer.server.port=8080
