@@ -1,0 +1,68 @@
+
+:root{
+    --main-purple: #31227D;
+    --secondary-yellow: #f7f7eb;
+}
+
+
+/** Navbar Costum **/
+.navbar-top{
+    background-color: var(--main-purple);
+}
+
+.navbar-top .icon{
+    color: white;
+}
+
+[data-bs-theme=dark] .navbar-brand-autodark .navbar-brand-image {
+    filter: none;
+}
+
+[data-bs-theme=dark] .avatar-sm{
+    background-color: var(--secondary-yellow);
+}
+
+/** Navbar Costum End **/
+
+/**Button Custom**/
+.btn-main{
+    background-color: var(--main-purple);
+    color: white;
+}
+
+[data-bs-theme=dark] .btn-sec-yellow{
+    background-color: darkgray;
+    color: black;
+}
+
+.btn-sec-yellow{
+    background-color: var(--secondary-yellow);
+}
+
+/** End Buttin Main**/
+
+/** Design System**/
+.active>.page-link, .page-link.active {
+    background-color: var(--main-purple) !important;
+    border-color: var(--main-purple);
+}
+
+#dash-admin .icon{
+    --tblr-icon-size: 3rem !important;
+}
+
+@media (min-width: 1024px) {
+
+    .page-title{
+        font-size:x-large !important;
+    }
+
+    #dash-admin .icon{
+        --tblr-icon-size: 5rem !important;
+    }
+
+    #dash-admin .card .card{
+        height: 15rem !important;
+    }
+
+}
