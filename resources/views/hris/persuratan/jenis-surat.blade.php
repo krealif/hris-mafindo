@@ -1,5 +1,6 @@
-@extends('layouts-admin.app')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Jenis Surat' )
+@extends('layouts.dashboard', [
+  'title' => 'Jenis Surat'
+])
 
 @section('content')
 <div class="page-wrapper">
@@ -28,7 +29,7 @@
       </div>
     </div>
     <!-- End Judul Halaman -->
-    
+
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">

@@ -1,5 +1,6 @@
-@extends('layouts-admin.app')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Dashboard' )
+@extends('layouts.dashboard', [
+  'title' => 'Dashboard'
+])
 
 @section('content')
 <div class="page-wrapper">
@@ -39,7 +40,7 @@
                     <h3 class="empty-title">Daftar Akun Relawan</h3>
                   </div>
                 </a>
-              </div> 
+              </div>
 
               <div class="col-sm-6 col-lg-3">
                 <a href="./data-relawan" class="card card-link card-link-pop btn-sec-yellow">
@@ -50,7 +51,7 @@
                     <h3 class="empty-title">Riwayat Relawan</h3>
                   </div>
                 </a>
-              </div> 
+              </div>
 
               <div class="col-sm-6 col-lg-3">
                 <a href="./add-kegiatan" class="card card-link card-link-pop btn-sec-yellow">
@@ -61,7 +62,7 @@
                     <h3 class="empty-title">Kegiatan Baru</h3>
                   </div>
                 </a>
-              </div> 
+              </div>
 
               <div class="col-sm-6 col-lg-3">
                 <a href="./add-materi" class="card card-link card-link-pop btn-sec-yellow">
@@ -72,7 +73,7 @@
                     <h3 class="empty-title">Materi Baru</h3>
                   </div>
                 </a>
-              </div> 
+              </div>
             </div>
           </div>
         </div>

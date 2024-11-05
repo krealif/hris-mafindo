@@ -1,5 +1,6 @@
-@extends('layouts-admin.app')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Surat' )
+@extends('layouts.dashboard', [
+  'title' => 'Data Relawan'
+])
 
 @section('content')
 <div class="page-wrapper">
@@ -9,22 +10,14 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <h1 class="page-title">
-              Pengajuan Surat
+              Data Relawan
             </h2>
-          </div>
-          <div class="col-auto ms-auto d-print-none">
-            <div class="d-flex">
-                <a href="./jenis-surat" class="btn btn-main">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                Buat Surat
-                </a>
-            </div>
           </div>
         </div>
       </div>
     </div>
     <!-- End Judul Halaman -->
-    
+
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">
@@ -51,19 +44,21 @@
               <table class="table table-vcenter card-table table-striped">
                 <thead>
                   <tr>
-                    <th>Judul Surat</th>
                     <th>Nama</th>
-                    <th>Tanggal</th>
+                    <th>Nomor Induk</th>
+                    <th>Email</th>
+                    <th>Wilayah</th>
                     <th>Status</th>
                     <th class="w-1">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Surat Cuti</td>
                     <td>Maryjo Lebarree</td>
-                    <td>12 Oktober 2024</td>
-                    <td><span class="badge bg-success me-1"></span>Disetujui</td>
+                    <td>0123456789</td>
+                    <td><a href="#" class="text-reset">mlebarree5@unc.edu</a></td>
+                    <td>Yogyakarta</td>
+                    <td><span class="badge bg-success me-1"></span> Aktif</td>
                     <td>
                       <div class="flex-nowrap">
                         <div class="dropdown">
@@ -72,13 +67,13 @@
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="#">
-                              Tampilkan Surat
+                              Tampilkan Data
                             </a>
                             <a class="dropdown-item" href="#">
-                              Setuju
+                              Ubah Status
                             </a>
-                            <a class="dropdown-item" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
-                              Tolak
+                            <a class="dropdown-item" href="#">
+                              Unduh Data
                             </a>
                           </div>
                         </div>
@@ -86,10 +81,11 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Surat Cuti</td>
                     <td>Maryjo Lebarree</td>
-                    <td>12 Oktober 2024</td>
-                    <td><span class="badge bg-success me-1"></span>Disetujui</td>
+                    <td>0123456789</td>
+                    <td><a href="#" class="text-reset">mlebarree5@unc.edu</a></td>
+                    <td>Yogyakarta</td>
+                    <td><span class="badge bg-danger me-1"></span> Mengundurkan Diri</td>
                     <td>
                       <div class="flex-nowrap">
                         <div class="dropdown">
@@ -98,13 +94,13 @@
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="#">
-                              Tampilkan Surat
+                              Tampilkan Data
                             </a>
                             <a class="dropdown-item" href="#">
-                              Setuju
+                              Ubah Status
                             </a>
-                            <a class="dropdown-item" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
-                              Tolak
+                            <a class="dropdown-item" href="#">
+                              Unduh Data
                             </a>
                           </div>
                         </div>
@@ -112,10 +108,11 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Surat Cuti</td>
                     <td>Maryjo Lebarree</td>
-                    <td>12 Oktober 2024</td>
-                    <td><span class="badge bg-danger me-1"></span>Ditolak</td>
+                    <td>0123456789</td>
+                    <td><a href="#" class="text-reset">mlebarree5@unc.edu</a></td>
+                    <td>Yogyakarta</td>
+                    <td><span class="badge bg-warning me-1"></span> Cuit</td>
                     <td>
                       <div class="flex-nowrap">
                         <div class="dropdown">
@@ -124,13 +121,13 @@
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="#">
-                              Tampilkan Surat
+                              Tampilkan Data
                             </a>
                             <a class="dropdown-item" href="#">
-                              Setuju
+                              Ubah Status
                             </a>
-                            <a class="dropdown-item" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
-                              Tolak
+                            <a class="dropdown-item" href="#">
+                              Unduh Data
                             </a>
                           </div>
                         </div>
@@ -138,10 +135,11 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Surat Cuti</td>
                     <td>Maryjo Lebarree</td>
-                    <td>12 Oktober 2024</td>
-                    <td><span class="badge bg-warning me-1"></span>Diproses</td>
+                    <td>0123456789</td>
+                    <td><a href="#" class="text-reset">mlebarree5@unc.edu</a></td>
+                    <td>Yogyakarta</td>
+                    <td><span class="badge bg-success me-1"></span> Aktif</td>
                     <td>
                       <div class="flex-nowrap">
                         <div class="dropdown">
@@ -150,13 +148,13 @@
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="#">
-                              Tampilkan Surat
+                              Tampilkan Data
                             </a>
                             <a class="dropdown-item" href="#">
-                              Setuju
+                              Ubah Status
                             </a>
-                            <a class="dropdown-item" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
-                              Tolak
+                            <a class="dropdown-item" href="#">
+                              Unduh Data
                             </a>
                           </div>
                         </div>
@@ -192,31 +190,5 @@
         </div>
       </div>
     </div>
-</div>
-<div class="modal modal-blur fade" id="modal-reject" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Alasan Penolakan</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row mb-3 align-items-end">
-          <div class="col">
-            <label class="form-label">Email</label>
-            <input type="text" class="form-control" />
-          </div>
-        </div>
-        <div>
-          <label class="form-label">Alasan</label>
-          <textarea class="form-control"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn me-auto" data-bs-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-main" data-bs-dismiss="modal">Kirim</button>
-      </div>
-    </div>
-  </div>
 </div>
 @endsection

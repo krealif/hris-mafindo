@@ -1,5 +1,6 @@
-@extends('layouts-admin.app')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Materi' )
+@extends('layouts.dashboard', [
+  'title' => 'Materi'
+])
 
 @section('content')
 <div class="page-wrapper">
@@ -24,7 +25,7 @@
       </div>
     </div>
     <!-- End Judul Halaman -->
-    
+
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">
@@ -66,7 +67,7 @@
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <a class="dropdown-item" href="#">
-                                        Ubah 
+                                        Ubah
                                         </a>
                                         <a class="dropdown-item" href="#">
                                         Hapus
@@ -92,7 +93,7 @@
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <a class="dropdown-item" href="#">
-                                        Ubah 
+                                        Ubah
                                         </a>
                                         <a class="dropdown-item" href="#">
                                         Hapus
@@ -118,7 +119,7 @@
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <a class="dropdown-item" href="#">
-                                        Ubah 
+                                        Ubah
                                         </a>
                                         <a class="dropdown-item" href="#">
                                         Hapus

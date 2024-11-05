@@ -1,5 +1,6 @@
-@extends('layouts-admin.app')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Daftar Akun' )
+@extends('layouts.dashboard', [
+  'title' => 'Surat'
+])
 
 @section('content')
 <div class="page-wrapper">
@@ -9,14 +10,22 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <h1 class="page-title">
-              Persetujuan Pembuatan Akun
+              Pengajuan Surat
             </h2>
+          </div>
+          <div class="col-auto ms-auto d-print-none">
+            <div class="d-flex">
+                <a href="./jenis-surat" class="btn btn-main">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                Buat Surat
+                </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <!-- End Judul Halaman -->
-    
+
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">
@@ -43,19 +52,19 @@
               <table class="table table-vcenter card-table table-striped">
                 <thead>
                   <tr>
+                    <th>Judul Surat</th>
                     <th>Nama</th>
-                    <th>Nomor Induk</th>
-                    <th>Email</th>
                     <th>Tanggal</th>
+                    <th>Status</th>
                     <th class="w-1">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    <td>Surat Cuti</td>
                     <td>Maryjo Lebarree</td>
-                    <td>0123456789</td>
-                    <td><a href="#" class="text-reset">mlebarree5@unc.edu</a></td>
-                    <td>21 Oktober 2024</td>
+                    <td>12 Oktober 2024</td>
+                    <td><span class="badge bg-success me-1"></span>Disetujui</td>
                     <td>
                       <div class="flex-nowrap">
                         <div class="dropdown">
@@ -64,10 +73,10 @@
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="#">
-                              Tampilkan Data
+                              Tampilkan Surat
                             </a>
                             <a class="dropdown-item" href="#">
-                              Setujui
+                              Setuju
                             </a>
                             <a class="dropdown-item" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
                               Tolak
@@ -78,10 +87,10 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Surat Cuti</td>
                     <td>Maryjo Lebarree</td>
-                    <td>0123456789</td>
-                    <td><a href="#" class="text-reset">mlebarree5@unc.edu</a></td>
-                    <td>21 Oktober 2024</td>
+                    <td>12 Oktober 2024</td>
+                    <td><span class="badge bg-success me-1"></span>Disetujui</td>
                     <td>
                       <div class="flex-nowrap">
                         <div class="dropdown">
@@ -90,10 +99,10 @@
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="#">
-                              Tampilkan Data
+                              Tampilkan Surat
                             </a>
                             <a class="dropdown-item" href="#">
-                              Setujui
+                              Setuju
                             </a>
                             <a class="dropdown-item" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
                               Tolak
@@ -104,10 +113,10 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Surat Cuti</td>
                     <td>Maryjo Lebarree</td>
-                    <td>0123456789</td>
-                    <td><a href="#" class="text-reset">mlebarree5@unc.edu</a></td>
-                    <td>21 Oktober 2024</td>
+                    <td>12 Oktober 2024</td>
+                    <td><span class="badge bg-danger me-1"></span>Ditolak</td>
                     <td>
                       <div class="flex-nowrap">
                         <div class="dropdown">
@@ -116,10 +125,10 @@
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="#">
-                              Tampilkan Data
+                              Tampilkan Surat
                             </a>
                             <a class="dropdown-item" href="#">
-                              Setujui
+                              Setuju
                             </a>
                             <a class="dropdown-item" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
                               Tolak
@@ -130,10 +139,10 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Surat Cuti</td>
                     <td>Maryjo Lebarree</td>
-                    <td>0123456789</td>
-                    <td><a href="#" class="text-reset">mlebarree5@unc.edu</a></td>
-                    <td>21 Oktober 2024</td>
+                    <td>12 Oktober 2024</td>
+                    <td><span class="badge bg-warning me-1"></span>Diproses</td>
                     <td>
                       <div class="flex-nowrap">
                         <div class="dropdown">
@@ -142,12 +151,12 @@
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="#">
-                              Tampilkan Data
+                              Tampilkan Surat
                             </a>
                             <a class="dropdown-item" href="#">
-                              Setujui
+                              Setuju
                             </a>
-                            <a class="dropdown-item" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
+                            <a class="dropdown-item" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
                               Tolak
                             </a>
                           </div>
@@ -163,7 +172,6 @@
               <ul class="pagination m-0 ms-auto">
                 <li class="page-item disabled">
                   <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
                     sebelumnya
                   </a>

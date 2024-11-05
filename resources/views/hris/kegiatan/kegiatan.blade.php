@@ -1,5 +1,6 @@
-@extends('layouts-admin.app')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Kegiatan' )
+@extends('layouts.dashboard', [
+  'title' => 'Kegiatan'
+])
 
 @section('content')
 <div class="page-wrapper">

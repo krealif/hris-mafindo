@@ -1,5 +1,6 @@
-@extends('layouts-admin.app')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Tambah Kegiatan' )
+@extends('layouts.dashboard', [
+  'title' => 'Tambah Kegiatan'
+])
 
 @section('content')
 <div class="page-wrapper">
@@ -9,7 +10,7 @@
             <div class="row g-2 align-items-center">
                 <a class="pe-auto text-decoration-none cursor-pointer" onclick="history.back()">
                     <div class="d-flex align-items-center">
-                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></svg>
                         <p class="mb-0 ms-2">Kembali</p>
                     </div>
                 </a>
@@ -37,7 +38,7 @@
                                         <input type="file" class="form-control" />
                                     </div>
                                 </div>
-                            </div>    
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nama Kegiatan</label>
@@ -53,7 +54,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="row">
-                                <div class="col-sm-6 col-md-6">  
+                                <div class="col-sm-6 col-md-6">
                                     <label class="form-label">Waktu Mulai</label>
                                     <input class="form-control" type="time">
                                 </div>
@@ -65,7 +66,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="row">
-                                <div class="col-sm-6 col-md-6"> 
+                                <div class="col-sm-6 col-md-6">
                                     <div class="form-label">Bentuk Kegiatan</div>
                                         <select class="form-select">
                                             <option selected>Pilih bentuk kegiatan</option>
