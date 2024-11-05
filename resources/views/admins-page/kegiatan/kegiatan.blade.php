@@ -40,7 +40,7 @@
                         <div class="col-sm-6 col-lg-4">
                             <div class="card">
                                 <!-- Photo -->
-                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(./tabler/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
+                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(https://preview.tabler.io/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
                                 <div class="card-body">
                                     <h3 class="card-title">Judul Kegiatan Baru</h3>
                                     <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima
@@ -54,7 +54,7 @@
                         <div class="col-sm-6 col-lg-4">
                             <div class="card">
                                 <!-- Photo -->
-                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(./tabler/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
+                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(https://preview.tabler.io/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
                                 <div class="card-body">
                                     <h3 class="card-title">Judul Kegiatan</h3>
                                     <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima
@@ -68,7 +68,7 @@
                         <div class="col-sm-6 col-lg-4">
                             <div class="card">
                                 <!-- Photo -->
-                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(./tabler/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
+                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(https://preview.tabler.io/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
                                 <div class="card-body">
                                     <h3 class="card-title">Judul Kegiatan</h3>
                                     <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima
@@ -82,7 +82,7 @@
                         <div class="col-sm-6 col-lg-4">
                             <div class="card">
                                 <!-- Photo -->
-                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(./tabler/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
+                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(https://preview.tabler.io/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
                                 <div class="card-body">
                                     <h3 class="card-title">Judul Kegiatan</h3>
                                     <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima
@@ -122,7 +122,7 @@
                         <div class="col-sm-6 col-lg-4">
                             <div class="card">
                                 <!-- Photo -->
-                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(./tabler/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
+                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(https://preview.tabler.io/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
                                 <div class="card-body">
                                     <h3 class="card-title">Judul Kegiatan Lama</h3>
                                     <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima
@@ -136,7 +136,7 @@
                         <div class="col-sm-6 col-lg-4">
                             <div class="card">
                                 <!-- Photo -->
-                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(./tabler/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
+                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(https://preview.tabler.io/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
                                 <div class="card-body">
                                     <h3 class="card-title">Judul Kegiatan</h3>
                                     <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima
@@ -150,7 +150,7 @@
                         <div class="col-sm-6 col-lg-4">
                             <div class="card">
                                 <!-- Photo -->
-                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(./tabler/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
+                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(https://preview.tabler.io/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
                                 <div class="card-body">
                                     <h3 class="card-title">Judul Kegiatan</h3>
                                     <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima
@@ -164,7 +164,7 @@
                         <div class="col-sm-6 col-lg-4">
                             <div class="card">
                                 <!-- Photo -->
-                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(./tabler/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
+                                <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(https://preview.tabler.io/static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg)"></div>
                                 <div class="card-body">
                                     <h3 class="card-title">Judul Kegiatan</h3>
                                     <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima

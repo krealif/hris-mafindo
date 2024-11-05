@@ -1,4 +1,3 @@
-<!--Navbar Top-->
 <header class="navbar navbar-expand-md d-print-none navbar-top" >
     <div class="container-xl">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,10 +7,10 @@
         <!--Logo-->
         <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
             <a href="/admin">
-              <img src="./tabler/static/logo-img.png" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+              <img src="{{ asset('static/logo-img.png') }}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
             </a>
             <a href="/admin">
-              <img src="./tabler/static/logo-text.png" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+              <img src="{{ asset('static/logo-text.png') }}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
             </a>
         </h1>
         <!--End Logo-->
