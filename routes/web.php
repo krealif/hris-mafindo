@@ -48,4 +48,11 @@ Route::get('/add-materi', function () {
     return view('hris.materi.add-materi');
 });
 
+#Auth
+Route::get('/masuk', function () {
+    return view('auth.login');
+});
+Route::get('/daftar', function () {
+    return view('auth.register');
+});
 
