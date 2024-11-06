@@ -1,31 +1,27 @@
 @extends('layouts.auth', [
-  'title' => 'Masuk'
+  'title' => 'Password'
 ])
-
-@push('style')
-  <style>
-    body {
-      background-color: var(--main-purple);
-    }
-  </style>
-@endpush
 
 @section('content')
 <div class="card">
-  <div class="card-header">
-    <h2 class="h2 mb-0">Pendaftaran Akun Baru</h2>
+  <div class="card-header d-block">
+    <h2 class="h2 mb-0">Reset Passwoord</h2>
+    <p class="text-muted mb-0">Tuliskan password baru Anda.</p>
   </div>
   <div class="card-body">
-    <form action="{{ route('register.store') }}" method="POST" autocomplete="off">
+    @if (session('status'))
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-title">Error!</h4>
+      <div class="text-secondary">Tautan reset password telah dikirim ke email Anda</div>
+    </div>
+    @endif
+
+    <form action="{{ route('password.update') }}" method="POST" autocomplete="off">
       @csrf
-      <div class="mb-3">
-        <label for="name" class="form-label required">Nama</label>
-        <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Budi" autocomplete="off" value="{{ old('name') }}" required>
-        @error('name')<div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>@enderror
-      </div>
+      <input type="hidden" name="token" value="{{ $request->route('token') }}">
       <div class="mb-3">
         <label for="email" class="form-label required">Email</label>
-        <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" placeholder="contoh@gmail.com" autocomplete="off" value="{{ old('email') }}" required>
+        <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" value="{{ $request->email }}" readonly>
         @error('email')<div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>@enderror
       </div>
       <div class="mb-3">
@@ -39,8 +35,7 @@
         @error('password_confirmation')<div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>@enderror
       </div>
       <div class="form-footer">
-        <button type="submit" class="btn btn-main w-100">Daftar</button>
-        <a href="{{ route('login') }}" class="btn btn-outline-secondary w-100 mt-2">Sudah punya akun? Masuk</a>
+        <button type="submit" class="btn btn-main w-100">Kirim Tautan Reset</button>
       </div>
     </form>
   </div>

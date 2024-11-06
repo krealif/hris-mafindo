@@ -1,9 +1,13 @@
 
 :root{
+    --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
     --main-purple: #31227D;
     --secondary-yellow: #f7f7eb;
 }
 
+body {
+    font-feature-settings: "cv03", "cv04", "cv11";
+}
 
 /** Navbar Costum **/
 .navbar-top{
