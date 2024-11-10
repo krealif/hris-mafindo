@@ -13,9 +13,7 @@
   <div class="page page-center">
     <div class="container container-tight py-4">
       <div class="text-center mb-4">
-        <a href="#">
-          <img src="{{ asset('static/mafindo-logo.png') }}" alt="Mafindo Logo" style="height: 56px">
-        </a>
+        <img src="{{ asset('static/mafindo-logo.png') }}" alt="Mafindo Logo" style="height: 56px">
       </div>
       @yield('content')
     </div>
