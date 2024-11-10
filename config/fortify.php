@@ -73,7 +73,7 @@ return [
     |
     */
 
-    'home' => '/home',
+    'home' => '/',
 
     /*
     |--------------------------------------------------------------------------
@@ -144,10 +144,9 @@ return [
     */
 
     'features' => [
-        Features::registration(),
         Features::resetPasswords(),
-        Features::updateProfileInformation(),
-        Features::updatePasswords(),
+        // Features::updateProfileInformation(),
+        // Features::updatePasswords(),
     ],
 
 ];

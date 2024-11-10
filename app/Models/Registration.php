@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class Registration extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -44,10 +42,5 @@ class User extends Authenticatable
         return [
             'password' => 'hashed',
         ];
-    }
-
-    public function brach(): BelongsTo
-    {
-        return $this->belongsTo(Branch::class);
     }
 }

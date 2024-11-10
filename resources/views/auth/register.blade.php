@@ -1,13 +1,16 @@
 @extends('layouts.auth', [
-  'title' => 'Masuk'
+  'title' => 'Daftar'
 ])
 
 @push('style')
-  <style>
-    body {
-      background-color: var(--main-purple);
-    }
-  </style>
+<link rel="stylesheet" href="{{ asset('static/vendor/tom-select.min.css') }}">
+@endpush
+
+@push('script')
+<script src="{{ asset('static/vendor/tom-select.complete.min.js') }}"></script>
+<script>
+  new TomSelect('#branch');
+</script>
 @endpush
 
 @section('content')
@@ -18,10 +21,26 @@
   <div class="card-body">
     <form action="{{ route('register.store') }}" method="POST" autocomplete="off">
       @csrf
+      @honeypot
       <div class="mb-3">
         <label for="name" class="form-label required">Nama</label>
         <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Budi" autocomplete="off" value="{{ old('name') }}" required>
         @error('name')<div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>@enderror
+      </div>
+      <div class="mb-3">
+        <label for="member-number" class="form-label">Nomor Induk</label>
+        <input id="member-number" name="member_number" type="text" class="form-control @error('member_number') is-invalid @enderror" placeholder="XXXXX" autocomplete="off">
+        @error('member_number')<div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>@enderror
+      </div>
+      <div class="mb-3">
+        <label for="branch" class="form-label">Wilayah</label>
+        <select id="branch" name="branch_id" class="form-select @error('branch_id') is-invalid @enderror" placeholder="Pilih wilayah" autocomplete="off">
+          <option value="">Pilih wilayah</option>
+          @foreach ($branches as $branch)
+          <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+          @endforeach
+        </select>
+        @error('branch_id')<div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>@enderror
       </div>
       <div class="mb-3">
         <label for="email" class="form-label required">Email</label>
