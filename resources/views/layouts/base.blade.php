@@ -6,7 +6,7 @@
   <title>{{ isset($title)? "$title - HRIS Mafindo" : "HRIS Mafindo" }}</title>
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-  <link href="{{ asset('static/tabler/css/tabler.min.css') }}" rel="stylesheet"/>
+  <link href="{{ asset('static/vendor/tabler.min.css') }}" rel="stylesheet"/>
   <link rel="stylesheet" href="{{ asset('static/css/style.css') }}">
   @stack('style')
 </head>
@@ -14,8 +14,7 @@
   @yield('body')
 
   <!-- Scripts -->
-  <script src="{{ asset('static/tabler/js/tabler.min.js') }}" defer></script>
-  <script src="{{ asset('static/js/copylink.js') }}"></script>
+  <script src="{{ asset('static/vendor/tabler.min.js') }}" defer></script>
   @stack('script')
 </body>
 </html>

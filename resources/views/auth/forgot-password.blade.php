@@ -3,19 +3,18 @@
 ])
 
 @section('content')
+@if (session('status'))
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-title h3">Sukses</h4>
+  <div class="text-muted">Kami telah mengirimkan email berisi instruksi untuk mereset password Anda. Jika email tidak segera muncul di kotak masuk Anda, harap periksa folder spam atau tunggu beberapa saat.</div>
+</div>
+@endif
 <div class="card">
   <div class="card-header d-block">
     <h2 class="h2 mb-2">Lupa Password</h2>
     <p class="text-muted mb-0">Tuliskan email Anda di bawah ini dan kami akan mengirimkan email yang berisi tautan untuk mengatur ulang password Anda.</p>
   </div>
   <div class="card-body">
-    @if (session('status'))
-    <div class="alert alert-success" role="alert">
-      <h4 class="alert-title">Sukses!</h4>
-      <div class="text-secondary">Tautan reset password telah dikirim ke email Anda</div>
-    </div>
-    @endif
-
     <form action="{{ route('password.email') }}" method="POST" autocomplete="off">
       @csrf
       <div class="mb-3">
@@ -25,7 +24,7 @@
       </div>
       <div class="form-footer">
         <button type="submit" class="btn btn-main w-100">Kirim Tautan Reset</button>
-        <a href="{{ route('login') }}" class="btn btn-outline-secondary w-100 mt-2">Kembali ke halaman masuk</a>
+        <a href="{{ route('login') }}" class="btn btn-outline-secondary w-100 mt-2">Kembali ke Halaman Masuk</a>
       </div>
     </form>
   </div>

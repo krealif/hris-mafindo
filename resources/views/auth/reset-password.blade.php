@@ -3,19 +3,18 @@
 ])
 
 @section('content')
+@if (session('status'))
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-title h3">Sukses</h4>
+  <div class="text-muted">Password Anda telah berhasil direset. Silakan kembali ke halaman masuk.</div>
+</div>
+@endif
 <div class="card">
   <div class="card-header d-block">
     <h2 class="h2 mb-0">Reset Passwoord</h2>
     <p class="text-muted mb-0">Tuliskan password baru Anda.</p>
   </div>
   <div class="card-body">
-    @if (session('status'))
-    <div class="alert alert-danger" role="alert">
-      <h4 class="alert-title">Error!</h4>
-      <div class="text-secondary">Tautan reset password telah dikirim ke email Anda</div>
-    </div>
-    @endif
-
     <form action="{{ route('password.update') }}" method="POST" autocomplete="off">
       @csrf
       <input type="hidden" name="token" value="{{ $request->route('token') }}">
@@ -36,6 +35,7 @@
       </div>
       <div class="form-footer">
         <button type="submit" class="btn btn-main w-100">Kirim Tautan Reset</button>
+        <a href="{{ route('login') }}" class="btn btn-outline-secondary w-100 mt-2">Kembali ke Halaman Masuk</a>
       </div>
     </form>
   </div>
