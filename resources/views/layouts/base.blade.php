@@ -9,13 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">
   <link href="{{ asset('static/vendor/tabler.min.css') }}" rel="stylesheet"/>
   <link rel="stylesheet" href="{{ asset('static/css/style.css') }}">
-  @stack('style')
+  @stack('styles')
 </head>
 <body>
   @yield('body')
 
   <!-- Scripts -->
   <script src="{{ asset('static/vendor/tabler.min.js') }}" defer></script>
-  @stack('script')
+  @stack('scripts')
 </body>
 </html>

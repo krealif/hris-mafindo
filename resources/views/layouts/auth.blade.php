@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@push('style')
+@push('styles')
   <style>
     body {
       background-color: var(--tblr-primary);

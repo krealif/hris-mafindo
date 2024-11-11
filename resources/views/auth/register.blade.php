@@ -2,11 +2,11 @@
   'title' => 'Daftar'
 ])
 
-@push('style')
+@push('styles')
 <link rel="stylesheet" href="{{ asset('static/vendor/tom-select.min.css') }}">
 @endpush
 
-@push('script')
+@push('scripts')
 <script src="{{ asset('static/vendor/tom-select.complete.min.js') }}"></script>
 <script>
   new TomSelect('#branch');

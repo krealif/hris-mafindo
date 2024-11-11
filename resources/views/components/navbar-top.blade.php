@@ -1,11 +1,11 @@
-<header class="navbar navbar-expand-md d-print-none bg-primary">
+<div class="navbar navbar-expand-md d-print-none bg-primary">
   <div class="container-xl">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <!--Logo-->
     <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-      <a href="#">
+      <a href="/">
         <img src="{{ asset('static/mafindo-logo.png') }}" height="40" alt="Tabler" class="navbar-brand-image">
       </a>
     </h1>
@@ -27,7 +27,7 @@
             <span class="d-block text-muted">{{ auth()->user()->email }}</span>
           </div>
           <div class="dropdown-divider"></div>
-          <a href="#"class="dropdown-item">
+          <a href="#" class="dropdown-item">
             <svg class="icon dropdown-item-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             Profil
           </a>
@@ -42,4 +42,4 @@
       </div>
     </div>
   </div>
-</header>
+</div>

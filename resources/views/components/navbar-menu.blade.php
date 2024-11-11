@@ -1,4 +1,4 @@
-<header class="navbar-expand-md">
+<div class="navbar-expand-md">
   <div class="collapse navbar-collapse" id="navbar-menu">
     <div class="navbar">
       <div class="container-xl">
@@ -37,7 +37,7 @@
             <div class="dropdown-menu">
               <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="./daftar-akun">Daftar Akun</a>
+                  <a class="dropdown-item" href="{{ route('register.index') }}">Pendaftaran</a>
                   <a class="dropdown-item" href="./data-relawan">Data Relawan</a>
                 </div>
               </div>
@@ -47,5 +47,4 @@
       </div>
     </div>
   </div>
-  </div>
-</header>
+</div>
