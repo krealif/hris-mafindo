@@ -15,7 +15,7 @@
           </div>
           <div class="col-auto ms-auto d-print-none">
             <div class="d-flex">
-                <a href="./add-materi" class="btn btn-main">
+                <a href="./add-materi" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                 Buat Materi
                 </a>
@@ -177,7 +177,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" id="linkInput" value="https://example.com/my-link" readonly>
                         <div class="input-group-append">
-                            <button class="btn btn-main" onclick="copyLink()">Salin Tautan</button>
+                            <button class="btn btn-primary" onclick="copyLink()">Salin Tautan</button>
                         </div>
                     </div>
                     <small id="copyMessage" class="form-text text-success" style="display: none;">Link copied to clipboard!</small>

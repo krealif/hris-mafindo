@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-center">
-                        <a href="#" class="btn btn-main">Simpan</a>
+                        <a href="#" class="btn btn-primary">Simpan</a>
                     </div>
                 </form>
             </div>

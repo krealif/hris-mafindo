@@ -25,7 +25,7 @@
         <input id="password" name="password" type="password" class="form-control" placeholder="Password Anda" autocomplete="off" required>
       </div>
       <div class="form-footer">
-        <button type="submit" class="btn btn-main w-100">Masuk</button>
+        <button type="submit" class="btn btn-primary w-100">Masuk</button>
         <a href="{{ route('register') }}" class="btn btn-outline-secondary w-100 mt-2">Belum punya akun? Daftar sekarang</a>
       </div>
     </form>

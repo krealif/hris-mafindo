@@ -50,8 +50,8 @@
                 </div>
                 <div class="col-12 mt-3">
                     <div class="d-flex flex-column gap-2">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-tautan" class="btn btn-main ms-auto">Unggah Rekaman</a>
-                        <a href="#" class="btn btn-main ms-auto">Tampilkan Prsesnsi</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-tautan" class="btn btn-primary ms-auto">Unggah Rekaman</a>
+                        <a href="#" class="btn btn-primary ms-auto">Tampilkan Prsesnsi</a>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-center">
-                            <a href="#" class="btn btn-main">Simpan</a>
+                            <a href="#" class="btn btn-primary">Simpan</a>
                         </div>
                     </form>
                 </div>

@@ -23,7 +23,7 @@
         @error('email')<div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>@enderror
       </div>
       <div class="form-footer">
-        <button type="submit" class="btn btn-main w-100">Kirim Tautan Reset</button>
+        <button type="submit" class="btn btn-primary w-100">Kirim Tautan Reset</button>
         <a href="{{ route('login') }}" class="btn btn-outline-secondary w-100 mt-2">Kembali ke Halaman Masuk</a>
       </div>
     </form>

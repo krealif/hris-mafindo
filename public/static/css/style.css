@@ -1,49 +1,27 @@
-
 :root{
-    --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-    --main-purple: #31227D;
+    --tblr-font-sans-serif: 'Roboto Serif', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
     --secondary-yellow: #f7f7eb;
 }
 
-body {
-    font-feature-settings: "cv03", "cv04", "cv11";
-}
-
-/** Navbar Costum **/
-.navbar-top{
-    background-color: var(--main-purple);
-}
-
-.navbar-top .icon{
+/** Navbar Custom **/
+.bg-primary .navbar-toggler {
     color: white;
 }
 
-[data-bs-theme=dark] .navbar-brand-autodark .navbar-brand-image {
-    filter: none;
+.nav-link .icon,
+.dropdown-item-icon {
+    color: var(--tblr-dark);
 }
 
-[data-bs-theme=dark] .avatar-sm{
-    background-color: var(--secondary-yellow);
+.nav-link:hover .icon {
+    color: var(--tblr-nav-link-hover-color);
 }
 
-/** Navbar Costum End **/
-
-/**Button Custom**/
-.btn-main{
-    background-color: var(--main-purple);
-    color: white;
-}
-
-[data-bs-theme=dark] .btn-sec-yellow{
-    background-color: darkgray;
-    color: black;
-}
+/** Button Custom **/
 
 .btn-sec-yellow{
     background-color: var(--secondary-yellow);
 }
-
-/** End Buttin Main**/
 
 /** Design System**/
 .active>.page-link, .page-link.active {
@@ -55,10 +33,9 @@ body {
     --tblr-icon-size: 3rem !important;
 }
 
-@media (min-width: 1024px) {
-
+@media (min-width: 992px) {
     .page-title{
-        font-size:x-large !important;
+        font-size: 1.4rem !important;
     }
 
     #dash-admin .icon{

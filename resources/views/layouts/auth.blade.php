@@ -3,7 +3,7 @@
 @push('style')
   <style>
     body {
-      background-color: var(--main-purple);
+      background-color: var(--tblr-primary);
     }
   </style>
 @endpush

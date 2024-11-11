@@ -58,7 +58,7 @@
         @error('password_confirmation')<div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>@enderror
       </div>
       <div class="form-footer">
-        <button type="submit" class="btn btn-main w-100">Daftar</button>
+        <button type="submit" class="btn btn-primary w-100">Daftar</button>
         <a href="{{ route('login') }}" class="btn btn-outline-secondary w-100 mt-2">Sudah punya akun? Masuk</a>
       </div>
     </form>

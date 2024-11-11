@@ -208,7 +208,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn me-auto" data-bs-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-main" data-bs-dismiss="modal">Kirim</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kirim</button>
       </div>
     </div>
   </div>
