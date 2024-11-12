@@ -3,8 +3,8 @@
 @section('body')
 <div class="d-flex flex-column">
   <header>
-    @include('components.navbar-top')
-    @include('components.navbar-menu')
+    @include('partials.navbar-top')
+    @include('partials.navbar-menu')
   </header>
   @yield('content')
 </div>

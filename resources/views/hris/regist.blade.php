@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-  'title' => 'Daftar Akun'
+  'title' => 'Pendaftaran'
 ])
 
 @section('content')
@@ -10,14 +10,13 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <h1 class="page-title">
-              Persetujuan Pembuatan Akun
+              Pendaftaran
             </h2>
           </div>
         </div>
       </div>
     </div>
     <!-- End Judul Halaman -->
-
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">
@@ -147,6 +146,21 @@
                             </a>
                             <a class="dropdown-item" href="#">
                               Setujui
+                            </a>
+                            <a class="dropdown-item" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
+                              Tolak
+                            </a>
+                            <a class="dropdown-item" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
+                              Tolak
+                            </a>
+                            <a class="dropdown-item" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
+                              Tolak
+                            </a>
+                            <a class="dropdown-item" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
+                              Tolak
+                            </a>
+                            <a class="dropdown-item" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
+                              Tolak
                             </a>
                             <a class="dropdown-item" href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-reject">
                               Tolak

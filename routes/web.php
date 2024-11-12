@@ -14,6 +14,8 @@ Route::controller(RegistrationController::class)->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
-        return view('hris.dashboard');
+        return view('hris.home');
     });
+
+    Route::get('/pendaftaran', [RegistrationController::class, 'index'])->name('register.index');
 });

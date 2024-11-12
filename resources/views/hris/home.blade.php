@@ -9,7 +9,6 @@
         <div class="container-xl">
             <div class="row g-2 align-items-center">
               <div class="col">
-                <!-- Page pre-title -->
                 <h1 class="page-title">
                   Dashboard
                 </h1>
@@ -17,7 +16,6 @@
             </div>
         </div>
     </div>
-
     <!--Page Body-->
     <div class="page-body" id="dash-admin">
       <div class="container-xl">
@@ -25,7 +23,7 @@
           <div class="card-body">
             <div class="row row-cards">
               <div class="col-sm-6 col-lg-3">
-                <a href="./daftar-akun" class="card card-link card-link-pop btn-sec-yellow">
+                <a href="{{ route('register.index') }}" class="card card-link card-link-pop btn-sec-yellow">
                   <div class="empty">
                     <div class="empty-img">
                       <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users-plus">
@@ -37,7 +35,7 @@
                         <path d="M19 16v6" />
                       </svg>
                     </div>
-                    <h3 class="empty-title">Daftar Akun Relawan</h3>
+                    <h3 class="empty-title">Pendaftaran</h3>
                   </div>
                 </a>
               </div>
@@ -63,7 +61,6 @@
                   </div>
                 </a>
               </div>
-
               <div class="col-sm-6 col-lg-3">
                 <a href="./add-materi" class="card card-link card-link-pop btn-sec-yellow">
                   <div class="empty">
@@ -85,7 +82,6 @@
         <div class="container-xl">
             <div class="row g-2 align-items-center">
               <div class="col">
-                <!-- Page pre-title -->
                 <h1 class="page-title">
                   Pemberitahuan
                 </h1>

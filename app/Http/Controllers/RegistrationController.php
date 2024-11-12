@@ -7,16 +7,34 @@ use Illuminate\View\View;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
+use Illuminate\Routing\Controllers\Middleware;
 use App\Http\Requests\StoreRegistrationRequest;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class RegistrationController extends Controller
+class RegistrationController extends Controller implements HasMiddleware
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        //
+        $users = QueryBuilder::for(Registration::class)
+            ->allowedFilters([
+                'name',
+                'email',
+                'member_number',
+                AllowedFilter::exact('branch_id')
+            ])
+            ->with('branch')
+            ->paginate(20, ['id', 'name', 'email', 'member_number', 'branch_id'])
+            ->appends(request()->query());
+
+        return view('hris.registration', [
+            'users' => $users,
+            'branches' => Branch::all(['id', 'name']),
+        ]);
     }
 
     /**
@@ -82,5 +100,15 @@ class RegistrationController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Get the middleware that should be assigned to the controller.
+     */
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('preserveUrlQuery', only: ['index']),
+        ];
     }
 }

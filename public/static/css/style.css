@@ -1,9 +1,10 @@
 :root{
-    --tblr-font-sans-serif: 'Roboto Serif', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+    --tblr-font-sans-serif: 'Noto Serif', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
     --secondary-yellow: #f7f7eb;
 }
 
 /** Navbar Custom **/
+
 .bg-primary .navbar-toggler {
     color: white;
 }
@@ -17,6 +18,26 @@
     color: var(--tblr-nav-link-hover-color);
 }
 
+/** Datatable **/
+.datatable th {
+    font-size: .875rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    color: var(--tblr-dark) !important;
+}
+
+.table-responsive .dropdown,
+.table-responsive .btn-group,
+.table-responsive .btn-group-vertical {
+    position: static;
+}
+
+.collapsing {
+    -webkit-transition: none;
+    transition: none;
+    display: none;
+}
+
 /** Button Custom **/
 
 .btn-sec-yellow{
@@ -24,10 +45,6 @@
 }
 
 /** Design System**/
-.active>.page-link, .page-link.active {
-    background-color: var(--main-purple) !important;
-    border-color: var(--main-purple);
-}
 
 #dash-admin .icon{
     --tblr-icon-size: 3rem !important;
@@ -46,16 +63,4 @@
         height: 15rem !important;
     }
 
-}
-
-.table-responsive .dropdown,
-.table-responsive .btn-group,
-.table-responsive .btn-group-vertical {
-    position: static;
-}
-
-.collapsing {
-    -webkit-transition: none;
-    transition: none;
-    display: none;
 }
