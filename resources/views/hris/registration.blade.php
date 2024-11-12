@@ -101,11 +101,11 @@
         <a href="#" class="btn btn-link" data-bs-dismiss="modal">
           Batal
         </a>
-        <a href="#" class="btn btn-primary" data-bs-dismiss="modal">
+        <button class="btn btn-primary" type="submit">
           Terima
-        </a>
+        </button>
       </div>
-    </div>
+    </form>
   </div>
 </div>
 @endsection
@@ -118,5 +118,44 @@
 @endpush
 
 @push('scripts')
-<script src="{{ asset('static/js/test.js') }}" defer></script>
+<script>
+  const approveButtons = document.querySelectorAll('btn#btn-approve');
+  const approveModal = document.querySelector('#modal-approve');
+  const approveModalBs = new bootstrap.Modal(approveModal);
+
+  approveButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      const row = this.closest('tr');
+      const cells = Array.from(row.cells);
+
+      const id = row.getAttribute("data-id");
+      const data = [];
+
+      // Get all data
+      cells.pop();
+      cells.forEach(cell => {
+          const content = cell.textContent.trim();
+          if (content) {
+              data.push(content);
+          }
+      })
+
+      const form = approveModal.querySelector('form')
+      const postURL =  window.location.href + `/${id}`;
+      form.action = postURL;
+
+      // Populate modal before show
+      approveModal.querySelector('#approve-summary').textContent = data.join('\n');
+      approveModalBs.show();
+    });
+  });
+
+  // Clear model
+  approveModal.addEventListener('hidden.bs.modal', () => {
+    const form = approveModal.querySelector('form');
+    form.reset();
+    approveModal.querySelector('#approve-summary').textContent = ''
+    form.action = '';
+  });
+</script>
 @endpush

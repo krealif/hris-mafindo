@@ -17,7 +17,7 @@
   @yield('body')
 
   <!-- Scripts -->
-  <script src="{{ asset('static/vendor/tabler.min.js') }}" defer></script>
+  <script src="{{ asset('static/vendor/tabler.min.js') }}"></script>
   @stack('scripts')
   <!-- SVG sprites -->
   @stack('icons')
