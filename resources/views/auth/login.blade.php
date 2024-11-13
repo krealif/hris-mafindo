@@ -21,7 +21,7 @@
             <a href="{{ route('password.request') }}">Lupa password?</a>
           </span>
         </label>
-        <x-form.input name="password" type="password" placeholder="Password Anda" withError="false" required />
+        <x-form.input name="password" type="password" placeholder="Password Anda" :withError=false required />
       </div>
       <div class="form-footer">
         <button type="submit" class="btn btn-primary w-100">Masuk</button>

@@ -55,15 +55,15 @@ class RegistrationController extends Controller implements HasMiddleware
         $validated = $request->validated();
         Registration::create($validated);
 
-        return to_route('register.success')->with('status', 'success');
+        return to_route('register.success')->with('success', 'page');
     }
 
     /**
-     * Display registration success status
+     * Display registration success status.
      */
     public function success(): View | RedirectResponse
     {
-        if (session('status')) {
+        if (session('success')) {
             return view('auth.register-success');
         }
 
@@ -71,35 +71,31 @@ class RegistrationController extends Controller implements HasMiddleware
     }
 
     /**
-     * Display the specified resource.
+     * Approve user registration.
      */
-    public function show(string $id)
+    public function approve(Registration $registration, Request $request): RedirectResponse
     {
-        //
+        $validated = $request->validate([
+            'role' => ['in:relawan,pengurus'],
+        ]);
+
+        // Redirect to the datatable page with applied filters (if any)
+        return to_route('registration.index', session('q.registration'))
+            ->with('success', 'Berhasil');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Reject user registration.
      */
-    public function edit(string $id)
+    public function reject(Registration $registration, Request $request)
     {
-        //
-    }
+        $validated = $request->validate([
+            'message' => ['email'],
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // Redirect to the datatable page with applied filters (if any)
+        return to_route('registration.index', session('q.registration'))
+            ->with('success', 'Berhasil');
     }
 
     /**

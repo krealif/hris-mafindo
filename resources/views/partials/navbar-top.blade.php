@@ -15,7 +15,7 @@
       <div class="nav-item dropdown">
         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Buka menu akun">
           <span class="avatar avatar-sm">
-            <span class="avatar avatar-sm" style="background-image: url(https://preview.tabler.io/static/avatars/000m.jpg)"></span>
+            <span class="avatar avatar-sm"></span>
           </span>
           <div class="d-none d-xl-block ps-2">
             <div class="text-white fw-medium">{{ explode(' ', auth()->user()->name)[0] }}</div>

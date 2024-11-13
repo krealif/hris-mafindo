@@ -17,15 +17,15 @@
       </div>
       <div class="mb-3">
         <label for="member-number" class="form-label">Nomor Induk</label>
-        <x-form.input name="member_number" type="text" placeholder="XXXXX" value="{{ old('member_number') }}" required />
+        <x-form.input name="member_number" type="text" placeholder="XXXXX" value="{{ old('member_number') }}" />
       </div>
       <div class="mb-3">
         <label for="branch" class="form-label">Wilayah</label>
-        <x-form.select-searchable id="branch" name="branch_id" :options=$branches>
+        <x-form.tom-select id="branch" name="branch_id" :options=$branches>
           <x-slot:placeholder>
             <option value="">Pilih wilayah</option>
           </x-slot>
-        </x-form.select-searchable>
+        </x-form.tom-select>
       </div>
       <div class="mb-3">
         <label for="email" class="form-label required">Email</label>
