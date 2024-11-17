@@ -41,7 +41,7 @@
       </div>
       <div class="form-footer">
         <button type="submit" class="btn btn-primary w-100">Daftar</button>
-        <a href="{{ route('login') }}" class="btn btn-outline-secondary w-100 mt-2">Sudah punya akun? Masuk</a>
+        <a href="{{ route('login') }}" class="btn w-100 mt-2">Sudah punya akun?&nbsp;<span class="text-primary">Masuk</span></a>
       </div>
     </form>
   </div>

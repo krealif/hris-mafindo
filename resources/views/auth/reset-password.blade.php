@@ -5,7 +5,7 @@
 @section('content')
 @if (session('status'))
 <div class="alert alert-success" role="alert">
-  <h4 class="alert-title h3">Sukses</h4>
+  <h4 class="alert-title h3">Berhasil!</h4>
   <div class="text-muted">Password Anda telah berhasil direset. Silakan kembali ke halaman masuk.</div>
 </div>
 @endif

@@ -25,7 +25,7 @@
       </div>
       <div class="form-footer">
         <button type="submit" class="btn btn-primary w-100">Masuk</button>
-        <a href="{{ route('register') }}" class="btn btn-outline-secondary w-100 mt-2">Belum punya akun? Daftar sekarang</a>
+        <a href="{{ route('register') }}" class="btn w-100 mt-2">Belum punya akun?&nbsp;<span class="text-primary">Daftar sekarang</span></a>
       </div>
     </form>
   </div>
