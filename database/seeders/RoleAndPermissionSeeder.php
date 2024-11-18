@@ -29,11 +29,5 @@ class RoleAndPermissionSeeder extends Seeder
 
         // Create admin roles and assign permissions.
         $admin = Role::updateOrCreate(['name' => RolesEnum::ADMIN->value]);
-
-        $admin->syncPermissions([
-            PermissionsEnum::VIEW_REGISTRATION->value,
-            PermissionsEnum::ACCEPT_REGISTRATION->value,
-            PermissionsEnum::REJECT_REGISTRATION->value,
-        ]);
     }
 }
