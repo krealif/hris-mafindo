@@ -74,9 +74,9 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Approve user registration.
+     * Accept user registration.
      */
-    public function approve(Registration $registration, Request $request): RedirectResponse
+    public function accept(Registration $registration, Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'role' => ['in:relawan,pengurus'],
@@ -94,7 +94,7 @@ class RegistrationController extends Controller
         });
 
         Mail::to($registration->email)
-            ->send(new \App\Mail\RegistrationApproved($registration->name));
+            ->send(new \App\Mail\RegistrationAccepted($registration->name));
 
         flash()->success("Berhasil! Pendaftaran a.n. [{$registration->name}] telah diterima.");
         return to_route('registration.index', session('q.registration'));

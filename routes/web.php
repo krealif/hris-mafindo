@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
+use App\Http\Controllers\LetterController;
+use App\Http\Controllers\LetterSubmissionController;
 use App\Http\Controllers\RegistrationController;
 
 // User registration
@@ -24,12 +26,13 @@ Route::middleware('auth')->group(function () {
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => RegistrationController::class,
-        'as' => 'registration.'
+        'as' => 'registration.',
+        'prefix' => 'pendaftaran'
     ], function () {
-        Route::get('pendaftaran', 'index')->name('index')
+        Route::get('/', 'index')->name('index')
             ->middleware('preserveUrlQuery');
 
-        Route::post('pendaftaran/{registration}/approve', 'approve')->name('approve');
-        Route::post('pendaftaran/{registration}/reject', 'reject')->name('reject');
+        Route::post('{registration}/accept', 'accept')->name('accept');
+        Route::post('{registration}/reject', 'reject')->name('reject');
     });
 });

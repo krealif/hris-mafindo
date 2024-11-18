@@ -75,7 +75,7 @@
                   <td>{{ $user->branch?->name }}</td>
                   <td>
                     <div class="btn-list flex-nowrap">
-                      <button type="button" href="#" id="btn-approve" class="btn btn-md">
+                      <button type="button" href="#" id="btn-accept" class="btn btn-md">
                         <svg class="icon text-success" width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#check" /></svg>
                         Terima
                       </button>
@@ -99,8 +99,8 @@
     </div>
   </div>
 </div>
-<!-- Modal Approve -->
-<div id="modal-approve" class="modal fade" tabindex="-1">
+<!-- Modal Accept -->
+<div id="modal-accept" class="modal fade" tabindex="-1">
   <div class="modal-dialog modal-lg" role="document">
     <form class="modal-content" method="POST">
       @csrf
@@ -214,7 +214,7 @@
 
   }
 
-  setupModal('#btn-approve', '#modal-approve', 'approve', '#summary');
+  setupModal('#btn-accept', '#modal-accept', 'accept', '#summary');
   setupModal('#btn-reject', '#modal-reject', 'reject', '#summary');
 </script>
 @endpush
