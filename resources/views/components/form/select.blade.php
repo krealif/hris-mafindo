@@ -5,11 +5,11 @@
   'optVal'=> "id",
   'optLabel' => "name",
   'selected' => null,
-  'withError' => true,
+  'showError' => true,
 ])
 
 @php
-  $attributes = $attributes->class(['form-control', 'is-invalid' => $withError && $errors->has($name),]);
+  $attributes = $attributes->class(['form-control', 'is-invalid' => $showError && $errors->has($name),]);
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
   $selectedValue = old($name, $selected);
 
@@ -24,7 +24,7 @@
   <option value="{{ $option[$optVal] }}" {{ $selectedValue == $option[$optVal] ? 'selected' : '' }}>{{ $option[$optLabel] }}</option>
   @endforeach
 </select>
-@if($withError)
+@if($showError)
   @error($name)
     <div class="invalid-feedback" role="alert">
       <strong>{{ $message }}</strong>

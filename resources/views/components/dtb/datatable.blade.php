@@ -1,4 +1,6 @@
-@props(['searchField' => 'name', 'isEmpty' => false])
+@props([
+  'searchField' => 'name'
+])
 
 @php
   $totalFilter = collect(request()->filter)->except($searchField)->count();

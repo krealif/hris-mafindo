@@ -2,16 +2,16 @@
   'id',
   'name',
   'type' => 'text',
-  'withError' => true,
+  'showError' => true,
 ])
 
 @php
-  $attr = $attributes->class(['form-control', 'is-invalid' => $withError && $errors->has($name),]);
+  $attr = $attributes->class(['form-control', 'is-invalid' => $showError && $errors->has($name),]);
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
 @endphp
 
 <input id="{{ $id }}" name="{{ $name }}" type="{{ $type }}" {{ $attr }} autocomplete="off">
-@if($withError)
+@if($showError)
   @error($name)
     <div class="invalid-feedback" role="alert">
       <strong>{{ $message }}</strong>

@@ -2,4 +2,4 @@
   'value' => null
 ])
 
-<x-form.input {{ $attributes }} :withError=false value="{{ request()->filter[$attributes->get('name')] ?? '' }}" />
+<x-form.input {{ $attributes }} :showError=false value="{{ request()->filter[$attributes->get('name')] ?? '' }}" />
