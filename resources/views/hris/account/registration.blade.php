@@ -144,7 +144,7 @@
         <pre class="fs-3" id="summary"></pre>
         <div>
           <label for="role" class="form-label">Alasan</label>
-          <x-form.input name="message" placeholder="Tuliskan alasan penolakan" :showError=false required />
+          <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan penolakan" :showError=false required />
         </div>
       </div>
       <div class="modal-footer">
