@@ -21,5 +21,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
+
+        \Spatie\Flash\Flash::levels([
+            'success' => 'alert-success',
+            'error' => 'alert-danger',
+        ]);
     }
 }

@@ -22,18 +22,16 @@
         @if($errors->any())
           <!-- Validation error -->
           <x-alert class="alert-danger">
-            <ul class="m-0">
+            <ul class="m-0" style="margin-left: -1rem">
               @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
               @endforeach
             </ul>
           </x-alert>
         @endif
-        @if($message = Session::get('success'))
-          <!-- Success -->
-          <x-alert class="alert-success">
-            <svg class="icon alert-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-            <div>{{ $message }}</div>
+        @if (flash()->message)
+          <x-alert class="{{ flash()->class }}">
+            <div>{{ flash()->message }}</div>
           </x-alert>
         @endif
         <x-dtb.datatable searchField="name">
@@ -194,6 +192,7 @@
         const form = modal.querySelector('form');
 
         let currentUrl = new URL(window.location.href);
+        currentUrl.pathname = currentUrl.pathname.replace(/\/$/, '');
         currentUrl.pathname += `/${id}/${action}`;
         currentUrl.search = '';
         form.action = currentUrl.href;
