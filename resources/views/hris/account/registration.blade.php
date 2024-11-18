@@ -5,20 +5,21 @@
 @section('content')
 <div class="page-wrapper">
   <!-- Judul Halaman -->
-    <div class="page-header d-print-none">
-      <div class="container-xl">
-        <div class="row g-2 align-items-center">
-          <div class="col">
-            <h1 class="page-title">
-              Pendaftaran
-            </h1>
-          </div>
+  <div class="page-header d-print-none">
+    <div class="container-xl">
+      <div class="row g-2 align-items-center">
+        <div class="col">
+          <h1 class="page-title">
+            Pendaftaran
+          </h1>
         </div>
       </div>
     </div>
-    <!-- Body -->
-    <div class="page-body">
-      <div class="container-xl">
+  </div>
+  <!-- Body -->
+  <div class="page-body">
+    <div class="container-xl">
+      <div class="col-12">
         @if($errors->any())
           <!-- Validation error -->
           <x-alert class="alert-danger">
@@ -96,6 +97,7 @@
         </x-dtb.datatable>
       </div>
     </div>
+  </div>
 </div>
 <!-- Modal Approve -->
 <div id="modal-approve" class="modal fade" tabindex="-1">
