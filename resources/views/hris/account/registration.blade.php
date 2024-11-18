@@ -34,7 +34,7 @@
             <div>{{ flash()->message }}</div>
           </x-alert>
         @endif
-        <x-dtb.datatable searchField="name">
+        <x-dtb.datatable searchField="name" total="{{ $users->count() }}">
           <x-slot:filter>
             <!-- Table filter -->
             <div class="row g-4">
