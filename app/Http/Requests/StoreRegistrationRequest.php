@@ -21,17 +21,22 @@ class StoreRegistrationRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'member_number' => ['nullable', 'string', 'max:255'],
-            'branch_id' => ['nullable', 'exists:branches,id'],
             'email' => [
                 'required',
-                'string',
                 'email',
                 'max:255',
                 Rule::unique(User::class),
                 Rule::unique(Registration::class),
             ],
             'password' => $this->passwordRules(),
+            'member_number' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique(User::class),
+                Rule::unique(Registration::class),
+            ],
+            'branch_id' => ['nullable', 'exists:branches,id'],
         ];
     }
 }

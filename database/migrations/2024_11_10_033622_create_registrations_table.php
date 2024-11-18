@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('member_number')->nullable();
+            $table->string('member_number')->nullable()->unique();
             $table->foreignId('branch_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });
