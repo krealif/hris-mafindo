@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Branch;
 use Illuminate\View\View;
 use App\Models\Registration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
-use Illuminate\Routing\Controllers\Middleware;
 use App\Http\Requests\StoreRegistrationRequest;
-use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\App;
 
-class RegistrationController extends Controller implements HasMiddleware
+class RegistrationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,7 +33,7 @@ class RegistrationController extends Controller implements HasMiddleware
             ->paginate(20, ['id', 'name', 'email', 'member_number', 'branch_id'])
             ->appends(request()->query());
 
-        return view('hris.registration', [
+        return view('hris.account.registration', [
             'users' => $users,
             'branches' => Branch::all(['id', 'name']),
         ]);
@@ -55,7 +57,8 @@ class RegistrationController extends Controller implements HasMiddleware
         $validated = $request->validated();
         Registration::create($validated);
 
-        return to_route('register.success')->with('success', 'page');
+        return to_route('register.success')
+            ->with('success', 'page');
     }
 
     /**
@@ -79,32 +82,40 @@ class RegistrationController extends Controller implements HasMiddleware
             'role' => ['in:relawan,pengurus'],
         ]);
 
-        // Redirect to the datatable page with applied filters (if any)
-        return to_route('registration.index', session('q.registration'))
-            ->with('success', 'Berhasil');
+        $userData = $registration->replicate()->toArray();
+        $userData['password'] = $registration->password;
+
+        $user = new User($userData);
+        $user->assignRole($validated['role']);
+
+        DB::transaction(function () use ($user, $registration) {
+            $user->save();
+            $registration->delete();
+        });
+
+        Mail::to($registration->email)
+            ->send(new \App\Mail\RegistrationApproved($registration->name));
+
+        flash()->success("Berhasil! Pendaftaran a.n. [{$registration->name}] telah diterima.");
+        return to_route('registration.index', session('q.registration'));
     }
 
     /**
      * Reject user registration.
      */
-    public function reject(Registration $registration, Request $request)
+    public function reject(Registration $registration, Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'message' => ['email'],
+            'message' => ['string'],
         ]);
 
-        // Redirect to the datatable page with applied filters (if any)
-        return to_route('registration.index', session('q.registration'))
-            ->with('success', 'Berhasil');
-    }
+        $name = $registration->name;
+        Mail::to($registration->email)
+            ->send(new \App\Mail\RegistrationRejected($name, $validated['message']));
 
-    /**
-     * Get the middleware that should be assigned to the controller.
-     */
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('preserveUrlQuery', only: ['index']),
-        ];
+        $registration->delete();
+
+        flash()->success("Berhasil! Pendaftaran a.n. [{$registration->name}] telah ditolak.");
+        return to_route('registration.index', session('q.registration'));
     }
 }
