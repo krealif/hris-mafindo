@@ -31,7 +31,7 @@ class RoleAndPermissionSeeder extends Seeder
         $admin = Role::updateOrCreate(['name' => RolesEnum::ADMIN->value]);
 
         $admin->syncPermissions([
-            PermissionsEnum::LIST_REGISTRATION->value,
+            PermissionsEnum::VIEW_REGISTRATION->value,
             PermissionsEnum::ACCEPT_REGISTRATION->value,
             PermissionsEnum::REJECT_REGISTRATION->value,
         ]);
