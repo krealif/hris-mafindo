@@ -23,7 +23,8 @@
         @if($errors->any())
           <!-- Validation error -->
           <x-alert class="alert-danger">
-            <ul class="m-0" style="margin-left: -1rem">
+            <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
+            <ul class="mt-2 mb-0" style="margin-left: -1rem">
               @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
               @endforeach
@@ -32,7 +33,7 @@
         @endif
         @if (flash()->message)
           <x-alert class="{{ flash()->class }}">
-            <div>{{ flash()->message }}</div>
+            {{ flash()->message }}
           </x-alert>
         @endif
         <x-dtb.datatable searchField="name" total="{{ $users->count() }}">
@@ -111,7 +112,7 @@
       <div class="modal-body">
         <pre class="fs-3" id="summary"></pre>
         <div>
-          <label for="role" class="form-label">Role</label>
+          <label for="role" class="form-label required">Role</label>
           <div class="btn-group w-100">
             <input type="radio" id="btn-radio-1" class="btn-check" name="role" value="relawan" checked>
             <label for="btn-radio-1" type="button" class="btn">Relawan</label>
@@ -143,7 +144,7 @@
       <div class="modal-body">
         <pre class="fs-3" id="summary"></pre>
         <div>
-          <label for="role" class="form-label">Alasan</label>
+          <label for="role" class="form-label required">Alasan</label>
           <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan penolakan" :showError=false required />
         </div>
       </div>
