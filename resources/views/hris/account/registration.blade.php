@@ -77,10 +77,10 @@
                   <td>
                     <div class="btn-list flex-nowrap">
                       <button type="button" href="#" id="btn-accept" class="btn btn-md">
-                        <svg class="icon text-success" width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#check" /></svg>
+                        <svg class="icon text-green" width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#check" /></svg>
                         Terima
                       </button>
-                      <button type="button" href="#" id="btn-reject" class="btn btn-icon text-danger">
+                      <button type="button" href="#" id="btn-reject" class="btn btn-icon text-red">
                         <svg class="icon" width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#x" /></svg>
                       </button>
                     </div>
