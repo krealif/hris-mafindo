@@ -13,12 +13,19 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminDemo = User::create([
+        $admin = User::create([
             'name' => 'Admin Demo',
             'email' => 'admin@mail.com',
-            'password' => '$2y$10$VUKpKLFF9e1r9Gul6uiBKO6k0kEDi808NuW3dh77Ylh8JK15eWoY6'
+            'password' => '$2y$10$zRyiQgBRXIJFBieYQ/QtEuk/eL/WK.WdbREVXJcJe4KksPpM2Twyu'
         ]);
 
-        $adminDemo->assignRole('admin');
+        $relawan = User::create([
+            'name' => 'Relawan Demo',
+            'email' => 'relawan@mail.com',
+            'password' => '$2y$10$zRyiQgBRXIJFBieYQ/QtEuk/eL/WK.WdbREVXJcJe4KksPpM2Twyu',
+        ]);
+
+        $admin->assignRole('admin');
+        $relawan->assignRole('relawan');
     }
 }

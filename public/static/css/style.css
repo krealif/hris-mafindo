@@ -38,6 +38,15 @@
     display: none;
 }
 
+.nav-pills .nav-link {
+    border: 1px solid var(--tblr-border-color);
+    color: inherit
+}
+
+.nav-pills .nav-link.active {
+    border: 1px solid;
+}
+
 /** Button Custom **/
 
 .btn-sec-yellow{

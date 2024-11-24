@@ -20,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        config(['app.locale' => 'id']);
+	    \Carbon\Carbon::setLocale('id');
+
         Paginator::useBootstrapFive();
 
         \Spatie\Flash\Flash::levels([

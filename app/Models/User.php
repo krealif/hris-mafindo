@@ -56,7 +56,7 @@ class User extends Authenticatable
         $this->notify(new ResetPassword($token));
     }
 
-    public function brach(): BelongsTo
+    public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
     }
