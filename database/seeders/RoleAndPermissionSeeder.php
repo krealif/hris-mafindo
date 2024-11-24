@@ -22,12 +22,19 @@ class RoleAndPermissionSeeder extends Seeder
         foreach (PermissionsEnum::cases() as $permission) {
             Permission::updateOrCreate(['name' => $permission->value]);
         }
-        // Create roles.
-        foreach (RolesEnum::cases() as $permission) {
-            Role::updateOrCreate(['name' => $permission->value]);
-        }
-
         // Create admin roles and assign permissions.
         $admin = Role::updateOrCreate(['name' => RolesEnum::ADMIN->value]);
+        $admin->syncPermissions([
+            PermissionsEnum::VIEW_ALL_LETTER,
+            PermissionsEnum::REVIEW_LETTER,
+        ]);
+
+        $relawan = Role::updateOrCreate(['name' => RolesEnum::RELAWAN->value]);
+        $relawan->syncPermissions([
+            PermissionsEnum::VIEW_LETTER,
+            PermissionsEnum::CREATE_LETTER,
+            PermissionsEnum::EDIT_LETTER,
+            PermissionsEnum::DELETE_LETTER,
+        ]);
     }
 }

@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
+use App\Http\Controllers\LetterTemplateController;
 use App\Http\Controllers\LetterController;
-use App\Http\Controllers\LetterSubmissionController;
 use App\Http\Controllers\RegistrationController;
 
 // User registration
@@ -34,5 +34,27 @@ Route::middleware('auth')->group(function () {
 
         Route::post('{registration}/accept', 'accept')->name('accept');
         Route::post('{registration}/reject', 'reject')->name('reject');
+    });
+
+    // Letter template
+    Route::get('persuratan/buat', LetterTemplateController::class)->name('letter.template');
+
+    // Letter
+    Route::group([
+        'controller' => LetterController::class,
+        'as' => 'letter.',
+        'prefix' => 'persuratan'
+    ], function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('buat/{letterTemplate:view}', 'create')->name('create');
+        Route::post('buat/{letterTemplate:view}', 'store')->name('store');
+
+        Route::get('{letter}/edit', 'edit')->name('edit');
+        Route::post('{letter}/edit', 'update')->name('update');
+
+        Route::get('{letter}', 'show')->name('show');
+        Route::get('{letter}/review', 'review')->name('review');
+        Route::post('{letter}/upload', 'upload')->name('upload');
+        Route::get('{letter}/download', 'download')->name('download');
     });
 });
