@@ -1,49 +1,70 @@
-function applySearchOrFilter(forms) {
-    const formData = new URLSearchParams();
+function modifyUrlQueryParams(currentUrl, params) {
+    const url = new URL(currentUrl);
+    // add/update query params
+    Object.keys(params).forEach(key => {
+        if (url.searchParams.has(key)) {
+            if (params[key]) {
+                url.searchParams.set(key, params[key]);
+            } else {
+                url.searchParams.delete(key);
+            }
+        }
+        else {
+            url.searchParams.append(key, params[key]);
+        }
+    });
+
+    return url.toString();
+}
+
+function applyFilter(forms) {
+    const queryParams = {};
 
     forms.forEach(form => {
         Array.from(form.elements).forEach(input => {
             if (input.name && input.value) {
-                const filterQuery = `filter[${input.name}]`
-                formData.append(filterQuery, input.value);
+                const key = `filter[${input.name}]`;
+                queryParams[key] = input.value;
             }
         });
-    })
-
-    const currentUrl = new URL(window.location.href);
-    currentUrl.search = formData.toString();
-    window.location.href = currentUrl.toString();
-}
-
-function clearSearchOrFilter(thisForm) {
-    const currentUrl = new URL(window.location.href);
-    const formInputs = Array.from(thisForm.querySelectorAll('input[name], select[name]'))
-        .map(input => input.name);
-
-    formInputs.forEach(inputName => {
-        const filterQuery = `filter[${inputName}]`
-        currentUrl.searchParams.delete(filterQuery);
     });
 
-    window.location.href = currentUrl;
+    const url = new URL(window.location.href);
+    window.location.href = modifyUrlQueryParams(url, queryParams);
 }
 
-const forms = document.querySelectorAll('form[id^="dtb"]');
+function clearFilter(form) {
+    const queryParams = {};
+
+    Array.from(form.elements).forEach(input => {
+        if (input.name && input.value) {
+            const key = `filter[${input.name}]`;
+            queryParams[key] = '';
+        }
+    });
+
+    const url = new URL(window.location.href);
+    window.location.href = modifyUrlQueryParams(url, queryParams);
+}
+
+const datatable = document.querySelector('#dt-datatable');
+const forms = datatable.querySelectorAll('form[id^="dt"]');
 
 forms.forEach(form => {
-    const applyBtn = form.querySelector('button[type=submit]')
-    if (applyBtn) {
-        applyBtn.addEventListener('click', function(event) {
+    const applyFilterBtn = form.querySelector('button[type=submit]')
+    if (applyFilterBtn) {
+        applyFilterBtn.addEventListener('click', function(event) {
             event.preventDefault()
-            applySearchOrFilter(forms);
+            applyFilter(forms);
         });
     }
 
-    const clearBtn = form.querySelector('button#dtb-form-clear');
+
+    const clearBtn = form.querySelector('button#dt-btn-clear');
     if (clearBtn) {
         clearBtn.addEventListener('click', function(event) {
             event.preventDefault()
-            clearSearchOrFilter(form);
+            clearFilter(form);
         });
     }
 });

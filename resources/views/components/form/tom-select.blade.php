@@ -21,7 +21,7 @@
 <select id="{{ $id }}" name="{{ $name }}" autocomplete="off" {{ $attributes }}>
   {{ $slot }}
   @foreach ($options as $option)
-  <option value="{{ $option[$optVal] }}" {{ $selectedValue == $option[$optVal] ? 'selected' : '' }}>{{ $option[$optLabel] }}</option>
+  <option value="{{ $option[$optVal] }}" @selected($selectedValue == $option[$optVal])>{{ $option[$optLabel] }}</option>
   @endforeach
 </select>
 <script>new TomSelect('#{{ $id }}');</script>

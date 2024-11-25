@@ -36,23 +36,23 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dtb.datatable searchField="name" total="{{ $users->count() }}">
-          <x-slot:filter>
+        <x-dt.datatable search="name" total="{{ $users->count() }}">
+          <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row g-4">
               <div class="col-12 col-md-6 col-lg-4">
                 <label for="email" class="form-label">Email</label>
-                <x-dtb.input name="email" type="text" />
+                <x-dt.input name="email" type="text" />
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <label for="member-number" class="form-label">Nomor Induk</label>
-                <x-dtb.input name="member_number" type="text" />
+                <x-dt.input name="member_number" type="text" />
               </div>
               <div class="col-12 col-md-6 col-lg-4">
                 <label for="branch" class="form-label">Wilayah</label>
-                <x-dtb.tom-select id="branch" name="branch_id" :options=$branches>
+                <x-dt.tom-select id="branch" name="branch_id" :options=$branches>
                   <option value="">Pilih wilayah</option>
-                </x-dtb.tom-select>
+                </x-dt.tom-select>
               </div>
             </div>
           </x-slot>
@@ -95,7 +95,7 @@
               {{ $users->links() }}
             </x-slot>
           @endif
-        </x-dtb.datatable>
+        </x-dt.datatable>
       </div>
     </div>
   </div>

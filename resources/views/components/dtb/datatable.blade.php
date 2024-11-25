@@ -9,12 +9,12 @@
 
 <div class="col-12">
   <div class="d-flex flex-column flex-md-row justify-content-between">
-    @if ($searchField)
+    @if($searchField)
       <form id="dtb-search" class="col-12 col-md-6 col-lg-4">
         <label for="search" class="visually-hidden">Pencarian</label>
         <div class="input-group">
           <input type="text" id="search" name="{{ $searchField }}" class="form-control" placeholder="Pencarian" value="{{ request()->filter[$searchField] ?? '' }}" autocomplete="off">
-          @if (isset(request()->filter[$searchField]))
+          @if(isset(request()->filter[$searchField]))
           <button type="button" id="dtb-form-clear" class="btn btn-icon">
             <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
@@ -28,11 +28,18 @@
     @endif
     @isset($filter)
       <div class="col-12 col-md-auto mt-3 mt-md-0">
-        <button type="button" class="btn btn-filter" data-bs-toggle="collapse" data-bs-target="#{{ $collapseFilterId = uniqid() }}" aria-expanded="false" aria-controls="false">
-          <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-          Filter
-          @if($totalFilter)<span class="badge bg-blue-lt ms-2">{{ $totalFilter }}</span>@endif
-        </button>
+        <div class="btn-group">
+          <button type="button" class="btn btn-filter" data-bs-toggle="collapse" data-bs-target="#{{ $collapseFilterId = uniqid() }}" aria-expanded="false" aria-controls="false">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            Filter
+            @if($totalFilter)<span class="badge bg-blue-lt ms-2">{{ $totalFilter }}</span>@endif
+          </button>
+          @if($totalFilter)
+            <button type="button" id="dtb-form-clear" class="btn btn-icon">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          @endif
+        </div>
       </div>
     @endisset
   </div>
@@ -46,11 +53,6 @@
           <button type="submit" class="btn btn-primary me-2">
             Terapkan
           </button>
-          @if ($totalFilter)
-          <button type="button" id="dtb-form-clear" class="btn btn-icon">
-            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-          </button>
-          @endif
         </div>
       </form>
     </div>
@@ -64,7 +66,7 @@
         {{ $pagination }}
       </div>
     @endisset
-    @if (isset($total) && $total == 0)
+    @if(isset($total) && $total == 0)
       <div class="empty">
         <div class="empty-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>
