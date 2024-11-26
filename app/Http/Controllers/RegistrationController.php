@@ -2,120 +2,85 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Branch;
-use Illuminate\View\View;
 use App\Models\Registration;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\RedirectResponse;
-use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\QueryBuilder\AllowedFilter;
+use App\Enums\RegistrationTypeEnum;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreRegistrationRequest;
-use Illuminate\Support\Facades\App;
+use Illuminate\Http\RedirectResponse;
 
 class RegistrationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function selectForm(): RedirectResponse | View
     {
-        $users = QueryBuilder::for(Registration::class)
-            ->allowedFilters([
-                'name',
-                'email',
-                'member_number',
-                AllowedFilter::exact('branch_id')
-            ])
-            ->with('branch')
-            ->paginate(20, ['id', 'name', 'email', 'member_number', 'branch_id'])
-            ->appends(request()->query());
+        $registration = Auth::user()->registration;
+        if ($registration) {
+            return to_route('registration.showForm', $registration->type);
+        }
 
-        return view('hris.account.registration', [
-            'users' => $users,
-            'branches' => Branch::all(['id', 'name']),
-        ]);
+        return view('hris.registrasi.form-selection');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for submitting registration details.
      */
-    public function create(): View
+    public function showForm(string $type): View
     {
-        return view('auth.register', [
-            'branches' => Branch::all(['id', 'name']),
-        ]);
+        Gate::authorize('create', [Registration::class, $type]);
+
+        // Check if the form is in the available list
+        if (!in_array($type, RegistrationTypeEnum::values())) {
+            abort(404);
+        }
+
+        return view('hris.registrasi.form', compact('type'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRegistrationRequest $request): RedirectResponse
+    public function store(StoreRegistrationRequest $request, string $type)
     {
-        $validated = $request->validated();
-        Registration::create($validated);
+        Gate::authorize('create', [Registration::class, $type]);
 
-        return to_route('register.success')
-            ->with('success', 'page');
+        dd($request->all());
+        return to_route('registration.showForm', $type);
     }
 
     /**
-     * Display registration success status.
+     * Display the specified resource.
      */
-    public function success(): View | RedirectResponse
+    public function show(string $id)
     {
-        if (session('success')) {
-            return view('auth.register-success');
-        }
-
-        return to_route('login');
+        //
     }
 
     /**
-     * Accept user registration.
+     * Show the form for editing the specified resource.
      */
-    public function accept(Registration $registration, Request $request): RedirectResponse
+    public function edit(string $id)
     {
-        $validated = $request->validate([
-            'role' => ['in:relawan,pengurus'],
-        ]);
-
-        $userData = $registration->replicate()->toArray();
-        $userData['password'] = $registration->password;
-
-        $user = new User($userData);
-        $user->assignRole($validated['role']);
-
-        DB::transaction(function () use ($user, $registration) {
-            $user->save();
-            $registration->delete();
-        });
-
-        Mail::to($registration->email)
-            ->send(new \App\Mail\RegistrationAccepted($registration->name));
-
-        flash()->success("Berhasil! Pendaftaran a.n. [{$registration->name}] telah diterima.");
-        return to_route('registration.index', session('q.registration'));
+        //
     }
 
     /**
-     * Reject user registration.
+     * Update the specified resource in storage.
      */
-    public function reject(Registration $registration, Request $request): RedirectResponse
+    public function update(Request $request, string $id)
     {
-        $validated = $request->validate([
-            'message' => ['string'],
-        ]);
+        //
+    }
 
-        $name = $registration->name;
-        Mail::to($registration->email)
-            ->send(new \App\Mail\RegistrationRejected($name, $validated['message']));
-
-        $registration->delete();
-
-        flash()->success("Berhasil! Pendaftaran a.n. [{$registration->name}] telah ditolak.");
-        return to_route('registration.index', session('q.registration'));
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

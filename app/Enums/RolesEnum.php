@@ -10,8 +10,7 @@ enum RolesEnum: string
     case PENGURUS = 'pengurus';
     case RELAWAN = 'relawan';
 
-    // extra helper to allow for greater customization of displayed values, without disclosing the name/value data directly
-    public function label(): string
+    public function labels(): string
     {
         return match ($this) {
             static::ADMIN => 'Admin',

@@ -12,34 +12,44 @@
     <!--End Logo-->
     <div class="navbar-nav flex-row order-md-last">
       <!--Profile-->
-      <div class="nav-item dropdown">
-        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Buka menu akun">
-          <span class="avatar avatar-sm">
-            <span class="avatar avatar-sm"></span>
-          </span>
-          <div class="d-none d-xl-block ps-2">
-            <div class="text-white fw-medium">{{ explode(' ', auth()->user()->name)[0] }}</div>
-          </div>
-        </a>
-        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-          <div class="px-3 py-2">
-            <span class="d-block">{{ auth()->user()->name }}</span>
-            <span class="d-block text-muted">{{ auth()->user()->email }}</span>
-          </div>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <svg class="icon dropdown-item-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Profil
+      @if (auth()->user()->is_verified)
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Buka menu akun">
+            <span class="avatar avatar-sm">
+              <span class="avatar avatar-sm"></span>
+            </span>
+            <div class="d-none d-xl-block ps-2">
+              <div class="text-white fw-medium">{{ explode(' ', auth()->user()->name)[0] }}</div>
+            </div>
           </a>
-          <form id="logout-form" action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="dropdown-item">
-              <svg class="icon dropdown-item-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-              Keluar
-            </button>
-          </form>
+          <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+            <div class="px-3 py-2">
+              <span class="d-block">{{ auth()->user()->name }}</span>
+              <span class="d-block text-muted">{{ auth()->user()->email }}</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <x-lucide-user class="icon" />
+              Profil
+            </a>
+            <form action="{{ route('logout') }}" method="POST">
+              @csrf
+              <button type="submit" class="dropdown-item">
+                <x-lucide-log-out class="icon" defer />
+                Keluar
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
+      @else
+        <form action="{{ route('logout') }}" method="POST" class="nav-item">
+          @csrf
+          <button type="submit" class="btn btn-light">
+            <x-lucide-log-out class="icon text-red" defer />
+            Keluar
+          </button>
+        </form>
+      @endif
     </div>
   </div>
 </div>

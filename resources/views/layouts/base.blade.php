@@ -20,6 +20,8 @@
   <script src="{{ asset('static/vendor/tabler.min.js') }}"></script>
   @stack('scripts')
   <!-- SVG sprites -->
-  @stack('icons')
+  <svg hidden class="d-none">
+    @stack('bladeicons')
+  </svg>
 </body>
 </html>

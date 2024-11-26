@@ -37,7 +37,7 @@
             <div class="dropdown-menu">
               <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="{{ route('registration.index') }}">Pendaftaran</a>
+                  <a class="dropdown-item" href="">Pendaftaran</a>
                   <a class="dropdown-item" href="./data-relawan">Data Relawan</a>
                 </div>
               </div>
