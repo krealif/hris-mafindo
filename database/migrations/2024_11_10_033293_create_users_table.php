@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('nama')->nullable();
-            $table->string('no_induk')->nullable()->unique();
+            $table->string('no_relawan')->nullable()->unique();
             $table->foreignId('branch_id')->nullable()->constrained()->onDelete('set null');
             $table->boolean('is_verified')->default(false);
             $table->timestamps();

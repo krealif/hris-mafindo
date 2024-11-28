@@ -3,17 +3,20 @@
 ])
 
 @section('content')
-<div class="card">
+<div class="card cad-mafindo">
   <div class="card-header">
     <h2 class="h2 mb-0">Registrasi Akun Baru</h2>
   </div>
   <div class="card-body">
     <form action="{{ route('register.store') }}" method="POST" autocomplete="off">
       @csrf
-      @honeypot
+      <div class="mb-3">
+        <label for="nama" class="form-label required">Nama Lengkap</label>
+        <x-form.input name="nama" type="text" placeholder="Budi Utomo" value="{{ old('nama') }}" required />
+      </div>
       <div class="mb-3">
         <label for="email" class="form-label required">Email</label>
-        <x-form.input name="email" type="email" placeholder="contoh@gmail.com" required />
+        <x-form.input name="email" type="email" placeholder="contoh@gmail.com" value="{{ old('email') }}" required />
       </div>
       <div class="mb-3">
         <label for="password" class="form-label required">Password</label>

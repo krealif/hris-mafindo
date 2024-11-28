@@ -24,7 +24,7 @@ class User extends Authenticatable
         'nama',
         'email',
         'password',
-        'no_induk',
+        'no_relawan',
         'branch_id',
         'is_verified'
     ];

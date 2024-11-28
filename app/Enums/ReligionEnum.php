@@ -11,7 +11,7 @@ enum ReligionEnum: string
     case BUDDHA = 'buddha';
     case KONGHUCU = 'konghucu';
 
-    public static function labels(): array
+    public static function label(): array
     {
         return [
             self::ISLAM->value => 'Islam',

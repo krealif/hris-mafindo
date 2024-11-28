@@ -11,7 +11,6 @@
         "laravel/tinker": "^2.9",
         "mallardduck/blade-lucide-icons": "^1.23",
         "spatie/laravel-flash": "^1.10",
-        "spatie/laravel-honeypot": "^4.5",
         "spatie/laravel-permission": "^6.10",
         "spatie/laravel-query-builder": "^6.2"
     },

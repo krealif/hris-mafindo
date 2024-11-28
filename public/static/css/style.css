@@ -3,7 +3,9 @@
     --secondary-yellow: #f7f7eb;
 }
 
-/** Navbar Custom **/
+[x-cloak] {
+    display: none !important;
+}
 
 .bg-primary .navbar-toggler {
     color: white;
@@ -18,7 +20,6 @@
     color: var(--tblr-nav-link-hover-color);
 }
 
-/** Datatable **/
 .datatable th {
     font-size: .875rem !important;
     padding-top: 1rem !important;
@@ -45,6 +46,65 @@
 
 .nav-pills .nav-link.active {
     border: 1px solid;
+}
+
+.repeater-delete {
+    background-color: rgba(var(--tblr-secondary-rgb),.08);
+    border-color: var(--tblr-btn-hover-border-color);
+}
+
+.card-mafindo {
+    border-color: var(--tblr-border-color) !important;
+}
+
+.card-mafindo > .card-header {
+    color: rgba(var(--tblr-primary-rgb)) !important;
+    background-color: rgba(var(--tblr-primary-lt-rgb)) !important;
+    border-radius: var(--tblr-card-inner-border-radius) var(--tblr-card-inner-border-radius) 0 0 !important;
+}
+
+.stepper {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    border-width: 1px 0 0 1px;
+    background: #fff
+  }
+
+.stepper-item {
+    flex: 1 1 auto;
+    width: auto;
+    color: inherit;
+    padding: 1rem;
+    border-width:  0 1px 1px 0;
+}
+
+.stepper, .stepper > .stepper-item {
+    border-style: solid;
+    border-color: var(--tblr-border-color);
+}
+
+.stepper-item {
+    background-color: var(--tblr-green);
+    color: #fff
+  }
+
+.stepper-item.active {
+    background: var(--tblr-green-lt);
+    color: var(--tblr-dark);
+}
+
+.stepper-item.danger {
+    background: var(--tblr-red-lt);
+    color: var(--tblr-dark);
+}
+
+.stepper-item.active ~ .stepper-item,
+.stepper-item.danger ~ .stepper-item {
+    background: #fff;
+    color: var(--tblr-dark);
 }
 
 /** Button Custom **/

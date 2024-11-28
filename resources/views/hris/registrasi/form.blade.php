@@ -21,9 +21,6 @@
   </div>
   <div class="page-body">
     <div class="container-xl">
-      <div class="card mb-4">
-        STATUS
-      </div>
       @include($formView)
     </div>
   </div>

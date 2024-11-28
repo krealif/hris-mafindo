@@ -14,18 +14,12 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $admin = User::create([
-            'name' => 'Admin Demo',
+            'nama' => 'Admin Mafindo',
             'email' => 'admin@mail.com',
+            'is_verified' => true,
             'password' => '$2y$10$zRyiQgBRXIJFBieYQ/QtEuk/eL/WK.WdbREVXJcJe4KksPpM2Twyu'
         ]);
 
-        $relawan = User::create([
-            'name' => 'Relawan Demo',
-            'email' => 'relawan@mail.com',
-            'password' => '$2y$10$zRyiQgBRXIJFBieYQ/QtEuk/eL/WK.WdbREVXJcJe4KksPpM2Twyu',
-        ]);
-
         $admin->assignRole('admin');
-        $relawan->assignRole('relawan');
     }
 }

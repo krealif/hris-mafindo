@@ -15,7 +15,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 use App\Http\Requests\StoreRegistrationRequest;
 use Illuminate\Support\Facades\App;
 
-class RegistrationController extends Controller
+class RegistrationOldController extends Controller
 {
     /**
      * Display a listing of the resource.

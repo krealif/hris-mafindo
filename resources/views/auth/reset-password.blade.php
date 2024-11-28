@@ -9,7 +9,7 @@
   <div class="text-muted">Password Anda telah berhasil direset. Silakan kembali ke halaman masuk.</div>
 </div>
 @endif
-<div class="card">
+<div class="card card-mafindo">
   <div class="card-header d-block">
     <h2 class="h2 mb-0">Reset Passwoord</h2>
     <p class="text-muted mb-0">Tuliskan password baru Anda.</p>

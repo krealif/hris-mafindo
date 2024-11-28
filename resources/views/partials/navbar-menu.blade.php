@@ -3,6 +3,23 @@
     <div class="navbar">
       <div class="container-xl">
         <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+              <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
+              <span class="nav-link-title">Registrasi</span>
+            </a>
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="">Relawan Baru</a>
+                  <a class="dropdown-item" href="">Relawan Wilayah</a>
+                  <a class="dropdown-item" href="">Pengurus Wilayah</a>
+                </div>
+              </div>
+            </div>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -26,22 +43,6 @@
               </span>
               <span class="nav-link-title">Materi</span>
             </a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-              <span class="nav-link-icon d-md-none d-lg-inline-block">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              </span>
-              <span class="nav-link-title">Akun</span>
-            </a>
-            <div class="dropdown-menu">
-              <div class="dropdown-menu-columns">
-                <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="">Pendaftaran</a>
-                  <a class="dropdown-item" href="./data-relawan">Data Relawan</a>
-                </div>
-              </div>
-            </div>
           </li>
         </ul>
       </div>

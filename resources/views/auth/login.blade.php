@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-<div class="card">
+<div class="card card-mafindo">
   <div class="card-header">
     <h2 class="h2 mb-0">Masuk ke Akun Anda</h2>
   </div>
@@ -12,7 +12,7 @@
       @csrf
       <div class="mb-3">
         <label for="email" class="form-label required">Email</label>
-        <x-form.input name="email" type="email" placeholder="contoh@gmail.com" required />
+        <x-form.input name="email" type="email" placeholder="contoh@gmail.com" value="{{ old('email') }}" required />
       </div>
       <div class="mb-3">
         <label for="password" class="form-label required">

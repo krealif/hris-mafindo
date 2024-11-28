@@ -9,7 +9,7 @@
   <div class="text-muted">Kami telah mengirimkan email berisi instruksi untuk mereset password Anda. Jika email tidak segera muncul di kotak masuk Anda, harap periksa folder spam atau tunggu beberapa saat.</div>
 </div>
 @endif
-<div class="card">
+<div class="card card-mafindo">
   <div class="card-header d-block">
     <h2 class="h2 mb-2">Lupa Password</h2>
     <p class="text-muted mb-0">Tuliskan email Anda di bawah ini dan kami akan mengirimkan email yang berisi tautan untuk mengatur ulang password Anda.</p>

@@ -2,31 +2,20 @@
 
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Honeypot\ProtectAgainstSpam;
-use App\Http\Controllers\LetterController;
-use App\Http\Controllers\LetterSubmissionController;
 use App\Http\Controllers\RegistrationController;
 
-// User registration
-// Route::controller(RegistrationController::class)->group(function () {
-//     Route::get('register', 'create')->name('register');
-//     Route::post('register', 'store')->name('register.store')
-//         ->middleware(ProtectAgainstSpam::class);
-
-//     Route::get('register-success', 'success')->name('register.success');
-// });
-
-// User registration
+/**
+ * Route for user registration detail
+ */
 Route::middleware(['auth', 'unverified'])->group(function () {
-    // Registration
     Route::group([
         'controller' => RegistrationController::class,
         'as' => 'registration.',
         'prefix' => 'register'
     ], function () {
-        Route::get('form', 'selectForm')->name('selectForm');
-        Route::get('form/{type}', 'showForm')->name('showForm');
-        Route::post('form/{type}', 'store')->name('store');
+        Route::get('user', 'selectForm')->name('selectForm');
+        Route::get('user/{type}', 'showForm')->name('showForm');
+        Route::post('user/{type}', 'store')->name('store');
     });
 });
 

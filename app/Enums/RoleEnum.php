@@ -2,15 +2,13 @@
 
 namespace App\Enums;
 
-enum RolesEnum: string
+enum RoleEnum: string
 {
-    // case NAMEINAPP = 'name-in-database';
-
     case ADMIN = 'admin';
     case PENGURUS = 'pengurus';
     case RELAWAN = 'relawan';
 
-    public function labels(): string
+    public function label(): string
     {
         return match ($this) {
             static::ADMIN => 'Admin',

@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-  'title' => 'Pendaftaran'
+  'title' => 'Registrasi'
 ])
 
 @section('content')
@@ -10,7 +10,7 @@
       <div class="row g-2 align-items-center">
         <div class="col">
           <h1 class="page-title">
-            Pendaftaran
+            Registrasi
           </h1>
         </div>
       </div>

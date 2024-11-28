@@ -1,6 +1,6 @@
 @props([
-  'id',
-  'name',
+  'id' => null,
+  'name' => null,
   'options' => [],
   'optVal'=> "id",
   'optLabel' => "name",

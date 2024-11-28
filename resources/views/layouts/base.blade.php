@@ -18,6 +18,7 @@
 
   <!-- Scripts -->
   <script src="{{ asset('static/vendor/tabler.min.js') }}"></script>
+  <script src="https://unpkg.com/alpinejs@3.14.3/dist/cdn.min.js" defer></script>
   @stack('scripts')
   <!-- SVG sprites -->
   <svg hidden class="d-none">

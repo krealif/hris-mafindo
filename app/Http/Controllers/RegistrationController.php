@@ -34,7 +34,7 @@ class RegistrationController extends Controller
         Gate::authorize('create', [Registration::class, $type]);
 
         // Check if the form is in the available list
-        if (!in_array($type, RegistrationTypeEnum::values())) {
+        if (!RegistrationTypeEnum::tryFrom($type)) {
             abort(404);
         }
 
@@ -44,10 +44,8 @@ class RegistrationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRegistrationRequest $request, string $type)
+    public function store(Request $request, string $type)
     {
-        Gate::authorize('create', [Registration::class, $type]);
-
         dd($request->all());
         return to_route('registration.showForm', $type);
     }

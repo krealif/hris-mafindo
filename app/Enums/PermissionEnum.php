@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PermissionsEnum: string
+enum PermissionEnum: string
 {
     case VIEW_REGISTRATION = 'view-registration';
     case ACCEPT_REGISTRATION = 'accept-registration';

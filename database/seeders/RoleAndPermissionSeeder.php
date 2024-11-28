@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Enums\PermissionsEnum;
-use App\Enums\RolesEnum;
+use App\Enums\PermissionEnum;
+use App\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -19,15 +19,15 @@ class RoleAndPermissionSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Create permissions.
-        foreach (PermissionsEnum::cases() as $permission) {
+        foreach (PermissionEnum::cases() as $permission) {
             Permission::updateOrCreate(['name' => $permission->value]);
         }
         // Create roles.
-        foreach (RolesEnum::cases() as $permission) {
+        foreach (RoleEnum::cases() as $permission) {
             Role::updateOrCreate(['name' => $permission->value]);
         }
 
         // Create admin roles and assign permissions.
-        $admin = Role::updateOrCreate(['name' => RolesEnum::ADMIN->value]);
+        $admin = Role::updateOrCreate(['name' => RoleEnum::ADMIN->value]);
     }
 }
