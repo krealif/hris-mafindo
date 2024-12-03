@@ -20,6 +20,7 @@
         <div class="card-body border border-top-0">
           <h4 class="fs-3 text-red">REVISI</h4>
           <p>{{ $registration->message }}</p>
+        </div>
       @endif
     </div>
   </div>
@@ -471,5 +472,5 @@
         }
       }
     }));
-  })
+  });
 </script>
