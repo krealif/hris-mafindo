@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\RegistrationStatusEnum;
-use App\Enums\RegistrationStepEnum;
+use App\Enums\RegistrationBaruStepEnum;
 use App\Models\Branch;
 use Illuminate\Support\Arr;
 use App\Models\Registration;
@@ -47,7 +47,7 @@ class RegistrationController extends Controller
         $detail = Auth::user()->detail;
         $branches = Branch::all()->pluck('nama', 'id');
 
-        return view('hris.registrasi.form', compact(
+        return view('hris.registrasi.form-wrapper', compact(
             'type',
             'registration',
             'detail',
@@ -81,17 +81,17 @@ class RegistrationController extends Controller
             $registration = [
                 'type' => $type,
                 'status' => RegistrationStatusEnum::DIPROSES->value,
-                'step' => RegistrationStepEnum::PROFILING->value,
+                'step' => RegistrationBaruStepEnum::PROFILING->value,
                 'updated_at' => \Carbon\Carbon::now()
             ];
         } else {
             $registration = [
                 'type' => $type,
                 'status' => RegistrationStatusEnum::DRAFT->value,
-                'step' => RegistrationStepEnum::MENGISI->value,
+                'step' => RegistrationBaruStepEnum::MENGISI->value,
             ];
 
-            if ($user->registration->status == 'revisi') {
+            if ($user->registration?->status == 'revisi') {
                 $registration['status'] = RegistrationStatusEnum::REVISI->value;
             }
         }

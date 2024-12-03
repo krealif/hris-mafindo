@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum RegistrationStepEnum: string
+enum RegistrationBaruStepEnum: string
 {
     case MENGISI = 'mengisi';
     case PROFILING = 'profiling';

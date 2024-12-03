@@ -1,9 +1,7 @@
-@php
-  use App\Enums\RegistrationStepEnum;
-@endphp
+@props(['data' => null, 'step' => null])
 
 <ol class="stepper fw-bold">
-  @foreach (RegistrationStepEnum::labels() as $value => $label)
+  @foreach ($data as $value => $label)
     <li @class(['stepper-item', 'active' => $value == $step])>
       {{ $label }}
     </li>

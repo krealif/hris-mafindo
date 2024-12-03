@@ -2,10 +2,9 @@
 
 namespace App\Policies;
 
-use App\Enums\RegistrationStepEnum;
+use App\Enums\RegistrationStatusEnum;
 use App\Models\Registration;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class RegistrationPolicy
 {
@@ -56,10 +55,7 @@ class RegistrationPolicy
             return false;
         }
 
-        if (
-            $user->registration?->step
-            && $user->registration?->step != RegistrationStepEnum::MENGISI->value
-        ) {
+        if ($user->registration?->status == RegistrationStatusEnum::DIPROSES->value) {
             return false;
         }
 
