@@ -1,17 +1,18 @@
 @props([
-  'id' => null,
-  'name' => null,
-  'type' => 'text',
-  'showError' => true,
+    'id' => null,
+    'name' => null,
+    'type' => 'text',
+    'showError' => true,
+    'required' => false,
 ])
 
 @php
-  $attr = $attributes->class(['form-control', 'is-invalid' => $showError && $errors->has($name),]);
+  $attributes = $attributes->class(['form-control', 'is-invalid' => $showError && $errors->has($name)]);
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
 @endphp
 
-<input id="{{ $id }}" name="{{ $name }}" type="{{ $type }}" {{ $attr }} autocomplete="off">
-@if($showError)
+<input id="{{ $id }}" name="{{ $name }}" type="{{ $type }}" autocomplete="off" {{ $attributes }} @required($required)>
+@if ($showError)
   @error($name)
     <div class="invalid-feedback" role="alert">
       <strong>{{ $message }}</strong>

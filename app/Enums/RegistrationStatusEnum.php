@@ -2,8 +2,10 @@
 
 namespace App\Enums;
 
-enum RegistrationStatusEnum
+enum RegistrationStatusEnum: string
 {
-    case MENUNGGU;
-    case REVISI;
+    case DRAFT = 'draft';
+    case DIPROSES = 'diproses';
+    case REVISI = 'revisi';
+    case SELESAI = 'selesai';
 }

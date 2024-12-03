@@ -11,7 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('user_details', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('panggilan')->nullable();
+            $table->date('tgl_lahir')->nullable();
+            $table->string('gender', 20)->nullable();
+            $table->string('agama', 20)->nullable();
+            $table->string('disabilitas')->nullable();
+            $table->string('no_wa')->nullable();
+            $table->string('no_hp')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('bidang_keahlian')->nullable();
+            $table->string('bidang_mafindo')->nullable();
+            $table->year('tahun_bergabung')->nullable();
+            $table->integer('pdr')->nullable();
+            $table->json('medsos')->nullable();
+            $table->json('pendidikan')->nullable();
+            $table->json('pekerjaan')->nullable();
+            $table->json('sertifikat')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

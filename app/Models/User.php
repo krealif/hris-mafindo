@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'password',
         'no_relawan',
+        'foto',
         'branch_id',
         'is_verified'
     ];
@@ -61,6 +62,11 @@ class User extends Authenticatable
     public function registration(): HasOne
     {
         return $this->hasOne(Registration::class);
+    }
+
+    public function detail(): HasOne
+    {
+        return $this->hasOne(UserDetail::class);
     }
 
     public function branch(): BelongsTo

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ReligionEnum: string
+enum AgamaEnum: string
 {
     case ISLAM = 'islam';
     case PROTESTAN = 'protestan';
@@ -11,7 +11,7 @@ enum ReligionEnum: string
     case BUDDHA = 'buddha';
     case KONGHUCU = 'konghucu';
 
-    public static function label(): array
+    public static function labels(): array
     {
         return [
             self::ISLAM->value => 'Islam',

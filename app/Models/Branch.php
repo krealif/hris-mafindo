@@ -16,7 +16,7 @@ class Branch extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'nama',
     ];
 
     public function users(): HasMany

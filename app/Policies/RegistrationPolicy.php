@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\RegistrationStepEnum;
 use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -25,18 +26,47 @@ class RegistrationPolicy
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can view registration form.
      */
-    public function create(User $user, string $type): bool
+    public function viewForm(User $user, string $type): bool
     {
-        if (!strpos($user->email, 'mafindo.or.id')
-            && $type == 'pengurus-wilayah') {
+        if (
+            $type == 'pengurus-wilayah'
+            && !strpos($user->email, 'mafindo.or.id')
+        ) {
             return false;
         }
 
         if ($regisType = $user->registration?->type) {
             return $regisType == $type;
         }
+
+        return true;
+    }
+
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user, string $type): bool
+    {
+        if (
+            $type == 'pengurus-wilayah'
+            && !strpos($user->email, 'mafindo.or.id')
+        ) {
+            return false;
+        }
+
+        if (
+            $user->registration?->step
+            && $user->registration?->step != RegistrationStepEnum::MENGISI->value
+        ) {
+            return false;
+        }
+
+        if ($regisType = $user->registration?->type) {
+            return $regisType == $type;
+        }
+
 
         return true;
     }

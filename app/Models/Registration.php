@@ -17,11 +17,11 @@ class Registration extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'member_number',
-        'branch_id',
+        'user_id',
+        'type',
+        'status',
+        'step',
+        'updated_at',
     ];
 
     /**

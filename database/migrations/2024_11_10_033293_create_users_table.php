@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('nama')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('nama')->nullable();
             $table->string('no_relawan')->nullable()->unique();
+            $table->string('foto')->nullable();
             $table->foreignId('branch_id')->nullable()->constrained()->onDelete('set null');
             $table->boolean('is_verified')->default(false);
             $table->timestamps();

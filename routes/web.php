@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use App\Models\Branch;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistrationController;
 
 /**
@@ -19,6 +21,10 @@ Route::middleware(['auth', 'unverified'])->group(function () {
     });
 });
 
+Route::get('labx', function () {
+    $branches = Branch::all()->pluck('nama', 'id');
+    dd(env('APP_LOCALE'));
+});
 
 // Dashboard
 Route::middleware(['auth', 'verified'])->group(function () {

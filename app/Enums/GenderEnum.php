@@ -8,7 +8,7 @@ enum GenderEnum: string
     case PEREMPUAN = 'perempuan';
     case TIDAK_MENYEBUTKAN = 'tidak-menyebutkan';
 
-    public static function label(): array
+    public static function labels(): array
     {
         return [
             self::LAKI_LAKI->value => 'Laki-laki',
