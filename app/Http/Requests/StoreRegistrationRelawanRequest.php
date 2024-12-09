@@ -2,14 +2,16 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\AgamaEnum;
+use App\Enums\GenderEnum;
+use Illuminate\Validation\Rule;
+use App\Enums\RegistrationTypeEnum;
+use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Actions\Fortify\PasswordValidationRules;
-use Illuminate\Validation\Rules\Enum;
-use App\Enums\GenderEnum;
-use App\Enums\RegistrationTypeEnum;
-use App\Enums\AgamaEnum;
 
-class StoreRegistrationRequest extends FormRequest
+class StoreRegistrationRelawanRequest extends FormRequest
 {
     use PasswordValidationRules;
 
@@ -25,16 +27,23 @@ class StoreRegistrationRequest extends FormRequest
             'panggilan' => ['string', 'max:255'],
             'tgl_lahir' => ['date'],
             'gender' => [new Enum(GenderEnum::class)],
-            'agama' => [new Enum(AgamaEnum::class)],
+            'agama' => ['nullable', new Enum(AgamaEnum::class)],
             'alamat' => ['string', 'max:255'],
-            'disabilitas' => ['string', 'max:255'],
-            'foto' => ['nullable', 'file', 'mimes:jpg,jpeg,png', 'min:1', 'max:2048'],
+            'disabilitas' => ['nullable', 'string', 'max:255'],
+            'foto' => [
+                'nullable',
+                File::image()
+                    ->min(1)
+                    ->max(3 * 1024)
+                    ->dimensions(Rule::dimensions()->minWidth(128)->maxWidth(3840)->ratio(1 / 1)),
+            ],
             'no_wa' => ['numeric', 'digits_between:10,15'],
             'no_hp' => ['nullable', 'numeric', 'digits_between:10,15'],
             'alamat' => ['string', 'max:255'],
             'bidang_keahlian' => ['nullable', 'string', 'max:255'],
             'bidang_mafindo' => ['string'],
-            'tahun_bergabung' => ['numeric', 'min:2010', 'max:' . \Carbon\Carbon::tomorrow()->year],
+            'tahun_bergabung' => ['numeric', 'min:2010'],
+            'branch_id' => ['exists:branches,id'],
             'pdr' => ['numeric'],
             'medsos' => ['nullable', 'array'],
             'medsos.*' => ['nullable', 'string', 'max:255'],
@@ -64,7 +73,8 @@ class StoreRegistrationRequest extends FormRequest
                 ...$rules,
             ],
             RegistrationTypeEnum::RELAWAN_WILAYAH->value => [
-                'gender' => ['required'],
+                '*' => ['required'],
+                ...$rules,
             ],
             default => [],
         };

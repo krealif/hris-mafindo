@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\RegistrationStatusEnum;
+use App\Enums\RoleEnum;
 use App\Models\Registration;
 use App\Models\User;
 
@@ -30,7 +31,7 @@ class RegistrationPolicy
     public function viewForm(User $user, string $type): bool
     {
         if (
-            $type == 'pengurus-wilayah'
+            $type == RoleEnum::PENGURUS->value
             && !strpos($user->email, 'mafindo.or.id')
         ) {
             return false;
@@ -49,20 +50,23 @@ class RegistrationPolicy
     public function create(User $user, string $type): bool
     {
         if (
-            $type == 'pengurus-wilayah'
+            $type == RoleEnum::PENGURUS->value
             && !strpos($user->email, 'mafindo.or.id')
         ) {
             return false;
         }
 
-        if ($user->registration?->status == RegistrationStatusEnum::DIPROSES->value) {
+        if (
+            $user->registration &&
+            ($user->registration?->status == RegistrationStatusEnum::DIPROSES->value
+                || $user->registration?->step != 'mengisi')
+        ) {
             return false;
         }
 
         if ($regisType = $user->registration?->type) {
             return $regisType == $type;
         }
-
 
         return true;
     }

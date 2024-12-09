@@ -8,7 +8,7 @@
 ])
 
 @php
-  $attributes = $attributes->class(['form-control', 'is-invalid' => $showError && $errors->has($name)]);
+  $attributes = $attributes->class(['form-select', 'is-invalid' => $showError && $errors->has($name)]);
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
   $selectedValue = old($name, $selected);
 @endphp

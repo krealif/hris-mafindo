@@ -26,6 +26,20 @@
           <p>{{ $registration->message }}</p>
         </div>
       @endif
+      @if ($registration?->step && $registration?->step != 'mengisi')
+        <div class="card-body border border-top-0">
+          <div class="datagrid" style="grid-template-columns: unset;">
+            <div class="datagrid-item">
+              <div class="datagrid-title">Nama</div>
+              <div class="datagrid-content">{{ Auth::user()->nama }}</div>
+            </div>
+            <div class="datagrid-item">
+              <div class="datagrid-title">Nomor Relawan</div>
+              <div class="datagrid-content">{{ Auth::user()->no_relawan ?? '-' }}</div>
+            </div>
+          </div>
+        </div>
+      @endif
     </div>
   </div>
   @if (in_array($registration?->status, [null, 'draft', 'revisi']))
@@ -70,7 +84,8 @@
       </div>
     </div>
     <div class="col-12 col-md-9">
-      <form method="POST" class="vstack gap-2" x-data="{ isDraft: false }" x-bind:novalidate="isDraft" enctype="multipart/form-data" autocomplete="off">
+      <form method="POST" action="{{ route('registration.store', $type) }}" class="vstack gap-2" x-data="{ isDraft: false }" x-bind:novalidate="isDraft" enctype="multipart/form-data"
+        autocomplete="off">
         @csrf
         <div id="informasi-pribadi" class="card card-mafindo">
           <div class="card-header">
@@ -99,8 +114,10 @@
             </div>
             <div class="row mb-3">
               <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <label for="agama" class="form-label required">Agama</label>
-                <x-form.select name="agama" :options="App\Enums\AgamaEnum::labels()" selected="{{ old('agama', $detail?->agama) }}" required />
+                <label for="agama" class="form-label">Agama</label>
+                <x-form.select name="agama" :options="App\Enums\AgamaEnum::labels()" selected="{{ old('agama', $detail?->agama) }}">
+                  <option selected></option>
+                </x-form.select>
               </div>
               <div class="col-12 col-md-6">
                 <label for="alamat" class="form-label required">Alamat Domisili Saat Ini</label>
@@ -109,9 +126,8 @@
             </div>
             <div class="row mb-3">
               <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <label for="disabilitas" class="form-label required">Disabilitas</label>
-                <x-form.input name="disabilitas" type="text" placeholder="Tanpa disabilitas / tunanetra / tunarungu / tundadaksa"
-                  value="{{ old('disabilitas', $detail?->disabilitas) }}" required />
+                <label for="disabilitas" class="form-label">Disabilitas</label>
+                <x-form.input name="disabilitas" type="text" value="{{ old('disabilitas', $detail?->disabilitas) }}" />
               </div>
             </div>
           </div>
@@ -163,7 +179,7 @@
             <div class="row mb-3">
               <div class="col-12 col-md-6 mb-3 mb-md-0">
                 <label for="pdr" class="form-label required">Keikutsertaan Pelatihan Dasar Relawan</label>
-                <x-form.select name="pdr" :options="[0 => '0 (Belum Pernah)', 1 => '1', 2 => '2', 3 => '3']" selected="{{ old('agama', $detail?->agama) }}" required />
+                <x-form.select name="pdr" :options="[0 => '0 (Belum Pernah)', 1 => '1', 2 => '2', 3 => '3']" selected="{{ old('pdr', $detail?->pdr) }}" required />
               </div>
               @if ($type == 'relawan-wilayah')
                 <div class="col-12 col-md-6 mb-3 mb-md-0">
@@ -187,7 +203,7 @@
               </div>
               <div class="col-12 col-md-6">
                 <label for="bidang-mafindo" class="form-label required">Bidang yang Ingin Dikembangkan</label>
-                <x-form.select name="bidang-mafindo" :options="App\Enums\BidangMafindoEnum::labels()" selected="{{ old('bidang_mafindo', $detail?->bidang_mafindo) }}" required />
+                <x-form.select name="bidang_mafindo" :options="App\Enums\BidangMafindoEnum::labels()" selected="{{ old('bidang_mafindo', $detail?->bidang_mafindo) }}" required />
               </div>
             </div>
           </div>
@@ -208,16 +224,31 @@
                 <x-form.input name="no_hp" type="tel" x-mask="9999999999999" placeholder="08xxxxxxxxxx" value="{{ old('no_hp', $detail?->no_hp) }}" />
               </div>
             </div>
+            <h2 class="card-title">Media Sosial</h2>
+            @if ($errors->has('medsos.*'))
+              <x-alert class="alert-danger">
+                <div>Tolong periksa kembali data yang Anda masukkan.</div>
+                <ul class="mt-2 mb-0" style="margin-left: -1rem">
+                  @foreach ($errors->get('medsos.*') as $e)
+                    @foreach ($e as $error)
+                      <li>{{ $error }}</li>
+                    @endforeach
+                  @endforeach
+                </ul>
+              </x-alert>
+            @endif
             <div class="row mb-3">
               <div class="col-12 col-md-6 mb-3 mb-md-0">
                 <label for="medsos-facebook" class="form-label">Akun Facebook</label>
-                <x-form.input name="medsos[facebook]" type="text" placeholder="Nama Akun" value="{{ old('medsos.facebook', $detail?->medsos?->facebook) }}" />
+                <x-form.input id="medsos-facebook" name="medsos[facebook]" type="text" placeholder="Nama Akun"
+                  value="{{ old('medsos.facebook', $detail?->medsos?->facebook) }}" />
               </div>
               <div class="col-12 col-md-6">
                 <label for="medsos-instagram" class="form-label">Akun Instagram</label>
                 <div class="input-group mb-2">
                   <span class="input-group-text">@</span>
-                  <x-form.input name="medsos[instagram]" type="text" placeholder="username" value="{{ old('medsos.instagram', $detail?->medsos?->instagram) }}" />
+                  <x-form.input id="medsos-instagram" name="medsos[instagram]" type="text" placeholder="username"
+                    value="{{ old('medsos.instagram', $detail?->medsos?->instagram) }}" />
                 </div>
               </div>
             </div>
@@ -226,14 +257,16 @@
                 <label for="medsos-tiktok" class="form-label">Akun Tiktok</label>
                 <div class="input-group mb-2">
                   <span class="input-group-text">@</span>
-                  <x-form.input name="medsos[tiktok]" type="text" placeholder="username" value="{{ old('medsos.tiktok', $detail?->medsos?->tiktok) }}" />
+                  <x-form.input id="medsos-tiktok" name="medsos[tiktok]" type="text" placeholder="username"
+                    value="{{ old('medsos.tiktok', $detail?->medsos?->tiktok) }}" />
                 </div>
               </div>
               <div class="col-12 col-md-6">
                 <label for="medsos-twitter" class="form-label">Akun Twitter</label>
                 <div class="input-group mb-2">
                   <span class="input-group-text">@</span>
-                  <x-form.input name="medsos[twitter]" type="text" placeholder="username" value="{{ old('medsos.twitter', $detail?->medsos?->twitter) }}" />
+                  <x-form.input id="medsos-twitter" name="medsos[twitter]" type="text" placeholder="username"
+                    value="{{ old('medsos.twitter', $detail?->medsos?->twitter) }}" />
                 </div>
               </div>
             </div>
