@@ -1,6 +1,5 @@
-ARG BASE_OS_VERSION=alpine
 ARG PHP_VERSION=8.3
-ARG BASE_IMAGE="docker.io/php:${PHP_VERSION}-fpm-${BASE_OS_VERSION}"
+ARG BASE_IMAGE="docker.io/dunglas/frankenphp:php${PHP_VERSION}-alpine"
 
 FROM ${BASE_IMAGE}
 
@@ -23,16 +22,15 @@ RUN curl -sSL https://getcomposer.org/installer | php \
   && chmod +x composer.phar \
   && mv composer.phar /usr/local/bin/composer
 
-# Install frankenphp
-RUN curl https://frankenphp.dev/install.sh | sh \
-  && mv frankenphp /usr/local/bin/
-  
 # Install other packages.
 RUN apk add --no-cache supervisor bash fish curl git nodejs npm openssh-client ca-certificates
-  
+
+RUN mkdir -p /config /data \
+  && chown -R $USER_UID:$USER_GID /config /data
+
 # Copy configuration files
 COPY ./php/docker-php-ext-xdebug.ini \
   ./php/docker-php-ext-opcache.ini \
   /usr/local/etc/php/conf.d/
-COPY ./caddy/Caddyfile /etc/caddy/Caddyfile
+COPY ./caddy/Caddyfile /config/Caddyfile
 COPY ./supervisord.conf /etc/supervisord.conf
