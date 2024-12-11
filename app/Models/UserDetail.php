@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\AgamaEnum;
+use App\Enums\BidangMafindoEnum;
+use App\Enums\GenderEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,7 +29,7 @@ class UserDetail extends Model
         'alamat',
         'bidang_keahlian',
         'bidang_mafindo',
-        'tahun_bergabung',
+        'thn_bergabung',
         'pdr',
         'medsos',
         'pendidikan',
@@ -42,6 +45,10 @@ class UserDetail extends Model
     protected function casts(): array
     {
         return [
+            'tgl_lahir' => 'date:d/m/Y',
+            'gender' => GenderEnum::class,
+            'agama' => AgamaEnum::class,
+            'bidang_mafindo' => BidangMafindoEnum::class,
             'medsos' => 'object',
             'pendidikan' => 'object',
             'pekerjaan' => 'object',

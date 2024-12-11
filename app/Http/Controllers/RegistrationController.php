@@ -6,7 +6,6 @@ use App\Models\Branch;
 use App\Models\UserDetail;
 use Illuminate\Support\Arr;
 use App\Models\Registration;
-use Illuminate\Http\Request;
 use App\Traits\HasUploadFile;
 use Illuminate\Support\Facades\DB;
 use App\Enums\RegistrationTypeEnum;
@@ -17,14 +16,17 @@ use App\Enums\RegistrationStatusEnum;
 use Illuminate\Http\RedirectResponse;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
+use App\Enums\RoleEnum;
 use App\Http\Requests\StoreRegistrationRelawanRequest;
 use App\Http\Requests\StoreRegistrationPengurusRequest;
 
 class RegistrationController extends Controller
 {
     use HasUploadFile;
+
     /**
-     * Display a listing of the resource.
+     * Display a form selection page or redirect to the appropriate registration form
+     * if the user already has a registration.
      */
     public function selectForm(): RedirectResponse | View
     {
@@ -33,63 +35,65 @@ class RegistrationController extends Controller
             return to_route('registration.showForm', $registration->type);
         }
 
-        return view('hris.registrasi.form-selection');
+        return view('hris.registrasi.type-selection');
     }
 
     /**
-     * Show the form for submitting registration details.
+     * Show the form for submitting registration details
+     * based on type.
      */
-    public function showForm(string $type): View
+    public function showForm(RegistrationTypeEnum $type): View
     {
         Gate::authorize('viewForm', [Registration::class, $type]);
-        if (!RegistrationTypeEnum::tryFrom($type)) {
-            abort(404);
-        }
 
         $registration = Auth::user()->registration;
-        $branches = Branch::all(['id', 'nama'])->pluck('nama', 'id');
+        $branches = Branch::select('id', 'nama')
+            ->orderBy('nama', 'asc')
+            ->pluck('nama', 'id');
 
-        if ($type == RegistrationTypeEnum::PENGURUS_WILAYAH->value) {
-            return view('hris.registrasi.form-wrapper', compact(
-                'type',
-                'registration',
-                'branches'
-            ));
+        $viewData = [
+            'type' => $type->value,
+            'registration' => $registration,
+            'branches' => $branches
+        ];
+
+        if ($type == RegistrationTypeEnum::PENGURUS_WILAYAH) {
+            return view('hris.registrasi.form-wrapper', $viewData);
         }
 
-        $detail = Auth::user()->detail;
+        $viewData['detail'] = Auth::user()->detail;
 
-        return view('hris.registrasi.form-wrapper', compact(
-            'type',
-            'registration',
-            'detail',
-            'branches'
-        ));
+        return view('hris.registrasi.form-wrapper', $viewData);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store the registration details based on the given type.
      */
-    public function store(string $type)
+    public function store(RegistrationTypeEnum $type): RedirectResponse
     {
         Gate::authorize('create', [Registration::class, $type]);
 
-        if (!RegistrationTypeEnum::tryFrom($type)) {
-            abort(404);
-        }
-
-        if (str_starts_with($type, 'relawan-')) {
+        if (str_starts_with($type->value, 'relawan-')) {
             return $this->storeRelawan(app(StoreRegistrationRelawanRequest::class), $type);
-        } elseif (str_starts_with($type, 'pengurus-')) {
+        } elseif (str_starts_with($type->value, 'pengurus-')) {
             return $this->storePengurus(app(StoreRegistrationPengurusRequest::class), $type);
         } else {
             abort(404);
         }
     }
 
-    public function storeRelawan(StoreRegistrationRelawanRequest $request, string $type)
+    /**
+     * Handle the storage of relawan registration.
+     */
+    public function storeRelawan(StoreRegistrationRelawanRequest $request, RegistrationTypeEnum $type): RedirectResponse
     {
         $validated = $request->validated();
+
+        $validated = $this->handleArrayField($validated, [
+            'pendidikan',
+            'pekerjaan',
+            'sertifikat'
+        ]);
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
@@ -104,26 +108,34 @@ class RegistrationController extends Controller
             }
         }
 
-        if ($request->mode == 'draft') {
-            $registration = [
-                'type' => $type,
-                'status' => RegistrationStatusEnum::DRAFT->value,
-                'step' => ($type == RegistrationTypeEnum::RELAWAN_BARU->value)
-                    ? RegistrationBaruStepEnum::MENGISI->value
-                    : RegistrationLamaStepEnum::MENGISI->value,
-            ];
+        $registration = [
+            'type' => $type,
+            'status' => ($request->mode == 'draft')
+                ? RegistrationStatusEnum::DRAFT
+                : RegistrationStatusEnum::DIPROSES,
+            'step' => ($request->mode == 'draft')
+                ? ($type == RegistrationTypeEnum::RELAWAN_BARU
+                    ? RegistrationBaruStepEnum::MENGISI
+                    : RegistrationLamaStepEnum::MENGISI)
+                : ($type == RegistrationTypeEnum::RELAWAN_BARU
+                    ? RegistrationBaruStepEnum::PROFILING
+                    : RegistrationLamaStepEnum::VERIFIKASI),
+        ];
 
-            if ($user->registration?->status == 'revisi') {
-                $registration['status'] = RegistrationStatusEnum::REVISI->value;
-            }
-        } else {
-            $registration = [
-                'type' => $type,
-                'status' => RegistrationStatusEnum::DIPROSES->value,
-                'step' => ($type == RegistrationTypeEnum::RELAWAN_BARU->value)
-                    ? RegistrationBaruStepEnum::PROFILING->value
-                    : RegistrationLamaStepEnum::VERIFIKASI->value,
-            ];
+        if (
+            $request->mode == 'draft'
+            && $user->registration?->status == 'revisi'
+        ) {
+            $registration['status'] = RegistrationStatusEnum::REVISI;
+        }
+
+        // Assign roles based on registration type
+        if (!$user->hasAnyRole(['relawan', 'relawan-baru'])) {
+            $role = ($type == RegistrationTypeEnum::RELAWAN_BARU)
+                ? RoleEnum::RELAWAN_BARU
+                : RoleEnum::RELAWAN;
+
+            $user->assignRole($role);
         }
 
         DB::transaction(function () use ($user, $registration, $validated) {
@@ -165,7 +177,10 @@ class RegistrationController extends Controller
         return to_route('registration.showForm', $type);
     }
 
-    public function storePengurus(StoreRegistrationPengurusRequest $request, string $type)
+    /**
+     * Handle the storage of pengurus registration.
+     */
+    public function storePengurus(StoreRegistrationPengurusRequest $request, RegistrationTypeEnum $type): RedirectResponse
     {
         Gate::authorize('create', [Registration::class, $type]);
 
@@ -174,22 +189,19 @@ class RegistrationController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        if ($request->mode == 'draft') {
-            $registration = [
-                'type' => $type,
-                'status' => RegistrationStatusEnum::DRAFT->value,
-                'step' => RegistrationLamaStepEnum::MENGISI->value,
-            ];
+        $registration = [
+            'type' => $type,
+            'status' => ($request->mode == 'draft')
+                ? RegistrationStatusEnum::DRAFT
+                : RegistrationStatusEnum::DIPROSES,
+            'step' => RegistrationLamaStepEnum::MENGISI,
+        ];
 
-            if ($user->registration?->status == 'revisi') {
-                $registration['status'] = RegistrationStatusEnum::REVISI->value;
-            }
-        } else {
-            $registration = [
-                'type' => $type,
-                'status' => RegistrationStatusEnum::DIPROSES->value,
-                'step' => RegistrationLamaStepEnum::VERIFIKASI->value,
-            ];
+        if (
+            $request->mode == 'draft'
+            && $user->registration?->status == 'revisi'
+        ) {
+            $registration['status'] = RegistrationStatusEnum::REVISI;
         }
 
         DB::transaction(function () use ($user, $registration, $validated) {
@@ -221,5 +233,22 @@ class RegistrationController extends Controller
 
         flash()->success("Berhasil!");
         return to_route('registration.showForm', $type);
+    }
+
+    private function handleArrayField(array $validated, array $fields): array
+    {
+        foreach ($fields as $field) {
+            // If the field exists, filter empty values
+            if (isset($validated[$field])) {
+                $validated[$field] = array_filter($validated[$field], function ($item) {
+                    return !empty(array_filter($item, fn($value) => !is_null($value) && $value !== ''));
+                });
+            } else {
+                // If the field does not exist, set it to null
+                $validated[$field] = null;
+            }
+        }
+
+        return $validated;
     }
 }

@@ -2,15 +2,17 @@
 
 namespace App\Policies;
 
-use App\Enums\RegistrationStatusEnum;
-use App\Enums\RoleEnum;
-use App\Models\Registration;
 use App\Models\User;
+use App\Models\Registration;
+use App\Enums\RegistrationTypeEnum;
+use App\Enums\RegistrationStatusEnum;
+use App\Enums\RegistrationBaruStepEnum;
+use App\Enums\RegistrationLamaStepEnum;
 
 class RegistrationPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can view any registrations.
      */
     public function viewAny(User $user)
     {
@@ -18,7 +20,7 @@ class RegistrationPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view a specific registration.
      */
     public function view(User $user, Registration $registration)
     {
@@ -26,31 +28,31 @@ class RegistrationPolicy
     }
 
     /**
-     * Determine whether the user can view registration form.
+     * Determine whether the user can view the registration form for a specific type.
      */
-    public function viewForm(User $user, string $type): bool
+    public function viewForm(User $user, RegistrationTypeEnum $type): bool
     {
         if (
-            $type == RoleEnum::PENGURUS->value
+            $type == RegistrationTypeEnum::PENGURUS_WILAYAH
             && !strpos($user->email, 'mafindo.or.id')
         ) {
             return false;
         }
 
         if ($regisType = $user->registration?->type) {
-            return $regisType == $type;
+            return $regisType == $type->value;
         }
 
         return true;
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create a registration for a specific type.
      */
-    public function create(User $user, string $type): bool
+    public function create(User $user, RegistrationTypeEnum $type): bool
     {
         if (
-            $type == RoleEnum::PENGURUS->value
+            $type == RegistrationTypeEnum::PENGURUS_WILAYAH
             && !strpos($user->email, 'mafindo.or.id')
         ) {
             return false;
@@ -65,41 +67,49 @@ class RegistrationPolicy
         }
 
         if ($regisType = $user->registration?->type) {
-            return $regisType == $type;
+            return $regisType == $type->value;
         }
 
         return true;
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can update the registration step.
      */
-    public function update(User $user, Registration $registration)
+    public function updateStep(User $user, Registration $registration)
     {
-        //
+        $disallowed = [
+            RegistrationBaruStepEnum::MENGISI->value,
+            RegistrationBaruStepEnum::PELATIHAN->value,
+            RegistrationLamaStepEnum::VERIFIKASI->value
+        ];
+
+        return !in_array($registration->step, $disallowed);
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can revise form data.
      */
-    public function delete(User $user, Registration $registration)
+    public function requestRevision(User $user, Registration $registration)
     {
-        //
+        $allowed = [
+            RegistrationBaruStepEnum::PROFILING->value,
+            RegistrationLamaStepEnum::VERIFIKASI->value
+        ];
+
+        return in_array($registration->step, $allowed);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can finish the registration step.
      */
-    public function restore(User $user, Registration $registration)
+    public function finishStep(User $user, Registration $registration)
     {
-        //
-    }
+        $allowed = [
+            RegistrationBaruStepEnum::PELATIHAN->value,
+            RegistrationLamaStepEnum::VERIFIKASI->value
+        ];
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Registration $registration)
-    {
-        //
+        return in_array($registration->step, $allowed);
     }
 }

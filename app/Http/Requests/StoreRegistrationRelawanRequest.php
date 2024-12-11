@@ -5,9 +5,8 @@ namespace App\Http\Requests;
 use App\Enums\AgamaEnum;
 use App\Enums\GenderEnum;
 use Illuminate\Validation\Rule;
-use App\Enums\RegistrationTypeEnum;
-use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Rules\File;
+use App\Enums\RegistrationTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Actions\Fortify\PasswordValidationRules;
 
@@ -26,8 +25,8 @@ class StoreRegistrationRelawanRequest extends FormRequest
             'nama' => ['string', 'max:255'],
             'panggilan' => ['string', 'max:255'],
             'tgl_lahir' => ['date'],
-            'gender' => [new Enum(GenderEnum::class)],
-            'agama' => ['nullable', new Enum(AgamaEnum::class)],
+            'gender' => ['nullable', Rule::Enum(GenderEnum::class)],
+            'agama' => ['nullable', Rule::Enum(AgamaEnum::class)],
             'alamat' => ['string', 'max:255'],
             'disabilitas' => ['nullable', 'string', 'max:255'],
             'foto' => [
@@ -42,7 +41,8 @@ class StoreRegistrationRelawanRequest extends FormRequest
             'alamat' => ['string', 'max:255'],
             'bidang_keahlian' => ['nullable', 'string', 'max:255'],
             'bidang_mafindo' => ['string'],
-            'tahun_bergabung' => ['numeric', 'min:2010'],
+            'thn_bergabung' => ['numeric', 'min:2010'],
+            'no_relawan' => ['nullable', 'string'],
             'branch_id' => ['exists:branches,id'],
             'pdr' => ['numeric'],
             'medsos' => ['nullable', 'array'],
@@ -68,11 +68,11 @@ class StoreRegistrationRelawanRequest extends FormRequest
         }
 
         return match ($this->route('type')) {
-            RegistrationTypeEnum::RELAWAN_BARU->value => [
+            RegistrationTypeEnum::RELAWAN_BARU => [
                 '*' => ['required'],
                 ...$rules,
             ],
-            RegistrationTypeEnum::RELAWAN_WILAYAH->value => [
+            RegistrationTypeEnum::RELAWAN_WILAYAH => [
                 '*' => ['required'],
                 ...$rules,
             ],

@@ -24,7 +24,7 @@ class PreserveUrlQuery
 
         if (isset($query['page']) || isset($query['filter'])) {
             session()->put($key, $query);
-        } else if (session($key)) {
+        } elseif (session($key)) {
             session()->forget($key);
         }
 

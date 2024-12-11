@@ -20,7 +20,9 @@
   @endforeach
 </select>
 <script>
-  new TomSelect('#{{ $id }}');
+  document.addEventListener("DOMContentLoaded", function() {
+    window.flatpickr && (new TomSelect({{ Js::from('#' . $id) }}));
+  });
 </script>
 @if ($showError)
   @error($name)
@@ -29,3 +31,12 @@
     </div>
   @enderror
 @endif
+
+@once
+  @push('styles')
+    <link rel="stylesheet" href="{{ asset('static/vendor/tom-select.min.css') }}">
+  @endpush
+  @push('scripts')
+    <script src="{{ asset('static/vendor/tom-select.complete.min.js') }}"></script>
+  @endpush
+@endonce

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('alamat')->nullable();
             $table->string('bidang_keahlian')->nullable();
             $table->string('bidang_mafindo')->nullable();
-            $table->year('tahun_bergabung')->nullable();
+            $table->year('thn_bergabung')->nullable();
             $table->integer('pdr')->nullable();
             $table->json('medsos')->nullable();
             $table->json('pendidikan')->nullable();

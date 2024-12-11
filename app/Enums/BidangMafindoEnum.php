@@ -12,16 +12,24 @@ enum BidangMafindoEnum: string
     case DESAIN_GRAFIS = 'desain_grafis';
     case HUMAS_KERJASAMA = 'humas_kerjasama';
 
+    public function label(): string
+    {
+        return match ($this) {
+            self::LITERASI_DIGITAL => 'Edukasi Literasi Digital kepada Masyarakat/Public Speaking',
+            self::MEDIA_SOSIAL => 'Pengelolaan Media Sosial',
+            self::TATA_KELOLA => 'Tata Kelola Organisasi dan Pengembagan SDM',
+            self::PENELITIAN => 'Penelitian',
+            self::MENULIS => 'Menulis',
+            self::DESAIN_GRAFIS => 'Desain dan Grafis',
+            self::HUMAS_KERJASAMA => 'Hubungan Masyarakat dan Kerjasama',
+        };
+    }
+
     public static function labels(): array
     {
-        return [
-            self::LITERASI_DIGITAL->value => 'Edukasi Literasi Digital kepada Masyarakat/Public Speaking',
-            self::MEDIA_SOSIAL->value => 'Pengelolaan Media Sosial',
-            self::TATA_KELOLA->value => 'Tata Kelola Organisasi dan Pengembagan SDM',
-            self::PENELITIAN->value => 'Penelitian',
-            self::MENULIS->value => 'Menulis',
-            self::DESAIN_GRAFIS->value => 'Desain dan Grafis',
-            self::HUMAS_KERJASAMA->value => 'Hubungan Masyarakat dan Kerjasama',
-        ];
+        return array_combine(
+            array_map(fn($case) => $case->value, self::cases()),
+            array_map(fn($case) => $case->label(), self::cases())
+        );
     }
 }

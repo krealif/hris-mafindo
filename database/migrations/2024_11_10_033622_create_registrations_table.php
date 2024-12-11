@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('type', 20);
             $table->string('status', 20);
             $table->string('step', 20);
+            $table->string('message')->nullable();
             $table->timestamps();
         });
     }

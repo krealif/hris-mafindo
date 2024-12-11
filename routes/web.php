@@ -1,47 +1,49 @@
 <?php
 
-use App\Models\Branch;
+use App\Enums\RoleEnum;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\RegistrationVerifController;
 
 /**
- * Route for user registration detail
+ * Group routes that require authentication but for unverified users only.
  */
 Route::middleware(['auth', 'unverified'])->group(function () {
+    // Routes for user registration forms.
     Route::group([
         'controller' => RegistrationController::class,
         'as' => 'registration.',
-        'prefix' => 'register'
+        'prefix' => 'registrasi'
     ], function () {
-        Route::get('user', 'selectForm')->name('selectForm');
-        Route::get('user/{type}', 'showForm')->name('showForm');
-        Route::post('user/{type}', 'store')->name('store');
+        Route::get('form', 'selectForm')->name('selectForm');
+        Route::get('form/{type}', 'showForm')->name('showForm');
+        Route::post('form/{type}', 'store')->name('store');
     });
 });
 
-Route::get('labx', function () {
-    $branches = Branch::all()->pluck('nama', 'id');
+Route::get('test', function () {
+    dd(RoleEnum::values());
 });
 
-// Dashboard
+/**
+ * Group routes that require authentication and verified registrations by admin.
+ */
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Home
+    // Home route for the dashboard.
     Route::get('/', HomeController::class);
 
-    Route::view('tes', 'hris.materi.materi');
-
-    // Registration
-    // Route::group([
-    //     'middleware' => ['role:admin'],
-    //     'controller' => RegistrationController::class,
-    //     'as' => 'registration.',
-    //     'prefix' => 'pendaftaran'
-    // ], function () {
-    //     Route::get('/', 'index')->name('index')
-    //         ->middleware('preserveUrlQuery');
-
-    //     Route::post('{registration}/accept', 'accept')->name('accept');
-    //     Route::post('{registration}/reject', 'reject')->name('reject');
-    // });
+    // Group routes for admin-specific registration verification tasks.
+    Route::group([
+        'middleware' => ['role:admin'],
+        'controller' => RegistrationVerifController::class,
+        'as' => 'verif.',
+        'prefix' => 'registrasi'
+    ], function () {
+        Route::get('/relawan', 'indexRelawan')->name('indexRelawan');
+        Route::get('/relawan/{registration}', 'showRelawan')->name('detailRelawan');
+        Route::post('/relawan/{registration}/next', 'nextStep')->name('nextStep');
+        Route::post('/relawan/{registration}/revisi', 'requestRevision')->name('revisi');
+        Route::post('/relawan/{registration}/selesai', 'finishRegistration')->name('finish');
+    });
 });

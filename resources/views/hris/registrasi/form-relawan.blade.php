@@ -5,38 +5,33 @@
         {{ flash()->message }}
       </x-alert>
     @endif
-    <div class="card card-mafindo border-0">
-      <div class="card-header border border-bottom-0" style="border-color: var(--tblr-border-color) !important">
-        <h3 class="d-flex align-items-center gap-2 mb-0">
+    <div class="card card-mafindo overflow-hidden">
+      <div class="card-header border-bottom-0">
+        <h2 class="card-title d-flex align-items-center gap-2 mb-0">
           <x-lucide-chevrons-right class="icon" />
           Tahapan
           @if ($registration?->status && $registration?->status != 'selesai')
             <span class="badge bg-secondary text-white">{{ ucfirst($registration->status) }}</span>
           @endif
-        </h3>
+        </h2>
       </div>
       @if ($type == 'relawan-baru')
-        <x-registration-step :data="App\Enums\RegistrationBaruStepEnum::labels()" step="{{ $registration?->step ?? 'mengisi' }}" />
+        <x-registration-step :data="App\Enums\RegistrationBaruStepEnum::labels()" step="{{ $registration?->step }}" />
       @else
-        <x-registration-step :data="App\Enums\RegistrationLamaStepEnum::labels()" step="{{ $registration?->step ?? 'mengisi' }}" />
+        <x-registration-step :data="App\Enums\RegistrationLamaStepEnum::labels()" step="{{ $registration?->step }}" />
       @endif
       @if ($registration?->status == 'revisi')
-        <div class="card-body border border-top-0">
+        <div class="card-body border-top">
           <h4 class="fs-3 text-red">REVISI</h4>
           <p>{{ $registration->message }}</p>
         </div>
       @endif
       @if ($registration?->step && $registration?->step != 'mengisi')
-        <div class="card-body border border-top-0">
-          <div class="datagrid" style="grid-template-columns: unset;">
-            <div class="datagrid-item">
-              <div class="datagrid-title">Nama</div>
-              <div class="datagrid-content">{{ Auth::user()->nama }}</div>
-            </div>
-            <div class="datagrid-item">
-              <div class="datagrid-title">Nomor Relawan</div>
-              <div class="datagrid-content">{{ Auth::user()->no_relawan ?? '-' }}</div>
-            </div>
+        <div class="card-body border-top">
+          <div class="datagrid">
+            <x-datagrid-item title="Nama" content="{{ Auth::user()->nama }}" />
+            <x-datagrid-item title="Wilayah" content="{{ Auth::user()->branch?->nama }}" />
+            <x-datagrid-item title="Nomor Kartu Relawan" content="{{ Auth::user()->no_relawan }}" />
           </div>
         </div>
       @endif
@@ -46,10 +41,10 @@
     <div class="col-12 col-md-3 mb-3 mb-md-0">
       <div class="card card-mafindo sticky-top">
         <div class="card-header">
-          <h3 class="card-title d-flex align-items-center gap-2">
+          <h2 class="card-title d-flex align-items-center gap-2">
             <x-lucide-list class="icon" />
             Daftar Isi
-          </h3>
+          </h2>
         </div>
         <nav class="list-group list-group-flush">
           <a class="list-group-item list-group-item-action p-2" href="#informasi-pribadi">
@@ -60,13 +55,17 @@
             <x-lucide-arrow-down-right class="icon" defer />
             Foto Profil
           </a>
+          <a class="list-group-item list-group-item-action p-2" href="#kontak">
+            <x-lucide-arrow-down-right class="icon" defer />
+            Kontak
+          </a>
           <a class="list-group-item list-group-item-action p-2" href="#keanggotaan">
             <x-lucide-arrow-down-right class="icon" defer />
-            Keanggotaan
+            Keanggotaan Mafindo
           </a>
           <a class="list-group-item list-group-item-action p-2" href="#bidang">
             <x-lucide-arrow-down-right class="icon" defer />
-            Bidang Keahlian
+            Bidang
           </a>
           <a class="list-group-item list-group-item-action p-2" href="#pendidikan">
             <x-lucide-arrow-down-right class="icon" defer />
@@ -105,11 +104,13 @@
             <div class="row mb-3">
               <div class="col-12 col-md-6 mb-3 mb-md-0">
                 <label for="tgl-lahir" class="form-label required">Tanggal Lahir</label>
-                <x-form.input name="tgl_lahir" type="date" value="{{ old('tgl_lahir', $detail?->tgl_lahir) }}" required />
+                <x-form.flatpickr name="tgl_lahir" value="{{ old('tgl_lahir', $detail?->tgl_lahir?->format('d-m-Y')) }}" required />
               </div>
               <div class="col-12 col-md-6">
-                <label for="gender" class="form-label required">Jenis Kelamin</label>
-                <x-form.select name="gender" :options="App\Enums\GenderEnum::labels()" selected="{{ old('gender', $detail?->gender) }}" required />
+                <label for="gender" class="form-label">Jenis Kelamin</label>
+                <x-form.select name="gender" :options="App\Enums\GenderEnum::labels()" selected="{{ old('gender', $detail?->gender) }}">
+                  <option selected></option>
+                </x-form.select>
               </div>
             </div>
             <div class="row mb-3">
@@ -159,56 +160,6 @@
           </div>
         </div>
 
-        <div id="keanggotaan" class="card card-mafindo">
-          <div class="card-header">
-            <h2 class="card-title">Keanggotaan di Mafindo</h2>
-          </div>
-          <div class="card-body">
-            <div class="row mb-3">
-              <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <label for="tahun-bergabung" class="form-label required">Tahun Bergabung</label>
-                <x-form.input name="tahun_bergabung" type="text" x-mask="9999" value="{{ old('tahun_bergabung', $detail?->tahun_bergabung) }}" required />
-              </div>
-              <div class="col-12 col-md-6">
-                <label for="branch" class="form-label required">Wilayah</label>
-                <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', Auth::user()->branch_id) }}" required>
-                  <option value="">Pilih wilayah</option>
-                </x-form.tom-select>
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <label for="pdr" class="form-label required">Keikutsertaan Pelatihan Dasar Relawan</label>
-                <x-form.select name="pdr" :options="[0 => '0 (Belum Pernah)', 1 => '1', 2 => '2', 3 => '3']" selected="{{ old('pdr', $detail?->pdr) }}" required />
-              </div>
-              @if ($type == 'relawan-wilayah')
-                <div class="col-12 col-md-6 mb-3 mb-md-0">
-                  <label for="no-relawan" class="form-label required">Nomor Kartu Relawan</label>
-                  <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan', Auth::user()->no_relawan) }}" required />
-                </div>
-              @endif
-            </div>
-          </div>
-        </div>
-
-        <div id="bidang" class="card card-mafindo">
-          <div class="card-header">
-            <h2 class="card-title">Bidang Keahlian</h2>
-          </div>
-          <div class="card-body">
-            <div class="row mb-3">
-              <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <label for="bidang-keahlian" class="form-label">Bidang Keahlian (jika ada)</label>
-                <x-form.input name="bidang_keahlian" type="text" value="{{ old('bidang_keahlian', $detail?->bidang_keahlian) }}" />
-              </div>
-              <div class="col-12 col-md-6">
-                <label for="bidang-mafindo" class="form-label required">Bidang yang Ingin Dikembangkan</label>
-                <x-form.select name="bidang_mafindo" :options="App\Enums\BidangMafindoEnum::labels()" selected="{{ old('bidang_mafindo', $detail?->bidang_mafindo) }}" required />
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div id="kontak" class="card card-mafindo">
           <div class="card-header">
             <h2 class="card-title">Kontak</h2>
@@ -224,7 +175,6 @@
                 <x-form.input name="no_hp" type="tel" x-mask="9999999999999" placeholder="08xxxxxxxxxx" value="{{ old('no_hp', $detail?->no_hp) }}" />
               </div>
             </div>
-            <h2 class="card-title">Media Sosial</h2>
             @if ($errors->has('medsos.*'))
               <x-alert class="alert-danger">
                 <div>Tolong periksa kembali data yang Anda masukkan.</div>
@@ -273,6 +223,56 @@
           </div>
         </div>
 
+        <div id="keanggotaan" class="card card-mafindo">
+          <div class="card-header">
+            <h2 class="card-title">Keanggotaan di Mafindo</h2>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <label for="tahun-bergabung" class="form-label required">Tahun Bergabung</label>
+                <x-form.input name="thn_bergabung" type="text" x-mask="9999" value="{{ old('thn_bergabung', $detail?->thn_bergabung) }}" required />
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="branch" class="form-label required">Wilayah</label>
+                <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', Auth::user()->branch_id) }}" required>
+                  <option selected></option>
+                </x-form.tom-select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <label for="pdr" class="form-label required">Keikutsertaan Pelatihan Dasar Relawan</label>
+                <x-form.select name="pdr" :options="[0 => 'Belum Pernah', 1 => '1', 2 => '2', 3 => '3']" selected="{{ old('pdr', $detail?->pdr) }}" required />
+              </div>
+              @if ($type == 'relawan-wilayah')
+                <div class="col-12 col-md-6 mb-3 mb-md-0">
+                  <label for="no-relawan" class="form-label">Nomor Kartu Relawan</label>
+                  <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan', Auth::user()->no_relawan) }}" />
+                </div>
+              @endif
+            </div>
+          </div>
+        </div>
+
+        <div id="bidang" class="card card-mafindo">
+          <div class="card-header">
+            <h2 class="card-title">Bidang</h2>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <label for="bidang-keahlian" class="form-label">Bidang Keahlian (jika ada)</label>
+                <x-form.input name="bidang_keahlian" type="text" value="{{ old('bidang_keahlian', $detail?->bidang_keahlian) }}" />
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="bidang-mafindo" class="form-label required">Bidang yang Ingin Dikembangkan</label>
+                <x-form.select name="bidang_mafindo" :options="App\Enums\BidangMafindoEnum::labels()" selected="{{ old('bidang_mafindo', $detail?->bidang_mafindo) }}" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div id="pendidikan" class="card card-mafindo">
           <div class="card-header">
             <h2 class="card-title">Riwayat Pendidikan</h2>
@@ -296,11 +296,8 @@
                   <div class="col-12 col-md-2 mb-1 mb-md-0">
                     <div class="form-floating">
                       <div class="form-floating">
-                        <x-form.select id="pendidikan-tingkat" x-model="row.tingkat" x-bind:name="`pendidikan[${index}][tingkat]`" :showError=false required>
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
+                        <x-form.select id="pendidikan-tingkat" x-model="row.tingkat" :options="App\Enums\TingkatPendidikanEnum::labels()" x-bind:name="`pendidikan[${index}][tingkat]`" :showError=false required>
+                          <option selected></option>
                         </x-form.select>
                         <label for="pendidikan-tingkat">Tingkat</label>
                       </div>
@@ -380,8 +377,8 @@
                   <div class="col-12 col-md-4">
                     <div class="form-floating">
                       <div class="form-floating">
-                        <x-form.input id="pekerjaan-tahun" x-model="row.tahun" x-bind:name="`pekerjaan[${index}][tahun]`" type="text" x-mask="9999-9999" maxlength="255"
-                          placeholder="Tahun" :showError=false required />
+                        <x-form.input id="pekerjaan-tahun" x-model="row.tahun" x-bind:name="`pekerjaan[${index}][tahun]`" type="text" pattern="\d{4}-\d{4}"
+                          x-mask="9999-9999" maxlength="255" placeholder="Tahun" :showError=false required />
                         <label for="pekerjaan-tahun">Tahun (YYYY-YYYY)</label>
                       </div>
                     </div>
@@ -405,12 +402,12 @@
           <div class="card-header">
             <h2 class="card-title">Sertifikat</h2>
           </div>
-          <div class="card-body" x-data="pekerjaan">
-            @if ($errors?->has('pekerjaan.*'))
+          <div class="card-body" x-data="sertifikat">
+            @if ($errors?->has('sertifikat.*'))
               <x-alert class="alert-danger">
                 <div>Tolong periksa kembali data yang Anda masukkan.</div>
                 <ul class="mt-2 mb-0" style="margin-left: -1rem">
-                  @foreach ($errors->get('pekerjaan.*') as $e)
+                  @foreach ($errors->get('sertifikat.*') as $e)
                     @foreach ($e as $error)
                       <li>{{ $error }}</li>
                     @endforeach
@@ -433,8 +430,8 @@
                   <div class="col-12 col-md-6">
                     <div class="form-floating">
                       <div class="form-floating">
-                        <x-form.input id="sertifikat-masa" x-model="row.masa" x-bind:name="`sertifikat[${index}][masa]`" type="text" x-mask="9999-9999" maxlength="255"
-                          placeholder="Masa Berlaku" :showError=false required />
+                        <x-form.input id="sertifikat-masa" x-model="row.masa" x-bind:name="`sertifikat[${index}][masa]`" type="text" pattern="\d{4}-\d{4}"
+                          x-mask="9999-9999" maxlength="255" placeholder="Masa Berlaku" :showError=false required />
                         <label for="sertifikat-masa">Masa Berlaku</label>
                       </div>
                     </div>
@@ -495,7 +492,7 @@
     Alpine.data('pekerjaan', createDynamicList('pekerjaan', dataPekerjaan));
 
     const dataSertifikat = {{ Js::from(old('sertifikat', $detail?->sertifikat)) }};
-    Alpine.data('pekerjaan', createDynamicList('sertifikat', dataSertifikat));
+    Alpine.data('sertifikat', createDynamicList('sertifikat', dataSertifikat));
 
     Alpine.data('imgPreview', () => ({
       img: {{ Js::from(Auth::user()->foto ? Storage::url(Auth::user()->foto) : null) }},

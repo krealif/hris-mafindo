@@ -11,15 +11,23 @@ enum AgamaEnum: string
     case BUDDHA = 'buddha';
     case KONGHUCU = 'konghucu';
 
+    public function label(): string
+    {
+        return match ($this) {
+            self::ISLAM => 'Islam',
+            self::PROTESTAN => 'Protestan',
+            self::KATOLIK => 'Katolik',
+            self::HINDU => 'Hindu',
+            self::BUDDHA => 'Buddha',
+            self::KONGHUCU => 'Konghucu',
+        };
+    }
+
     public static function labels(): array
     {
-        return [
-            self::ISLAM->value => 'Islam',
-            self::PROTESTAN->value => 'Protestan',
-            self::KATOLIK->value => 'Katolik',
-            self::HINDU->value => 'Hindu',
-            self::BUDDHA->value => 'Buddha',
-            self::KONGHUCU->value => 'Konghucu',
-        ];
+        return array_combine(
+            array_map(fn($case) => $case->value, self::cases()),
+            array_map(fn($case) => $case->label(), self::cases())
+        );
     }
 }

@@ -15,7 +15,7 @@
           @endif
         </h3>
       </div>
-      <x-registration-step :data="App\Enums\RegistrationLamaStepEnum::labels()" step="{{ $registration?->step ?? 'mengisi' }}" />
+      <x-registration-step :data="App\Enums\RegistrationLamaStepEnum::labels()" step="{{ $registration?->step }}" />
       @if ($registration?->status == 'revisi')
         <div class="card-body border border-top-0">
           <h4 class="fs-3 text-red">REVISI</h4>
@@ -58,7 +58,7 @@
                 </x-form.tom-select>
               </div>
               <div class="col-12 col-md-6">
-                <label for="nama" class="form-label required">Nama Pengurus</label>
+                <label for="nama" class="form-label required">Koordinator</label>
                 <x-form.input name="nama" type="text" value="{{ old('nama', Auth::user()->nama) }}" required />
               </div>
             </div>
@@ -76,26 +76,24 @@
             @endif
             <div class="row mb-3">
               <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <label for="sekretaris1" class="form-label required">Sekretaris 1</label>
-                <x-form.input id="sekretaris1" name="pengurus[sekretaris1]" type="text" value="{{ old('pengurus.sekretaris1', Auth::user()->branch?->pengurus->sekretaris1) }}"
-                  required />
+                <label for="sekretaris1" class="form-label">Sekretaris 1</label>
+                <x-form.input id="sekretaris1" name="pengurus[sekretaris1]" type="text"
+                  value="{{ old('pengurus.sekretaris1', Auth::user()->branch?->pengurus->sekretaris1) }}" />
               </div>
               <div class="col-12 col-md-6">
-                <label for="sekretaris2" class="form-label required">Sekretaris 2</label>
-                <x-form.input id="sekretaris2" name="pengurus[sekretaris2]" type="text" value="{{ old('pengurus.sekretaris2', Auth::user()->branch?->pengurus->sekretaris2) }}"
-                  required />
+                <label for="sekretaris2" class="form-label">Sekretaris 2</label>
+                <x-form.input id="sekretaris2" name="pengurus[sekretaris2]" type="text"
+                  value="{{ old('pengurus.sekretaris2', Auth::user()->branch?->pengurus->sekretaris2) }}" />
               </div>
             </div>
             <div class="row mb-3">
               <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <label for="bendahara1" class="form-label required">Bendahara 1</label>
-                <x-form.input id="bendahara1" name="pengurus[bendahara1]" type="text" value="{{ old('pengurus.bendahara1', Auth::user()->branch?->pengurus->bendahara1) }}"
-                  required />
+                <label for="bendahara1" class="form-label">Bendahara 1</label>
+                <x-form.input id="bendahara1" name="pengurus[bendahara1]" type="text" value="{{ old('pengurus.bendahara1', Auth::user()->branch?->pengurus->bendahara1) }}" />
               </div>
               <div class="col-12 col-md-6">
-                <label for="bendahara2" class="form-label required">Bendahara 2</label>
-                <x-form.input id="bendahara2" name="pengurus[bendahara2]" type="text" value="{{ old('pengurus.bendahara2', Auth::user()->branch?->pengurus->bendahara2) }}"
-                  required />
+                <label for="bendahara2" class="form-label">Bendahara 2</label>
+                <x-form.input id="bendahara2" name="pengurus[bendahara2]" type="text" value="{{ old('pengurus.bendahara2', Auth::user()->branch?->pengurus->bendahara2) }}" />
               </div>
             </div>
           </div>

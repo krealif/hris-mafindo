@@ -16,8 +16,7 @@
         </div>
         <div class="mb-3">
           <label for="email" class="form-label required">Email</label>
-          <x-form.input name="email" type="email" placeholder="contoh@gmail.com" value="{{ old('email') }}"
-            required />
+          <x-form.input name="email" type="email" placeholder="contoh@gmail.com" value="{{ old('email') }}" required />
         </div>
         <div class="mb-3">
           <label for="password" class="form-label required">Password</label>
@@ -25,13 +24,11 @@
         </div>
         <div class="mb-3">
           <label for="password-confirm" class="form-label required">Konfirmasi Password</label>
-          <x-form.input name="password_confirmation" type="password" placeholder="Tuliskan kembali password Anda"
-            required />
+          <x-form.input name="password_confirmation" type="password" placeholder="Tuliskan kembali password Anda" required />
         </div>
         <div class="form-footer">
           <button type="submit" class="btn btn-primary w-100">Daftar</button>
-          <a href="{{ route('login') }}" class="btn w-100 mt-2">Sudah punya akun?&nbsp;<span
-              class="text-primary">Masuk</span></a>
+          <a href="{{ route('login') }}" class="btn w-100 mt-2">Sudah punya akun?&nbsp;<span class="text-primary">Masuk</span></a>
         </div>
       </form>
     </div>

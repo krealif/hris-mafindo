@@ -1,11 +1,10 @@
 @php
   $formName = ucwords(str_replace('-', ' ', $type));
-  $formView = 'hris.registrasi.' . $type;
+  $formView = 'hris.registrasi.form-' . $type;
 
   if (in_array($type, ['relawan-baru', 'relawan-wilayah'])) {
-      $formView = 'hris.registrasi.relawan';
+      $formView = 'hris.registrasi.form-relawan';
   }
-
 @endphp
 
 @extends('layouts.unverified', [
