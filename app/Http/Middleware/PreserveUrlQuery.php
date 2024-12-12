@@ -17,15 +17,16 @@ class PreserveUrlQuery
     public function handle(Request $request, Closure $next): Response
     {
         $query = $request->query();
-        $route = $request->route()->getName();
 
-        $name = explode(".", $route);
-        $key = "q.{$name[0]}";
+        if ($route = $request->route()?->getName()) {
+            $name = explode(".", $route);
+            $key = "q.{$name[0]}";
 
-        if (isset($query['page']) || isset($query['filter'])) {
-            session()->put($key, $query);
-        } elseif (session($key)) {
-            session()->forget($key);
+            if (isset($query['page']) || isset($query['filter'])) {
+                session()->put($key, $query);
+            } elseif (session($key)) {
+                session()->forget($key);
+            }
         }
 
         return $next($request);

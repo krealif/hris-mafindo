@@ -14,6 +14,9 @@ enum RoleEnum: string
         return ucwords(str_replace('-', ' ', $this->value));
     }
 
+    /**
+     * @return array<string>
+     */
     public static function values(): array
     {
         return array_map(fn($role) => $role->value, self::cases());

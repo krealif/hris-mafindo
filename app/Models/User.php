@@ -18,7 +18,7 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'nama',
@@ -31,9 +31,9 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
@@ -59,16 +59,25 @@ class User extends Authenticatable
         $this->notify(new ResetPassword($token));
     }
 
+    /**
+     * @return HasOne<\App\Models\Registration, $this>
+     */
     public function registration(): HasOne
     {
         return $this->hasOne(Registration::class);
     }
 
+    /**
+     * @return HasOne<\App\Models\UserDetail, $this>
+     */
     public function detail(): HasOne
     {
         return $this->hasOne(UserDetail::class);
     }
 
+    /**
+     * @return BelongsTo<\App\Models\Branch, $this>
+     */
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);

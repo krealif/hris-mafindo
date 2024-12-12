@@ -25,6 +25,9 @@ enum BidangMafindoEnum: string
         };
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function labels(): array
     {
         return array_combine(

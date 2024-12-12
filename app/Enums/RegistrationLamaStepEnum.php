@@ -7,7 +7,7 @@ enum RegistrationLamaStepEnum: string
     case MENGISI = 'mengisi';
     case VERIFIKASI = 'verifikasi';
 
-    public function index(): int
+    public function index(): int|false
     {
         return array_search($this, self::cases());
     }
@@ -17,19 +17,22 @@ enum RegistrationLamaStepEnum: string
         return ucwords(str_replace('-', ' ', $this->value));
     }
 
-    public static function labels(): array
-    {
-        return [
-            self::MENGISI->value => 'Mengisi Form',
-            self::VERIFIKASI->value => 'Verifikasi oleh Admin',
-        ];
-    }
-
     public function badge(): string
     {
         return match ($this) {
             self::MENGISI => 'bg-gray text-muted',
             self::VERIFIKASI => 'bg-green',
         };
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function labels(): array
+    {
+        return [
+            self::MENGISI->value => 'Mengisi Form',
+            self::VERIFIKASI->value => 'Verifikasi oleh Admin',
+        ];
     }
 }

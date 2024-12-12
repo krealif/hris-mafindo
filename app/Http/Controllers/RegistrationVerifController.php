@@ -79,6 +79,7 @@ class RegistrationVerifController extends Controller
      */
     public function showRelawan(int $registration): View
     {
+        /** @var \App\Models\Registration $registration */
         $registration = Registration::where('id', $registration)
             ->whereIn('type', ['relawan-baru', 'relawan-wilayah'])
             ->firstOrFail();
@@ -93,6 +94,7 @@ class RegistrationVerifController extends Controller
      */
     public function showPengurus(int $registration): View
     {
+        /** @var \App\Models\Registration $registration */
         $registration = Registration::where('id', $registration)
             ->where('type', 'pengurus-wilayah')
             ->firstOrFail();
@@ -110,20 +112,20 @@ class RegistrationVerifController extends Controller
         Gate::authorize('updateStep', $registration);
 
         $type = $registration->type;
-        $stepEnum = $type === RegistrationTypeEnum::RELAWAN_BARU->value
+        $stepEnum = $type == RegistrationTypeEnum::RELAWAN_BARU->value
             ? RegistrationBaruStepEnum::class
             : RegistrationLamaStepEnum::class;
 
         $currentStep = $stepEnum::from($registration->step);
 
-        if ($type === RegistrationTypeEnum::RELAWAN_BARU->value) {
-            if ($currentStep === RegistrationBaruStepEnum::WAWANCARA) {
+        if ($type == RegistrationTypeEnum::RELAWAN_BARU->value) {
+            if ($currentStep == RegistrationBaruStepEnum::WAWANCARA) {
                 $validated = $request->validate([
                     'no_relawan' => ['required', 'string'],
                 ]);
 
                 $registration->user->update(['no_relawan' => $validated['no_relawan']]);
-            } elseif ($currentStep === RegistrationBaruStepEnum::TERHUBUNG) {
+            } elseif ($currentStep == RegistrationBaruStepEnum::TERHUBUNG) {
                 $registration->user->update([
                     'is_verified' => 1,
                 ]);
@@ -174,9 +176,10 @@ class RegistrationVerifController extends Controller
         Gate::authorize('finishStep', $registration);
 
         $type = $registration->type;
-        if ($type === RegistrationTypeEnum::RELAWAN_BARU->value) {
+
+        if ($type == RegistrationTypeEnum::RELAWAN_BARU->value) {
             $registration->user->syncRoles(RoleEnum::RELAWAN);
-        } elseif ($type === RegistrationTypeEnum::RELAWAN_WILAYAH->value) {
+        } elseif ($type == RegistrationTypeEnum::RELAWAN_WILAYAH->value) {
             $validated = $request->validate([
                 'no_relawan' => ['required', 'string'],
             ]);

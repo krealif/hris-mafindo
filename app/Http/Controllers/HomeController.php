@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public static $HOME = '/';
+    public static string $HOME = '/';
     /**
      * Handle the incoming request.
      */

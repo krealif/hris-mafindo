@@ -10,7 +10,7 @@ enum RegistrationBaruStepEnum: string
     case TERHUBUNG = 'terhubung';
     case PELATIHAN = 'pelatihan';
 
-    public function index(): int
+    public function index(): int|false
     {
         return array_search($this, self::cases());
     }
@@ -18,17 +18,6 @@ enum RegistrationBaruStepEnum: string
     public function label(): string
     {
         return ucwords(str_replace('-', ' ', $this->value));
-    }
-
-    public static function labels(): array
-    {
-        return [
-            self::MENGISI->value => 'Mengisi Form',
-            self::PROFILING->value => 'Profiling Medsos',
-            self::WAWANCARA->value => 'Wawancara',
-            self::TERHUBUNG->value => 'Terhubung Wilayah',
-            self::PELATIHAN->value => 'Pelatihan Dasar Relawan',
-        ];
     }
 
     public function badge(): string
@@ -40,5 +29,19 @@ enum RegistrationBaruStepEnum: string
             self::TERHUBUNG => 'bg-lime',
             self::PELATIHAN => 'bg-green',
         };
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function labels(): array
+    {
+        return [
+            self::MENGISI->value => 'Mengisi Form',
+            self::PROFILING->value => 'Profiling Medsos',
+            self::WAWANCARA->value => 'Wawancara',
+            self::TERHUBUNG->value => 'Terhubung Wilayah',
+            self::PELATIHAN->value => 'Pelatihan Dasar Relawan',
+        ];
     }
 }

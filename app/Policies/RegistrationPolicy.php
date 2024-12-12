@@ -12,22 +12,6 @@ use App\Enums\RegistrationLamaStepEnum;
 class RegistrationPolicy
 {
     /**
-     * Determine whether the user can view any registrations.
-     */
-    public function viewAny(User $user)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can view a specific registration.
-     */
-    public function view(User $user, Registration $registration)
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the registration form for a specific type.
      */
     public function viewForm(User $user, RegistrationTypeEnum $type): bool
@@ -60,8 +44,8 @@ class RegistrationPolicy
 
         if (
             $user->registration &&
-            ($user->registration?->status == RegistrationStatusEnum::DIPROSES->value
-                || $user->registration?->step != 'mengisi')
+            ($user->registration->status == RegistrationStatusEnum::DIPROSES->value
+                || $user->registration->step != 'mengisi')
         ) {
             return false;
         }
@@ -76,7 +60,7 @@ class RegistrationPolicy
     /**
      * Determine whether the user can update the registration step.
      */
-    public function updateStep(User $user, Registration $registration)
+    public function updateStep(User $user, Registration $registration): bool
     {
         $disallowed = [
             RegistrationBaruStepEnum::MENGISI->value,
@@ -90,7 +74,7 @@ class RegistrationPolicy
     /**
      * Determine whether the user can revise form data.
      */
-    public function requestRevision(User $user, Registration $registration)
+    public function requestRevision(User $user, Registration $registration): bool
     {
         $allowed = [
             RegistrationBaruStepEnum::PROFILING->value,
@@ -103,7 +87,7 @@ class RegistrationPolicy
     /**
      * Determine whether the user can finish the registration step.
      */
-    public function finishStep(User $user, Registration $registration)
+    public function finishStep(User $user, Registration $registration): bool
     {
         $allowed = [
             RegistrationBaruStepEnum::PELATIHAN->value,

@@ -11,6 +11,9 @@ enum TingkatPendidikanEnum: string
     case S2 = 'S2';
     case S3 = 'S3';
 
+    /**
+     * @return array<string, string>
+     */
     public static function labels(): array
     {
         return array_combine(

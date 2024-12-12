@@ -19,10 +19,11 @@ use App\Enums\RegistrationLamaStepEnum;
 use App\Enums\RoleEnum;
 use App\Http\Requests\StoreRegistrationRelawanRequest;
 use App\Http\Requests\StoreRegistrationPengurusRequest;
+use App\Traits\HandlesArrayInput;
 
 class RegistrationController extends Controller
 {
-    use HasUploadFile;
+    use HasUploadFile, HandlesArrayInput;
 
     /**
      * Display a form selection page or redirect to the appropriate registration form
@@ -31,6 +32,7 @@ class RegistrationController extends Controller
     public function selectForm(): RedirectResponse | View
     {
         $registration = Auth::user()->registration;
+
         if ($registration) {
             return to_route('registration.showForm', $registration->type);
         }
@@ -47,6 +49,7 @@ class RegistrationController extends Controller
         Gate::authorize('viewForm', [Registration::class, $type]);
 
         $registration = Auth::user()->registration;
+
         $branches = Branch::select('id', 'nama')
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
@@ -97,6 +100,7 @@ class RegistrationController extends Controller
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
+        $registration = $user->registration;
 
         if ($request->hasFile('foto')) {
             $path = $this->uploadFile('profile', $validated['foto'], 'public');
@@ -108,7 +112,7 @@ class RegistrationController extends Controller
             }
         }
 
-        $registration = [
+        $registrationData = [
             'type' => $type,
             'status' => ($request->mode == 'draft')
                 ? RegistrationStatusEnum::DRAFT
@@ -124,9 +128,9 @@ class RegistrationController extends Controller
 
         if (
             $request->mode == 'draft'
-            && $user->registration?->status == 'revisi'
+            && $registration?->status == 'revisi'
         ) {
-            $registration['status'] = RegistrationStatusEnum::REVISI;
+            $registrationData['status'] = RegistrationStatusEnum::REVISI;
         }
 
         // Assign roles based on registration type
@@ -138,7 +142,7 @@ class RegistrationController extends Controller
             $user->assignRole($role);
         }
 
-        DB::transaction(function () use ($user, $registration, $validated) {
+        DB::transaction(function () use ($user, $registrationData, $validated) {
             $user->update(
                 Arr::only($validated, [
                     'nama',
@@ -167,7 +171,7 @@ class RegistrationController extends Controller
             Registration::updateOrCreate(
                 ['user_id' => $user->id],
                 [
-                    ...$registration,
+                    ...$registrationData,
                     'user_id' => $user->id,
                 ]
             );
@@ -188,8 +192,9 @@ class RegistrationController extends Controller
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
+        $registration = $user->registration;
 
-        $registration = [
+        $registrationData = [
             'type' => $type,
             'status' => ($request->mode == 'draft')
                 ? RegistrationStatusEnum::DRAFT
@@ -201,16 +206,16 @@ class RegistrationController extends Controller
 
         if (
             $request->mode == 'draft'
-            && $user->registration?->status == 'revisi'
+            && $registration?->status == 'revisi'
         ) {
-            $registration['status'] = RegistrationStatusEnum::REVISI;
+            $registrationData['status'] = RegistrationStatusEnum::REVISI;
         }
 
         if (!$user->hasRole('pengurus')) {
             $user->assignRole(RoleEnum::PENGURUS);
         }
 
-        DB::transaction(function () use ($user, $registration, $validated) {
+        DB::transaction(function () use ($user, $registrationData, $validated) {
             $user->update(
                 Arr::only($validated, [
                     'nama',
@@ -229,7 +234,7 @@ class RegistrationController extends Controller
             Registration::updateOrCreate(
                 ['user_id' => $user->id],
                 [
-                    ...$registration,
+                    ...$registrationData,
                     'user_id' => $user->id,
                 ]
             );
@@ -237,22 +242,5 @@ class RegistrationController extends Controller
 
         flash()->success("Berhasil!");
         return to_route('registration.showForm', $type);
-    }
-
-    private function handleArrayField(array $validated, array $fields): array
-    {
-        foreach ($fields as $field) {
-            // If the field exists, filter empty values
-            if (isset($validated[$field])) {
-                $validated[$field] = array_filter($validated[$field], function ($item) {
-                    return !empty(array_filter($item, fn($value) => !is_null($value) && $value !== ''));
-                });
-            } else {
-                // If the field does not exist, set it to null
-                $validated[$field] = null;
-            }
-        }
-
-        return $validated;
     }
 }

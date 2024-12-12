@@ -38,7 +38,6 @@ class StoreRegistrationRelawanRequest extends FormRequest
             ],
             'no_wa' => ['numeric', 'digits_between:10,15'],
             'no_hp' => ['nullable', 'numeric', 'digits_between:10,15'],
-            'alamat' => ['string', 'max:255'],
             'bidang_keahlian' => ['nullable', 'string', 'max:255'],
             'bidang_mafindo' => ['string'],
             'thn_bergabung' => ['numeric', 'min:2010'],
@@ -60,7 +59,7 @@ class StoreRegistrationRelawanRequest extends FormRequest
             'sertifikat.*.masa' => ['nullable', 'string', 'regex:/^\d{4}-\d{4}$/'],
         ];
 
-        if ($this->input('mode') === 'draft') {
+        if ($this->input('mode') == 'draft') {
             return [
                 ...$rules,
                 '*' => ['nullable'],

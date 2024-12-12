@@ -25,7 +25,7 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
-                if (Auth::user()->is_verified) {
+                if (Auth::user()?->is_verified) {
                     return redirect()->intended('/');
                 }
 
