@@ -1,0 +1,18 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
+parameters:
+
+    paths:
+        - app/
+
+    # Level 10 is the highest level
+    level: 8
+
+    ignoreErrors:
+        - '#Cannot access property \$[a-zA-Z0-9\\_]+ on App\\Models\\User\|null#'
+        - '#Cannot call method [a-zA-Z0-9\\_]+\(\) on App\\Models\\User\|null#'
+#
+#    excludePaths:
+#        - ./*/*/FileToBeExcluded.php
