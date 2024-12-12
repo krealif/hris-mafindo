@@ -31,15 +31,14 @@ class StoreRegistrationPengurusRequest extends FormRequest
                     });
                 })->ignore($this->user()),
             ],
-            'pengurus' => ['array'],
-            'pengurus.*' => ['string', 'max:255'],
+            'pengurus' => ['nullable', 'array'],
+            'pengurus.*' => ['nullable', 'string', 'max:255'],
         ];
 
         if ($this->input('mode') === 'draft') {
             return [
                 ...$rules,
                 '*' => ['nullable'],
-                'pengurus.*' => ['nullable', 'string', 'max:255'],
             ];
         }
 

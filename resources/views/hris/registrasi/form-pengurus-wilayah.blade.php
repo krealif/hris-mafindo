@@ -5,6 +5,16 @@
         {{ flash()->message }}
       </x-alert>
     @endif
+    @if ($errors->any())
+      <x-alert class="alert-danger">
+        <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
+        <ul class="mt-2 mb-0" style="margin-left: -1rem">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </x-alert>
+    @endif
     <div class="card card-mafindo border-0">
       <div class="card-header border border-bottom-0" style="border-color: var(--tblr-border-color) !important">
         <h3 class="d-flex align-items-center gap-2 mb-0">

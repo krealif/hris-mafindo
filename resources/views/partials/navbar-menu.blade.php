@@ -23,7 +23,7 @@
                 <div class="dropdown-menu-columns">
                   <div class="dropdown-menu-column">
                     <a class="dropdown-item" href="{{ route('verif.indexRelawan') }}">Relawan</a>
-                    <a class="dropdown-item" href="">Pengurus</a>
+                    <a class="dropdown-item" href="{{ route('verif.indexPengurus') }}">Pengurus</a>
                     <a class="dropdown-item" href="">Data</a>
                   </div>
                 </div>

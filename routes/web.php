@@ -42,7 +42,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ], function () {
         Route::get('/relawan', 'indexRelawan')->name('indexRelawan');
         Route::get('/relawan/{registration}', 'showRelawan')->name('detailRelawan');
+        Route::get('/pengurus', 'indexPengurus')->name('indexPengurus');
+        Route::get('/pengurus/{registration}', 'showPengurus')->name('detailPengurus');
         Route::post('/relawan/{registration}/next', 'nextStep')->name('nextStep');
+        // Although the path specifies 'relawan', this two route also applies to 'pengurus' due to shared logic.
         Route::post('/relawan/{registration}/revisi', 'requestRevision')->name('revisi');
         Route::post('/relawan/{registration}/selesai', 'finishRegistration')->name('finish');
     });

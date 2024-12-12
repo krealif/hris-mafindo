@@ -19,7 +19,7 @@ use App\Enums\RegistrationLamaStepEnum;
 class RegistrationVerifController extends Controller
 {
     /**
-     * Display a listing of the registration.
+     * Display a listing of the relawan registration.
      */
     public function indexRelawan(): View
     {
@@ -32,6 +32,7 @@ class RegistrationVerifController extends Controller
                 AllowedFilter::exact('status'),
                 AllowedFilter::exact('user.branch_id')
             ])
+            ->whereIn('type', ['relawan-wilayah', 'relawan-baru'])
             ->whereNotIn('status', ['draft', 'selesai'])
             ->with('user.branch')
             ->orderBy('updated_at', 'asc')
@@ -46,6 +47,34 @@ class RegistrationVerifController extends Controller
     }
 
     /**
+     * Display a listing of pengurus the registration.
+     */
+    public function indexPengurus(): View
+    {
+        $registrations = QueryBuilder::for(Registration::class)
+            ->allowedFilters([
+                'user.nama',
+                'user.email',
+                AllowedFilter::exact('type'),
+                AllowedFilter::exact('step'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::exact('user.branch_id')
+            ])
+            ->where('type', 'pengurus-wilayah')
+            ->whereNotIn('status', ['draft', 'selesai'])
+            ->with('user.branch')
+            ->orderBy('updated_at', 'asc')
+            ->paginate(20)
+            ->appends(request()->query());
+
+        $branches = Branch::select('id', 'nama')
+            ->orderBy('nama', 'asc')
+            ->pluck('nama', 'id');
+
+        return view('hris.verifikasi.list-pengurus', compact('registrations', 'branches'));
+    }
+
+    /**
      * Display the specified registration of relawan.
      */
     public function showRelawan(int $registration): View
@@ -57,6 +86,20 @@ class RegistrationVerifController extends Controller
         $user = $registration->user;
 
         return view('hris.verifikasi.detail-relawan', compact('registration', 'user'));
+    }
+
+    /**
+     * Display the specified registration of pengurus.
+     */
+    public function showPengurus(int $registration): View
+    {
+        $registration = Registration::where('id', $registration)
+            ->where('type', 'pengurus-wilayah')
+            ->firstOrFail();
+
+        $user = $registration->user;
+
+        return view('hris.verifikasi.detail-pengurus', compact('registration', 'user'));
     }
 
     /**
@@ -115,6 +158,10 @@ class RegistrationVerifController extends Controller
             'message' => $validated['message'],
         ]);
 
+        if ($registration->type == 'pengurus-wilayah') {
+            return to_route('verif.detailPengurus', $registration->id);
+        }
+
         return to_route('verif.detailRelawan', $registration->id);
     }
 
@@ -136,6 +183,11 @@ class RegistrationVerifController extends Controller
 
             $registration->user->update([
                 'no_relawan' => $validated['no_relawan'],
+                'is_verified' => 1,
+            ]);
+        } else {
+            // For pengurus
+            $registration->user->update([
                 'is_verified' => 1,
             ]);
         }

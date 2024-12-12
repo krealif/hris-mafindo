@@ -194,7 +194,9 @@ class RegistrationController extends Controller
             'status' => ($request->mode == 'draft')
                 ? RegistrationStatusEnum::DRAFT
                 : RegistrationStatusEnum::DIPROSES,
-            'step' => RegistrationLamaStepEnum::MENGISI,
+            'step' => ($request->mode == 'draft')
+                ? RegistrationLamaStepEnum::MENGISI
+                : RegistrationLamaStepEnum::VERIFIKASI,
         ];
 
         if (
@@ -212,12 +214,10 @@ class RegistrationController extends Controller
                 ])
             );
 
-            $pengurus = array_merge(['ketua' => $user->nama], $validated['pengurus']);
-
             Branch::updateOrCreate(
                 ['id' => $user->branch_id],
                 [
-                    'pengurus' => $pengurus,
+                    'pengurus' => $validated['pengurus'],
                     'id' => $user->branch_id,
                 ]
             );
