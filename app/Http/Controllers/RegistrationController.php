@@ -206,6 +206,10 @@ class RegistrationController extends Controller
             $registration['status'] = RegistrationStatusEnum::REVISI;
         }
 
+        if (!$user->hasRole('pengurus')) {
+            $user->assignRole(RoleEnum::PENGURUS);
+        }
+
         DB::transaction(function () use ($user, $registration, $validated) {
             $user->update(
                 Arr::only($validated, [

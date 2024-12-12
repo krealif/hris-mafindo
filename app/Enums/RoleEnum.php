@@ -9,6 +9,11 @@ enum RoleEnum: string
     case RELAWAN = 'relawan';
     case RELAWAN_BARU = 'relawan-baru';
 
+    public function label(): string
+    {
+        return ucwords(str_replace('-', ' ', $this->value));
+    }
+
     public static function values(): array
     {
         return array_map(fn($role) => $role->value, self::cases());

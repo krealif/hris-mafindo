@@ -34,7 +34,8 @@
               </div>
               <div class="col-12 col-md-6 col-lg-3">
                 <label for="status" class="form-label">Status</label>
-                <x-form.tom-select name="status" multiple :showError=false selected="{{ request()->filter['status'] ?? '' }}" :options="[
+                <x-form.select name="status" :showError=false selected="{{ request()->filter['status'] ?? '' }}" :options="[
+                    '' => '',
                     'diproses' => 'Diproses',
                     'revisi' => 'Revisi',
                 ]" />
