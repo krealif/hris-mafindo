@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Enums\RoleEnum;
 use Illuminate\View\View;
 use App\Models\Registration;
@@ -10,6 +11,8 @@ use App\Enums\RegistrationTypeEnum;
 use Illuminate\Support\Facades\Gate;
 use App\Enums\RegistrationStatusEnum;
 use Illuminate\Http\RedirectResponse;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
 
@@ -20,13 +23,26 @@ class RegistrationVerifController extends Controller
      */
     public function indexRelawan(): View
     {
-        $registrations = Registration::whereIn('type', ['relawan-baru', 'relawan-wilayah'])
+        $registrations = QueryBuilder::for(Registration::class)
+            ->allowedFilters([
+                'user.nama',
+                'user.email',
+                AllowedFilter::exact('type'),
+                AllowedFilter::exact('step'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::exact('user.branch_id')
+            ])
             ->whereNotIn('status', ['draft', 'selesai'])
             ->with('user.branch')
             ->orderBy('updated_at', 'asc')
-            ->get();
+            ->paginate(20)
+            ->appends(request()->query());
 
-        return view('hris.verifikasi.list-relawan', compact('registrations'));
+        $branches = Branch::select('id', 'nama')
+            ->orderBy('nama', 'asc')
+            ->pluck('nama', 'id');
+
+        return view('hris.verifikasi.list-relawan', compact('registrations', 'branches'));
     }
 
     /**

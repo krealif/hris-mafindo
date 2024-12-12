@@ -11,18 +11,27 @@
   $attributes = $attributes->class(['form-select', 'is-invalid' => $showError && $errors->has($name)]);
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
   $selectedValue = old($name, $selected);
+  $selectedValue = explode(',', $selectedValue);
 @endphp
 
 <select id="{{ $id }}" name="{{ $name }}" autocomplete="off" {{ $attributes }} @required($required)>
   {{ $slot }}
   @foreach ($options as $value => $label)
-    <option value="{{ $value }}" @selected($selectedValue == $value)>{{ $label }}</option>
+    <option value="{{ $value }}" @selected(in_array($value, $selectedValue))>{{ $label }}</option>
   @endforeach
 </select>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    window.flatpickr && (new TomSelect({{ Js::from('#' . $id) }}));
-  });
+  @if ($attributes['multiple'])
+    document.addEventListener("DOMContentLoaded", function() {
+      window.TomSelect && (new TomSelect({{ Js::from('#' . $id) }}, {
+        plugins: ['caret_position'],
+      }));
+    });
+  @else
+    document.addEventListener("DOMContentLoaded", function() {
+      window.TomSelect && (new TomSelect({{ Js::from('#' . $id) }}));
+    });
+  @endif
 </script>
 @if ($showError)
   @error($name)

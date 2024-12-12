@@ -4,16 +4,18 @@ function modifyUrlQueryParams(currentUrl, params) {
     Object.keys(params).forEach(key => {
         if (url.searchParams.has(key)) {
             if (params[key]) {
+                console.log(key, params[key]);
                 url.searchParams.set(key, params[key]);
             } else {
                 url.searchParams.delete(key);
             }
         }
         else {
-            url.searchParams.append(key, params[key]);
+            if (params[key]) {
+                url.searchParams.append(key, params[key]);
+            }
         }
     });
-
     return url.toString();
 }
 
@@ -22,13 +24,17 @@ function applyFilter(forms) {
 
     forms.forEach(form => {
         Array.from(form.elements).forEach(input => {
-            if (input.name && input.value) {
+            if (input.name) {
                 const key = `filter[${input.name}]`;
-                queryParams[key] = input.value;
+
+                if (input.multiple && input.tomselect) {
+                    queryParams[key] = input.tomselect.getValue().join();
+                } else {
+                    queryParams[key] = input.value;
+                }
             }
         });
     });
-
     const url = new URL(window.location.href);
     window.location.href = modifyUrlQueryParams(url, queryParams);
 }
@@ -37,7 +43,7 @@ function clearFilter(form) {
     const queryParams = {};
 
     Array.from(form.elements).forEach(input => {
-        if (input.name && input.value) {
+        if (input.name) {
             const key = `filter[${input.name}]`;
             queryParams[key] = '';
         }
@@ -53,7 +59,7 @@ const forms = datatable.querySelectorAll('form[id^="dt"]');
 forms.forEach(form => {
     const applyFilterBtn = form.querySelector('button[type=submit]')
     if (applyFilterBtn) {
-        applyFilterBtn.addEventListener('click', function(event) {
+        applyFilterBtn.addEventListener('click', function (event) {
             event.preventDefault()
             applyFilter(forms);
         });
@@ -62,7 +68,7 @@ forms.forEach(form => {
 
     const clearBtn = form.querySelector('button#dt-btn-clear');
     if (clearBtn) {
-        clearBtn.addEventListener('click', function(event) {
+        clearBtn.addEventListener('click', function (event) {
             event.preventDefault()
             clearFilter(form);
         });

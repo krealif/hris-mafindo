@@ -26,7 +26,7 @@
     <div class="container-xl">
       <div class="row g-3">
         <div class="col-12">
-          <div class="card overflow-hidden border-top-0">
+          <div class="card card-mafindo overflow-hidden border-top-0">
             @if ($registration->type == 'relawan-baru')
               <x-registration-step :data="App\Enums\RegistrationBaruStepEnum::labels()" step="{{ $registration?->step }}" />
             @else
@@ -217,7 +217,7 @@
                 <ul class="nav nav-pills gap-2" role="tablist">
                   @if (in_array($registration->step, ['pelatihan', 'verifikasi']))
                     <li class="nav-item" role="presentation">
-                      <a href="#tab-selesai" class="nav-link fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                      <a href="#tab-selesai" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-circle-check class="icon text-green me-2" />
                         Selesai
                       </a>
@@ -225,7 +225,7 @@
                   @endif
                   @if (in_array($registration->step, ['profiling', 'wawancara', 'terhubung']))
                     <li class="nav-item" role="presentation">
-                      <a href="#tab-lanjut" class="nav-link fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                      <a href="#tab-lanjut" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-arrow-right-to-line class="icon text-blue me-2" />
                         Lanjut
                       </a>
@@ -233,7 +233,7 @@
                   @endif
                   @if (in_array($registration->step, ['profiling', 'verifikasi']))
                     <li class="nav-item" role="presentation">
-                      <a href="#tab-revisi" class="nav-link fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                      <a href="#tab-revisi" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-file-pen-line class="icon text-orange me-2" />
                         Revisi
                       </a>
@@ -242,7 +242,7 @@
                 </ul>
               </div>
               <div class="tab-content">
-                @if (true || in_array($registration->step, ['pelatihan', 'verifikasi']))
+                @if (in_array($registration->step, ['pelatihan', 'verifikasi']))
                   <div id="tab-selesai" class="tab-pane">
                     <form method="POST" action="{{ route('verif.finish', $registration->id) }}" class="card-body border-top">
                       @csrf
@@ -290,3 +290,7 @@
     </div>
   </div>
 @endsection
+
+@push('scripts')
+  <script></script>
+@endpush

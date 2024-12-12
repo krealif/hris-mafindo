@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Registrasi',
+    'title' => 'Registrasi Relawan',
 ])
 
 @section('content')
@@ -19,7 +19,47 @@
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">
-        <x-dt.datatable total="{{ $registrations->count() }}">
+        <x-dt.datatable search="user.nama" total="{{ $registrations->count() }}">
+          <x-slot:filterForm>
+            <!-- Table filter -->
+            <div class="row g-4">
+              <div class="col-12 col-md-6 col-lg-3">
+                <label for="email" class="form-label">Email</label>
+                <x-form.input id="email" name="user.email" type="text" :showError=false value="{{ request()->filter['user.email'] ?? '' }}" />
+              </div>
+              <div class="col-12 col-md-6 col-lg-3">
+                <label for="type" class="form-label">Tipe</label>
+                <x-form.select name="type" type="text" :showError=false selected="{{ request()->filter['type'] ?? '' }}" :options="[
+                    '' => '',
+                    'relawan-baru' => 'Relawan Baru',
+                    'relawan-lama' => 'Relawan Lama',
+                ]" />
+              </div>
+              <div class="col-12 col-md-6 col-lg-3">
+                <label for="step" class="form-label">Tahapan</label>
+                <x-form.tom-select name="step" multiple :showError=false selected="{{ request()->filter['step'] ?? '' }}" :options="[
+                    'profiling' => 'Profiling',
+                    'wawancara' => 'Wawancara',
+                    'terhubung' => 'Terhubung',
+                    'pelatihan' => 'Pelatihan',
+                    'verifikasi' => 'Verifikasi',
+                ]" />
+              </div>
+              <div class="col-12 col-md-6 col-lg-3">
+                <label for="status" class="form-label">Status</label>
+                <x-form.tom-select name="status" multiple :showError=false selected="{{ request()->filter['status'] ?? '' }}" :options="[
+                    'diproses' => 'Diproses',
+                    'revisi' => 'Revisi',
+                ]" />
+              </div>
+              <div class="col-12 col-md-6 col-lg-3">
+                <label for="branch" class="form-label">Wilayah</label>
+                <x-form.tom-select id="branch" name="user.branch_id" :options=$branches :showError=false selected="{{ request()->filter['user.branch_id'] ?? '' }}">
+                  <option selected></option>
+                </x-form.tom-select>
+              </div>
+            </div>
+          </x-slot>
           <!-- Table Body -->
           <table class="table table-vcenter card-table table-striped datatable">
             <thead class="table-primary">
@@ -68,6 +108,12 @@
               @endforeach
             </tbody>
           </table>
+          @if ($registrations->hasPages())
+            <!-- Pagination -->
+            <x-slot:pagination>
+              {{ $registrations->links() }}
+            </x-slot>
+          @endif
         </x-dt.datatable>
       </div>
     </div>

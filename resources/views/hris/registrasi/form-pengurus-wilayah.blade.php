@@ -54,7 +54,7 @@
               <div class="col-12 col-md-6 mb-3 mb-md-0">
                 <label for="branch" class="form-label required">Wilayah</label>
                 <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', Auth::user()->branch_id) }}" required>
-                  <option value="">Pilih wilayah</option>
+                  <option selected></option>
                 </x-form.tom-select>
               </div>
               <div class="col-12 col-md-6">

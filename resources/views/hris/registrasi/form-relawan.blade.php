@@ -147,10 +147,10 @@
                 <label for="foto" @class(['form-label', 'required' => !Auth::user()->foto])>{{ Auth::user()->foto ? 'Ganti Foto' : 'Upload Foto' }}</label>
                 <div class="row g-2">
                   <div class="col">
-                    <x-form.input name="foto" type="file" x-ref="imgInput" @change="handleFileUpload" accept=".jpg,.jpeg,.png" :required="!Auth::user()->foto" />
+                    <x-form.input name="foto" type="file" x-ref="imgInput" x-on:change="handleFileUpload" accept=".jpg,.jpeg,.png" :required="!Auth::user()->foto" />
                   </div>
                   <div class="col-auto" x-show="newImg">
-                    <button @click="cancelUpload" type="button" class="btn btn-icon">
+                    <button x-on:click="cancelUpload" type="button" class="btn btn-icon">
                       <x-lucide-image-minus class="icon text-red" />
                     </button>
                   </div>
@@ -323,13 +323,13 @@
                   </div>
                 </div>
                 <div class="position-absolute top-0 start-100 translate-middle me-1 mt-1" x-show="rows.length > 0">
-                  <div class="p-1 text-secondary border rounded-circle bg-white repeater-delete" class="bg-white" @click="del(index)">
+                  <div class="p-1 text-secondary border rounded-circle bg-white repeater-delete" class="bg-white" x-on:click="del(index)">
                     <x-lucide-x class="icon text-red" style="max-width: unset" defer />
                   </div>
                 </div>
               </div>
             </template>
-            <button class="btn" type="button" @click="add()">
+            <button class="btn" type="button" x-on:click="add()">
               <x-lucide-plus class="icon" />
               Tambah
             </button>
@@ -385,13 +385,13 @@
                   </div>
                 </div>
                 <div class="position-absolute top-0 start-100 translate-middle me-1 mt-1" x-show="rows.length > 0">
-                  <div class="p-1 text-secondary border rounded-circle bg-white repeater-delete" class="bg-white" @click="del(index)">
+                  <div class="p-1 text-secondary border rounded-circle bg-white repeater-delete" class="bg-white" x-on:click="del(index)">
                     <x-lucide-x class="icon text-red" style="max-width: unset" defer />
                   </div>
                 </div>
               </div>
             </template>
-            <button class="btn" type="button" @click="add()">
+            <button class="btn" type="button" x-on:click="add()">
               <x-lucide-plus class="icon" />
               Tambah
             </button>
@@ -438,13 +438,13 @@
                   </div>
                 </div>
                 <div class="position-absolute top-0 start-100 translate-middle me-1 mt-1" x-show="rows.length > 0">
-                  <div class="p-1 text-secondary border rounded-circle bg-white repeater-delete" class="bg-white" @click="del(index)">
+                  <div class="p-1 text-secondary border rounded-circle bg-white repeater-delete" class="bg-white" x-on:click="del(index)">
                     <x-lucide-x class="icon text-red" style="max-width: unset" defer />
                   </div>
                 </div>
               </div>
             </template>
-            <button class="btn" type="button" @click="add()">
+            <button class="btn" type="button" x-on:click="add()">
               <x-lucide-plus class="icon" />
               Tambah
             </button>
@@ -454,11 +454,11 @@
         <div class="card bg-primary-lt shadow position-sticky bottom-0 z-3">
           <input type="hidden" name="mode" x-bind:value="isDraft ? 'draft' : 'submit'">
           <div class="card-body btn-list">
-            <button class="btn btn-primary" @click="isDraft = false">
+            <button class="btn btn-primary" x-on:click="isDraft = false">
               <x-lucide-send class="icon" />
               Ajukan
             </button>
-            <button class="btn btn-secondary" @click="isDraft = true">
+            <button class="btn btn-secondary" x-on:click="isDraft = true">
               <x-lucide-save class="icon" />
               Simpan Sementara
             </button>
