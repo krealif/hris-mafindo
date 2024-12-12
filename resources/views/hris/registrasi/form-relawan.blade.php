@@ -5,6 +5,16 @@
         {{ flash()->message }}
       </x-alert>
     @endif
+    @if ($errors->any())
+      <x-alert class="alert-danger">
+        <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
+        <ul class="mt-2 mb-0" style="margin-left: -1rem">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </x-alert>
+    @endif
     <div class="card card-mafindo overflow-hidden">
       <div class="card-header border-bottom-0">
         <h2 class="card-title d-flex align-items-center gap-2 mb-0">
@@ -83,8 +93,8 @@
       </div>
     </div>
     <div class="col-12 col-md-9">
-      <form method="POST" action="{{ route('registration.store', $type) }}" class="vstack gap-2" x-data="{ isDraft: false }" x-bind:novalidate="isDraft" enctype="multipart/form-data"
-        autocomplete="off">
+      <form method="POST" action="{{ route('registration.store', $type) }}" class="vstack gap-2" x-data="{ isDraft: false }" x-bind:novalidate="isDraft"
+        enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div id="informasi-pribadi" class="card card-mafindo">
           <div class="card-header">

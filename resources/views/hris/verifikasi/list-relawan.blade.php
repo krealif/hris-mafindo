@@ -19,6 +19,11 @@
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">
+        @if (flash()->message)
+          <x-alert type="{{ flash()->class }}">
+            {{ flash()->message }}
+          </x-alert>
+        @endif
         <x-dt.datatable search="user.nama" total="{{ $registrations->count() }}">
           <x-slot:filterForm>
             <!-- Table filter -->

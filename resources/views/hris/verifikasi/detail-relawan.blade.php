@@ -38,9 +38,7 @@
                   <img src="{{ $user->foto ? Storage::url($user->foto) : '' }}" class="avatar avatar-xl" />
                 </div>
                 <div class="col">
-                  <h2 class="card-title h2 mb-2">
-                    {{ $user->nama }}
-                  </h2>
+                  <h2 class="card-title h2 mb-2">{{ $user->nama }}</h2>
                   <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
                   <x-badge-enum class="fs-4 me-1" case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
                   <x-badge-enum class="fs-4" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
@@ -203,10 +201,19 @@
         </div>
         @if ($registration->status == 'diproses')
           <div class="col-12 col-md-6">
+            @if (flash()->message)
+              <x-alert type="{{ flash()->class }}">
+                {{ flash()->message }}
+              </x-alert>
+            @endif
             @if ($errors->any())
-              <!-- Validation error -->
               <x-alert class="alert-danger">
-                Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.
+                <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
+                <ul class="mt-2 mb-0" style="margin-left: -1rem">
+                  @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                  @endforeach
+                </ul>
               </x-alert>
             @endif
             <div class="card card-mafindo sticky-top">
