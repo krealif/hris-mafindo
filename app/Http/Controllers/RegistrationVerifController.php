@@ -35,7 +35,7 @@ class RegistrationVerifController extends Controller
             ->whereIn('type', ['relawan-wilayah', 'relawan-baru'])
             ->whereNotIn('status', ['draft', 'selesai'])
             ->with('user.branch')
-            ->orderBy('updated_at', 'asc')
+            ->orderBy('updated_at', 'desc')
             ->paginate(20)
             ->appends(request()->query());
 
@@ -63,7 +63,7 @@ class RegistrationVerifController extends Controller
             ->where('type', 'pengurus-wilayah')
             ->whereNotIn('status', ['draft', 'selesai'])
             ->with('user.branch')
-            ->orderBy('updated_at', 'asc')
+            ->orderBy('updated_at', 'desc')
             ->paginate(20)
             ->appends(request()->query());
 
@@ -77,10 +77,10 @@ class RegistrationVerifController extends Controller
     /**
      * Display the specified registration of relawan.
      */
-    public function showRelawan(int $registration): View
+    public function showRelawan(int $id): View
     {
         /** @var \App\Models\Registration $registration */
-        $registration = Registration::where('id', $registration)
+        $registration = Registration::where('id', $id)
             ->whereIn('type', ['relawan-baru', 'relawan-wilayah'])
             ->firstOrFail();
 

@@ -118,6 +118,14 @@
     font-size: .875rem;
 }
 
+.only-alert {
+    display: none;
+}
+
+.only-alert:has(div) {
+    display: block;
+}
+
 /** Button Custom **/
 
 .btn-sec-yellow {

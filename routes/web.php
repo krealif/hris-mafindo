@@ -1,9 +1,9 @@
 <?php
 
-use App\Enums\RoleEnum;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\RegistrationMigrateController;
 use App\Http\Controllers\RegistrationVerifController;
 
 /**
@@ -20,10 +20,6 @@ Route::middleware(['auth', 'unverified'])->group(function () {
         Route::get('form/{type}', 'showForm')->name('showForm');
         Route::post('form/{type}', 'store')->name('store');
     });
-});
-
-Route::get('test', function () {
-    dd(RoleEnum::values());
 });
 
 /**
@@ -45,8 +41,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/pengurus', 'indexPengurus')->name('indexPengurus');
         Route::get('/pengurus/{registration}', 'showPengurus')->name('detailPengurus');
         Route::post('/relawan/{registration}/next', 'nextStep')->name('nextStep');
-        // Although the path specifies 'relawan', this two route also applies to 'pengurus' due to shared logic.
+        // Although the path specifies 'relawan', this two route also applies to 'pengurus'.
         Route::post('/relawan/{registration}/revisi', 'requestRevision')->name('revisi');
         Route::post('/relawan/{registration}/selesai', 'finishRegistration')->name('finish');
+    });
+
+    // Group routes for admin-specific registration verification tasks.
+    Route::group([
+        'middleware' => ['role:admin'],
+        'controller' => RegistrationMigrateController::class,
+        'as' => 'migrasi.',
+        'prefix' => 'registrasi'
+    ], function () {
+        Route::get('/migrasi', 'index')->name('index');
+        Route::get('/migrasi/tambah', 'create')->name('create');
+        Route::get('/migrasi/{user}/edit', 'edit')->name('edit');
+        Route::post('/migrasi', 'store')->name('store');
+        Route::patch('/migrasi/{user}', 'update')->name('update');
+        Route::delete('/migrasi/{user}', 'destroy')->name('destroy');
     });
 });

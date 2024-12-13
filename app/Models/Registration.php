@@ -26,6 +26,7 @@ class Registration extends Model
         'status',
         'step',
         'message',
+        'data',
         'updated_at',
     ];
 

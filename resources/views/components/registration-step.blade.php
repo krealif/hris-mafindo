@@ -4,7 +4,7 @@
   @foreach ($data as $value => $label)
     <li @class([
         'stepper-item',
-        'active' => $value == $step || ($step === '' && $loop->first),
+        'active' => $value == $step || ($step == '' && $loop->first),
     ])>
       {{ $label }}
     </li>

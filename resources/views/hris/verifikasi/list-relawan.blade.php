@@ -81,7 +81,7 @@
             </thead>
             <tbody>
               @foreach ($registrations as $registration)
-                <tr data-id="{{ $registration->id }}">
+                <tr>
                   <td>
                     <a href="{{ route('verif.detailRelawan', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
                   </td>
@@ -104,7 +104,7 @@
                   <td>
                     <div class="btn-list flex-nowrap justify-content-end">
                       <a href="{{ route('verif.detailRelawan', $registration->id) }}" class="btn">
-                        <x-lucide-eye class="icon" />
+                        <x-lucide-eye class="icon" defer />
                         Lihat
                       </a>
                     </div>
