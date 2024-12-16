@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Registrasi Pengurus',
+    'title' => 'Registrasi Relawan & Pengurus',
 ])
 
 @section('content')
@@ -10,7 +10,7 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <h1 class="page-title">
-              Registrasi Pengurus
+              Registrasi Relawan & Pengurus
             </h1>
           </div>
         </div>
@@ -24,25 +24,31 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dt.datatable search="user.nama" total="{{ $registrations->count() }}">
+        <x-dt.datatable search="user.nama" searchPlaceholder="Pencarian nama" total="{{ $registrations->count() }}">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row g-4">
               <div class="col-12 col-md-6 col-lg-3">
                 <label for="email" class="form-label">Email</label>
-                <x-form.input id="email" name="user.email" type="text" :showError=false value="{{ request()->filter['user.email'] ?? '' }}" />
+                <x-form.input id="email" name="user.email" type="text" value="{{ request()->filter['user.email'] ?? '' }}" :showError=false />
               </div>
               <div class="col-12 col-md-6 col-lg-3">
-                <label for="status" class="form-label">Status</label>
-                <x-form.select name="status" :showError=false selected="{{ request()->filter['status'] ?? '' }}" :options="[
-                    '' => '',
-                    'diproses' => 'Diproses',
-                    'revisi' => 'Revisi',
+                <label for="type" class="form-label">Tipe</label>
+                <x-form.tom-select name="type" multiple selected="{{ request()->filter['type'] ?? '' }}" :showError=false :options="App\Enums\RegistrationTypeEnum::labels()" />
+              </div>
+              <div class="col-12 col-md-6 col-lg-3">
+                <label for="step" class="form-label">Tahapan</label>
+                <x-form.tom-select name="step" multiple selected="{{ request()->filter['step'] ?? '' }}" :showError=false :options="[
+                    'profiling' => 'Profiling',
+                    'wawancara' => 'Wawancara',
+                    'terhubung' => 'Terhubung',
+                    'pelatihan' => 'Pelatihan',
+                    'verifikasi' => 'Verifikasi',
                 ]" />
               </div>
               <div class="col-12 col-md-6 col-lg-3">
                 <label for="branch" class="form-label">Wilayah</label>
-                <x-form.tom-select id="branch" name="user.branch_id" :options=$branches :showError=false selected="{{ request()->filter['user.branch_id'] ?? '' }}">
+                <x-form.tom-select id="branch" name="user.branch_id" :options=$branches selected="{{ request()->filter['user.branch_id'] ?? '' }}" :showError=false>
                   <option selected></option>
                 </x-form.tom-select>
               </div>
@@ -56,7 +62,6 @@
                 <th>Email</th>
                 <th>Tipe</th>
                 <th>Tahapan</th>
-                <th>Status</th>
                 <th>Wilayah</th>
                 <th>Timestamp</th>
                 <th class="w-1"></th>
@@ -66,23 +71,24 @@
               @foreach ($registrations as $registration)
                 <tr>
                   <td>
-                    <a href="{{ route('verif.detailPengurus', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
+                    <a href="{{ route('verif.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
                   </td>
                   <td>{{ $registration->user->email }}</td>
                   <td>
                     <x-badge-enum case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
                   </td>
                   <td>
-                    <x-badge-enum case="{{ $registration->step }}" :enumClass="App\Enums\RegistrationLamaStepEnum::class" />
-                  </td>
-                  <td>
-                    <x-badge-enum case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
+                    @if ($registration->type == 'relawan-baru')
+                      <x-badge-enum case="{{ $registration->step }}" :enumClass="App\Enums\RegistrationBaruStepEnum::class" />
+                    @else
+                      <x-badge-enum case="{{ $registration->step }}" :enumClass="App\Enums\RegistrationLamaStepEnum::class" />
+                    @endif
                   </td>
                   <td>{{ $registration->user->branch?->nama }}</td>
-                  <td>{{ $registration->updated_at }}</td>
+                  <td>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
                   <td>
-                    <div class="btn-list flex-nowrap justify-content-end">
-                      <a href="{{ route('verif.detailPengurus', $registration->id) }}" class="btn">
+                    <div class="btn-list flex-nowrap">
+                      <a href="{{ route('verif.show', $registration->id) }}" class="btn">
                         <x-lucide-eye class="icon" defer />
                         Lihat
                       </a>

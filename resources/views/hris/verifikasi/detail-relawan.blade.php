@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => $registration->user->nama . ' | Detail Relawan',
+    'title' => $registration->user->nama . ' | Detail Registrasi',
 ])
 
 @section('content')
@@ -7,17 +7,27 @@
     <!-- Page header -->
     <div class="page-header d-print-none">
       <div class="container-xl">
-        <div class="row g-2 align-items-center">
+        <div class="d-flex gap-2 justify-content-between align-items-center">
           <div class="col">
             <div class="mb-1">
               <x-breadcrumb>
-                <x-breadcrumb-item label="Registrasi" route="verif.indexRelawan" />
+                @if (url()->previous() == route('verif.history'))
+                  <x-breadcrumb-item label="Histori" route="verif.history" />
+                @else
+                  <x-breadcrumb-item label="Registrasi" route="verif.index" />
+                @endif
               </x-breadcrumb>
             </div>
             <h1 class="page-title">
-              Detail Relawan
+              Detail Registrasi
             </h1>
           </div>
+          @can('destroy', $registration)
+            <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $registration->id }} }" x-on:click="$dispatch('set-id', { id })">
+              <x-lucide-trash-2 class="icon text-red" />
+              Hapus
+            </button>
+          @endcan
         </div>
       </div>
     </div>
@@ -26,6 +36,11 @@
     <div class="container-xl">
       <div class="row g-3">
         <div class="col-12">
+          @if (flash()->message)
+            <x-alert type="{{ flash()->class }}">
+              {{ flash()->message }}
+            </x-alert>
+          @endif
           <div class="card card-mafindo overflow-hidden border-top-0">
             @if ($registration->type == 'relawan-baru')
               <x-registration-step :data="App\Enums\RegistrationBaruStepEnum::labels()" step="{{ $registration?->step }}" />
@@ -39,15 +54,19 @@
                 </div>
                 <div class="col">
                   <h2 class="card-title h2 mb-2">{{ $user->nama }}</h2>
-                  <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
-                  <x-badge-enum class="fs-4 me-1" case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
-                  <x-badge-enum class="fs-4" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
+                  @if ($user->branch?->nama)
+                    <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
+                  @endif
+                  <div>
+                    <x-badge-enum class="fs-4 me-1" case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
+                    <x-badge-enum class="fs-4" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
+                  </div>
                 </div>
               </div>
             </div>
-            @if ($registration?->status == 'revisi' && $registration->message)
+            @if (in_array($registration?->status, ['revisi', 'ditolak']))
               <div class="card-body border-top">
-                <h4 class="fs-3 text-red">REVISI</h4>
+                <h4 class="fs-3 text-red">{{ strtoupper($registration?->status) }}</h4>
                 <p>{{ $registration->message }}</p>
               </div>
             @endif
@@ -64,7 +83,7 @@
                   <x-datagrid-item title="Nama Lengkap" content="{{ $user->nama }}" />
                   <x-datagrid-item title="Nama Panggilan" content="{{ $user->detail->panggilan }}" />
                   <x-datagrid-item title="Email" content="{{ $user->email }}" />
-                  <x-datagrid-item title="Tanggal Lahir" content="{{ $user->detail->tgl_lahir?->format('d/m/Y') }}" />
+                  <x-datagrid-item title="Tanggal Lahir" content="{{ $user->detail->tgl_lahir?->format('d/m/Y') }} ({{ floor($user->detail->tgl_lahir?->diffInYears()) }} Tahun)" />
                   <x-datagrid-item title="Jenis Kelamin" content="{{ $user->detail->gender?->label() }}" />
                   <x-datagrid-item title="Agama" content="{{ $user->detail->agama?->label() }}" />
                   <x-datagrid-item title="Alamat Domisili Saat Ini" content="{{ $user->detail->alamat }}" />
@@ -177,9 +196,8 @@
                 <table class="table table-vcenter card-table">
                   <thead>
                     <tr>
-                      <th scope="col">Jabatan</th>
-                      <th scope="col">Lembaga</th>
-                      <th scope="col">Tahun</th>
+                      <th scope="col">Nama</th>
+                      <th scope="col">Masa</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -201,11 +219,6 @@
         </div>
         @if ($registration->status == 'diproses')
           <div class="col-12 col-md-6">
-            @if (flash()->message)
-              <x-alert type="{{ flash()->class }}">
-                {{ flash()->message }}
-              </x-alert>
-            @endif
             @if ($errors->any())
               <x-alert class="alert-danger">
                 <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
@@ -222,37 +235,46 @@
               </div>
               <div class="card-body">
                 <ul class="nav nav-pills gap-2" role="tablist">
-                  @if (in_array($registration->step, ['pelatihan', 'verifikasi']))
+                  @can('finish', $registration)
                     <li class="nav-item" role="presentation">
                       <a href="#tab-selesai" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-circle-check class="icon text-green me-2" />
                         Selesai
                       </a>
                     </li>
-                  @endif
-                  @if (in_array($registration->step, ['profiling', 'wawancara', 'terhubung']))
+                  @endcan
+                  @can('nextStep', $registration)
                     <li class="nav-item" role="presentation">
                       <a href="#tab-lanjut" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-arrow-right-to-line class="icon text-blue me-2" />
                         Lanjut
                       </a>
                     </li>
-                  @endif
-                  @if (in_array($registration->step, ['profiling', 'verifikasi']))
+                  @endcan
+                  @can('requestRevision', $registration)
                     <li class="nav-item" role="presentation">
                       <a href="#tab-revisi" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-file-pen-line class="icon text-orange me-2" />
                         Revisi
                       </a>
                     </li>
-                  @endif
+                  @endcan
+                  @can('reject', $registration)
+                    <li class="nav-item" role="presentation">
+                      <a href="#tab-tolak" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                        <x-lucide-circle-x class="icon text-red me-2" />
+                        Tolak
+                      </a>
+                    </li>
+                  @endcan
                 </ul>
               </div>
               <div class="tab-content">
-                @if (in_array($registration->step, ['pelatihan', 'verifikasi']))
+                @can('finish', $registration)
                   <div id="tab-selesai" class="tab-pane">
                     <form method="POST" action="{{ route('verif.finish', $registration->id) }}" class="card-body border-top">
                       @csrf
+                      @method('PATCH')
                       @if ($registration->step == 'verifikasi')
                         <div class="mb-4">
                           <label for="no-relawan" class="form-label required">Nomor Kartu Relawan</label>
@@ -262,11 +284,12 @@
                       <button class="btn btn-primary" type="submit">Selesaikan Registrasi</button>
                     </form>
                   </div>
-                @endif
-                @if (in_array($registration->step, ['profiling', 'wawancara', 'terhubung']))
+                @endcan
+                @can('nextStep', $registration)
                   <div id="tab-lanjut" class="tab-pane">
                     <form method="POST" action="{{ route('verif.nextStep', $registration->id) }}" class="card-body border-top">
                       @csrf
+                      @method('PATCH')
                       @if ($registration->step == 'wawancara')
                         <div class="mb-4">
                           <label for="no-relawan" class="form-label required">Nomor Kartu Relawan</label>
@@ -276,11 +299,12 @@
                       <button class="btn btn-primary" type="submit">Lanjut Tahap Berikutnya</button>
                     </form>
                   </div>
-                @endif
-                @if (in_array($registration->step, ['profiling', 'verifikasi']))
+                @endcan
+                @can('requestRevision', $registration)
                   <div id="tab-revisi" class="tab-pane">
                     <form method="POST" action="{{ route('verif.revisi', $registration->id) }}" class="card-body border-top">
                       @csrf
+                      @method('PATCH')
                       <div class="mb-4">
                         <label for="message" class="form-label required">Alasan</label>
                         <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan revisi" :showError=false required />
@@ -288,7 +312,20 @@
                       <button class="btn btn-primary" type="submit">Kirim</button>
                     </form>
                   </div>
-                @endif
+                @endcan
+                @can('reject', $registration)
+                  <div id="tab-tolak" class="tab-pane">
+                    <form method="POST" action="{{ route('verif.reject', $registration->id) }}" class="card-body border-top">
+                      @csrf
+                      @method('PATCH')
+                      <div class="mb-4">
+                        <label for="message" class="form-label required">Pesan</label>
+                        <x-form.textarea name="message" rows="5" :showError=false required />
+                      </div>
+                      <button class="btn btn-danger" type="submit">Tolak Registrasi</button>
+                    </form>
+                  </div>
+                @endcan
               </div>
             </div>
           </div>
@@ -296,8 +333,7 @@
       </div>
     </div>
   </div>
+  @can('destroy', $registration)
+    <x-modal-delete baseRoute="{{ route('verif.index') }}" />
+  @endcan
 @endsection
-
-@push('scripts')
-  <script></script>
-@endpush

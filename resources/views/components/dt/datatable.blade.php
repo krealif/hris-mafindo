@@ -1,5 +1,6 @@
 @props([
     'search' => null,
+    'searchPlaceholder' => null,
     'total' => null,
 ])
 
@@ -17,7 +18,8 @@
         <div class="row g-2">
           <div class="col">
             <div class="input-group">
-              <x-form.input id="search" name="{{ $search }}" type="text" :showError=false value="{{ request()->filter[$search] ?? '' }}" placeholder="Pencarian" />
+              <x-form.input id="search" name="{{ $search }}" type="text" :showError=false value="{{ request()->filter[$search] ?? '' }}"
+                placeholder="{{ $searchPlaceholder ?? 'Pencarian' }}" />
               @if (isset(request()->filter[$search]))
                 <button type="button" id="dt-btn-clear" class="btn btn-icon">
                   <x-lucide-x class="icon text-red" />

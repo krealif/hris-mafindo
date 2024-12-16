@@ -1,20 +1,22 @@
-@props(['type' => 'alert-info'])
+@props([
+    'type' => null,
+])
 
-<div {{ $attributes->class([$type, 'alert alert-important alert-dismissible']) }}>
+@php
+  $icon = match ($type) {
+      'alert-success' => 'lucide-check',
+      'alert-danger' => 'lucide-octagon-alert',
+      'alert-info' => 'lucide-info',
+      default => 'lucide-info',
+  };
+@endphp
+
+<div {{ $attributes->class([$type, 'alert alert-important alert-dismissible fade show']) }} role="alert">
   <div class="d-flex">
-    @switch($type)
-      @case('alert-success')
-        <x-lucide-check class="icon alert-icon" />
-      @break
-
-      @case('alert-danger')
-        <x-lucide-octagon-alert class="icon alert-icon" />
-      @break
-
-      @default
-        <x-lucide-info class="icon alert-icon" />
-    @endswitch
-    <div>
+    <div class="col-auto">
+      @svg($icon, 'icon alert-icon')
+    </div>
+    <div class="col">
       {{ $slot }}
     </div>
   </div>

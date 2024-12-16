@@ -27,7 +27,7 @@ Route::middleware(['auth', 'unverified'])->group(function () {
  */
 Route::middleware(['auth', 'verified'])->group(function () {
     // Home route for the dashboard.
-    Route::get('/', HomeController::class);
+    Route::get('/', HomeController::class)->name('home');
 
     // Group routes for admin-specific registration verification tasks.
     Route::group([
@@ -36,14 +36,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'as' => 'verif.',
         'prefix' => 'registrasi'
     ], function () {
-        Route::get('/relawan', 'indexRelawan')->name('indexRelawan');
-        Route::get('/relawan/{registration}', 'showRelawan')->name('detailRelawan');
-        Route::get('/pengurus', 'indexPengurus')->name('indexPengurus');
-        Route::get('/pengurus/{registration}', 'showPengurus')->name('detailPengurus');
-        Route::post('/relawan/{registration}/next', 'nextStep')->name('nextStep');
-        // Although the path specifies 'relawan', this two route also applies to 'pengurus'.
-        Route::post('/relawan/{registration}/revisi', 'requestRevision')->name('revisi');
-        Route::post('/relawan/{registration}/selesai', 'finishRegistration')->name('finish');
+        Route::get('akun', 'index')->name('index');
+        Route::get('riwayat', 'indexHistory')->name('history');
+
+        Route::get('akun/{registration}', 'show')->name('show');
+        Route::patch('akun/{registration}/next', 'nextStep')->name('nextStep');
+        Route::patch('akun/{registration}/revisi', 'requestRevision')->name('revisi');
+        Route::patch('akun/{registration}/selesai', 'finishRegistration')->name('finish');
+        Route::patch('akun/{registration}/tolak', 'rejectRegistration')->name('reject');
+        Route::delete('akun/{registration}', 'destroy')->name('destroy');
     });
 
     // Group routes for admin-specific registration verification tasks.
@@ -53,11 +54,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'as' => 'migrasi.',
         'prefix' => 'registrasi'
     ], function () {
-        Route::get('/migrasi', 'index')->name('index');
-        Route::get('/migrasi/tambah', 'create')->name('create');
-        Route::get('/migrasi/{user}/edit', 'edit')->name('edit');
-        Route::post('/migrasi', 'store')->name('store');
-        Route::patch('/migrasi/{user}', 'update')->name('update');
-        Route::delete('/migrasi/{user}', 'destroy')->name('destroy');
+        Route::get('migrasi', 'index')->name('index');
+        Route::get('migrasi/tambah', 'create')->name('create');
+        Route::get('migrasi/{user}/edit', 'edit')->name('edit');
+        Route::post('migrasi', 'store')->name('store');
+        Route::patch('migrasi/{user}', 'update')->name('update');
+        Route::delete('migrasi/{user}', 'destroy')->name('destroy');
     });
 });

@@ -40,15 +40,6 @@
     display: none;
 }
 
-.nav-pills .nav-link {
-    border: 1px solid var(--tblr-border-color);
-    color: inherit
-}
-
-.nav-pills .nav-link.active {
-    border: 1px solid;
-}
-
 .repeater-delete {
     background-color: rgba(var(--tblr-secondary-rgb), .08);
     border-color: var(--tblr-btn-hover-border-color);
@@ -124,6 +115,14 @@
 
 .only-alert:has(div) {
     display: block;
+}
+
+.nav-item.active .icon {
+    color: var(--tblr-primary);
+}
+
+.dropdown-item.active {
+    background-color: var(--tblr-primary-lt);
 }
 
 /** Button Custom **/

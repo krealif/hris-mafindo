@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Form | Migrasi Data',
+    'title' => ($user ? $user->nama : 'Tambah') . ' | Migrasi Data Relawan',
 ])
 
 @php
@@ -13,15 +13,25 @@
     <!-- Page header -->
     <div class="page-header d-print-none">
       <div class="container-xl">
-        <div class="row g-2 align-items-center">
+        <div class="d-flex gap-2 justify-content-between align-items-center">
           <div class="col">
             <div class="mb-1">
               <x-breadcrumb>
                 <x-breadcrumb-item label="Migrasi" route="migrasi.index" />
               </x-breadcrumb>
             </div>
-            <h1 class="page-title">Form Migrasi</h1>
+            @if ($user)
+              <h1 class="page-title">{{ $user->nama }} | Edit Data</h1>
+            @else
+              <h1 class="page-title">Tambah Data</h1>
+            @endif
           </div>
+          @if ($user)
+            <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $user->id }} }" x-on:click="$dispatch('set-id', { id })">
+              <x-lucide-trash-2 class="icon text-red" />
+              Hapus
+            </button>
+          @endif
         </div>
       </div>
     </div>
@@ -30,12 +40,12 @@
         <div class="row g-3">
           <div class="col-12 only-alert">
             @if (flash()->message)
-              <x-alert type="{{ flash()->class }}">
+              <x-alert type="{{ flash()->class }}" class="m-0">
                 {{ flash()->message }}
               </x-alert>
             @endif
             @if ($errors->any())
-              <x-alert class="alert-danger">
+              <x-alert class="alert-danger m-0">
                 <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
                 <ul class="mt-2 mb-0" style="margin-left: -1rem">
                   @foreach ($errors->all() as $error)
@@ -448,7 +458,9 @@
       </div>
     </div>
   </div>
-
+  @if ($user)
+    <x-modal-delete baseRoute="{{ route('migrasi.index') }}" />
+  @endif
   <script>
     function createDynamicList(key, data) {
       return () => ({

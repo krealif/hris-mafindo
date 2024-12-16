@@ -1,5 +1,5 @@
 @props([
-    'route' => null,
+    'baseRoute' => null,
 ])
 
 <div id="modal-delete" class="modal fade" tabindex="-1" aria-hidden="true" x-data="{ deleteId: null }" x-on:set-id.window="deleteId = $event.detail.id">
@@ -9,7 +9,7 @@
         <div>Jika Anda melanjutkan</div>
       </div>
       <div class="modal-footer">
-        <form id="form-delete" method="POST" x-bind:action="`{{ $route }}/${deleteId}`">
+        <form id="form-delete" method="POST" x-bind:action="`{{ $baseRoute }}/${deleteId}`">
           @csrf
           @method('DELETE')
           <button type="submit" class="btn btn-danger">Hapus</button>

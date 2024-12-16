@@ -15,13 +15,41 @@ use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
+use Illuminate\Support\Facades\Storage;
 
 class RegistrationVerifController extends Controller
 {
+
     /**
-     * Display a listing of the relawan registration.
+     * Display a listing of the all registration.
      */
-    public function indexRelawan(): View
+    public function index(): View
+    {
+        $registrations = QueryBuilder::for(Registration::class)
+            ->allowedFilters([
+                'user.nama',
+                'user.email',
+                AllowedFilter::exact('type'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::exact('user.branch_id')
+            ])
+            ->where('status', 'diproses')
+            ->with('user.branch')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(20)
+            ->appends(request()->query());
+
+        $branches = Branch::select('id', 'nama')
+            ->orderBy('nama', 'asc')
+            ->pluck('nama', 'id');
+
+        return view('hris.verifikasi.index', compact('registrations', 'branches'));
+    }
+
+    /**
+     * Display a listing of the all registration.
+     */
+    public function indexHistory(): View
     {
         $registrations = QueryBuilder::for(Registration::class)
             ->allowedFilters([
@@ -32,8 +60,7 @@ class RegistrationVerifController extends Controller
                 AllowedFilter::exact('status'),
                 AllowedFilter::exact('user.branch_id')
             ])
-            ->whereIn('type', ['relawan-wilayah', 'relawan-baru'])
-            ->whereNotIn('status', ['draft', 'selesai'])
+            ->whereNot('status', 'selesai')
             ->with('user.branch')
             ->orderBy('updated_at', 'desc')
             ->paginate(20)
@@ -43,65 +70,22 @@ class RegistrationVerifController extends Controller
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
 
-        return view('hris.verifikasi.list-relawan', compact('registrations', 'branches'));
+        return view('hris.verifikasi.histori', compact('registrations', 'branches'));
     }
 
     /**
-     * Display a listing of pengurus the registration.
+     * Display the specified registration of relawan or pengurus.
      */
-    public function indexPengurus(): View
+    public function show(Registration $registration): View
     {
-        $registrations = QueryBuilder::for(Registration::class)
-            ->allowedFilters([
-                'user.nama',
-                'user.email',
-                AllowedFilter::exact('type'),
-                AllowedFilter::exact('step'),
-                AllowedFilter::exact('status'),
-                AllowedFilter::exact('user.branch_id')
-            ])
-            ->where('type', 'pengurus-wilayah')
-            ->whereNotIn('status', ['draft', 'selesai'])
-            ->with('user.branch')
-            ->orderBy('updated_at', 'desc')
-            ->paginate(20)
-            ->appends(request()->query());
-
-        $branches = Branch::select('id', 'nama')
-            ->orderBy('nama', 'asc')
-            ->pluck('nama', 'id');
-
-        return view('hris.verifikasi.list-pengurus', compact('registrations', 'branches'));
-    }
-
-    /**
-     * Display the specified registration of relawan.
-     */
-    public function showRelawan(int $id): View
-    {
-        /** @var \App\Models\Registration $registration */
-        $registration = Registration::where('id', $id)
-            ->whereIn('type', ['relawan-baru', 'relawan-wilayah'])
-            ->firstOrFail();
-
         $user = $registration->user;
+
+        if (
+            $registration->type
+            == RegistrationTypeEnum::PENGURUS_WILAYAH->value
+        ) return view('hris.verifikasi.detail-relawan', compact('registration', 'user'));
 
         return view('hris.verifikasi.detail-relawan', compact('registration', 'user'));
-    }
-
-    /**
-     * Display the specified registration of pengurus.
-     */
-    public function showPengurus(int $registration): View
-    {
-        /** @var \App\Models\Registration $registration */
-        $registration = Registration::where('id', $registration)
-            ->where('type', 'pengurus-wilayah')
-            ->firstOrFail();
-
-        $user = $registration->user;
-
-        return view('hris.verifikasi.detail-pengurus', compact('registration', 'user'));
     }
 
     /**
@@ -109,7 +93,7 @@ class RegistrationVerifController extends Controller
      */
     public function nextStep(Request $request, Registration $registration): RedirectResponse
     {
-        Gate::authorize('updateStep', $registration);
+        Gate::authorize('nextStep', $registration);
 
         $type = $registration->type;
         $stepEnum = $type == RegistrationTypeEnum::RELAWAN_BARU->value
@@ -138,7 +122,9 @@ class RegistrationVerifController extends Controller
             $registration->update(['step' => $nextStep->value]);
         }
 
-        return to_route('verif.detailRelawan', $registration->id);
+        flash()->success("Berhasil! Proses registrasi relawan atas nama [{$registration->user->nama}] telah beralih ke tahapan [{$nextStep->value}].");
+
+        return to_route('verif.show', $registration->id);
     }
 
     /**
@@ -160,20 +146,19 @@ class RegistrationVerifController extends Controller
             'message' => $validated['message'],
         ]);
 
-        if ($registration->type == 'pengurus-wilayah') {
-            return to_route('verif.detailPengurus', $registration->id);
-        }
+        // TODO: Kirim email
 
-        return to_route('verif.detailRelawan', $registration->id);
+        flash()->success("Berhasil! Permintaan revisi telah dikirimkan kepada [{$registration->user->nama}].");
+
+        return to_route('verif.show', $registration->id);
     }
-
 
     /**
      * Mark the registration process as completed.
      */
     public function finishRegistration(Request $request, Registration $registration): RedirectResponse
     {
-        Gate::authorize('finishStep', $registration);
+        Gate::authorize('finish', $registration);
 
         $type = $registration->type;
 
@@ -201,7 +186,54 @@ class RegistrationVerifController extends Controller
             'message' => null
         ]);
 
-        flash()->success("Berhasil!");
-        return to_route('verif.indexRelawan');
+        // TODO: Kirim email
+
+        flash()->success("Berhasil! Registrasi atas nama [{$registration->user->nama}] telah diselesaikan.");
+        return to_route('verif.index');
+    }
+
+    /**
+     * Mark the registration process as completed.
+     */
+    public function rejectRegistration(Request $request, Registration $registration): RedirectResponse
+    {
+        Gate::authorize('reject', $registration);
+
+        $validated = $request->validate([
+            'message' => ['required', 'string', 'max:255'],
+        ]);
+
+        $registration->update([
+            'status' => RegistrationStatusEnum::DITOLAK,
+            'message' => $validated['message'],
+        ]);
+
+        // TODO: Kirim email
+
+        flash()->success("Berhasil! Registrasi atas nama [{$registration->user->nama}] telah ditolak.");
+
+        return to_route('verif.show', $registration->id);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Registration $registration): RedirectResponse
+    {
+        Gate::authorize('destroy', $registration);
+
+        /** @var \App\Models\User $user */
+        $user = $registration->user;
+
+        if ($user->foto) {
+            Storage::disk('public')->delete($user->foto);
+        }
+
+        // Remove role
+        $user->syncRoles([]);
+        $user->delete();
+
+        flash()->success("Berhasil! Registrasi atas nama [{$registration->user->nama}] telah dihapus.");
+        return back();
     }
 }

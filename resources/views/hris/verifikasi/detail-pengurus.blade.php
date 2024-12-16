@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => $registration->user->nama . ' | Detail Pengurus',
+    'title' => $registration->user->nama . ' | Detail Registrasi',
 ])
 
 @section('content')
@@ -11,11 +11,15 @@
           <div class="col">
             <div class="mb-1">
               <x-breadcrumb>
-                <x-breadcrumb-item label="Registrasi" route="verif.indexPengurus" />
+                @if (url()->previous() == route('verif.history'))
+                  <x-breadcrumb-item label="Histori" route="verif.history" />
+                @else
+                  <x-breadcrumb-item label="Registrasi" route="verif.index" />
+                @endif
               </x-breadcrumb>
             </div>
             <h1 class="page-title">
-              Detail Pengurus
+              Detail Registrasi
             </h1>
           </div>
         </div>
@@ -80,37 +84,47 @@
               </div>
               <div class="card-body">
                 <ul class="nav nav-pills gap-2" role="tablist">
-                  @if ($registration->step == 'verifikasi')
+                  @can('finish', $registration)
                     <li class="nav-item" role="presentation">
                       <a href="#tab-selesai" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-circle-check class="icon text-green me-2" />
                         Selesai
                       </a>
                     </li>
-                  @endif
-                  @if ($registration->step == 'verifikasi')
+                  @endcan
+                  @can('requestRevision', $registration)
                     <li class="nav-item" role="presentation">
                       <a href="#tab-revisi" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-file-pen-line class="icon text-orange me-2" />
                         Revisi
                       </a>
                     </li>
-                  @endif
+                  @endcan
+                  @can('reject', $registration)
+                    <li class="nav-item" role="presentation">
+                      <a href="#tab-tolak" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                        <x-lucide-circle-x class="icon text-red me-2" />
+                        Tolak
+                      </a>
+                    </li>
+                  @endcan
                 </ul>
               </div>
               <div class="tab-content">
-                @if ($registration->step == 'verifikasi')
+                @can('finish', $registration)
                   <div id="tab-selesai" class="tab-pane">
                     <form method="POST" action="{{ route('verif.finish', $registration->id) }}" class="card-body border-top">
                       @csrf
+                      @method('PATCH')
                       <button class="btn btn-primary" type="submit">Selesaikan Registrasi</button>
                     </form>
                   </div>
-                @endif
-                @if ($registration->step == 'verifikasi')
+                @endcan
+                @can('requestRevision', $registration)
                   <div id="tab-revisi" class="tab-pane">
                     <form method="POST" action="{{ route('verif.revisi', $registration->id) }}" class="card-body border-top">
                       @csrf
+                      @method('PATCH')
                       <div class="mb-4">
                         <label for="message" class="form-label required">Alasan</label>
                         <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan revisi" :showError=false required />
@@ -118,7 +132,20 @@
                       <button class="btn btn-primary" type="submit">Kirim</button>
                     </form>
                   </div>
-                @endif
+                @endcan
+                @can('reject', $registration)
+                  <div id="tab-tolak" class="tab-pane">
+                    <form method="POST" action="{{ route('verif.reject', $registration->id) }}" class="card-body border-top">
+                      @csrf
+                      @method('PATCH')
+                      <div class="mb-4">
+                        <label for="message" class="form-label required">Pesan</label>
+                        <x-form.textarea name="message" rows="5" :showError=false required />
+                      </div>
+                      <button class="btn btn-danger" type="submit">Tolak Registrasi</button>
+                    </form>
+                  </div>
+                @endcan
               </div>
             </div>
           </div>

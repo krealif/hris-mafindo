@@ -93,7 +93,7 @@ class RegistrationMigrateController extends Controller
             TempUser::create($tempData);
         });
 
-        flash()->success("Berhasil!");
+        flash()->success("Berhasil! Relawan [{$validated['nama']}] telah ditambahkan.");
         return to_route('migrasi.index');
     }
 
@@ -161,7 +161,7 @@ class RegistrationMigrateController extends Controller
             $user->userDetail?->update([...$detail]);
         });
 
-        flash()->success("Berhasil!");
+        flash()->success("Berhasil! Relawan [{$validated['nama']}] telah diperbarui.");
         return to_route('migrasi.index');
     }
 
@@ -170,6 +170,8 @@ class RegistrationMigrateController extends Controller
      */
     public function destroy(TempUser $user): RedirectResponse
     {
+        $userName = $user->nama;
+
         DB::transaction(function () use ($user) {
             UserDetail::where('id', $user->id)
                 ->whereNull('user_id')
@@ -178,7 +180,7 @@ class RegistrationMigrateController extends Controller
             $user->delete();
         });
 
-        flash()->success("Berhasil!");
-        return to_route('migrasi.index');
+        flash()->success("Berhasil! Relawan [{$userName}] telah dihapus.");
+        return back();
     }
 }

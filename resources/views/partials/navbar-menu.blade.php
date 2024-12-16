@@ -3,8 +3,8 @@
     <div class="navbar">
       <div class="container-xl">
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+          <li @class(['nav-item', 'active' => request()->routeIs('home')])>
+            <a class="nav-link" href="{{ route('home') }}">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <x-lucide-home class="icon" />
               </span>
@@ -12,7 +12,10 @@
             </a>
           </li>
           @role('admin')
-            <li class="nav-item dropdown">
+            <li @class([
+                'nav-item dropdown',
+                'active' => request()->is('registrasi') || request()->is('registrasi/*'),
+            ])>
               <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                   <x-lucide-users class="icon" />
@@ -22,9 +25,21 @@
               <div class="dropdown-menu">
                 <div class="dropdown-menu-columns">
                   <div class="dropdown-menu-column">
-                    <a class="dropdown-item" href="{{ route('verif.indexRelawan') }}">Relawan</a>
-                    <a class="dropdown-item" href="{{ route('verif.indexPengurus') }}">Pengurus</a>
-                    <a class="dropdown-item" href="{{ route('migrasi.index') }}">Migrasi Data</a>
+                    <a href="{{ route('verif.index') }}" @class([
+                        'dropdown-item',
+                        'active' =>
+                            request()->routeIs('verif.index') || request()->routeIs('verif.show'),
+                    ])>Relawan & Pengurus</a>
+                    <a href="{{ route('verif.history') }}" @class([
+                        'dropdown-item',
+                        'active' => request()->routeIs('verif.history'),
+                    ])>Histori Registrasi</a>
+                    <a href="{{ route('migrasi.index') }}" @class([
+                        'dropdown-item',
+                        'active' =>
+                            request()->routeIs('migrasi.index') ||
+                            request()->is('registrasi/migrasi/*'),
+                    ])>Migrasi Data</a>
                   </div>
                 </div>
               </div>

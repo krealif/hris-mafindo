@@ -30,9 +30,9 @@
       @else
         <x-registration-step :data="App\Enums\RegistrationLamaStepEnum::labels()" step="{{ $registration?->step }}" />
       @endif
-      @if ($registration?->status == 'revisi')
+      @if (in_array($registration?->status, ['revisi', 'ditolak']))
         <div class="card-body border-top">
-          <h4 class="fs-3 text-red">REVISI</h4>
+          <h4 class="fs-3 text-red">{{ strtoupper($registration?->status) }}</h4>
           <p>{{ $registration->message }}</p>
         </div>
       @endif

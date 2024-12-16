@@ -177,7 +177,12 @@ class RegistrationController extends Controller
             );
         });
 
-        flash()->success("Berhasil!");
+        if ($request->mode == 'draft') {
+            flash()->success("Berhasil! Data telah disimpan sementara.");
+        } else {
+            flash()->success("Berhasil! Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.");
+        }
+
         return to_route('registration.showForm', $type);
     }
 
@@ -240,7 +245,12 @@ class RegistrationController extends Controller
             );
         });
 
-        flash()->success("Berhasil!");
+        if ($request->mode == 'draft') {
+            flash()->success("Berhasil! Data telah disimpan sementara.");
+        } else {
+            flash()->success("Berhasil! Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.");
+        }
+
         return to_route('registration.showForm', $type);
     }
 }

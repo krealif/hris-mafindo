@@ -19,13 +19,9 @@ class RegistrationPolicy
         if (
             $type == RegistrationTypeEnum::PENGURUS_WILAYAH
             && !strpos($user->email, 'mafindo.or.id')
-        ) {
-            return false;
-        }
+        ) return false;
 
-        if ($regisType = $user->registration?->type) {
-            return $regisType == $type->value;
-        }
+        if ($regisType = $user->registration?->type) return $regisType == $type->value;
 
         return true;
     }
@@ -38,62 +34,86 @@ class RegistrationPolicy
         if (
             $type == RegistrationTypeEnum::PENGURUS_WILAYAH
             && !strpos($user->email, 'mafindo.or.id')
-        ) {
-            return false;
-        }
+        ) return false;
 
         if (
             $user->registration &&
             ($user->registration->status == RegistrationStatusEnum::DIPROSES->value
                 || $user->registration->step != 'mengisi')
-        ) {
-            return false;
-        }
+        ) return false;
 
-        if ($regisType = $user->registration?->type) {
-            return $regisType == $type->value;
-        }
+        if ($regisType = $user->registration?->type) return $regisType == $type->value;
 
         return true;
     }
 
-    /**
-     * Determine whether the user can update the registration step.
-     */
-    public function updateStep(User $user, Registration $registration): bool
-    {
-        $disallowed = [
-            RegistrationBaruStepEnum::MENGISI->value,
-            RegistrationBaruStepEnum::PELATIHAN->value,
-            RegistrationLamaStepEnum::VERIFIKASI->value
-        ];
+    /*
+    |--------------------------------------------------------------------------
+    | Admin (used in RegistrationVerifController)
+    |--------------------------------------------------------------------------
+    */
 
-        return !in_array($registration->step, $disallowed);
+    /**
+     * Determine whether the admin can update the registration step.
+     */
+    public function nextStep(User $user, Registration $registration): bool
+    {
+        return $registration->status == RegistrationStatusEnum::DIPROSES->value
+            && in_array($registration->step, [
+                RegistrationBaruStepEnum::PROFILING->value,
+                RegistrationBaruStepEnum::WAWANCARA->value,
+                RegistrationBaruStepEnum::TERHUBUNG->value,
+            ]);
     }
 
     /**
-     * Determine whether the user can revise form data.
+     * Determine whether the admin can revise form data.
      */
     public function requestRevision(User $user, Registration $registration): bool
     {
-        $allowed = [
-            RegistrationBaruStepEnum::PROFILING->value,
-            RegistrationLamaStepEnum::VERIFIKASI->value
-        ];
-
-        return in_array($registration->step, $allowed);
+        return $registration->status == RegistrationStatusEnum::DIPROSES->value
+            && in_array($registration->step, [
+                RegistrationBaruStepEnum::PROFILING->value,
+                RegistrationLamaStepEnum::VERIFIKASI->value
+            ]);
     }
 
     /**
-     * Determine whether the user can finish the registration step.
+     * Determine whether the admin can finish the registration step.
      */
-    public function finishStep(User $user, Registration $registration): bool
+    public function finish(User $user, Registration $registration): bool
     {
-        $allowed = [
-            RegistrationBaruStepEnum::PELATIHAN->value,
-            RegistrationLamaStepEnum::VERIFIKASI->value
-        ];
+        return $registration->status == RegistrationStatusEnum::DIPROSES->value
+            && in_array($registration->step, [
+                RegistrationBaruStepEnum::PELATIHAN->value,
+                RegistrationLamaStepEnum::VERIFIKASI->value
+            ]);
+    }
 
-        return in_array($registration->step, $allowed);
+    /**
+     * Determine whether the admin can reject the registration.
+     */
+    public function reject(User $user, Registration $registration): bool
+    {
+        return $registration->status == RegistrationStatusEnum::DIPROSES->value
+            && in_array($registration->step, [
+                RegistrationBaruStepEnum::PROFILING->value,
+                RegistrationBaruStepEnum::WAWANCARA->value,
+                RegistrationLamaStepEnum::VERIFIKASI->value,
+            ]);
+    }
+
+    /**
+     * Determine whether the admin can destroy the registration.
+     */
+    public function destroy(User $user, Registration $registration): bool
+    {
+        if (
+            (in_array($registration->status, ['draft', 'revisi'])
+                && $registration->updated_at?->diffInDays() >= 7)
+            ||  $registration->status = 'ditolak'
+        ) return true;
+
+        return false;
     }
 }
