@@ -162,7 +162,7 @@ class RegistrationMigrateController extends Controller
         });
 
         flash()->success("Berhasil! Relawan [{$validated['nama']}] telah diperbarui.");
-        return to_route('migrasi.index');
+        return to_route('migrasi.edit', $user->id);
     }
 
     /**

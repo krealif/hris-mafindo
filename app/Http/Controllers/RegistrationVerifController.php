@@ -122,7 +122,7 @@ class RegistrationVerifController extends Controller
             $registration->update(['step' => $nextStep->value]);
         }
 
-        flash()->success("Berhasil! Proses registrasi relawan atas nama [{$registration->user->nama}] telah beralih ke tahapan [{$nextStep->value}].");
+        flash()->success("Berhasil! Proses registrasi relawan atas nama [{$registration->user->nama}] telah beralih ke tahapan [{$nextStep?->value}].");
 
         return to_route('verif.show', $registration->id);
     }
