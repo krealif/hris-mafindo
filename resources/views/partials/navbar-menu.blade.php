@@ -14,7 +14,7 @@
           @role('admin')
             <li @class([
                 'nav-item dropdown',
-                'active' => request()->is('registrasi') || request()->is('registrasi/*'),
+                'active' => request()->is('registrasi/*'),
             ])>
               <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                 <span class="nav-link-icon d-md-none d-lg-inline-block">

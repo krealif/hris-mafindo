@@ -61,12 +61,12 @@ class RegistrationController extends Controller
         ];
 
         if ($type == RegistrationTypeEnum::PENGURUS_WILAYAH) {
-            return view('hris.registrasi.form-wrapper', $viewData);
+            return view('hris.registrasi.form-pengurus', $viewData);
         }
 
         $viewData['detail'] = Auth::user()->detail;
 
-        return view('hris.registrasi.form-wrapper', $viewData);
+        return view('hris.registrasi.form-relawan', $viewData);
     }
 
     /**
