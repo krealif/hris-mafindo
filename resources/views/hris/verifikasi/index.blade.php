@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Registrasi Relawan & Pengurus',
+    'title' => 'Ajuan Registrasi',
 ])
 
 @section('content')
@@ -10,8 +10,11 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <h1 class="page-title">
-              Registrasi Relawan & Pengurus
+              Ajuan Registrasi
             </h1>
+            <p class="text-muted m-0 mt-1">
+              Tindak lanjuti ajuan dari relawan & pengurus.
+            </p>
           </div>
         </div>
       </div>
@@ -48,9 +51,8 @@
               </div>
               <div class="col-12 col-md-6 col-lg-3">
                 <label for="branch" class="form-label">Wilayah</label>
-                <x-form.tom-select id="branch" name="user.branch_id" :options=$branches selected="{{ request()->filter['user.branch_id'] ?? '' }}" :showError=false>
-                  <option selected></option>
-                </x-form.tom-select>
+                <x-form.tom-select id="branch" name="user.branch_id" :options=$branches selected="{{ request()->filter['user.branch_id'] ?? '' }}" :showError=false
+                  placeholder="" />
               </div>
             </div>
           </x-slot>
@@ -71,7 +73,7 @@
               @foreach ($registrations as $registration)
                 <tr>
                   <td>
-                    <a href="{{ route('verif.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
+                    <a href="{{ route('ajuan.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
                   </td>
                   <td>{{ $registration->user->email }}</td>
                   <td>
@@ -88,7 +90,7 @@
                   <td>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
                   <td>
                     <div class="btn-list flex-nowrap">
-                      <a href="{{ route('verif.show', $registration->id) }}" class="btn">
+                      <a href="{{ route('ajuan.show', $registration->id) }}" class="btn">
                         <x-lucide-eye class="icon" defer />
                         Lihat
                       </a>

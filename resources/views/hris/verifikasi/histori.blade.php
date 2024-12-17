@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Histori Registrasi',
+    'title' => 'Histori Ajuan',
 ])
 
 @section('content')
@@ -10,8 +10,11 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <h1 class="page-title">
-              Histori Registrasi
+              Histori Ajuan
             </h1>
+            <p class="text-muted m-0 mt-1">
+              Lihat dan kelola seluruh ajuan registrasi.
+            </p>
           </div>
         </div>
       </div>
@@ -57,6 +60,16 @@
               </div>
             </div>
           </x-slot>
+          <x-slot:actions>
+            <div class="dropdown">
+              <a href="#" class="btn btn-icon" data-bs-toggle="dropdown">
+                <x-lucide-ellipsis-vertical class="icon" />
+              </a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#bulk-delete">Bersihkan</a>
+              </div>
+            </div>
+          </x-slot>
           <!-- Table Body -->
           <table class="table table-vcenter card-table table-striped datatable">
             <thead class="table-primary">
@@ -75,7 +88,11 @@
               @foreach ($registrations as $registration)
                 <tr x-data="{ id: {{ $registration->id }} }">
                   <td>
-                    <a href="{{ route('verif.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
+                    @if (Gate::check('destroy', $registration) || $registration->step == 'mengisi')
+                      <a href="{{ route('ajuan.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
+                    @else
+                      {{ $registration->user->nama }}
+                    @endif
                   </td>
                   <td>{{ $registration->user->email }}</td>
                   <td>
@@ -95,10 +112,12 @@
                   <td>{{ $registration->updated_at?->format('d/m/Y H:i') }}<br>{{ $registration->updated_at?->diffForHumans() }}</td>
                   <td>
                     <div class="btn-list flex-nowrap">
-                      <a href="{{ route('verif.show', $registration->id) }}" class="btn">
-                        <x-lucide-eye class="icon" defer />
-                        Lihat
-                      </a>
+                      @if (Gate::check('destroy', $registration) || $registration->step == 'mengisi')
+                        <a href="{{ route('ajuan.show', $registration->id) }}" class="btn">
+                          <x-lucide-eye class="icon" defer />
+                          Lihat
+                        </a>
+                      @endif
                       @can('destroy', $registration)
                         <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-on:click="$dispatch('set-id', { id })">
                           <x-lucide-trash-2 class="icon text-red" defer />
@@ -121,5 +140,56 @@
       </div>
     </div>
   </div>
-  <x-modal-delete baseRoute="{{ route('verif.index') }}" />
+  <x-modal-delete baseRoute="{{ route('ajuan.index') }}" />
+  <div class="modal fade" id="bulk-delete" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <form method="POST" action="{{ route('ajuan.prune') }}" class="modal-content">
+        <div class="modal-status bg-danger"></div>
+        <div class="modal-header">
+          <h5 class="modal-title">Hapus Masal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          @csrf
+          @method('DELETE')
+          <div class="mb-3">
+            <label for="step-mengisi" class="form-label">Hapus Relawan yang Belum Selesai Mengisi?</label>
+            <div class="input-group mb-2">
+              <span class="input-group-text">
+                <input id="step-mengisi" name="step_mengisi" class="form-check-input m-0" type="checkbox">
+              </span>
+              <div class="form-floating">
+                <x-form.input name="lama_mengisi" type="number" value="7" />
+                <label for="lama-mengisi">Hapus jika lebih dari … hari</label>
+              </div>
+              <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus data relawan yang belum menyelesaikan pengisian formulir.</small>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="status-ditolak" class="form-label">Hapus Data Relawan yang Ditolak?</label>
+            <div class="input-group mb-2">
+              <span class="input-group-text">
+                <input id="status-ditolak" name="status_ditolak" class="form-check-input m-0" type="checkbox">
+              </span>
+              <div class="form-floating">
+                <x-form.input name="lama_ditolak" type="number" value="30" />
+                <label for="lama-ditolak">Hapus jika lebih dari … hari</label>
+              </div>
+              <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus data relawan yang status pendaftarannya ditolak.</small>
+            </div>
+          </div>
+          <p class="mb-1"><strong>Disclaimer:</strong></p>
+          <ul class="m-0">
+            <li>Data yang dihapus akan hilang secara permanen dan tidak dapat dikembalikan.</li>
+            <li>Hari yang Anda tentukan merujuk pada berapa lama sejak data terakhir diupdate. Jika data <strong>tidak diperbarui lebih dari hari yang
+                ditentukan, maka data akan dihapus.</strong></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger">Hapus</button>
+          <button type="button" class="btn me-auto" data-bs-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
 @endsection

@@ -15,7 +15,9 @@
 @endphp
 
 <select id="{{ $id }}" name="{{ $name }}" autocomplete="off" {{ $attributes }} @required($required)>
-  {{ $slot }}
+  @isset($attributes['placeholder'])
+    <option value="" selected>{{ '' && $attributes['placeholder'] }}</option>
+  @endisset
   @foreach ($options as $value => $label)
     <option value="{{ $value }}" @selected(in_array($value, $selectedValue))>{{ $label }}</option>
   @endforeach

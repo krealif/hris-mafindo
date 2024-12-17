@@ -49,7 +49,7 @@ class RegistrationPolicy
 
     /*
     |--------------------------------------------------------------------------
-    | Admin (used in RegistrationVerifController)
+    | Admin (used in RegistrationSubmissionController)
     |--------------------------------------------------------------------------
     */
 
@@ -111,7 +111,7 @@ class RegistrationPolicy
         if (
             (in_array($registration->status, ['draft', 'revisi'])
                 && $registration->updated_at?->diffInDays() >= 7)
-            ||  $registration->status == RegistrationStatusEnum::DITOLAK->value
+            || $registration->status == RegistrationStatusEnum::DITOLAK->value
         ) return true;
 
         return false;

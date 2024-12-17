@@ -25,14 +25,14 @@
               <div class="dropdown-menu">
                 <div class="dropdown-menu-columns">
                   <div class="dropdown-menu-column">
-                    <a href="{{ route('verif.index') }}" @class([
+                    <a href="{{ route('ajuan.index') }}" @class([
                         'dropdown-item',
                         'active' =>
-                            request()->routeIs('verif.index') || request()->routeIs('verif.show'),
-                    ])>Relawan & Pengurus</a>
-                    <a href="{{ route('verif.history') }}" @class([
+                            request()->routeIs('ajuan.index') || request()->routeIs('ajuan.show'),
+                    ])>Ajuan Registrasi</a>
+                    <a href="{{ route('ajuan.history') }}" @class([
                         'dropdown-item',
-                        'active' => request()->routeIs('verif.history'),
+                        'active' => request()->routeIs('ajuan.history'),
                     ])>Histori Registrasi</a>
                     <a href="{{ route('migrasi.index') }}" @class([
                         'dropdown-item',

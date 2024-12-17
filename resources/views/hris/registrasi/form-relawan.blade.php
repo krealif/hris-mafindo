@@ -109,7 +109,7 @@
                   </a>
                   <a class="list-group-item list-group-item-action p-2" href="#sertifikat">
                     <x-lucide-arrow-down-right class="icon" defer />
-                    Sertifikat
+                    Sertifikat Keahlian
                   </a>
                 </nav>
               </div>
@@ -139,18 +139,14 @@
                         <x-form.flatpickr name="tgl_lahir" value="{{ old('tgl_lahir', $detail?->tgl_lahir?->format('d-m-Y')) }}" required />
                       </div>
                       <div class="col-12 col-md-6">
-                        <label for="gender" class="form-label">Jenis Kelamin</label>
-                        <x-form.select name="gender" :options="App\Enums\GenderEnum::labels()" selected="{{ old('gender', $detail?->gender) }}">
-                          <option selected></option>
-                        </x-form.select>
+                        <label for="gender" class="form-label required">Jenis Kelamin</label>
+                        <x-form.select name="gender" :options="App\Enums\GenderEnum::labels()" selected="{{ old('gender', $detail?->gender) }}" placeholder="" required />
                       </div>
                     </div>
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
-                        <label for="agama" class="form-label">Agama</label>
-                        <x-form.select name="agama" :options="App\Enums\AgamaEnum::labels()" selected="{{ old('agama', $detail?->agama) }}">
-                          <option selected></option>
-                        </x-form.select>
+                        <label for="agama" class="form-label required">Agama</label>
+                        <x-form.select name="agama" :options="App\Enums\AgamaEnum::labels()" selected="{{ old('agama', $detail?->agama) }}" placeholder="" required />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="alamat" class="form-label required">Alamat Domisili Saat Ini</label>
@@ -189,6 +185,13 @@
                         </div>
                       </div>
                     </div>
+                    <div class="mt-2">
+                      <p class="m-0">Pastikan file foto yang Anda upload memenuhi ketentuan sebagai berikut:</p>
+                      <ul class="mt-1">
+                        <li>Dimensi: <strong>1000x1000 pixel</strong> atau memiliki <strong>rasio 1:1</strong></li>
+                        <li>Ukuran File: <strong>Maksimal 1 MB</strong></li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 
@@ -204,7 +207,8 @@
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="no-hp" class="form-label">Nomor HP</label>
-                        <x-form.input name="no_hp" type="tel" x-mask="9999999999999" placeholder="08xxxxxxxxxx" value="{{ old('no_hp', $detail?->no_hp) }}" />
+                        <x-form.input name="no_hp" type="tel" x-mask="9999999999999" placeholder="Tuliskan jika berbeda dengan nomor Whatsapp"
+                          value="{{ old('no_hp', $detail?->no_hp) }}" />
                       </div>
                     </div>
                     @if ($errors->has('medsos.*'))
@@ -267,9 +271,7 @@
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="branch" class="form-label required">Wilayah</label>
-                        <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', Auth::user()->branch_id) }}" required>
-                          <option selected></option>
-                        </x-form.tom-select>
+                        <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', Auth::user()->branch_id) }}" placeholder="" required />
                       </div>
                     </div>
                     <div class="row mb-3">
@@ -329,9 +331,7 @@
                             <div class="form-floating">
                               <div class="form-floating">
                                 <x-form.select id="pendidikan-tingkat" x-model="row.tingkat" :options="App\Enums\TingkatPendidikanEnum::labels()" x-bind:name="`pendidikan[${index}][tingkat]`" :showError=false
-                                  required>
-                                  <option selected></option>
-                                </x-form.select>
+                                  placeholder="" required />
                                 <label for="pendidikan-tingkat">Tingkat</label>
                               </div>
                             </div>
@@ -350,7 +350,7 @@
                               <div class="form-floating">
                                 <x-form.input id="pendidikan-jurusan" x-model="row.jurusan" x-bind:name="`pendidikan[${index}][jurusan]`" type="text" maxlength="255"
                                   placeholder="Jurusan" :showError=false required />
-                                <label for="pendidikan">Jurusan</label>
+                                <label for="pendidikan">Jurusan/Program Studi</label>
                               </div>
                             </div>
                           </div>
@@ -433,7 +433,7 @@
 
                 <div id="sertifikat" class="card card-mafindo">
                   <div class="card-header">
-                    <h2 class="card-title">Sertifikat</h2>
+                    <h2 class="card-title">Sertifikat Keahlian / Kompetensi (Sertifikasi)</h2>
                   </div>
                   <div class="card-body" x-data="sertifikat">
                     @if ($errors?->has('sertifikat.*'))
@@ -485,7 +485,7 @@
                 </div>
 
                 <div class="card bg-primary-lt shadow position-sticky bottom-0 z-3">
-                  <input type="hidden" name="mode" x-bind:value="isDraft ? 'draft' : 'submit'">
+                  <input type="hidden" name="_mode" x-bind:value="isDraft ? 'draft' : 'submit'">
                   <div class="card-body btn-list">
                     <button class="btn btn-primary" x-on:click="isDraft = false">
                       <x-lucide-send class="icon" />

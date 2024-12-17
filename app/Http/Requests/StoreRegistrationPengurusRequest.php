@@ -35,7 +35,7 @@ class StoreRegistrationPengurusRequest extends FormRequest
             'pengurus.*' => ['nullable', 'string', 'max:255'],
         ];
 
-        if ($this->input('mode') == 'draft') {
+        if ($this->input('_mode') == 'draft') {
             return [
                 ...$rules,
                 '*' => ['nullable'],

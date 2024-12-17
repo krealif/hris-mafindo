@@ -36,11 +36,12 @@
         </div>
       </form>
     @endif
-    @if (isset($filterForm) || isset($actionBtn))
+    @if (isset($filterForm) || isset($actions))
       <div @class(['col-12 col-md-auto', 'mt-md-0 mt-3' => $search])>
         <div class="btn-list">
           @isset($filterForm)
-            <button type="button" class="btn btn-filter" data-bs-toggle="collapse" data-bs-target="#{{ $collapseFilterId = uniqid() }}" aria-expanded="false" aria-controls="false">
+            <button type="button" class="btn btn-filter collapsed" data-bs-toggle="collapse" data-bs-target="#{{ $collapseFilterId = uniqid() }}" aria-expanded="false"
+              aria-controls="false">
               <x-lucide-filter class="icon" />
               Filter
               @if ($totalFilter)
@@ -48,7 +49,7 @@
               @endif
             </button>
           @endisset
-          {{ $actionBtn ?? '' }}
+          {{ $actions ?? '' }}
         </div>
       </div>
     @endif

@@ -15,7 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Requests\StoreRegistrationRelawanRequest;
 
-class RegistrationMigrateController extends Controller
+class RegistrationMigrationController extends Controller
 {
     use HandlesArrayInput;
 
@@ -93,7 +93,7 @@ class RegistrationMigrateController extends Controller
             TempUser::create($tempData);
         });
 
-        flash()->success("Berhasil! Relawan [{$validated['nama']}] telah ditambahkan.");
+        flash()->success("Berhasil. Relawan [{$validated['nama']}] telah ditambahkan.");
         return to_route('migrasi.index');
     }
 
@@ -161,8 +161,8 @@ class RegistrationMigrateController extends Controller
             $user->userDetail?->update([...$detail]);
         });
 
-        flash()->success("Berhasil! Relawan [{$validated['nama']}] telah diperbarui.");
-        return to_route('migrasi.edit', $user->id);
+        flash()->success("Berhasil. Relawan [{$validated['nama']}] telah diperbarui.");
+        return back();
     }
 
     /**
@@ -180,7 +180,12 @@ class RegistrationMigrateController extends Controller
             $user->delete();
         });
 
-        flash()->success("Berhasil! Relawan [{$userName}] telah dihapus.");
+        flash()->success("Berhasil. Relawan [{$userName}] telah dihapus.");
+
+        if (url()->previous() != route('migrasi.index')) {
+            return to_route('migrasi.index');
+        }
+
         return back();
     }
 }

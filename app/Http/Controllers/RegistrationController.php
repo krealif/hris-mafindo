@@ -114,10 +114,10 @@ class RegistrationController extends Controller
 
         $registrationData = [
             'type' => $type,
-            'status' => ($request->mode == 'draft')
+            'status' => ($request->_mode == 'draft')
                 ? RegistrationStatusEnum::DRAFT
                 : RegistrationStatusEnum::DIPROSES,
-            'step' => ($request->mode == 'draft')
+            'step' => ($request->_mode == 'draft')
                 ? ($type == RegistrationTypeEnum::RELAWAN_BARU
                     ? RegistrationBaruStepEnum::MENGISI
                     : RegistrationLamaStepEnum::MENGISI)
@@ -127,7 +127,7 @@ class RegistrationController extends Controller
         ];
 
         if (
-            $request->mode == 'draft'
+            $request->_mode == 'draft'
             && $registration?->status == 'revisi'
         ) {
             $registrationData['status'] = RegistrationStatusEnum::REVISI;
@@ -177,10 +177,10 @@ class RegistrationController extends Controller
             );
         });
 
-        if ($request->mode == 'draft') {
-            flash()->success("Berhasil! Data telah disimpan sementara.");
+        if ($request->_mode == 'draft') {
+            flash()->success("Berhasil. Data telah disimpan sementara.");
         } else {
-            flash()->success("Berhasil! Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.");
+            flash()->success("Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.");
         }
 
         return to_route('registration.showForm', $type);
@@ -201,16 +201,16 @@ class RegistrationController extends Controller
 
         $registrationData = [
             'type' => $type,
-            'status' => ($request->mode == 'draft')
+            'status' => ($request->_mode == 'draft')
                 ? RegistrationStatusEnum::DRAFT
                 : RegistrationStatusEnum::DIPROSES,
-            'step' => ($request->mode == 'draft')
+            'step' => ($request->_mode == 'draft')
                 ? RegistrationLamaStepEnum::MENGISI
                 : RegistrationLamaStepEnum::VERIFIKASI,
         ];
 
         if (
-            $request->mode == 'draft'
+            $request->_mode == 'draft'
             && $registration?->status == 'revisi'
         ) {
             $registrationData['status'] = RegistrationStatusEnum::REVISI;
@@ -245,10 +245,10 @@ class RegistrationController extends Controller
             );
         });
 
-        if ($request->mode == 'draft') {
-            flash()->success("Berhasil! Data telah disimpan sementara.");
+        if ($request->_mode == 'draft') {
+            flash()->success("Berhasil. Data telah disimpan sementara.");
         } else {
-            flash()->success("Berhasil! Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.");
+            flash()->success("Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.");
         }
 
         return to_route('registration.showForm', $type);

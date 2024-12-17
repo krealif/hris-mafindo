@@ -90,7 +90,7 @@
                 </a>
                 <a class="list-group-item list-group-item-action p-2" href="#sertifikat">
                   <x-lucide-arrow-down-right class="icon" defer />
-                  Sertifikat
+                  Sertifikat Keahlian
                 </a>
               </nav>
             </div>
@@ -129,15 +129,11 @@
                   <div class="row mb-3">
                     <div class="col-12 col-md-6 mb-3 mb-md-0">
                       <label for="gender" class="form-label">Jenis Kelamin</label>
-                      <x-form.select name="gender" :options="App\Enums\GenderEnum::labels()" selected="{{ old('gender', $detail?->gender) }}">
-                        <option selected></option>
-                      </x-form.select>
+                      <x-form.select name="gender" :options="App\Enums\GenderEnum::labels()" selected="{{ old('gender', $detail?->gender) }}" placeholder="" />
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="agama" class="form-label">Agama</label>
-                      <x-form.select name="agama" :options="App\Enums\AgamaEnum::labels()" selected="{{ old('agama', $detail?->agama) }}">
-                        <option selected></option>
-                      </x-form.select>
+                      <x-form.select name="agama" :options="App\Enums\AgamaEnum::labels()" selected="{{ old('agama', $detail?->agama) }}" placeholder="" />
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -165,7 +161,8 @@
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="no-hp" class="form-label">Nomor HP</label>
-                      <x-form.input name="no_hp" type="tel" x-mask="9999999999999" placeholder="08xxxxxxxxxx" value="{{ old('no_hp', $detail?->no_hp) }}" />
+                      <x-form.input name="no_hp" type="tel" x-mask="9999999999999" placeholder="Tuliskan jika berbeda dengan nomor Whatsapp"
+                        value="{{ old('no_hp', $detail?->no_hp) }}" />
                     </div>
                   </div>
                   @if ($errors->has('medsos.*'))
@@ -228,9 +225,7 @@
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="branch" class="form-label">Wilayah</label>
-                      <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', $user?->branch_id) }}">
-                        <option selected></option>
-                      </x-form.tom-select>
+                      <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', $user?->branch_id) }}" placeholder="" />
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -287,9 +282,8 @@
                         <div class="col-12 col-md-2 mb-1 mb-md-0">
                           <div class="form-floating">
                             <div class="form-floating">
-                              <x-form.select id="pendidikan-tingkat" x-model="row.tingkat" :options="App\Enums\TingkatPendidikanEnum::labels()" x-bind:name="`pendidikan[${index}][tingkat]`" :showError=false>
-                                <option selected></option>
-                              </x-form.select>
+                              <x-form.select id="pendidikan-tingkat" x-model="row.tingkat" :options="App\Enums\TingkatPendidikanEnum::labels()" x-bind:name="`pendidikan[${index}][tingkat]`" :showError=false
+                                placeholder="" required />
                               <label for="pendidikan-tingkat">Tingkat</label>
                             </div>
                           </div>
@@ -298,7 +292,7 @@
                           <div class="form-floating">
                             <div class="form-floating">
                               <x-form.input id="pendidikan-institusi" x-model="row.institusi" x-bind:name="`pendidikan[${index}][institusi]`" type="text" maxlength="255"
-                                placeholder="Institusi" :showError=false />
+                                placeholder="Institusi" :showError=false required />
                               <label for="pendidikan-institusi">Institusi</label>
                             </div>
                           </div>
@@ -307,8 +301,8 @@
                           <div class="form-floating">
                             <div class="form-floating">
                               <x-form.input id="pendidikan-jurusan" x-model="row.jurusan" x-bind:name="`pendidikan[${index}][jurusan]`" type="text" maxlength="255"
-                                placeholder="Jurusan" :showError=false />
-                              <label for="pendidikan">Jurusan</label>
+                                placeholder="Jurusan" :showError=false required />
+                              <label for="pendidikan">Jurusan/Program Studi</label>
                             </div>
                           </div>
                         </div>
@@ -351,7 +345,7 @@
                           <div class="form-floating">
                             <div class="form-floating">
                               <x-form.input id="pekerjaan-jabatan" x-model="row.jabatan" x-bind:name="`pekerjaan[${index}][jabatan]`" type="text" maxlength="255"
-                                placeholder="jabatan" :showError=false />
+                                placeholder="jabatan" :showError=false required />
                               <label for="pekerjaan-jabatan">Jabatan</label>
                             </div>
                           </div>
@@ -360,7 +354,7 @@
                           <div class="form-floating">
                             <div class="form-floating">
                               <x-form.input id="pekerjaan-lembaga" x-model="row.lembaga" x-bind:name="`pekerjaan[${index}][lembaga]`" type="text" maxlength="255"
-                                placeholder="lembaga" :showError=false />
+                                placeholder="lembaga" :showError=false required />
                               <label for="pekerjaan-lembaga">Lembaga</label>
                             </div>
                           </div>
@@ -369,7 +363,7 @@
                           <div class="form-floating">
                             <div class="form-floating">
                               <x-form.input id="pekerjaan-tahun" x-model="row.tahun" x-bind:name="`pekerjaan[${index}][tahun]`" type="text" pattern="\d{4}-\d{4}"
-                                x-mask="9999-9999" maxlength="255" placeholder="Tahun" :showError=false />
+                                x-mask="9999-9999" maxlength="255" placeholder="Tahun" :showError=false required />
                               <label for="pekerjaan-tahun">Tahun (YYYY-YYYY)</label>
                             </div>
                           </div>
@@ -391,7 +385,7 @@
 
               <div id="sertifikat" class="card card-mafindo">
                 <div class="card-header">
-                  <h2 class="card-title">Sertifikat</h2>
+                  <h2 class="card-title">Sertifikat Keahlian / Kompetensi (Sertifikasi)</h2>
                 </div>
                 <div class="card-body" x-data="sertifikat">
                   @if ($errors?->has('sertifikat.*'))
@@ -413,7 +407,7 @@
                           <div class="form-floating">
                             <div class="form-floating">
                               <x-form.input id="sertifikat-nama" x-model="row.nama" x-bind:name="`sertifikat[${index}][nama]`" type="text" maxlength="255" placeholder="Nama"
-                                :showError=false />
+                                :showError=false required />
                               <label for="sertifikat-nama">Nama</label>
                             </div>
                           </div>
@@ -422,7 +416,7 @@
                           <div class="form-floating">
                             <div class="form-floating">
                               <x-form.input id="sertifikat-masa" x-model="row.masa" x-bind:name="`sertifikat[${index}][masa]`" type="text" pattern="\d{4}-\d{4}"
-                                x-mask="9999-9999" maxlength="255" placeholder="Masa Berlaku" :showError=false />
+                                x-mask="9999-9999" maxlength="255" placeholder="Masa Berlaku" :showError=false required />
                               <label for="sertifikat-masa">Masa Berlaku</label>
                             </div>
                           </div>
@@ -443,7 +437,7 @@
               </div>
 
               <div class="card bg-primary-lt shadow position-sticky bottom-0 z-3">
-                <input type="hidden" name="mode" value="draft">
+                <input type="hidden" name="_mode" value="draft">
                 <div class="card-body btn-list">
                   <button class="btn btn-primary" x-on:click="isDraft = false">
                     <x-lucide-save class="icon" />

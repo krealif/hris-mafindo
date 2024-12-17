@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Branch;
 use App\Enums\RoleEnum;
 use Illuminate\View\View;
@@ -17,7 +18,7 @@ use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
 use Illuminate\Support\Facades\Storage;
 
-class RegistrationVerifController extends Controller
+class RegistrationSubmissionController extends Controller
 {
 
     /**
@@ -60,7 +61,6 @@ class RegistrationVerifController extends Controller
                 AllowedFilter::exact('status'),
                 AllowedFilter::exact('user.branch_id')
             ])
-            ->whereNot('status', 'selesai')
             ->with('user.branch')
             ->orderBy('updated_at', 'desc')
             ->paginate(20)
@@ -83,7 +83,7 @@ class RegistrationVerifController extends Controller
         if (
             $registration->type
             == RegistrationTypeEnum::PENGURUS_WILAYAH->value
-        ) return view('hris.verifikasi.detail-relawan', compact('registration', 'user'));
+        ) return view('hris.verifikasi.detail-pengurus', compact('registration', 'user'));
 
         return view('hris.verifikasi.detail-relawan', compact('registration', 'user'));
     }
@@ -122,9 +122,9 @@ class RegistrationVerifController extends Controller
             $registration->update(['step' => $nextStep->value]);
         }
 
-        flash()->success("Berhasil! Proses registrasi relawan atas nama [{$registration->user->nama}] telah beralih ke tahapan [{$nextStep?->value}].");
+        flash()->success("Berhasil. Proses registrasi relawan atas nama [{$registration->user->nama}] telah beralih ke tahapan [{$nextStep?->value}].");
 
-        return to_route('verif.show', $registration->id);
+        return back();
     }
 
     /**
@@ -148,9 +148,9 @@ class RegistrationVerifController extends Controller
 
         // TODO: Kirim email
 
-        flash()->success("Berhasil! Permintaan revisi telah dikirimkan kepada [{$registration->user->nama}].");
+        flash()->success("Berhasil. Permintaan revisi telah dikirimkan kepada [{$registration->user->nama}].");
 
-        return to_route('verif.show', $registration->id);
+        return back();
     }
 
     /**
@@ -180,16 +180,13 @@ class RegistrationVerifController extends Controller
             ]);
         }
 
-        $registration->update([
-            'status' => RegistrationStatusEnum::SELESAI,
-            'step' => 'terdaftar',
-            'message' => null
-        ]);
+        $registration->delete();
 
         // TODO: Kirim email
 
-        flash()->success("Berhasil! Registrasi atas nama [{$registration->user->nama}] telah diselesaikan.");
-        return to_route('verif.index');
+        flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah diselesaikan.");
+
+        return to_route('ajuan.index');
     }
 
     /**
@@ -210,9 +207,9 @@ class RegistrationVerifController extends Controller
 
         // TODO: Kirim email
 
-        flash()->success("Berhasil! Registrasi atas nama [{$registration->user->nama}] telah ditolak.");
+        flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah ditolak.");
 
-        return to_route('verif.show', $registration->id);
+        return back();
     }
 
     /**
@@ -233,7 +230,39 @@ class RegistrationVerifController extends Controller
         $user->syncRoles([]);
         $user->delete();
 
-        flash()->success("Berhasil! Registrasi atas nama [{$registration->user->nama}] telah dihapus.");
+        flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah dihapus.");
+
+        if (url()->previous() != route('ajuan.history')) {
+            return to_route('ajuan.history');
+        }
+
+        return back();
+    }
+
+    public function prune(Request $request): RedirectResponse
+    {
+        $total = 0;
+
+        if ($request->input('step_mengisi')) {
+            $result = Registration::where('step', 'mengisi')
+                ->where('updated_at', '<', Carbon::now()->subDays($request->input('lama_mengisi')))
+                ->delete();
+            $total += $result;
+        }
+
+        if ($request->input('status_ditolak')) {
+            $result = Registration::where('status', 'ditolak')
+                ->where('updated_at', '<', Carbon::now()->subDays($request->input('lama_ditolak')))
+                ->delete();
+            $total += $result;
+        }
+
+        if ($total) {
+            flash()->success("Berhasil. Sebanyak [{$total}] data telah dihapus.");
+        } else {
+            flash()->info("Tidak ada data yang perlu dihapus.");
+        }
+
         return back();
     }
 }

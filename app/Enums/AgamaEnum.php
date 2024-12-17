@@ -10,6 +10,8 @@ enum AgamaEnum: string
     case HINDU = 'hindu';
     case BUDDHA = 'buddha';
     case KONGHUCU = 'konghucu';
+    case LAIN_LAIN = 'lain-lain';
+    case TIDAK_MENYEBUTKAN = 'tidak-menyebutkan';
 
     public function label(): string
     {
@@ -20,6 +22,8 @@ enum AgamaEnum: string
             self::HINDU => 'Hindu',
             self::BUDDHA => 'Buddha',
             self::KONGHUCU => 'Konghucu',
+            self::LAIN_LAIN => 'Lain-lain',
+            self::TIDAK_MENYEBUTKAN => 'Tidak Menyebutkan',
         };
     }
 

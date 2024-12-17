@@ -6,12 +6,14 @@ enum GenderEnum: string
 {
     case LAKI_LAKI = 'laki-laki';
     case PEREMPUAN = 'perempuan';
+    case TIDAK_MENYEBUTKAN = 'tidak-menyebutkan';
 
     public function label(): string
     {
         return match ($this) {
             self::LAKI_LAKI => 'Laki-laki',
             self::PEREMPUAN => 'Perempuan',
+            self::TIDAK_MENYEBUTKAN => 'Tidak Menyebutkan'
         };
     }
 

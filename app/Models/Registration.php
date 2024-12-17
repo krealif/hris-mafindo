@@ -2,11 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\RegistrationBaruStepEnum;
-use App\Enums\RegistrationLamaStepEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

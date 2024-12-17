@@ -80,14 +80,12 @@
                   <div class="card-body">
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
-                        <label for="branch" class="form-label required">Wilayah</label>
-                        <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', Auth::user()->branch_id) }}" required>
-                          <option selected></option>
-                        </x-form.tom-select>
-                      </div>
-                      <div class="col-12 col-md-6">
                         <label for="nama" class="form-label required">Koordinator</label>
                         <x-form.input name="nama" type="text" value="{{ old('nama', Auth::user()->nama) }}" required />
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <label for="branch" class="form-label required">Wilayah</label>
+                        <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', Auth::user()->branch_id) }}" placeholder="" required />
                       </div>
                     </div>
                     @if ($errors->has('pengurus.*'))
@@ -130,7 +128,7 @@
                 </div>
 
                 <div class="card bg-primary-lt shadow position-sticky bottom-0 z-3">
-                  <input type="hidden" name="mode" x-bind:value="isDraft ? 'draft' : 'submit'">
+                  <input type="hidden" name="_mode" x-bind:value="isDraft ? 'draft' : 'submit'">
                   <div class="card-body btn-list">
                     <button class="btn btn-primary" @click="isDraft = false">
                       <x-lucide-send class="icon" />

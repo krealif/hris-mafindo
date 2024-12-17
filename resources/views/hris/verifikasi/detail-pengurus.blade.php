@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => $registration->user->nama . ' | Detail Registrasi',
+    'title' => $registration->user->nama . ' | Detail Ajuan',
 ])
 
 @section('content')
@@ -7,21 +7,27 @@
     <!-- Page header -->
     <div class="page-header d-print-none">
       <div class="container-xl">
-        <div class="row g-2 align-items-center">
+        <div class="d-flex gap-2 justify-content-between align-items-center">
           <div class="col">
             <div class="mb-1">
               <x-breadcrumb>
-                @if (url()->previous() == route('verif.history'))
-                  <x-breadcrumb-item label="Histori" route="verif.history" />
+                @if (url()->previous() == route('ajuan.history'))
+                  <x-breadcrumb-item label="Histori" route="ajuan.history" />
                 @else
-                  <x-breadcrumb-item label="Registrasi" route="verif.index" />
+                  <x-breadcrumb-item label="Ajuan" route="ajuan.index" />
                 @endif
               </x-breadcrumb>
             </div>
             <h1 class="page-title">
-              Detail Registrasi
+              Detail Ajuan
             </h1>
           </div>
+          @can('destroy', $registration)
+            <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $registration->id }} }" x-on:click="$dispatch('set-id', { id })">
+              <x-lucide-trash-2 class="icon text-red" />
+              Hapus
+            </button>
+          @endcan
         </div>
       </div>
     </div>
@@ -113,7 +119,7 @@
               <div class="tab-content">
                 @can('finish', $registration)
                   <div id="tab-selesai" class="tab-pane">
-                    <form method="POST" action="{{ route('verif.finish', $registration->id) }}" class="card-body border-top">
+                    <form method="POST" action="{{ route('ajuan.finish', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
                       <button class="btn btn-primary" type="submit">Selesaikan Registrasi</button>
@@ -122,7 +128,7 @@
                 @endcan
                 @can('requestRevision', $registration)
                   <div id="tab-revisi" class="tab-pane">
-                    <form method="POST" action="{{ route('verif.revisi', $registration->id) }}" class="card-body border-top">
+                    <form method="POST" action="{{ route('ajuan.revisi', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
                       <div class="mb-4">
@@ -135,7 +141,7 @@
                 @endcan
                 @can('reject', $registration)
                   <div id="tab-tolak" class="tab-pane">
-                    <form method="POST" action="{{ route('verif.reject', $registration->id) }}" class="card-body border-top">
+                    <form method="POST" action="{{ route('ajuan.reject', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
                       <div class="mb-4">

@@ -16,7 +16,7 @@
     <div class="col-auto">
       @svg($icon, 'icon alert-icon')
     </div>
-    <div class="col">
+    <div class="col fw-bold">
       {{ $slot }}
     </div>
   </div>

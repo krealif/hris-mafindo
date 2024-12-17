@@ -40,8 +40,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
         ]);
 
-        $tempUser = TempUser::where('nama', $user->nama)
-            ->where('email', $user->email)
+        $tempUser = TempUser::where('email', $user->email)
             ->first();
 
         if ($tempUser) {

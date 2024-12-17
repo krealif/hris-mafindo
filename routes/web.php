@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistrationController;
-use App\Http\Controllers\RegistrationMigrateController;
-use App\Http\Controllers\RegistrationVerifController;
+use App\Http\Controllers\RegistrationMigrationController;
+use App\Http\Controllers\RegistrationSubmissionController;
 
 /**
  * Group routes that require authentication but for unverified users only.
@@ -29,15 +29,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Home route for the dashboard.
     Route::get('/', HomeController::class)->name('home');
 
-    // Group routes for admin-specific registration verification tasks.
+    // Group routes for admin-specific registration submissions tasks.
     Route::group([
         'middleware' => ['role:admin'],
-        'controller' => RegistrationVerifController::class,
-        'as' => 'verif.',
+        'controller' => RegistrationSubmissionController::class,
+        'as' => 'ajuan.',
         'prefix' => 'registrasi'
     ], function () {
         Route::get('akun', 'index')->name('index');
-        Route::get('riwayat', 'indexHistory')->name('history');
+        Route::get('histori', 'indexHistory')->name('history');
+        Route::delete('prune', 'prune')->name('prune');
 
         Route::get('akun/{registration}', 'show')->name('show');
         Route::patch('akun/{registration}/next', 'nextStep')->name('nextStep');
@@ -50,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Group routes for admin-specific registration verification tasks.
     Route::group([
         'middleware' => ['role:admin'],
-        'controller' => RegistrationMigrateController::class,
+        'controller' => RegistrationMigrationController::class,
         'as' => 'migrasi.',
         'prefix' => 'registrasi'
     ], function () {

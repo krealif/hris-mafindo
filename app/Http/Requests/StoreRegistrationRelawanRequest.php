@@ -25,16 +25,16 @@ class StoreRegistrationRelawanRequest extends FormRequest
             'nama' => ['string', 'max:255'],
             'panggilan' => ['string', 'max:255'],
             'tgl_lahir' => ['date'],
-            'gender' => ['nullable', Rule::Enum(GenderEnum::class)],
-            'agama' => ['nullable', Rule::Enum(AgamaEnum::class)],
+            'gender' => [Rule::Enum(GenderEnum::class)],
+            'agama' => [Rule::Enum(AgamaEnum::class)],
             'alamat' => ['string', 'max:255'],
             'disabilitas' => ['nullable', 'string', 'max:255'],
             'foto' => [
                 'nullable',
                 File::image()
                     ->min(1)
-                    ->max(3 * 1024)
-                    ->dimensions(Rule::dimensions()->minWidth(128)->maxWidth(3840)->ratio(1 / 1)),
+                    ->max(1 * 1024)
+                    ->dimensions(Rule::dimensions()->minWidth(128)->maxWidth(2000)->ratio(1 / 1)),
             ],
             'no_wa' => ['numeric', 'digits_between:10,15'],
             'no_hp' => ['nullable', 'numeric', 'digits_between:10,15'],
@@ -59,7 +59,7 @@ class StoreRegistrationRelawanRequest extends FormRequest
             'sertifikat.*.masa' => ['nullable', 'string', 'regex:/^\d{4}-\d{4}$/'],
         ];
 
-        if ($this->input('mode') == 'draft') {
+        if ($this->input('_mode') == 'draft') {
             return [
                 ...$rules,
                 '*' => ['nullable'],

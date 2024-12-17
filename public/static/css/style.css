@@ -125,6 +125,14 @@
     background-color: var(--tblr-primary-lt);
 }
 
+.btn.btn-filter:not(.collapsed) {
+    color: var(--tblr-btn-active-color);
+    background-color: var(--tblr-btn-active-bg);
+    border-color: var(--tblr-btn-active-border-color);
+    box-shadow: var(--tblr-btn-active-shadow);
+}
+
+
 /** Button Custom **/
 
 .btn-sec-yellow {
