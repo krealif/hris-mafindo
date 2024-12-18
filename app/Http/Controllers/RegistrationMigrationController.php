@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Branch;
-use App\Models\TempUser;
-use Illuminate\View\View;
-use App\Models\UserDetail;
-use Illuminate\Support\Arr;
-use Illuminate\Validation\Rule;
-use App\Traits\HandlesArrayInput;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\RedirectResponse;
-use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Requests\StoreMigrationRelawanRequest;
 use App\Http\Requests\UpdateMigrationRelawanRequest;
+use App\Models\Branch;
+use App\Models\TempUser;
+use App\Models\UserDetail;
+use App\Traits\HandlesArrayInput;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class RegistrationMigrationController extends Controller
 {

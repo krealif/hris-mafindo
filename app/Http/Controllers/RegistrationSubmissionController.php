@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Branch;
-use App\Enums\RoleEnum;
-use Illuminate\View\View;
-use App\Models\Registration;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Enums\RegistrationTypeEnum;
-use Illuminate\Support\Facades\Gate;
-use App\Enums\RegistrationStatusEnum;
-use Illuminate\Http\RedirectResponse;
-use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\QueryBuilder\AllowedFilter;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
+use App\Enums\RegistrationStatusEnum;
+use App\Enums\RegistrationTypeEnum;
+use App\Enums\RoleEnum;
+use App\Models\Branch;
+use App\Models\Registration;
+use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use Illuminate\View\View;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class RegistrationSubmissionController extends Controller
 {

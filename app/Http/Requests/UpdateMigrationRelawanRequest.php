@@ -2,12 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
-use App\Models\TempUser;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateMigrationRelawanRequest extends FormRequest
 {
@@ -28,14 +24,14 @@ class UpdateMigrationRelawanRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique('temp_users')->ignore($this->tempUser),
-                Rule::unique('users')
+                Rule::unique('users'),
             ],
             'no_relawan' => [
                 'nullable',
                 'string',
                 'max:255',
                 Rule::unique('temp_users')->ignore($this->tempUser),
-                Rule::unique('users')
+                Rule::unique('users'),
             ],
         ];
     }

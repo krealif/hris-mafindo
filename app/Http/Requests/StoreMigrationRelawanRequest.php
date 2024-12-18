@@ -2,12 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
-use App\Models\TempUser;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreMigrationRelawanRequest extends FormRequest
 {
@@ -35,7 +31,7 @@ class StoreMigrationRelawanRequest extends FormRequest
                 'string',
                 'max:255',
                 Rule::unique('users'),
-                Rule::unique('temp_users')
+                Rule::unique('temp_users'),
             ],
         ];
     }
