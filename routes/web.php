@@ -57,9 +57,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ], function () {
         Route::get('migrasi', 'index')->name('index');
         Route::get('migrasi/tambah', 'create')->name('create');
-        Route::get('migrasi/{user}/edit', 'edit')->name('edit');
+        Route::get('migrasi/{tempUser}/edit', 'edit')->name('edit');
         Route::post('migrasi', 'store')->name('store');
-        Route::patch('migrasi/{user}', 'update')->name('update');
-        Route::delete('migrasi/{user}', 'destroy')->name('destroy');
+        Route::patch('migrasi/{tempUser}', 'update')->name('update');
+        Route::delete('migrasi/{tempUser}', 'destroy')->name('destroy');
     });
 });

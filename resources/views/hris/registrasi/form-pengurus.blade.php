@@ -25,7 +25,7 @@
             @endif
             @if ($errors->any())
               <x-alert class="alert-danger">
-                <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
+                <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                 <ul class="mt-2 mb-0" style="margin-left: -1rem">
                   @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -85,12 +85,12 @@
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="branch" class="form-label required">Wilayah</label>
-                        <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', Auth::user()->branch_id) }}" placeholder="" required />
+                        <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', Auth::user()->branch_id) }}" placeholder="" />
                       </div>
                     </div>
                     @if ($errors->has('pengurus.*'))
                       <x-alert class="alert-danger">
-                        <div>Tolong periksa kembali data yang Anda masukkan.</div>
+                        <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                         <ul class="mt-2 mb-0" style="margin-left: -1rem">
                           @foreach ($errors->get('pengurus.*') as $e)
                             @foreach ($e as $error)

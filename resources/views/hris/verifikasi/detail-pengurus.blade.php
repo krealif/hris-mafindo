@@ -63,10 +63,10 @@
                   <x-datagrid-item title="Nama Koordinator" content="{{ $user->nama }}" />
                   <x-datagrid-item title="Email" content="{{ $user->email }}" />
                   <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
-                  <x-datagrid-item title="Sekretaris 1" content="{{ $user->branch?->nama }}" />
-                  <x-datagrid-item title="Sekretaris 2" content="{{ $user->branch?->nama }}" />
-                  <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
-                  <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
+                  <x-datagrid-item title="Sekretaris 1" content="{{ $user->branch?->pengurus->sekretaris1 }}" />
+                  <x-datagrid-item title="Sekretaris 2" content="{{ $user->branch?->pengurus->sekretaris2 }}" />
+                  <x-datagrid-item title="Bendahara 1" content="{{ $user->branch?->pengurus->bendahara1 }}" />
+                  <x-datagrid-item title="Bendahara 2" content="{{ $user->branch?->pengurus->bendahara2 }}" />
                 </div>
               </div>
             </div>
@@ -76,7 +76,7 @@
           <div class="col-12 col-md-6">
             @if ($errors->any())
               <x-alert class="alert-danger">
-                <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
+                <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                 <ul class="mt-2 mb-0" style="margin-left: -1rem">
                   @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>

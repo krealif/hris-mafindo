@@ -228,13 +228,15 @@ class RegistrationController extends Controller
                 ])
             );
 
-            Branch::updateOrCreate(
-                ['id' => $user->branch_id],
-                [
-                    'pengurus' => $validated['pengurus'],
-                    'id' => $user->branch_id,
-                ]
-            );
+            if ($user->branch_id) {
+                Branch::updateOrCreate(
+                    ['id' => $user->branch_id],
+                    [
+                        'pengurus' => $validated['pengurus'],
+                        'id' => $user->branch_id,
+                    ]
+                );
+            }
 
             Registration::updateOrCreate(
                 ['user_id' => $user->id],

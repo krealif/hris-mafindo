@@ -1,11 +1,11 @@
 @extends('layouts.dashboard', [
-    'title' => ($user ? $user->nama : 'Tambah') . ' | Migrasi Data Relawan',
+    'title' => ($tempUser ? $tempUser->nama : 'Tambah') . ' | Migrasi Data Relawan',
 ])
 
 @php
-  $user = $user ?? null;
+  $tempUser = $tempUser ?? null;
   $detail = $detail ?? null;
-  $action = Route::currentRouteName() == 'migrasi.create' ? route('migrasi.store') : route('migrasi.update', $user?->id);
+  $action = Route::currentRouteName() == 'migrasi.create' ? route('migrasi.store') : route('migrasi.update', $tempUser?->id);
 @endphp
 
 @section('content')
@@ -20,14 +20,14 @@
                 <x-breadcrumb-item label="Migrasi" route="migrasi.index" />
               </x-breadcrumb>
             </div>
-            @if ($user)
-              <h1 class="page-title">{{ $user->nama }} | Edit Data</h1>
+            @if ($tempUser)
+              <h1 class="page-title">{{ $tempUser->nama }} | Edit Data</h1>
             @else
               <h1 class="page-title">Tambah Data</h1>
             @endif
           </div>
-          @if ($user)
-            <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $user->id }} }" x-on:click="$dispatch('set-id', { id })">
+          @if ($tempUser)
+            <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $tempUser->id }} }" x-on:click="$dispatch('set-id', { id })">
               <x-lucide-trash-2 class="icon text-red" />
               Hapus
             </button>
@@ -46,7 +46,7 @@
             @endif
             @if ($errors->any())
               <x-alert class="alert-danger m-0">
-                <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
+                <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                 <ul class="mt-2 mb-0" style="margin-left: -1rem">
                   @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -96,7 +96,7 @@
             </div>
           </div>
           <div class="col-12 col-md-9">
-            <form method="POST" action="{{ $action }}" class="vstack gap-2" x-data="{ isDraft: false }" autocomplete="off" novalidate>
+            <form method="POST" action="{{ $action }}" class="vstack gap-2" autocomplete="off">
               @csrf
               @if (Route::currentRouteName() == 'migrasi.edit')
                 @method('PATCH')
@@ -109,11 +109,11 @@
                   <div class="row mb-3">
                     <div class="col-12 col-md-6 mb-3 mb-md-0">
                       <label for="nama" class="form-label required">Nama Lengkap</label>
-                      <x-form.input name="nama" type="text" value="{{ old('nama', $user?->nama) }}" required />
+                      <x-form.input name="nama" type="text" value="{{ old('nama', $tempUser?->nama) }}" required />
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="email" class="form-label required">Email</label>
-                      <x-form.input name="email" type="email" value="{{ old('email', $user?->email) }}" required />
+                      <x-form.input name="email" type="email" value="{{ old('email', $tempUser?->email) }}" required />
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -123,7 +123,7 @@
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="tgl-lahir" class="form-label">Tanggal Lahir</label>
-                      <x-form.flatpickr name="tgl_lahir" value="{{ old('tgl_lahir', $detail?->tgl_lahir) }}" />
+                      <x-form.flatpickr name="tgl_lahir" maxDate="today" value="{{ old('tgl_lahir', $detail?->tgl_lahir) }}" />
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -167,7 +167,7 @@
                   </div>
                   @if ($errors->has('medsos.*'))
                     <x-alert class="alert-danger">
-                      <div>Tolong periksa kembali data yang Anda masukkan.</div>
+                      <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                       <ul class="mt-2 mb-0" style="margin-left: -1rem">
                         @foreach ($errors->get('medsos.*') as $e)
                           @foreach ($e as $error)
@@ -225,7 +225,7 @@
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="branch" class="form-label">Wilayah</label>
-                      <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', $user?->branch_id) }}" placeholder="" />
+                      <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', $tempUser?->branch_id) }}" placeholder="" />
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -235,7 +235,7 @@
                     </div>
                     <div class="col-12 col-md-6 mb-3 mb-md-0">
                       <label for="no-relawan" class="form-label">Nomor Kartu Relawan</label>
-                      <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan', $detail?->no_relawan) }}" />
+                      <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan', $tempUser?->no_relawan) }}" />
                     </div>
                   </div>
                 </div>
@@ -266,7 +266,7 @@
                 <div class="card-body" x-data="pendidikan">
                   @if ($errors->has('pendidikan.*'))
                     <x-alert class="alert-danger">
-                      <div>Tolong periksa kembali data yang Anda masukkan.</div>
+                      <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                       <ul class="mt-2 mb-0" style="margin-left: -1rem">
                         @foreach ($errors->get('pendidikan.*') as $e)
                           @foreach ($e as $error)
@@ -328,7 +328,7 @@
                 <div class="card-body" x-data="pekerjaan">
                   @if ($errors?->has('pekerjaan.*'))
                     <x-alert class="alert-danger">
-                      <div>Tolong periksa kembali data yang Anda masukkan.</div>
+                      <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                       <ul class="mt-2 mb-0" style="margin-left: -1rem">
                         @foreach ($errors->get('pekerjaan.*') as $e)
                           @foreach ($e as $error)
@@ -390,7 +390,7 @@
                 <div class="card-body" x-data="sertifikat">
                   @if ($errors?->has('sertifikat.*'))
                     <x-alert class="alert-danger">
-                      <div>Tolong periksa kembali data yang Anda masukkan.</div>
+                      <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                       <ul class="mt-2 mb-0" style="margin-left: -1rem">
                         @foreach ($errors->get('sertifikat.*') as $e)
                           @foreach ($e as $error)
@@ -437,9 +437,8 @@
               </div>
 
               <div class="card bg-primary-lt shadow position-sticky bottom-0 z-3">
-                <input type="hidden" name="_mode" value="draft">
                 <div class="card-body btn-list">
-                  <button class="btn btn-primary" x-on:click="isDraft = false">
+                  <button class="btn btn-primary">
                     <x-lucide-save class="icon" />
                     Simpan
                   </button>
@@ -452,7 +451,7 @@
       </div>
     </div>
   </div>
-  @if ($user)
+  @if ($tempUser)
     <x-modal-delete baseRoute="{{ route('migrasi.index') }}" />
   @endif
   <script>

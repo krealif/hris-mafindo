@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Branch;
+use App\Enums\RoleEnum;
+use Illuminate\View\View;
+use App\Models\Registration;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Enums\RegistrationTypeEnum;
+use Illuminate\Support\Facades\Gate;
+use App\Enums\RegistrationStatusEnum;
+use Illuminate\Http\RedirectResponse;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
-use App\Enums\RegistrationStatusEnum;
-use App\Enums\RegistrationTypeEnum;
-use App\Enums\RoleEnum;
-use App\Models\Branch;
-use App\Models\Registration;
-use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
-use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class RegistrationSubmissionController extends Controller
 {
@@ -30,7 +31,7 @@ class RegistrationSubmissionController extends Controller
                 'user.nama',
                 'user.email',
                 AllowedFilter::exact('type'),
-                AllowedFilter::exact('status'),
+                AllowedFilter::exact('step'),
                 AllowedFilter::exact('user.branch_id'),
             ])
             ->where('status', 'diproses')
@@ -106,7 +107,13 @@ class RegistrationSubmissionController extends Controller
         if ($type == RegistrationTypeEnum::RELAWAN_BARU->value) {
             if ($currentStep == RegistrationBaruStepEnum::WAWANCARA) {
                 $validated = $request->validate([
-                    'no_relawan' => ['required', 'string'],
+                    'no_relawan' => [
+                        'required',
+                        'string',
+                        'max:255',
+                        'unique:temp_users',
+                        Rule::unique('users')->ignore($registration->user),
+                    ],
                 ]);
 
                 $registration->user->update(['no_relawan' => $validated['no_relawan']]);
@@ -167,7 +174,13 @@ class RegistrationSubmissionController extends Controller
             $registration->user->syncRoles(RoleEnum::RELAWAN);
         } elseif ($type == RegistrationTypeEnum::RELAWAN_WILAYAH->value) {
             $validated = $request->validate([
-                'no_relawan' => ['required', 'string'],
+                'no_relawan' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    'unique:temp_users',
+                    Rule::unique('users')->ignore($registration->user),
+                ],
             ]);
 
             $registration->user->update([

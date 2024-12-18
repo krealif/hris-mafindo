@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRegistrationRelawanRequest;
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\TempUser;
-use App\Models\User;
-use App\Models\UserDetail;
-use App\Traits\HandlesArrayInput;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use App\Models\UserDetail;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
+use App\Traits\HandlesArrayInput;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Requests\StoreMigrationRelawanRequest;
+use App\Http\Requests\UpdateMigrationRelawanRequest;
 
 class RegistrationMigrationController extends Controller
 {
@@ -24,14 +25,14 @@ class RegistrationMigrationController extends Controller
      */
     public function index(): View
     {
-        $users = QueryBuilder::for(TempUser::class)
+        $tempUsers = QueryBuilder::for(TempUser::class)
             ->allowedFilters(['nama', 'email', 'no_relawan'])
             ->orderBy('updated_at', 'desc')
             ->with('branch')
             ->paginate(20)
             ->appends(request()->query());
 
-        return view('hris.migrasi-data.index', compact('users'));
+        return view('hris.migrasi-data.index', compact('tempUsers'));
     }
 
     /**
@@ -49,21 +50,9 @@ class RegistrationMigrationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRegistrationRelawanRequest $request): RedirectResponse
+    public function store(StoreMigrationRelawanRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            ...$request->rules(),
-            'nama' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(TempUser::class, 'email'),
-                Rule::unique(User::class, 'email'),
-            ],
-            'no_relawan' => ['nullable', 'string', Rule::unique(User::class, 'no_relawan')],
-        ]);
+        $validated = $request->validated();
 
         $validated = $this->handleArrayField($validated, [
             'pendidikan',
@@ -102,16 +91,16 @@ class RegistrationMigrationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TempUser $user): View
+    public function edit(TempUser $tempUser): View
     {
         $branches = Branch::select('id', 'nama')
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
 
-        $detail = $user->userDetail;
+        $detail = $tempUser->userDetail;
 
         return view('hris.migrasi-data.form-migrasi', compact(
-            'user',
+            'tempUser',
             'detail',
             'branches'
         ));
@@ -120,21 +109,9 @@ class RegistrationMigrationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreRegistrationRelawanRequest $request, TempUser $user): RedirectResponse
+    public function update(UpdateMigrationRelawanRequest $request, TempUser $tempUser): RedirectResponse
     {
-        $validated = $request->validate([
-            ...$request->rules(),
-            'nama' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(TempUser::class, 'email')->ignore($user->id),
-                Rule::unique(User::class, 'email')->ignore($user->id),
-            ],
-            'no_relawan' => ['nullable', 'string', Rule::unique(User::class, 'no_relawan')->ignore($user->id)],
-        ]);
+        $validated = $request->validated();
 
         $validated = $this->handleArrayField($validated, [
             'pendidikan',
@@ -142,7 +119,7 @@ class RegistrationMigrationController extends Controller
             'sertifikat',
         ]);
 
-        DB::transaction(function () use ($validated, $user) {
+        DB::transaction(function () use ($validated, $tempUser) {
             $tempData = Arr::only($validated, [
                 'nama',
                 'email',
@@ -150,7 +127,7 @@ class RegistrationMigrationController extends Controller
                 'branch_id',
             ]);
 
-            $user->update($tempData);
+            $tempUser->update($tempData);
 
             $detail = Arr::except($validated, [
                 'nama',
@@ -160,7 +137,7 @@ class RegistrationMigrationController extends Controller
                 'mode',
             ]);
 
-            $user->userDetail?->update([...$detail]);
+            $tempUser->userDetail?->update([...$detail]);
         });
 
         flash()->success("Berhasil. Relawan [{$validated['nama']}] telah diperbarui.");
@@ -171,16 +148,16 @@ class RegistrationMigrationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TempUser $user): RedirectResponse
+    public function destroy(TempUser $tempUser): RedirectResponse
     {
-        $userName = $user->nama;
+        $userName = $tempUser->nama;
 
-        DB::transaction(function () use ($user) {
-            UserDetail::where('id', $user->id)
+        DB::transaction(function () use ($tempUser) {
+            UserDetail::where('id', $tempUser->id)
                 ->whereNull('user_id')
                 ->delete();
 
-            $user->delete();
+            $tempUser->delete();
         });
 
         flash()->success("Berhasil. Relawan [{$userName}] telah dihapus.");

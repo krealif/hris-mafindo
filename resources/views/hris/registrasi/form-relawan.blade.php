@@ -29,7 +29,7 @@
             @endif
             @if ($errors->any())
               <x-alert class="alert-danger">
-                <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
+                <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                 <ul class="mt-2 mb-0" style="margin-left: -1rem">
                   @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -136,7 +136,7 @@
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="tgl-lahir" class="form-label required">Tanggal Lahir</label>
-                        <x-form.flatpickr name="tgl_lahir" value="{{ old('tgl_lahir', $detail?->tgl_lahir?->format('d-m-Y')) }}" required />
+                        <x-form.flatpickr name="tgl_lahir" maxDate="today" value="{{ old('tgl_lahir', $detail?->tgl_lahir?->format('d-m-Y')) }}" required />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="gender" class="form-label required">Jenis Kelamin</label>
@@ -175,7 +175,7 @@
                         <label for="foto" @class(['form-label', 'required' => !Auth::user()->foto])>{{ Auth::user()->foto ? 'Ganti Foto' : 'Upload Foto' }}</label>
                         <div class="row g-2">
                           <div class="col">
-                            <x-form.input name="foto" type="file" x-ref="imgInput" x-on:change="handleFileUpload" accept=".jpg,.jpeg,.png" :required="!Auth::user()->foto" />
+                            <x-form.input name="foto" type="file" x-ref="imgInput" x-on:change="handleFileUpload" accept=".jpg,.jpeg,.png" :required="!Auth::user()?->foto" />
                           </div>
                           <div class="col-auto" x-show="newImg">
                             <button x-on:click="cancelUpload" type="button" class="btn btn-icon">
@@ -185,7 +185,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-3">
                       <p class="m-0">Pastikan file foto yang Anda upload memenuhi ketentuan sebagai berikut:</p>
                       <ul class="mt-1">
                         <li>Dimensi: <strong>1000x1000 pixel</strong> atau memiliki <strong>rasio 1:1</strong></li>
@@ -213,7 +213,7 @@
                     </div>
                     @if ($errors->has('medsos.*'))
                       <x-alert class="alert-danger">
-                        <div>Tolong periksa kembali data yang Anda masukkan.</div>
+                        <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                         <ul class="mt-2 mb-0" style="margin-left: -1rem">
                           @foreach ($errors->get('medsos.*') as $e)
                             @foreach ($e as $error)
@@ -314,7 +314,7 @@
                   <div class="card-body" x-data="pendidikan">
                     @if ($errors->has('pendidikan.*'))
                       <x-alert class="alert-danger">
-                        <div>Tolong periksa kembali data yang Anda masukkan.</div>
+                        <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                         <ul class="mt-2 mb-0" style="margin-left: -1rem">
                           @foreach ($errors->get('pendidikan.*') as $e)
                             @foreach ($e as $error)
@@ -376,7 +376,7 @@
                   <div class="card-body" x-data="pekerjaan">
                     @if ($errors?->has('pekerjaan.*'))
                       <x-alert class="alert-danger">
-                        <div>Tolong periksa kembali data yang Anda masukkan.</div>
+                        <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                         <ul class="mt-2 mb-0" style="margin-left: -1rem">
                           @foreach ($errors->get('pekerjaan.*') as $e)
                             @foreach ($e as $error)
@@ -438,7 +438,7 @@
                   <div class="card-body" x-data="sertifikat">
                     @if ($errors?->has('sertifikat.*'))
                       <x-alert class="alert-danger">
-                        <div>Tolong periksa kembali data yang Anda masukkan.</div>
+                        <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                         <ul class="mt-2 mb-0" style="margin-left: -1rem">
                           @foreach ($errors->get('sertifikat.*') as $e)
                             @foreach ($e as $error)

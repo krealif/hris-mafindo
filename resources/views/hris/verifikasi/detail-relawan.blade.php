@@ -221,7 +221,7 @@
           <div class="col-12 col-md-6">
             @if ($errors->any())
               <x-alert class="alert-danger">
-                <div>Error! Terjadi kesalahan saat mengirimkan form. Tolong periksa kembali data yang Anda masukkan.</div>
+                <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                 <ul class="mt-2 mb-0" style="margin-left: -1rem">
                   @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -282,8 +282,8 @@
                         </div>
                       @elseif ($registration->step == 'pelatihan')
                         <h5 class="fs-4 m-0 mb-2">Perhatian!</h5>
-                        <p class="mb-4">Setelah proses registrasi diselesaikan, relawan yang bersangkutan akan <strong>berubah menjadi Relawan Wilayah</strong>. Pastikan semua data
-                          telah diverifikasi sebelum menyelesaikan registrasi.</p>
+                        <p class="mb-4">Pastikan relawan telah <strong>mengikuti Pelatihan Dasar Relawan</strong>. Setelah proses registrasi diselesaikan, relawan yang bersangkutan
+                          akan <strong>berubah menjadi Relawan Wilayah</strong>.</p>
                       @endif
                       <button class="btn btn-primary" type="submit">Selesaikan Registrasi</button>
                     </form>

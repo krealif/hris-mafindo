@@ -31,7 +31,7 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dt.datatable search="nama" total="{{ $users->count() }}">
+        <x-dt.datatable search="nama" total="{{ $tempUsers->count() }}">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row g-4">
@@ -58,7 +58,7 @@
               </tr>
             </thead>
             <tbody>
-              @foreach ($users as $user)
+              @foreach ($tempUsers as $user)
                 <tr x-data="{ id: {{ $user->id }} }">
                   <td>
                     <a href="{{ route('migrasi.edit', $user->id) }}" class="text-decoration-underline text-dark">{{ $user->nama }}</a>
@@ -83,10 +83,10 @@
               @endforeach
             </tbody>
           </table>
-          @if ($users->hasPages())
+          @if ($tempUsers->hasPages())
             <!-- Pagination -->
             <x-slot:pagination>
-              {{ $users->links() }}
+              {{ $tempUsers->links() }}
             </x-slot>
           @endif
         </x-dt.datatable>

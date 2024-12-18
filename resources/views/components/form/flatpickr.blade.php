@@ -3,6 +3,8 @@
     'name' => null,
     'showError' => true,
     'required' => false,
+    'maxDate' => null,
+    'minDate' => null,
 ])
 
 @php
@@ -18,12 +20,20 @@
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    window.flatpickr && (flatpickr({{ Js::from('#' . $id) }}, {
+    const options = {
       locale: 'id',
       altInput: true,
       altFormat: "d/m/Y",
       dateFormat: "Y-m-d",
-    }));
+    };
+
+    @if ($maxDate || $minDate)
+      options['{{ $maxDate ? 'maxDate' : 'minDate' }}'] = '{{ $maxDate ?? $minDate }}';
+    @endif
+
+    if (window.flatpickr) {
+      flatpickr({{ Js::from('#' . $id) }}, options);
+    }
   });
 </script>
 @if ($showError)
