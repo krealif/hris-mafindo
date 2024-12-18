@@ -2,13 +2,13 @@
 
 namespace App\Actions\Fortify;
 
-use App\Models\User;
-use App\Models\TempUser;
 use App\Models\Registration;
-use Illuminate\Validation\Rule;
+use App\Models\TempUser;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -52,7 +52,7 @@ class CreateNewUser implements CreatesNewUsers
 
                 $userDetail = $tempUser->userDetail;
                 $userDetail?->update([
-                    'user_id' => $user->id
+                    'user_id' => $user->id,
                 ]);
 
                 Registration::create([

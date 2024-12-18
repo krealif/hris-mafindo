@@ -23,8 +23,8 @@ enum GenderEnum: string
     public static function labels(): array
     {
         return array_combine(
-            array_map(fn($case) => $case->value, self::cases()),
-            array_map(fn($case) => $case->label(), self::cases())
+            array_map(fn ($case) => $case->value, self::cases()),
+            array_map(fn ($case) => $case->label(), self::cases())
         );
     }
 }

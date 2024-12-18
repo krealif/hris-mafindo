@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Branch;
-use App\Models\UserDetail;
-use Illuminate\Support\Arr;
-use App\Models\Registration;
-use App\Traits\HasUploadFile;
-use Illuminate\Support\Facades\DB;
-use App\Enums\RegistrationTypeEnum;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-use App\Enums\RegistrationStatusEnum;
-use Illuminate\Http\RedirectResponse;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
+use App\Enums\RegistrationStatusEnum;
+use App\Enums\RegistrationTypeEnum;
 use App\Enums\RoleEnum;
-use App\Http\Requests\StoreRegistrationRelawanRequest;
 use App\Http\Requests\StoreRegistrationPengurusRequest;
+use App\Http\Requests\StoreRegistrationRelawanRequest;
+use App\Models\Branch;
+use App\Models\Registration;
+use App\Models\UserDetail;
 use App\Traits\HandlesArrayInput;
+use App\Traits\HasUploadFile;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class RegistrationController extends Controller
 {
-    use HasUploadFile, HandlesArrayInput;
+    use HandlesArrayInput, HasUploadFile;
 
     /**
      * Display a form selection page or redirect to the appropriate registration form
      * if the user already has a registration.
      */
-    public function selectForm(): RedirectResponse | View
+    public function selectForm(): RedirectResponse|View
     {
         $registration = Auth::user()->registration;
 
@@ -57,7 +57,7 @@ class RegistrationController extends Controller
         $viewData = [
             'type' => $type->value,
             'registration' => $registration,
-            'branches' => $branches
+            'branches' => $branches,
         ];
 
         if ($type == RegistrationTypeEnum::PENGURUS_WILAYAH) {
@@ -95,7 +95,7 @@ class RegistrationController extends Controller
         $validated = $this->handleArrayField($validated, [
             'pendidikan',
             'pekerjaan',
-            'sertifikat'
+            'sertifikat',
         ]);
 
         /** @var \App\Models\User $user */
@@ -134,7 +134,7 @@ class RegistrationController extends Controller
         }
 
         // Assign roles based on registration type
-        if (!$user->hasAnyRole(['relawan', 'relawan-baru'])) {
+        if (! $user->hasAnyRole(['relawan', 'relawan-baru'])) {
             $role = ($type == RegistrationTypeEnum::RELAWAN_BARU)
                 ? RoleEnum::RELAWAN_BARU
                 : RoleEnum::RELAWAN;
@@ -148,7 +148,7 @@ class RegistrationController extends Controller
                     'nama',
                     'no_relawan',
                     'foto',
-                    'branch_id'
+                    'branch_id',
                 ])
             );
 
@@ -157,7 +157,7 @@ class RegistrationController extends Controller
                 'no_relawan',
                 'foto',
                 'branch_id',
-                'mode'
+                'mode',
             ]);
 
             UserDetail::updateOrCreate(
@@ -178,9 +178,9 @@ class RegistrationController extends Controller
         });
 
         if ($request->_mode == 'draft') {
-            flash()->success("Berhasil. Data telah disimpan sementara.");
+            flash()->success('Berhasil. Data telah disimpan sementara.');
         } else {
-            flash()->success("Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.");
+            flash()->success('Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.');
         }
 
         return to_route('registration.showForm', $type);
@@ -216,7 +216,7 @@ class RegistrationController extends Controller
             $registrationData['status'] = RegistrationStatusEnum::REVISI;
         }
 
-        if (!$user->hasRole('pengurus')) {
+        if (! $user->hasRole('pengurus')) {
             $user->assignRole(RoleEnum::PENGURUS);
         }
 
@@ -224,7 +224,7 @@ class RegistrationController extends Controller
             $user->update(
                 Arr::only($validated, [
                     'nama',
-                    'branch_id'
+                    'branch_id',
                 ])
             );
 
@@ -246,9 +246,9 @@ class RegistrationController extends Controller
         });
 
         if ($request->_mode == 'draft') {
-            flash()->success("Berhasil. Data telah disimpan sementara.");
+            flash()->success('Berhasil. Data telah disimpan sementara.');
         } else {
-            flash()->success("Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.");
+            flash()->success('Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.');
         }
 
         return to_route('registration.showForm', $type);

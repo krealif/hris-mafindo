@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Branch;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class BranchSeeder extends Seeder
 {
@@ -22,12 +21,12 @@ class BranchSeeder extends Seeder
             'Bali', 'Mataram', 'Aceh', 'Manado', 'Sidoarjo',
             'Palu', 'Salatiga', 'Banten', 'Maumere', 'Garut',
             'Grobogan', 'Wonogiri', 'Sulawesi Barat', 'Kupang', 'Maluku Utara',
-            'Sorong', 'Kalimantan Utara', 'Jayapura', 'Banyuwangi'
+            'Sorong', 'Kalimantan Utara', 'Jayapura', 'Banyuwangi',
         ];
 
-        $branches = array_map(fn($branch) => ['nama' => $branch], $branches);
+        $branches = array_map(fn ($branch) => ['nama' => $branch], $branches);
 
-         // Perform bulk insert
-         Branch::insert($branches);
+        // Perform bulk insert
+        Branch::insert($branches);
     }
 }

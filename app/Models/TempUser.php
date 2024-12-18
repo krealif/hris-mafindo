@@ -17,7 +17,7 @@ class TempUser extends Model
         'email',
         'no_relawan',
         'branch_id',
-        'user_detail_id'
+        'user_detail_id',
     ];
 
     /**

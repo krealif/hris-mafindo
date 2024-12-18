@@ -20,7 +20,7 @@ class EnsureUserIsVerified
         $user = Auth::user();
 
         // If the user is not verified, redirect them to the registration form
-        if (!$user->is_verified) {
+        if (! $user->is_verified) {
             return redirect()->route('registration.selectForm');
         }
 

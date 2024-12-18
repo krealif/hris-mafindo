@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Actions\Fortify\PasswordValidationRules;
 use App\Enums\AgamaEnum;
 use App\Enums\GenderEnum;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\File;
 use App\Enums\RegistrationTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Actions\Fortify\PasswordValidationRules;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class StoreRegistrationRelawanRequest extends FormRequest
 {

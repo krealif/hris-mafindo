@@ -18,8 +18,7 @@ class RegistrationAccepted extends Mailable implements ShouldQueue
      */
     public function __construct(
         public string $name,
-    )
-    {}
+    ) {}
 
     /**
      * Get the message envelope.

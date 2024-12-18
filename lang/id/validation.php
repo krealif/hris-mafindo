@@ -141,5 +141,5 @@ return [
     'uppercase' => ':Attribute harus berupa huruf kapital.',
     'url' => 'Format :attribute tidak valid.',
     'user' => 'Kami tidak dapat menemukan pengguna dengan alamat surel tersebut.',
-    'uuid' => ':Attribute harus merupakan UUID yang valid.'
+    'uuid' => ':Attribute harus merupakan UUID yang valid.',
 ];

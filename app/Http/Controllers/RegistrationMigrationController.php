@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Requests\StoreRegistrationRelawanRequest;
 use App\Models\Branch;
 use App\Models\TempUser;
-use Illuminate\View\View;
+use App\Models\User;
 use App\Models\UserDetail;
-use Illuminate\Support\Arr;
-use Illuminate\Validation\Rule;
 use App\Traits\HandlesArrayInput;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Requests\StoreRegistrationRelawanRequest;
 
 class RegistrationMigrationController extends Controller
 {
@@ -45,6 +45,7 @@ class RegistrationMigrationController extends Controller
 
         return view('hris.migrasi-data.form-migrasi', compact('branches'));
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -67,7 +68,7 @@ class RegistrationMigrationController extends Controller
         $validated = $this->handleArrayField($validated, [
             'pendidikan',
             'pekerjaan',
-            'sertifikat'
+            'sertifikat',
         ]);
 
         DB::transaction(function () use ($validated) {
@@ -76,7 +77,7 @@ class RegistrationMigrationController extends Controller
                 'email',
                 'no_relawan',
                 'branch_id',
-                'mode'
+                'mode',
             ]);
 
             $userDetail = UserDetail::create([...$detail]);
@@ -85,7 +86,7 @@ class RegistrationMigrationController extends Controller
                 'nama',
                 'email',
                 'no_relawan',
-                'branch_id'
+                'branch_id',
             ]);
 
             $tempData['user_detail_id'] = $userDetail->id;
@@ -94,6 +95,7 @@ class RegistrationMigrationController extends Controller
         });
 
         flash()->success("Berhasil. Relawan [{$validated['nama']}] telah ditambahkan.");
+
         return to_route('migrasi.index');
     }
 
@@ -137,7 +139,7 @@ class RegistrationMigrationController extends Controller
         $validated = $this->handleArrayField($validated, [
             'pendidikan',
             'pekerjaan',
-            'sertifikat'
+            'sertifikat',
         ]);
 
         DB::transaction(function () use ($validated, $user) {
@@ -145,7 +147,7 @@ class RegistrationMigrationController extends Controller
                 'nama',
                 'email',
                 'no_relawan',
-                'branch_id'
+                'branch_id',
             ]);
 
             $user->update($tempData);
@@ -155,13 +157,14 @@ class RegistrationMigrationController extends Controller
                 'email',
                 'no_relawan',
                 'branch_id',
-                'mode'
+                'mode',
             ]);
 
             $user->userDetail?->update([...$detail]);
         });
 
         flash()->success("Berhasil. Relawan [{$validated['nama']}] telah diperbarui.");
+
         return back();
     }
 

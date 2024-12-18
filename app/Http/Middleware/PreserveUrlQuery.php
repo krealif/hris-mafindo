@@ -19,7 +19,7 @@ class PreserveUrlQuery
         $query = $request->query();
 
         if ($route = $request->route()?->getName()) {
-            $name = explode(".", $route);
+            $name = explode('.', $route);
             $key = "q.{$name[0]}";
 
             if (isset($query['page']) || isset($query['filter'])) {

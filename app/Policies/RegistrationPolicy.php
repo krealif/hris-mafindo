@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Registration;
-use App\Enums\RegistrationTypeEnum;
-use App\Enums\RegistrationStatusEnum;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
+use App\Enums\RegistrationStatusEnum;
+use App\Enums\RegistrationTypeEnum;
+use App\Models\Registration;
+use App\Models\User;
 
 class RegistrationPolicy
 {
@@ -18,10 +18,14 @@ class RegistrationPolicy
     {
         if (
             $type == RegistrationTypeEnum::PENGURUS_WILAYAH
-            && !strpos($user->email, 'mafindo.or.id')
-        ) return false;
+            && ! strpos($user->email, 'mafindo.or.id')
+        ) {
+            return false;
+        }
 
-        if ($regisType = $user->registration?->type) return $regisType == $type->value;
+        if ($regisType = $user->registration?->type) {
+            return $regisType == $type->value;
+        }
 
         return true;
     }
@@ -33,16 +37,22 @@ class RegistrationPolicy
     {
         if (
             $type == RegistrationTypeEnum::PENGURUS_WILAYAH
-            && !strpos($user->email, 'mafindo.or.id')
-        ) return false;
+            && ! strpos($user->email, 'mafindo.or.id')
+        ) {
+            return false;
+        }
 
         if (
             $user->registration &&
             ($user->registration->status == RegistrationStatusEnum::DIPROSES->value
                 || $user->registration->step != 'mengisi')
-        ) return false;
+        ) {
+            return false;
+        }
 
-        if ($regisType = $user->registration?->type) return $regisType == $type->value;
+        if ($regisType = $user->registration?->type) {
+            return $regisType == $type->value;
+        }
 
         return true;
     }
@@ -74,7 +84,7 @@ class RegistrationPolicy
         return $registration->status == RegistrationStatusEnum::DIPROSES->value
             && in_array($registration->step, [
                 RegistrationBaruStepEnum::PROFILING->value,
-                RegistrationLamaStepEnum::VERIFIKASI->value
+                RegistrationLamaStepEnum::VERIFIKASI->value,
             ]);
     }
 
@@ -86,7 +96,7 @@ class RegistrationPolicy
         return $registration->status == RegistrationStatusEnum::DIPROSES->value
             && in_array($registration->step, [
                 RegistrationBaruStepEnum::PELATIHAN->value,
-                RegistrationLamaStepEnum::VERIFIKASI->value
+                RegistrationLamaStepEnum::VERIFIKASI->value,
             ]);
     }
 
@@ -112,7 +122,9 @@ class RegistrationPolicy
             (in_array($registration->status, ['draft', 'revisi'])
                 && $registration->updated_at?->diffInDays() >= 7)
             || $registration->status == RegistrationStatusEnum::DITOLAK->value
-        ) return true;
+        ) {
+            return true;
+        }
 
         return false;
     }

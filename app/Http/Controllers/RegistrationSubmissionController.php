@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Branch;
-use App\Enums\RoleEnum;
-use Illuminate\View\View;
-use App\Models\Registration;
-use Illuminate\Http\Request;
-use App\Enums\RegistrationTypeEnum;
-use Illuminate\Support\Facades\Gate;
-use App\Enums\RegistrationStatusEnum;
-use Illuminate\Http\RedirectResponse;
-use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\QueryBuilder\AllowedFilter;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
+use App\Enums\RegistrationStatusEnum;
+use App\Enums\RegistrationTypeEnum;
+use App\Enums\RoleEnum;
+use App\Models\Branch;
+use App\Models\Registration;
+use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class RegistrationSubmissionController extends Controller
 {
-
     /**
      * Display a listing of the all registration.
      */
@@ -32,7 +31,7 @@ class RegistrationSubmissionController extends Controller
                 'user.email',
                 AllowedFilter::exact('type'),
                 AllowedFilter::exact('status'),
-                AllowedFilter::exact('user.branch_id')
+                AllowedFilter::exact('user.branch_id'),
             ])
             ->where('status', 'diproses')
             ->with('user.branch')
@@ -59,7 +58,7 @@ class RegistrationSubmissionController extends Controller
                 AllowedFilter::exact('type'),
                 AllowedFilter::exact('step'),
                 AllowedFilter::exact('status'),
-                AllowedFilter::exact('user.branch_id')
+                AllowedFilter::exact('user.branch_id'),
             ])
             ->with('user.branch')
             ->orderBy('updated_at', 'desc')
@@ -83,7 +82,9 @@ class RegistrationSubmissionController extends Controller
         if (
             $registration->type
             == RegistrationTypeEnum::PENGURUS_WILAYAH->value
-        ) return view('hris.verifikasi.detail-pengurus', compact('registration', 'user'));
+        ) {
+            return view('hris.verifikasi.detail-pengurus', compact('registration', 'user'));
+        }
 
         return view('hris.verifikasi.detail-relawan', compact('registration', 'user'));
     }
@@ -260,7 +261,7 @@ class RegistrationSubmissionController extends Controller
         if ($total) {
             flash()->success("Berhasil. Sebanyak [{$total}] data telah dihapus.");
         } else {
-            flash()->info("Tidak ada data yang perlu dihapus.");
+            flash()->info('Tidak ada data yang perlu dihapus.');
         }
 
         return back();
