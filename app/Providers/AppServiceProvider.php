@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        config(['app.locale' => 'id']);
+        \Carbon\Carbon::setLocale('id');
+
+        Paginator::useBootstrapFive();
+
+        \Spatie\Flash\Flash::levels([
+            'success' => 'alert-success',
+            'info' => 'alert-info',
+            'error' => 'alert-danger',
+        ]);
     }
 }
