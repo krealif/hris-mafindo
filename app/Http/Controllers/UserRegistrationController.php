@@ -34,10 +34,10 @@ class UserRegistrationController extends Controller
         $registration = Auth::user()->registration;
 
         if ($registration) {
-            return to_route('ajuan.showForm', $registration->type);
+            return to_route('registrasi.showForm', $registration->type);
         }
 
-        return view('hris.registrasi.type-selection');
+        return view('hris.registrasi.user.type-selection');
     }
 
     /**
@@ -60,12 +60,12 @@ class UserRegistrationController extends Controller
         ];
 
         if ($type == RegistrationTypeEnum::PENGURUS_WILAYAH) {
-            return view('hris.registrasi.form-pengurus', $viewData);
+            return view('hris.registrasi.user.form-pengurus', $viewData);
         }
 
         $viewData['detail'] = Auth::user()->detail;
 
-        return view('hris.registrasi.form-relawan', $viewData);
+        return view('hris.registrasi.user.form-relawan', $viewData);
     }
 
     /**
@@ -190,7 +190,7 @@ class UserRegistrationController extends Controller
             flash()->success('Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.');
         }
 
-        return to_route('ajuan.showForm', $type);
+        return to_route('registrasi.showForm', $type);
     }
 
     /**
@@ -263,6 +263,6 @@ class UserRegistrationController extends Controller
             flash()->success('Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.');
         }
 
-        return to_route('ajuan.showForm', $type);
+        return to_route('registrasi.showForm', $type);
     }
 }

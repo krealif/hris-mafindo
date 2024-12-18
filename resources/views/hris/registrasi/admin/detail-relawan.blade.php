@@ -11,10 +11,10 @@
           <div class="col">
             <div class="mb-1">
               <x-breadcrumb>
-                @if (url()->previous() == route('ajuan.history'))
-                  <x-breadcrumb-item label="Histori" route="ajuan.history" />
+                @if (url()->previous() == route('registrasi.history'))
+                  <x-breadcrumb-item label="Histori" route="registrasi.history" />
                 @else
-                  <x-breadcrumb-item label="Ajuan" route="ajuan.index" />
+                  <x-breadcrumb-item label="Ajuan" route="registrasi.index" />
                 @endif
               </x-breadcrumb>
             </div>
@@ -272,7 +272,7 @@
               <div class="tab-content">
                 @can('finish', $registration)
                   <div id="tab-selesai" class="tab-pane">
-                    <form method="POST" action="{{ route('ajuan.finish', $registration->id) }}" class="card-body border-top">
+                    <form method="POST" action="{{ route('registrasi.finish', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
                       @if ($registration->step == 'verifikasi')
@@ -291,7 +291,7 @@
                 @endcan
                 @can('nextStep', $registration)
                   <div id="tab-lanjut" class="tab-pane">
-                    <form method="POST" action="{{ route('ajuan.nextStep', $registration->id) }}" class="card-body border-top">
+                    <form method="POST" action="{{ route('registrasi.nextStep', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
                       @if ($registration->step == 'wawancara')
@@ -306,7 +306,7 @@
                 @endcan
                 @can('requestRevision', $registration)
                   <div id="tab-revisi" class="tab-pane">
-                    <form method="POST" action="{{ route('ajuan.revisi', $registration->id) }}" class="card-body border-top">
+                    <form method="POST" action="{{ route('registrasi.revisi', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
                       <div class="mb-4">
@@ -319,7 +319,7 @@
                 @endcan
                 @can('reject', $registration)
                   <div id="tab-tolak" class="tab-pane">
-                    <form method="POST" action="{{ route('ajuan.reject', $registration->id) }}" class="card-body border-top">
+                    <form method="POST" action="{{ route('registrasi.reject', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
                       <div class="mb-4">
@@ -338,6 +338,6 @@
     </div>
   </div>
   @can('destroy', $registration)
-    <x-modal-delete baseRoute="{{ route('ajuan.index') }}" />
+    <x-modal-delete baseRoute="{{ route('registrasi.index') }}" />
   @endcan
 @endsection

@@ -30,7 +30,7 @@ class FortifyServiceProvider extends ServiceProvider
                     return redirect()->intended('/');
                 }
 
-                return redirect()->route('ajuan.selectForm');
+                return redirect()->route('registrasi.selectForm');
             }
         });
 
@@ -38,7 +38,7 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                return redirect()->route('ajuan.selectForm');
+                return redirect()->route('registrasi.selectForm');
             }
         });
 

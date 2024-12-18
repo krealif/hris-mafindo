@@ -26,14 +26,15 @@
               <div class="dropdown-menu">
                 <div class="dropdown-menu-columns">
                   <div class="dropdown-menu-column">
-                    <a href="{{ route('ajuan.index') }}" @class([
+                    <a href="{{ route('registrasi.index') }}" @class([
                         'dropdown-item',
                         'active' =>
-                            request()->routeIs('ajuan.index') || request()->routeIs('ajuan.show'),
+                            request()->routeIs('registrasi.index') ||
+                            request()->routeIs('registrasi.show'),
                     ])>Ajuan Registrasi</a>
-                    <a href="{{ route('ajuan.history') }}" @class([
+                    <a href="{{ route('registrasi.history') }}" @class([
                         'dropdown-item',
-                        'active' => request()->routeIs('ajuan.history'),
+                        'active' => request()->routeIs('registrasi.history'),
                     ])>Histori Registrasi</a>
                     <a href="{{ route('migrasi.index') }}" @class([
                         'dropdown-item',

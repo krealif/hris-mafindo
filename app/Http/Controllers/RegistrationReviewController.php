@@ -44,7 +44,7 @@ class RegistrationReviewController extends Controller
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
 
-        return view('hris.verifikasi.index', compact('registrations', 'branches'));
+        return view('hris.registrasi.admin.index', compact('registrations', 'branches'));
     }
 
     /**
@@ -70,7 +70,7 @@ class RegistrationReviewController extends Controller
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
 
-        return view('hris.verifikasi.histori', compact('registrations', 'branches'));
+        return view('hris.registrasi.admin.histori', compact('registrations', 'branches'));
     }
 
     /**
@@ -87,10 +87,10 @@ class RegistrationReviewController extends Controller
             $registration->type
             == RegistrationTypeEnum::PENGURUS_WILAYAH->value
         ) {
-            return view('hris.verifikasi.detail-pengurus', compact('registration', 'user'));
+            return view('hris.registrasi.admin.detail-pengurus', compact('registration', 'user'));
         }
 
-        return view('hris.verifikasi.detail-relawan', compact('registration', 'user'));
+        return view('hris.registrasi.admin.detail-relawan', compact('registration', 'user'));
     }
 
     /**
@@ -203,7 +203,7 @@ class RegistrationReviewController extends Controller
 
         flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah diselesaikan.");
 
-        return to_route('ajuan.index');
+        return to_route('registrasi.index');
     }
 
     /**
@@ -249,8 +249,8 @@ class RegistrationReviewController extends Controller
 
         flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah dihapus.");
 
-        if (url()->previous() != route('ajuan.history')) {
-            return to_route('ajuan.history');
+        if (url()->previous() != route('registrasi.history')) {
+            return to_route('registrasi.history');
         }
 
         return back();

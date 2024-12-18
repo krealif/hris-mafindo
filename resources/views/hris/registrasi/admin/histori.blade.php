@@ -89,7 +89,7 @@
                 <tr x-data="{ id: {{ $registration->id }} }">
                   <td>
                     @if (Gate::check('destroy', $registration) || $registration->step == 'mengisi')
-                      <a href="{{ route('ajuan.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
+                      <a href="{{ route('registrasi.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
                     @else
                       {{ $registration->user->nama }}
                     @endif
@@ -113,7 +113,7 @@
                   <td>
                     <div class="btn-list flex-nowrap">
                       @if (Gate::check('destroy', $registration) || $registration->step == 'mengisi')
-                        <a href="{{ route('ajuan.show', $registration->id) }}" class="btn btn-icon">
+                        <a href="{{ route('registrasi.show', $registration->id) }}" class="btn btn-icon">
                           <x-lucide-eye class="icon" defer />
                         </a>
                       @endif
@@ -139,10 +139,10 @@
       </div>
     </div>
   </div>
-  <x-modal-delete baseRoute="{{ route('ajuan.index') }}" />
+  <x-modal-delete baseRoute="{{ route('registrasi.index') }}" />
   <div class="modal fade" id="bulk-delete" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <form method="POST" action="{{ route('ajuan.prune') }}" class="modal-content">
+      <form method="POST" action="{{ route('registrasi.prune') }}" class="modal-content">
         <div class="modal-status bg-danger"></div>
         <div class="modal-header">
           <h5 class="modal-title">Hapus Masal</h5>

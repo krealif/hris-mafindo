@@ -30,7 +30,7 @@ class UserMigrationController extends Controller
             ->paginate(15)
             ->appends(request()->query());
 
-        return view('hris.migrasi-data.index', compact('tempUsers'));
+        return view('hris.migrasi-user.index', compact('tempUsers'));
     }
 
     /**
@@ -42,7 +42,7 @@ class UserMigrationController extends Controller
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
 
-        return view('hris.migrasi-data.form-migrasi', compact('branches'));
+        return view('hris.migrasi-user.form-migrasi', compact('branches'));
     }
 
     /**
@@ -97,7 +97,7 @@ class UserMigrationController extends Controller
 
         $detail = $tempUser->userDetail;
 
-        return view('hris.migrasi-data.form-migrasi', compact(
+        return view('hris.migrasi-user.form-migrasi', compact(
             'tempUser',
             'detail',
             'branches'

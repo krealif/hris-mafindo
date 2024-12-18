@@ -73,7 +73,7 @@
               @foreach ($registrations as $registration)
                 <tr>
                   <td>
-                    <a href="{{ route('ajuan.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
+                    <a href="{{ route('registrasi.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
                   </td>
                   <td>{{ $registration->user->email }}</td>
                   <td>
@@ -90,7 +90,7 @@
                   <td>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
                   <td>
                     <div class="btn-list flex-nowrap">
-                      <a href="{{ route('ajuan.show', $registration->id) }}" class="btn">
+                      <a href="{{ route('registrasi.show', $registration->id) }}" class="btn">
                         <x-lucide-eye class="icon" defer />
                         Lihat
                       </a>

@@ -13,7 +13,7 @@ Route::middleware(['auth', 'unverified'])->group(function () {
     // Routes for user registration forms.
     Route::group([
         'controller' => UserRegistrationController::class,
-        'as' => 'ajuan.',
+        'as' => 'registrasi.',
         'prefix' => 'registrasi',
     ], function () {
         Route::get('form', 'selectForm')->name('selectForm');
@@ -33,7 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => RegistrationReviewController::class,
-        'as' => 'ajuan.',
+        'as' => 'registrasi.',
         'prefix' => 'registrasi',
     ], function () {
         Route::get('ajuan', 'index')->name('index');
