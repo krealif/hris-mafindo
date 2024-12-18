@@ -19,7 +19,7 @@ use Illuminate\View\View;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class RegistrationSubmissionController extends Controller
+class RegistrationReviewController extends Controller
 {
     /**
      * Display a listing of the registration submission that need to be verified.

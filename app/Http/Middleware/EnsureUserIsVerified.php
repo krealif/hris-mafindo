@@ -22,7 +22,7 @@ class EnsureUserIsVerified
 
         // If the user is not verified, redirect them to the registration form
         if (! $user->is_verified) {
-            return redirect()->route('registration.selectForm');
+            return redirect()->route('ajuan.selectForm');
         }
 
         return $next($request);

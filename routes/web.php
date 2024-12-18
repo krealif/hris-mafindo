@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RegistrationController;
-use App\Http\Controllers\RegistrationMigrationController;
-use App\Http\Controllers\RegistrationSubmissionController;
+use App\Http\Controllers\UserRegistrationController;
+use App\Http\Controllers\UserMigrationController;
+use App\Http\Controllers\RegistrationReviewController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'unverified'])->group(function () {
     // Routes for user registration forms.
     Route::group([
-        'controller' => RegistrationController::class,
-        'as' => 'registration.',
+        'controller' => UserRegistrationController::class,
+        'as' => 'ajuan.',
         'prefix' => 'registrasi',
     ], function () {
         Route::get('form', 'selectForm')->name('selectForm');
@@ -32,7 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Group routes for admin-specific registration submissions tasks.
     Route::group([
         'middleware' => ['role:admin'],
-        'controller' => RegistrationSubmissionController::class,
+        'controller' => RegistrationReviewController::class,
         'as' => 'ajuan.',
         'prefix' => 'registrasi',
     ], function () {
@@ -51,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Group routes for admin-specific registration verification tasks.
     Route::group([
         'middleware' => ['role:admin'],
-        'controller' => RegistrationMigrationController::class,
+        'controller' => UserMigrationController::class,
         'as' => 'migrasi.',
         'prefix' => 'registrasi',
     ], function () {

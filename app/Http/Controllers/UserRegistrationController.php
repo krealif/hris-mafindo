@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
-class RegistrationController extends Controller
+class UserRegistrationController extends Controller
 {
     use HandlesArrayInput, HasUploadFile;
 
@@ -34,7 +34,7 @@ class RegistrationController extends Controller
         $registration = Auth::user()->registration;
 
         if ($registration) {
-            return to_route('registration.showForm', $registration->type);
+            return to_route('ajuan.showForm', $registration->type);
         }
 
         return view('hris.registrasi.type-selection');
@@ -190,7 +190,7 @@ class RegistrationController extends Controller
             flash()->success('Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.');
         }
 
-        return to_route('registration.showForm', $type);
+        return to_route('ajuan.showForm', $type);
     }
 
     /**
@@ -263,6 +263,6 @@ class RegistrationController extends Controller
             flash()->success('Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.');
         }
 
-        return to_route('registration.showForm', $type);
+        return to_route('ajuan.showForm', $type);
     }
 }

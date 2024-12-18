@@ -59,7 +59,7 @@ class RegistrationPolicy
 
     /*
     |--------------------------------------------------------------------------
-    | Admin (used in RegistrationSubmissionController)
+    | Admin (used in RegistrationReviewController)
     |--------------------------------------------------------------------------
     */
 

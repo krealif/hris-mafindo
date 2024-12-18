@@ -30,7 +30,7 @@ class FortifyServiceProvider extends ServiceProvider
                     return redirect()->intended('/');
                 }
 
-                return redirect()->route('registration.selectForm');
+                return redirect()->route('ajuan.selectForm');
             }
         });
 
@@ -38,7 +38,7 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                return redirect()->route('registration.selectForm');
+                return redirect()->route('ajuan.selectForm');
             }
         });
 
@@ -67,7 +67,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

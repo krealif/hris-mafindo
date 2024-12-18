@@ -17,16 +17,16 @@
     <div class="page-body">
       <div class="container-xl">
         <div class="vstack gap-2">
-          <a href="{{ route('registration.showForm', 'relawan-baru') }}" class="btn h3 py-3 m-0 justify-content-start">
+          <a href="{{ route('ajuan.showForm', 'relawan-baru') }}" class="btn h3 py-3 m-0 justify-content-start">
             <x-lucide-arrow-up-right class="icon" />
             Relawan Baru
           </a>
-          <a href="{{ route('registration.showForm', 'relawan-wilayah') }}" class="btn h3 py-3 m-0 justify-content-start">
+          <a href="{{ route('ajuan.showForm', 'relawan-wilayah') }}" class="btn h3 py-3 m-0 justify-content-start">
             <x-lucide-arrow-up-right class="icon" />
             Relawan Wilayah
           </a>
           @if (strpos(auth()->user()->email, 'mafindo.or.id'))
-            <a href="{{ route('registration.showForm', 'pengurus-wilayah') }}" class="btn h3 py-3 m-0 justify-content-start">
+            <a href="{{ route('ajuan.showForm', 'pengurus-wilayah') }}" class="btn h3 py-3 m-0 justify-content-start">
               <x-lucide-arrow-up-right class="icon" />
               Pengurus Wilayah
             </a>

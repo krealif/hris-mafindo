@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class RegistrationMigrationController extends Controller
+class UserMigrationController extends Controller
 {
     use HandlesArrayInput;
 

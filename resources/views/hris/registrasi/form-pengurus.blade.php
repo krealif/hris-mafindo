@@ -70,8 +70,8 @@
               </div>
             </div>
             <div class="col-12 col-md-9">
-              <form method="POST" action="{{ route('registration.store', $type) }}" class="vstack gap-2" x-data="{ isDraft: false }" x-bind:novalidate="isDraft"
-                enctype="multipart/form-data" autocomplete="off">
+              <form method="POST" action="{{ route('ajuan.store', $type) }}" class="vstack gap-2" x-data="{ isDraft: false }" x-bind:novalidate="isDraft" enctype="multipart/form-data"
+                autocomplete="off">
                 @csrf
                 <div id="informasi-pribadi" class="card card-mafindo">
                   <div class="card-header">
