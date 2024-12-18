@@ -96,7 +96,7 @@
             </div>
           </div>
           <div class="col-12 col-md-9">
-            <form method="POST" action="{{ $action }}" class="vstack gap-2" autocomplete="off">
+            <form method="POST" action="{{ $action }}" class="vstack gap-2" autocomplete="off" x-data="">
               @csrf
               @if (Route::currentRouteName() == 'migrasi.edit')
                 @method('PATCH')

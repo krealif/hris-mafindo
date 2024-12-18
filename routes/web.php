@@ -36,16 +36,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'as' => 'ajuan.',
         'prefix' => 'registrasi',
     ], function () {
-        Route::get('akun', 'index')->name('index');
+        Route::get('ajuan', 'index')->name('index');
         Route::get('histori', 'indexHistory')->name('history');
         Route::delete('prune', 'prune')->name('prune');
 
-        Route::get('akun/{registration}', 'show')->name('show');
-        Route::patch('akun/{registration}/next', 'nextStep')->name('nextStep');
-        Route::patch('akun/{registration}/revisi', 'requestRevision')->name('revisi');
-        Route::patch('akun/{registration}/selesai', 'finishRegistration')->name('finish');
-        Route::patch('akun/{registration}/tolak', 'rejectRegistration')->name('reject');
-        Route::delete('akun/{registration}', 'destroy')->name('destroy');
+        Route::get('ajuan/{registration}', 'show')->name('show');
+        Route::patch('ajuan/{registration}/next', 'nextStep')->name('nextStep');
+        Route::patch('ajuan/{registration}/revisi', 'requestRevision')->name('revisi');
+        Route::patch('ajuan/{registration}/selesai', 'finishRegistration')->name('finish');
+        Route::patch('ajuan/{registration}/tolak', 'rejectRegistration')->name('reject');
+        Route::delete('ajuan/{registration}', 'destroy')->name('destroy');
     });
 
     // Group routes for admin-specific registration verification tasks.
