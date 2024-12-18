@@ -33,4 +33,7 @@
       </form>
     </div>
   </div>
+  <div class="card card-body mt-2">
+    <p>Jika mengalami kendala dalam mengakses sistem, silakan hubungi kami di <a href='mailto:organisasi@mafindo.or.id'>organisasi@mafindo.or.id</a></p>
+  </div>
 @endsection

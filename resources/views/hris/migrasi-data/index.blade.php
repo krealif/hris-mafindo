@@ -8,9 +8,14 @@
     <div class="page-header d-print-none">
       <div class="container-xl">
         <div class="d-flex gap-2 justify-content-between align-items-center">
-          <h1 class="page-title">
-            Migrasi Data Relawan
-          </h1>
+          <div>
+            <h1 class="page-title">
+              Migrasi Data Relawan
+            </h1>
+            <p class="text-muted m-0 mt-1">
+              Integrasikan data lama relawan ke dalam sistem.
+            </p>
+          </div>
           <a href="{{ route('migrasi.create') }}" class="btn btn-primary">
             <x-lucide-plus class="icon" />
             Tambah

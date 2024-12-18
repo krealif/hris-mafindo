@@ -13,7 +13,7 @@
               Histori Ajuan
             </h1>
             <p class="text-muted m-0 mt-1">
-              Lihat dan kelola seluruh ajuan registrasi.
+              Lihat dan hapus seluruh ajuan registrasi.
             </p>
           </div>
         </div>
@@ -113,9 +113,8 @@
                   <td>
                     <div class="btn-list flex-nowrap">
                       @if (Gate::check('destroy', $registration) || $registration->step == 'mengisi')
-                        <a href="{{ route('ajuan.show', $registration->id) }}" class="btn">
+                        <a href="{{ route('ajuan.show', $registration->id) }}" class="btn btn-icon">
                           <x-lucide-eye class="icon" defer />
-                          Lihat
                         </a>
                       @endif
                       @can('destroy', $registration)
