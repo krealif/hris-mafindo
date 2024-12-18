@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureUserIsVerified
 {
     /**
-     * Handle an incoming request.
+     * This middleware checks if the authenticated user is verified. If the user is not verified,
+     * they are redirected to the registration form.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

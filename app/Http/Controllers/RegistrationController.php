@@ -41,8 +41,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Show the form for submitting registration details
-     * based on type.
+     * Display the registration form based on the registration type.
      */
     public function showForm(RegistrationTypeEnum $type): View
     {
@@ -70,7 +69,11 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Store the registration details based on the given type.
+     * Store a new registration based on the given type.
+     *
+     * This method authorizes the creation of a new registration and delegates
+     * the request handling to the appropriate method based on the registration type.
+     *
      */
     public function store(RegistrationTypeEnum $type): RedirectResponse
     {
@@ -86,7 +89,11 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Handle the storage of relawan registration.
+     * Store a new or draft registration of relawan.
+     *
+     * This method validates the incoming request, processes the uploaded photo if present,
+     * updates the user's registration data, assigns roles based on the registration type,
+     * and saves the data.
      */
     public function storeRelawan(StoreRegistrationRelawanRequest $request, RegistrationTypeEnum $type): RedirectResponse
     {
@@ -187,7 +194,10 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Handle the storage of pengurus registration.
+     * Store a new or draft registration of pengurus.
+     *
+     * This method validates the request, updates the user's information, creates or updates the registration
+     * and branch records in the database. The method also assigns the "pengurus" role to the user.
      */
     public function storePengurus(StoreRegistrationPengurusRequest $request, RegistrationTypeEnum $type): RedirectResponse
     {

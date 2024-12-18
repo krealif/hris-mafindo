@@ -11,7 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 class PreventVerifiedUser
 {
     /**
-     * Handle an incoming request.
+     * Middleware to prevent verified users from accessing certain routes (unverified user route).
+     *
+     * This middleware checks if the authenticated user is verified. If the user is verified,
+     * they are redirected to the home page. Otherwise, the request is allowed to proceed.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

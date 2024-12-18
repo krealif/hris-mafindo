@@ -22,7 +22,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 class RegistrationSubmissionController extends Controller
 {
     /**
-     * Display a listing of the all registration.
+     * Display a listing of the registration submission that need to be verified.
      */
     public function index(): View
     {
@@ -37,7 +37,7 @@ class RegistrationSubmissionController extends Controller
             ->where('status', 'diproses')
             ->with('user.branch')
             ->orderBy('updated_at', 'desc')
-            ->paginate(20)
+            ->paginate(15)
             ->appends(request()->query());
 
         $branches = Branch::select('id', 'nama')
@@ -48,7 +48,7 @@ class RegistrationSubmissionController extends Controller
     }
 
     /**
-     * Display a listing of the all registration.
+     * Display a listing of the registration submission history.
      */
     public function indexHistory(): View
     {
@@ -63,7 +63,7 @@ class RegistrationSubmissionController extends Controller
             ])
             ->with('user.branch')
             ->orderBy('updated_at', 'desc')
-            ->paginate(20)
+            ->paginate(15)
             ->appends(request()->query());
 
         $branches = Branch::select('id', 'nama')
@@ -74,7 +74,10 @@ class RegistrationSubmissionController extends Controller
     }
 
     /**
-     * Display the specified registration of relawan or pengurus.
+     * Display the specified registration submission details.
+     *
+     * This method retrieves the user associated with the given registration
+     * and returns the appropriate view based on the registration type.
      */
     public function show(Registration $registration): View
     {
@@ -91,7 +94,7 @@ class RegistrationSubmissionController extends Controller
     }
 
     /**
-     * Proceed to the next step of the registration process.
+     * Handle the next step in the registration process.
      */
     public function nextStep(Request $request, Registration $registration): RedirectResponse
     {
@@ -136,7 +139,7 @@ class RegistrationSubmissionController extends Controller
     }
 
     /**
-     * Handle actions specific to the current registration step.
+     * Handle the request to revise a registration submission.
      */
     public function requestRevision(Request $request, Registration $registration): RedirectResponse
     {
@@ -162,7 +165,7 @@ class RegistrationSubmissionController extends Controller
     }
 
     /**
-     * Mark the registration process as completed.
+     * Complete the registration process for a user.
      */
     public function finishRegistration(Request $request, Registration $registration): RedirectResponse
     {
@@ -204,7 +207,7 @@ class RegistrationSubmissionController extends Controller
     }
 
     /**
-     * Mark the registration process as completed.
+     * Reject a registration.
      */
     public function rejectRegistration(Request $request, Registration $registration): RedirectResponse
     {
@@ -227,7 +230,7 @@ class RegistrationSubmissionController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified registration and its associated user.
      */
     public function destroy(Registration $registration): RedirectResponse
     {
@@ -253,6 +256,10 @@ class RegistrationSubmissionController extends Controller
         return back();
     }
 
+
+    /**
+     * Remove old registration records based on the provided criteria.
+     */
     public function prune(Request $request): RedirectResponse
     {
         $total = 0;

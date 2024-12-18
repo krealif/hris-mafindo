@@ -19,7 +19,7 @@ class RegistrationMigrationController extends Controller
     use HandlesArrayInput;
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the temporary users.
      */
     public function index(): View
     {
@@ -27,14 +27,14 @@ class RegistrationMigrationController extends Controller
             ->allowedFilters(['nama', 'email', 'no_relawan'])
             ->orderBy('updated_at', 'desc')
             ->with('branch')
-            ->paginate(20)
+            ->paginate(15)
             ->appends(request()->query());
 
         return view('hris.migrasi-data.index', compact('tempUsers'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new temporary user.
      */
     public function create(): View
     {
@@ -46,7 +46,7 @@ class RegistrationMigrationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created temporary user in storage.
      */
     public function store(StoreMigrationRelawanRequest $request): RedirectResponse
     {
@@ -87,7 +87,7 @@ class RegistrationMigrationController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified temporary user.
      */
     public function edit(TempUser $tempUser): View
     {
@@ -105,7 +105,7 @@ class RegistrationMigrationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified temporary user in storage.
      */
     public function update(UpdateMigrationRelawanRequest $request, TempUser $tempUser): RedirectResponse
     {
@@ -144,7 +144,7 @@ class RegistrationMigrationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified temporary user from storage.
      */
     public function destroy(TempUser $tempUser): RedirectResponse
     {
