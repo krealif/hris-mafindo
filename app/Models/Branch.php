@@ -35,14 +35,6 @@ class Branch extends Model
     }
 
     /**
-     * @return BelongsTo<\App\Models\User, $this>
-     */
-    public function pengurus(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'pengurus_id');
-    }
-
-    /**
      * @return HasMany<\App\Models\User, $this>
      */
     public function users(): HasMany

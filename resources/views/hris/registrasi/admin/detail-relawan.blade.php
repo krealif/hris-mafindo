@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => $registration->user->nama . ' | Detail Ajuan',
+    'title' => $user->nama . ' | Detail Ajuan',
 ])
 
 @section('content')

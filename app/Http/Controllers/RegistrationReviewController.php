@@ -119,7 +119,9 @@ class RegistrationReviewController extends Controller
                     ],
                 ]);
 
-                $registration->user->update(['no_relawan' => $validated['no_relawan']]);
+                $registration->user->update([
+                    'no_relawan' => $validated['no_relawan']
+                ]);
             } elseif ($currentStep == RegistrationBaruStepEnum::TERHUBUNG) {
                 $registration->user->update([
                     'is_verified' => 1,
