@@ -9,9 +9,6 @@ use Illuminate\Notifications\Notifiable;
 
 class Registration extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -23,16 +20,6 @@ class Registration extends Model
         'status',
         'step',
         'message',
-        'data',
-    ];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
     ];
 
     /**
