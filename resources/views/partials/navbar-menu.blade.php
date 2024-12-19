@@ -34,7 +34,7 @@
                     <a href="{{ route('registrasi.history') }}" @class([
                         'dropdown-item',
                         'active' => request()->routeIs('registrasi.history'),
-                    ])>Histori Registrasi</a>
+                    ])>Histori Ajuan</a>
                     <a href="{{ route('migrasi.index') }}" @class([
                         'dropdown-item',
                         'active' =>
