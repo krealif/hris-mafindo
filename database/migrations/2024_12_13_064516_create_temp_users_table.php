@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('nama')->nullable();
             $table->string('email')->unique();
             $table->string('no_relawan')->nullable()->unique();
-            $table->integer('branch_id')->nullable()->constrained()->onDelete('set null');
-            $table->integer('user_detail_id')->constrained()->onDelete('constrained');
+            $table->foreignId('branch_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('user_detail_id')->constrained()->onDelete('constrained');
             $table->timestamps();
         });
     }
