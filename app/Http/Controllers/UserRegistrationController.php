@@ -73,7 +73,6 @@ class UserRegistrationController extends Controller
      *
      * This method authorizes the creation of a new registration and delegates
      * the request handling to the appropriate method based on the registration type.
-     *
      */
     public function store(RegistrationTypeEnum $type): RedirectResponse
     {

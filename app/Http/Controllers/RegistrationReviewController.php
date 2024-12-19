@@ -120,7 +120,7 @@ class RegistrationReviewController extends Controller
                 ]);
 
                 $registration->user->update([
-                    'no_relawan' => $validated['no_relawan']
+                    'no_relawan' => $validated['no_relawan'],
                 ]);
             } elseif ($currentStep == RegistrationBaruStepEnum::TERHUBUNG) {
                 $registration->user->update([
@@ -257,7 +257,6 @@ class RegistrationReviewController extends Controller
 
         return back();
     }
-
 
     /**
      * Remove old registration records based on the provided criteria.
