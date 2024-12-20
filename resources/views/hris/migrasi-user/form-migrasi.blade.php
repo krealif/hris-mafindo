@@ -16,9 +16,10 @@
         <div class="d-flex gap-2 justify-content-between align-items-center">
           <div class="col">
             <div class="mb-1">
-              <x-breadcrumb>
-                <x-breadcrumb-item label="Migrasi" route="migrasi.index" />
-              </x-breadcrumb>
+              <a href="{{ route('migrasi.index') }}" class="btn btn-link px-0 py-1">
+                <x-lucide-arrow-left class="icon" />
+                Kembali
+              </a>
             </div>
             @if ($tempUser)
               <h1 class="page-title">{{ $tempUser->nama }} | Edit Data</h1>

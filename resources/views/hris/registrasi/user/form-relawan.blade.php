@@ -43,7 +43,7 @@
                   <x-lucide-chevrons-right class="icon" />
                   Tahapan
                   @if ($registration?->status && $registration?->status != 'selesai')
-                    <span class="badge bg-secondary text-white">{{ ucfirst($registration->status) }}</span>
+                    <x-badge-enum class="fs-4 me-1" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
                   @endif
                 </h2>
               </div>

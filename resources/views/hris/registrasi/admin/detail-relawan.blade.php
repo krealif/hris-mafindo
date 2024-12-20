@@ -10,13 +10,10 @@
         <div class="d-flex gap-2 justify-content-between align-items-center">
           <div class="col">
             <div class="mb-1">
-              <x-breadcrumb>
-                @if (url()->previous() == route('registrasi.history'))
-                  <x-breadcrumb-item label="Histori" route="registrasi.history" />
-                @else
-                  <x-breadcrumb-item label="Ajuan" route="registrasi.index" />
-                @endif
-              </x-breadcrumb>
+              <a href="{{ url()->previous() == route('registrasi.history') ? route('registrasi.history') : route('registrasi.index') }}" class="btn btn-link px-0 py-1">
+                <x-lucide-arrow-left class="icon" />
+                Kembali
+              </a>
             </div>
             <h1 class="page-title">
               Detail Ajuan

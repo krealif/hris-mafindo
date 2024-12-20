@@ -10,13 +10,17 @@
         <div class="d-flex gap-2 justify-content-between align-items-center">
           <div class="col">
             <div class="mb-1">
-              <x-breadcrumb>
-                @if (url()->previous() == route('registrasi.history'))
-                  <x-breadcrumb-item label="Histori" route="registrasi.history" />
-                @else
-                  <x-breadcrumb-item label="Ajuan" route="registrasi.index" />
-                @endif
-              </x-breadcrumb>
+              @if (url()->previous() == route('registrasi.history'))
+                <a href="{{ route('registrasi.history') }}" class="btn btn-link px-0 py-1">
+                  <x-lucide-arrow-left class="icon" />
+                  Kembali
+                </a>
+              @else
+                <a href="{{ route('registrasi.index') }}" class="btn btn-link px-0 py-1">
+                  <x-lucide-arrow-left class="icon" />
+                  Kembali
+                </a>
+              @endif
             </div>
             <h1 class="page-title">
               Detail Ajuan
@@ -159,8 +163,7 @@
       </div>
     </div>
   </div>
+  @can('destroy', $registration)
+    <x-modal-delete baseRoute="{{ route('registrasi.index') }}" />
+  @endcan
 @endsection
-
-@push('scripts')
-  <script></script>
-@endpush
