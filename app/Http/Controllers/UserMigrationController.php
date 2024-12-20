@@ -95,7 +95,7 @@ class UserMigrationController extends Controller
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
 
-        $detail = $tempUser->userDetail;
+        $detail = $tempUser->detail;
 
         return view('hris.migrasi-user.form-migrasi', compact(
             'tempUser',
@@ -135,12 +135,12 @@ class UserMigrationController extends Controller
                 'mode',
             ]);
 
-            $tempUser->userDetail?->update([...$detail]);
+            $tempUser->detail?->update([...$detail]);
         });
 
         flash()->success("Berhasil. Relawan [{$validated['nama']}] telah diperbarui.");
 
-        return back();
+        return to_route('migrasi.edit');
     }
 
     /**
@@ -160,10 +160,9 @@ class UserMigrationController extends Controller
 
         flash()->success("Berhasil. Relawan [{$userName}] telah dihapus.");
 
-        if (url()->previous() != route('migrasi.index')) {
-            return to_route('migrasi.index');
-        }
+        if ($q = parse_url(url()->previous(), PHP_URL_QUERY))
+            return to_route('migrasi.index', $q);
 
-        return back();
+        return to_route('migrasi.index');
     }
 }

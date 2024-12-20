@@ -137,7 +137,7 @@ class RegistrationReviewController extends Controller
 
         flash()->success("Berhasil. Proses registrasi relawan atas nama [{$registration->user->nama}] telah beralih ke tahapan [{$nextStep?->value}].");
 
-        return back();
+        return to_route('registrasi.show', $registration->id);
     }
 
     /**
@@ -163,7 +163,7 @@ class RegistrationReviewController extends Controller
 
         flash()->success("Berhasil. Permintaan revisi telah dikirimkan kepada [{$registration->user->nama}].");
 
-        return back();
+        return to_route('registrasi.show', $registration->id);
     }
 
     /**
@@ -228,7 +228,7 @@ class RegistrationReviewController extends Controller
 
         flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah ditolak.");
 
-        return back();
+        return to_route('registrasi.show', $registration->id);
     }
 
     /**
@@ -251,11 +251,10 @@ class RegistrationReviewController extends Controller
 
         flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah dihapus.");
 
-        if (url()->previous() != route('registrasi.history')) {
-            return to_route('registrasi.history');
-        }
+        if ($q = parse_url(url()->previous(), PHP_URL_QUERY))
+            return to_route('registrasi.history', $q);
 
-        return back();
+        return to_route('registrasi.history');
     }
 
     /**
@@ -285,6 +284,6 @@ class RegistrationReviewController extends Controller
             flash()->info('Tidak ada data yang perlu dihapus.');
         }
 
-        return back();
+        return to_route('registrasi.index');
     }
 }
