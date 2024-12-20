@@ -50,7 +50,7 @@ class CreateNewUser implements CreatesNewUsers
                     'branch_id' => $tempUser->branch_id,
                 ]);
 
-                $userDetail = $tempUser->userDetail;
+                $userDetail = $tempUser->detail;
                 $userDetail?->update([
                     'user_id' => $user->id,
                 ]);

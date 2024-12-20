@@ -27,9 +27,9 @@ class TempUser extends Model
     /**
      * @return BelongsTo<\App\Models\UserDetail, $this>
      */
-    public function userDetail(): BelongsTo
+    public function detail(): BelongsTo
     {
-        return $this->belongsTo(UserDetail::class);
+        return $this->belongsTo(UserDetail::class, 'user_detail_id');
     }
 
     /**
