@@ -14,4 +14,4 @@
   }
 @endphp
 
-<span {{ $attributes->class(['badge text-white', $badgeClass]) }}>{{ $statusLabel }}</span>
+<span {{ $attributes->class(['badge text-white', $badgeClass]) }}>{{ strtoupper($statusLabel) }}</span>

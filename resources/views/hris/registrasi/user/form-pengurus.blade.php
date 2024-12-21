@@ -33,20 +33,20 @@
                 </ul>
               </x-alert>
             @endif
-            <div class="card card-mafindo border-0">
-              <div class="card-header border border-bottom-0" style="border-color: var(--tblr-border-color) !important">
-                <h3 class="d-flex align-items-center gap-2 mb-0">
+            <div class="card card-mafindo overflow-hidden">
+              <div class="card-header border-bottom-0">
+                <h2 class="card-title d-flex align-items-center gap-2 mb-0">
                   <x-lucide-chevrons-right class="icon" />
                   Tahapan
                   @if ($registration?->status && $registration?->status != 'selesai')
                     <x-badge-enum class="fs-4 me-1" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
                   @endif
-                </h3>
+                </h2>
               </div>
               <x-registration-step :data="App\Enums\RegistrationLamaStepEnum::labels()" step="{{ $registration?->step }}" />
-              @if ($registration?->status == 'revisi')
-                <div class="card-body border border-top-0">
-                  <h4 class="fs-3 text-red">REVISI</h4>
+              @if (in_array($registration?->status, ['revisi', 'ditolak']))
+                <div class="card-body border-top">
+                  <h4 class="fs-3 text-red">{{ strtoupper($registration?->status) }}</h4>
                   <p>{{ $registration->message }}</p>
                 </div>
               @endif
@@ -70,7 +70,7 @@
               </div>
             </div>
             <div class="col-12 col-md-9">
-              <form method="POST" action="{{ route('registrasi.store', $type) }}" class="vstack gap-2" x-data="{ isDraft: false }" x-bind:novalidate="isDraft"
+              <form method="POST" action="{{ route('registrasi.store', $type) }}" class="vstack gap-3" x-data="{ isDraft: false }" x-bind:novalidate="isDraft"
                 enctype="multipart/form-data" autocomplete="off">
                 @csrf
                 <div id="informasi-pribadi" class="card card-mafindo">

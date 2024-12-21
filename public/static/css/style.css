@@ -25,7 +25,7 @@
 
 .datatable .badge {
     user-select: auto;
-    font-size: .875rem !important;
+    font-size: .8125rem !important;
 }
 
 .table-responsive .dropdown,
@@ -101,12 +101,20 @@
 
 .stepper-item.active~.stepper-item,
 .stepper-item.danger~.stepper-item {
-    background: #fff;
+    background: #f3f4f6;
     color: var(--tblr-dark);
 }
 
 .datagrid-title {
     font-size: .875rem;
+}
+
+table.datagrid {
+    width: auto;
+}
+
+table .datagrid-title {
+    padding-right: 1rem;
 }
 
 .only-alert {
@@ -131,7 +139,6 @@
     border-color: var(--tblr-btn-active-border-color);
     box-shadow: var(--tblr-btn-active-shadow);
 }
-
 
 /** Button Custom **/
 

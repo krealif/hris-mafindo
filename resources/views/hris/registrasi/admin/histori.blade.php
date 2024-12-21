@@ -139,7 +139,7 @@
       </div>
     </div>
   </div>
-  <x-modal-delete baseRoute="{{ route('registrasi.index') }}" />
+  <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
   <div class="modal fade" id="bulk-delete" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <form method="POST" action="{{ route('registrasi.prune') }}" class="modal-content">

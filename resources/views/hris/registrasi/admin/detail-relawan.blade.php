@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => $user->nama . ' | Ajuan Registrasi',
+    'title' => "{$user->nama} | Ajuan Registrasi",
 ])
 
 @section('content')
@@ -32,12 +32,24 @@
   <div class="page-body">
     <div class="container-xl">
       <div class="row g-3">
-        <div class="col-12">
+        <div class="col-12 only-alert order-first">
           @if (flash()->message)
-            <x-alert type="{{ flash()->class }}">
+            <x-alert type="{{ flash()->class }}" class="m-0">
               {{ flash()->message }}
             </x-alert>
           @endif
+          @if ($errors->any())
+            <x-alert class="alert-danger m-0">
+              <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
+              <ul class="mt-2 mb-0" style="margin-left: -1rem">
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </x-alert>
+          @endif
+        </div>
+        <div class="col-12 col-md-7 col-lg-6 order-1">
           <div class="card card-mafindo overflow-hidden border-top-0">
             @if ($registration->type == 'relawan-baru')
               <x-registration-step :data="App\Enums\RegistrationBaruStepEnum::labels()" step="{{ $registration?->step }}" />
@@ -54,23 +66,135 @@
                   @if ($user->branch?->nama)
                     <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
                   @endif
-                  <div>
-                    <x-badge-enum class="fs-4 me-1" case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
+                  <div class="d-flex flex-wrap gap-2">
+                    <x-badge-enum class="fs-4" case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
                     <x-badge-enum class="fs-4" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
                   </div>
                 </div>
               </div>
+              @if (in_array($registration?->status, ['revisi', 'ditolak']))
+                <div class="card card-body mt-3">
+                  <h4 class="text-red text-uppercase">Alasan</h4>
+                  <p>{{ $registration->message }}</p>
+                </div>
+              @endif
+              <div class="mt-3">
+                <table class="datagrid">
+                  <tr>
+                    <th class="datagrid-title">Mendaftar</th>
+                    <td>{{ $registration->created_at?->format('d/m/Y H:i') }}</td>
+                  </tr>
+                  <tr>
+                    <th class="datagrid-title">Diperbarui</th>
+                    <td>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
+                  </tr>
+                </table>
+              </div>
             </div>
-            @if (in_array($registration?->status, ['revisi', 'ditolak']))
-              <div class="card-body border-top">
-                <h4 class="fs-3 text-red">{{ strtoupper($registration?->status) }}</h4>
-                <p>{{ $registration->message }}</p>
+            @if ($registration->status == 'diproses')
+              <div class="card-body">
+                <ul class="nav nav-pills gap-2" role="tablist">
+                  @can('finish', $registration)
+                    <li class="nav-item" role="presentation">
+                      <a href="#tab-selesai" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                        <x-lucide-circle-check class="icon text-green me-2" />
+                        Selesai
+                      </a>
+                    </li>
+                  @endcan
+                  @can('nextStep', $registration)
+                    <li class="nav-item" role="presentation">
+                      <a href="#tab-lanjut" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                        <x-lucide-arrow-right-to-line class="icon text-blue me-2" />
+                        Lanjut
+                      </a>
+                    </li>
+                  @endcan
+                  @can('requestRevision', $registration)
+                    <li class="nav-item" role="presentation">
+                      <a href="#tab-revisi" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                        <x-lucide-file-pen-line class="icon text-orange me-2" />
+                        Revisi
+                      </a>
+                    </li>
+                  @endcan
+                  @can('reject', $registration)
+                    <li class="nav-item" role="presentation">
+                      <a href="#tab-tolak" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                        <x-lucide-circle-x class="icon text-red me-2" />
+                        Tolak
+                      </a>
+                    </li>
+                  @endcan
+                </ul>
+              </div>
+              <div class="tab-content">
+                @can('finish', $registration)
+                  <div id="tab-selesai" class="tab-pane">
+                    <form method="POST" action="{{ route('registrasi.finish', $registration->id) }}" class="card-body border-top">
+                      @csrf
+                      @method('PATCH')
+                      @if ($registration->step == 'verifikasi')
+                        <div class="mb-4">
+                          <label for="no-relawan" class="form-label required">Nomor Kartu Relawan</label>
+                          <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan', $user->no_relawan) }}" required />
+                        </div>
+                      @elseif ($registration->step == 'pelatihan')
+                        <h5 class="fs-4 m-0 mb-2">Perhatian!</h5>
+                        <p class="mb-4">Pastikan relawan telah <strong>mengikuti Pelatihan Dasar Relawan</strong>. Setelah proses registrasi diselesaikan, relawan yang bersangkutan
+                          akan <strong>berubah menjadi Relawan Wilayah</strong>.</p>
+                      @endif
+                      <button class="btn btn-primary" type="submit">Selesaikan Registrasi</button>
+                    </form>
+                  </div>
+                @endcan
+                @can('nextStep', $registration)
+                  <div id="tab-lanjut" class="tab-pane">
+                    <form method="POST" action="{{ route('registrasi.nextStep', $registration->id) }}" class="card-body border-top">
+                      @csrf
+                      @method('PATCH')
+                      @if ($registration->step == 'wawancara')
+                        <div class="mb-4">
+                          <label for="no-relawan" class="form-label required">Nomor Kartu Relawan</label>
+                          <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan') }}" required />
+                        </div>
+                      @endif
+                      <button class="btn btn-primary" type="submit">Lanjut Tahap Berikutnya</button>
+                    </form>
+                  </div>
+                @endcan
+                @can('requestRevision', $registration)
+                  <div id="tab-revisi" class="tab-pane">
+                    <form method="POST" action="{{ route('registrasi.revisi', $registration->id) }}" class="card-body border-top">
+                      @csrf
+                      @method('PATCH')
+                      <div class="mb-4">
+                        <label for="message" class="form-label required">Alasan</label>
+                        <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan revisi" :showError=false required />
+                      </div>
+                      <button class="btn btn-primary" type="submit">Kirim</button>
+                    </form>
+                  </div>
+                @endcan
+                @can('reject', $registration)
+                  <div id="tab-tolak" class="tab-pane">
+                    <form method="POST" action="{{ route('registrasi.reject', $registration->id) }}" class="card-body border-top">
+                      @csrf
+                      @method('PATCH')
+                      <div class="mb-4">
+                        <label for="message" class="form-label required">Pesan</label>
+                        <x-form.textarea name="message" rows="5" :showError=false required />
+                      </div>
+                      <button class="btn btn-danger" type="submit">Tolak Registrasi</button>
+                    </form>
+                  </div>
+                @endcan
               </div>
             @endif
           </div>
         </div>
-        <div class="col-12 col-md-6">
-          <div class="vstack gap-2">
+        <div class="col-12 col-md-5 col-lg-6 order-3 order-md-2">
+          <div class="vstack gap-3">
             <div class="card card-mafindo">
               <div class="card-header">
                 <h3 class="card-title">Informasi Pribadi</h3>
@@ -80,7 +204,8 @@
                   <x-datagrid-item title="Nama Lengkap" content="{{ $user->nama }}" />
                   <x-datagrid-item title="Nama Panggilan" content="{{ $user->detail->panggilan }}" />
                   <x-datagrid-item title="Email" content="{{ $user->email }}" />
-                  <x-datagrid-item title="Tanggal Lahir" content="{{ $user->detail->tgl_lahir?->format('d/m/Y') }} ({{ floor($user->detail->tgl_lahir?->diffInYears()) }} Tahun)" />
+                  <x-datagrid-item title="Tanggal Lahir"
+                    content="{{ $user->detail->tgl_lahir?->format('d/m/Y') }} ({{ floor($user->detail->tgl_lahir?->diffInYears()) }} Tahun)" />
                   <x-datagrid-item title="Jenis Kelamin" content="{{ $user->detail->gender?->label() }}" />
                   <x-datagrid-item title="Agama" content="{{ $user->detail->agama?->label() }}" />
                   <x-datagrid-item title="Alamat Domisili Saat Ini" content="{{ $user->detail->alamat }}" />
@@ -214,127 +339,10 @@
             </div>
           </div>
         </div>
-        @if ($registration->status == 'diproses')
-          <div class="col-12 col-md-6">
-            @if ($errors->any())
-              <x-alert class="alert-danger">
-                <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
-                <ul class="mt-2 mb-0" style="margin-left: -1rem">
-                  @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </x-alert>
-            @endif
-            <div class="card card-mafindo sticky-top">
-              <div class="card-header">
-                <h3 class="card-title">Aksi</h3>
-              </div>
-              <div class="card-body">
-                <ul class="nav nav-pills gap-2" role="tablist">
-                  @can('finish', $registration)
-                    <li class="nav-item" role="presentation">
-                      <a href="#tab-selesai" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
-                        <x-lucide-circle-check class="icon text-green me-2" />
-                        Selesai
-                      </a>
-                    </li>
-                  @endcan
-                  @can('nextStep', $registration)
-                    <li class="nav-item" role="presentation">
-                      <a href="#tab-lanjut" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
-                        <x-lucide-arrow-right-to-line class="icon text-blue me-2" />
-                        Lanjut
-                      </a>
-                    </li>
-                  @endcan
-                  @can('requestRevision', $registration)
-                    <li class="nav-item" role="presentation">
-                      <a href="#tab-revisi" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
-                        <x-lucide-file-pen-line class="icon text-orange me-2" />
-                        Revisi
-                      </a>
-                    </li>
-                  @endcan
-                  @can('reject', $registration)
-                    <li class="nav-item" role="presentation">
-                      <a href="#tab-tolak" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
-                        <x-lucide-circle-x class="icon text-red me-2" />
-                        Tolak
-                      </a>
-                    </li>
-                  @endcan
-                </ul>
-              </div>
-              <div class="tab-content">
-                @can('finish', $registration)
-                  <div id="tab-selesai" class="tab-pane">
-                    <form method="POST" action="{{ route('registrasi.finish', $registration->id) }}" class="card-body border-top">
-                      @csrf
-                      @method('PATCH')
-                      @if ($registration->step == 'verifikasi')
-                        <div class="mb-4">
-                          <label for="no-relawan" class="form-label required">Nomor Kartu Relawan</label>
-                          <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan', $user->no_relawan) }}" required />
-                        </div>
-                      @elseif ($registration->step == 'pelatihan')
-                        <h5 class="fs-4 m-0 mb-2">Perhatian!</h5>
-                        <p class="mb-4">Pastikan relawan telah <strong>mengikuti Pelatihan Dasar Relawan</strong>. Setelah proses registrasi diselesaikan, relawan yang bersangkutan
-                          akan <strong>berubah menjadi Relawan Wilayah</strong>.</p>
-                      @endif
-                      <button class="btn btn-primary" type="submit">Selesaikan Registrasi</button>
-                    </form>
-                  </div>
-                @endcan
-                @can('nextStep', $registration)
-                  <div id="tab-lanjut" class="tab-pane">
-                    <form method="POST" action="{{ route('registrasi.nextStep', $registration->id) }}" class="card-body border-top">
-                      @csrf
-                      @method('PATCH')
-                      @if ($registration->step == 'wawancara')
-                        <div class="mb-4">
-                          <label for="no-relawan" class="form-label required">Nomor Kartu Relawan</label>
-                          <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan') }}" required />
-                        </div>
-                      @endif
-                      <button class="btn btn-primary" type="submit">Lanjut Tahap Berikutnya</button>
-                    </form>
-                  </div>
-                @endcan
-                @can('requestRevision', $registration)
-                  <div id="tab-revisi" class="tab-pane">
-                    <form method="POST" action="{{ route('registrasi.revisi', $registration->id) }}" class="card-body border-top">
-                      @csrf
-                      @method('PATCH')
-                      <div class="mb-4">
-                        <label for="message" class="form-label required">Alasan</label>
-                        <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan revisi" :showError=false required />
-                      </div>
-                      <button class="btn btn-primary" type="submit">Kirim</button>
-                    </form>
-                  </div>
-                @endcan
-                @can('reject', $registration)
-                  <div id="tab-tolak" class="tab-pane">
-                    <form method="POST" action="{{ route('registrasi.reject', $registration->id) }}" class="card-body border-top">
-                      @csrf
-                      @method('PATCH')
-                      <div class="mb-4">
-                        <label for="message" class="form-label required">Pesan</label>
-                        <x-form.textarea name="message" rows="5" :showError=false required />
-                      </div>
-                      <button class="btn btn-danger" type="submit">Tolak Registrasi</button>
-                    </form>
-                  </div>
-                @endcan
-              </div>
-            </div>
-          </div>
-        @endif
       </div>
     </div>
   </div>
   @can('destroy', $registration)
-    <x-modal-delete baseRoute="{{ route('registrasi.index') }}" />
+    <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
   @endcan
 @endsection

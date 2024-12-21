@@ -97,7 +97,7 @@
             </div>
           </div>
           <div class="col-12 col-md-9">
-            <form method="POST" action="{{ $action }}" class="vstack gap-2" autocomplete="off" x-data="">
+            <form method="POST" action="{{ $action }}" class="vstack gap-3" autocomplete="off" x-data="">
               @csrf
               @if (Route::currentRouteName() == 'migrasi.edit')
                 @method('PATCH')
@@ -222,7 +222,7 @@
                   <div class="row mb-3">
                     <div class="col-12 col-md-6 mb-3 mb-md-0">
                       <label for="tahun-bergabung" class="form-label">Tahun Bergabung</label>
-                      <x-form.input name="thn_bergabung" type="text" x-mask="9999" value="{{ old('thn_bergabung', $detail?->thn_bergabung) }}" />
+                      <x-form.input name="thn_bergabung" type="text" x-mask="9999" pattern="\d{4}" value="{{ old('thn_bergabung', $detail?->thn_bergabung) }}" />
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="branch" class="form-label">Wilayah</label>
@@ -453,7 +453,7 @@
     </div>
   </div>
   @if ($tempUser)
-    <x-modal-delete baseRoute="{{ route('migrasi.index') }}" />
+    <x-modal-delete baseUrl="{{ route('migrasi.index') }}" />
   @endif
   <script>
     function createDynamicList(key, data) {

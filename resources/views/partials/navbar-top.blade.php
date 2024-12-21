@@ -17,13 +17,13 @@
           <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Buka menu akun">
             <img src="{{ auth()->user()->foto ? Storage::url(auth()->user()->foto) : asset('static/img/profile.png') }}" class="avatar avatar-sm">
             <div class="d-none d-xl-block ps-2 " style="max-width: 96px">
-              <div class="text-white fw-medium text-truncate">{{ explode(' ', auth()->user()->nama)[0] }}</div>
+              <span class="text-white fw-medium text-truncate">{{ explode(' ', auth()->user()->nama)[0] }}</span>
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="width: 200px;">
             <div class="px-3 py-2">
               <span class="d-block text-truncate">{{ auth()->user()->nama }}</span>
-              <span class="d-block text-muted text-truncate">{{ ucwords(str_replace('-', ' ', auth()->user()->getRoleNames()->first())) }}</span>
+              <span class="d-block text-muted text-truncate">{{ auth()->user()->role?->label() }}</span>
               <span class="d-block text-muted text-truncate">{{ auth()->user()->branch?->nama }}</span>
             </div>
             <div class="dropdown-divider"></div>

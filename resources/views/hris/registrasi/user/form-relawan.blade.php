@@ -115,7 +115,7 @@
               </div>
             </div>
             <div class="col-12 col-md-9">
-              <form method="POST" action="{{ route('registrasi.store', $type) }}" class="vstack gap-2" x-data="{ isDraft: false }" x-bind:novalidate="isDraft"
+              <form method="POST" action="{{ route('registrasi.store', $type) }}" class="vstack gap-3" x-data="{ isDraft: false }" x-bind:novalidate="isDraft"
                 enctype="multipart/form-data" autocomplete="off">
                 @csrf
                 <div id="informasi-pribadi" class="card card-mafindo">
@@ -267,7 +267,7 @@
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="tahun-bergabung" class="form-label required">Tahun Bergabung</label>
-                        <x-form.input name="thn_bergabung" type="text" x-mask="9999" value="{{ old('thn_bergabung', $detail?->thn_bergabung) }}" required />
+                        <x-form.input name="thn_bergabung" type="text" x-mask="9999" pattern="\d{4}" value="{{ old('thn_bergabung', $detail?->thn_bergabung) }}" required />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="branch" class="form-label required">Wilayah</label>

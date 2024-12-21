@@ -93,5 +93,5 @@
       </div>
     </div>
   </div>
-  <x-modal-delete baseRoute="{{ route('migrasi.index') }}" />
+  <x-modal-delete baseUrl="{{ route('migrasi.index') }}" />
 @endsection

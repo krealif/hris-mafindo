@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => $registration->user->nama . ' | Ajuan Registrasi',
+    'title' => "{$user->nama} | Ajuan Registrasi",
 ])
 
 @section('content')
@@ -10,17 +10,10 @@
         <div class="d-flex gap-2 justify-content-between align-items-center">
           <div class="col">
             <div class="mb-1">
-              @if (url()->previous() == route('registrasi.history'))
-                <a href="{{ route('registrasi.history') }}" class="btn btn-link px-0 py-1">
-                  <x-lucide-arrow-left class="icon" />
-                  Kembali
-                </a>
-              @else
-                <a href="{{ route('registrasi.index') }}" class="btn btn-link px-0 py-1">
-                  <x-lucide-arrow-left class="icon" />
-                  Kembali
-                </a>
-              @endif
+              <a href="{{ url()->previous() == route('registrasi.history') ? route('registrasi.history') : route('registrasi.index') }}" class="btn btn-link px-0 py-1">
+                <x-lucide-arrow-left class="icon" />
+                Kembali
+              </a>
             </div>
             <h1 class="page-title">
               Detail Ajuan
@@ -39,59 +32,53 @@
   <div class="page-body">
     <div class="container-xl">
       <div class="row g-3">
-        <div class="col-12">
+        <div class="col-12 only-alert order-first">
+          @if (flash()->message)
+            <x-alert type="{{ flash()->class }}" class="m-0">
+              {{ flash()->message }}
+            </x-alert>
+          @endif
+          @if ($errors->any())
+            <x-alert class="alert-danger m-0">
+              <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
+              <ul class="mt-2 mb-0" style="margin-left: -1rem">
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </x-alert>
+          @endif
+        </div>
+        <div class="col-12 col-md-7 col-lg-6 order-1">
           <div class="card card-mafindo overflow-hidden border-top-0">
             <x-registration-step :data="App\Enums\RegistrationLamaStepEnum::labels()" step="{{ $registration?->step }}" />
             <div class="card-body border-top">
               <h2 class="card-title h2 mb-2">{{ $user->nama }}</h2>
               <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
-              <x-badge-enum class="fs-4 me-1" case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
-              <x-badge-enum class="fs-4" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
-            </div>
-            @if ($registration?->status == 'revisi' && $registration->message)
-              <div class="card-body border-top">
-                <h4 class="fs-3 text-red">REVISI</h4>
-                <p>{{ $registration->message }}</p>
+              <div class="d-flex flex-wrap gap-2">
+                <x-badge-enum class="fs-4" case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
+                <x-badge-enum class="fs-4" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
               </div>
-            @endif
-          </div>
-        </div>
-        <div class="col-12 col-md-6">
-          <div class="vstack gap-2">
-            <div class="card card-mafindo">
-              <div class="card-header">
-                <h3 class="card-title">Informasi Pengurus</h3>
-              </div>
-              <div class="card-body">
-                <div class="datagrid">
-                  <x-datagrid-item title="Nama Koordinator" content="{{ $user->nama }}" />
-                  <x-datagrid-item title="Email" content="{{ $user->email }}" />
-                  <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
-                  <x-datagrid-item title="Sekretaris 1" content="{{ $user->branch?->pengurus->sekretaris1 }}" />
-                  <x-datagrid-item title="Sekretaris 2" content="{{ $user->branch?->pengurus->sekretaris2 }}" />
-                  <x-datagrid-item title="Bendahara 1" content="{{ $user->branch?->pengurus->bendahara1 }}" />
-                  <x-datagrid-item title="Bendahara 2" content="{{ $user->branch?->pengurus->bendahara2 }}" />
+              @if (in_array($registration?->status, ['revisi', 'ditolak']))
+                <div class="card card-body mt-3">
+                  <h4 class="text-red text-uppercase">Alasan</h4>
+                  <p>{{ $registration->message }}</p>
                 </div>
+              @endif
+              <div class="mt-3">
+                <table class="datagrid">
+                  <tr>
+                    <th class="datagrid-title">Mendaftar</th>
+                    <td>{{ $registration->created_at?->format('d/m/Y H:i') }}</td>
+                  </tr>
+                  <tr>
+                    <th class="datagrid-title">Diperbarui</th>
+                    <td>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
+                  </tr>
+                </table>
               </div>
             </div>
-          </div>
-        </div>
-        @if ($registration->status == 'diproses')
-          <div class="col-12 col-md-6">
-            @if ($errors->any())
-              <x-alert class="alert-danger">
-                <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
-                <ul class="mt-2 mb-0" style="margin-left: -1rem">
-                  @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </x-alert>
-            @endif
-            <div class="card card-mafindo sticky-top">
-              <div class="card-header">
-                <h3 class="card-title">Aksi</h3>
-              </div>
+            @if ($registration->status == 'diproses')
               <div class="card-body">
                 <ul class="nav nav-pills gap-2" role="tablist">
                   @can('finish', $registration)
@@ -157,13 +144,33 @@
                   </div>
                 @endcan
               </div>
+            @endif
+          </div>
+        </div>
+        <div class="col-12 col-md-5 col-lg-6 order-3 order-md-2">
+          <div class="vstack gap-3">
+            <div class="card card-mafindo">
+              <div class="card-header">
+                <h3 class="card-title">Informasi Pengurus</h3>
+              </div>
+              <div class="card-body">
+                <div class="datagrid">
+                  <x-datagrid-item title="Koordinator" content="{{ $user->nama }}" />
+                  <x-datagrid-item title="Email" content="{{ $user->email }}" />
+                  <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
+                  <x-datagrid-item title="Sekretaris 1" content="{{ $user->branch?->pengurus->sekretaris1 }}" />
+                  <x-datagrid-item title="Sekretaris 2" content="{{ $user->branch?->pengurus->sekretaris2 }}" />
+                  <x-datagrid-item title="Bendahara 1" content="{{ $user->branch?->pengurus->bendahara1 }}" />
+                  <x-datagrid-item title="Bendahara 2" content="{{ $user->branch?->pengurus->bendahara2 }}" />
+                </div>
+              </div>
             </div>
           </div>
-        @endif
+        </div>
       </div>
     </div>
   </div>
   @can('destroy', $registration)
-    <x-modal-delete baseRoute="{{ route('registrasi.index') }}" />
+    <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
   @endcan
 @endsection
