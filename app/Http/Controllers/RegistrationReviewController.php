@@ -176,7 +176,7 @@ class RegistrationReviewController extends Controller
         $type = $registration->type;
 
         if ($type == RegistrationTypeEnum::RELAWAN_BARU->value) {
-            $registration->user->syncRoles(RoleEnum::RELAWAN);
+            $registration->user->syncRoles(RoleEnum::RELAWAN_WILAYAH);
         } elseif ($type == RegistrationTypeEnum::RELAWAN_WILAYAH->value) {
             $validated = $request->validate([
                 'no_relawan' => [
@@ -251,8 +251,9 @@ class RegistrationReviewController extends Controller
 
         flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah dihapus.");
 
-        if ($q = parse_url(url()->previous(), PHP_URL_QUERY))
-            return to_route('registrasi.history', $q);
+        $prevUrlQuery = parse_url(url()->previous(), PHP_URL_QUERY);
+        if (url()->previous() == route('registrasi.history', $prevUrlQuery))
+            return to_route('registrasi.history', $prevUrlQuery);
 
         return to_route('registrasi.history');
     }

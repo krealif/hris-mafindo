@@ -143,7 +143,7 @@ class UserRegistrationController extends Controller
         if (! $user->hasAnyRole(['relawan', 'relawan-baru'])) {
             $role = ($type == RegistrationTypeEnum::RELAWAN_BARU)
                 ? RoleEnum::RELAWAN_BARU
-                : RoleEnum::RELAWAN;
+                : RoleEnum::RELAWAN_WILAYAH;
 
             $user->assignRole($role);
         }
@@ -226,7 +226,7 @@ class UserRegistrationController extends Controller
         }
 
         if (! $user->hasRole('pengurus')) {
-            $user->assignRole(RoleEnum::PENGURUS);
+            $user->assignRole(RoleEnum::PENGURUS_WILAYAH);
         }
 
         DB::transaction(function () use ($user, $registrationData, $validated) {

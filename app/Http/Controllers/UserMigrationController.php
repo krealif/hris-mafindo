@@ -160,8 +160,9 @@ class UserMigrationController extends Controller
 
         flash()->success("Berhasil. Relawan [{$userName}] telah dihapus.");
 
-        if ($q = parse_url(url()->previous(), PHP_URL_QUERY))
-            return to_route('migrasi.index', $q);
+        $prevUrlQuery = parse_url(url()->previous(), PHP_URL_QUERY);
+        if (url()->previous() == route('migrasi.index', $prevUrlQuery))
+            return to_route('migrasi.index', $prevUrlQuery);
 
         return to_route('migrasi.index');
     }

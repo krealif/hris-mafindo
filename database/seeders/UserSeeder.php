@@ -23,6 +23,15 @@ class UserSeeder extends Seeder
 
         $admin->assignRole('admin');
 
+        $pengurus = User::create([
+            'nama' => 'Pengurus Mafindo',
+            'email' => 'Pengurus@mail.com',
+            'is_verified' => true,
+            'password' => Hash::make('password'),
+        ]);
+
+        $pengurus->assignRole('pengurus-wilayah');
+
         $relawan = User::create([
             'nama' => 'Relawan Mafindo',
             'email' => 'relawan@mail.com',
@@ -30,12 +39,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        $relawan->assignRole('relawan');
-
         UserDetail::create([
             'user_id' => $relawan->id,
             'panggilan' => 'Relawan',
             'tgl_lahir' => '2000-01-01',
         ]);
+
+        $relawan->assignRole('relawan-wilayah');
     }
 }
