@@ -7,8 +7,8 @@
     <!-- Page header -->
     <div class="page-header d-print-none">
       <div class="container-xl">
-        <div class="d-flex gap-2 justify-content-between align-items-center">
-          <div class="col">
+        <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+          <div>
             <div class="mb-1">
               <a href="{{ url()->previous() == route('registrasi.history') ? route('registrasi.history') : route('registrasi.index') }}" class="btn btn-link px-0 py-1">
                 <x-lucide-arrow-left class="icon" />
@@ -32,7 +32,7 @@
   <div class="page-body">
     <div class="container-xl">
       <div class="row g-3">
-        <div class="col-12 only-alert order-first">
+        <div class="col-12 hidden-if-empty order-first">
           @if (flash()->message)
             <x-alert type="{{ flash()->class }}" class="m-0">
               {{ flash()->message }}

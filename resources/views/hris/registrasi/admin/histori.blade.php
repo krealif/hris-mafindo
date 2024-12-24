@@ -87,11 +87,17 @@
             <tbody>
               @foreach ($registrations as $registration)
                 <tr x-data="{ id: {{ $registration->id }} }">
-                  <td>
+                  <td style="max-width: 220px">
                     @if (Gate::check('destroy', $registration) || $registration->step == 'mengisi')
-                      <a href="{{ route('registrasi.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
+                      <a href="{{ route('registrasi.show', $registration->id) }}" class="fw-medium">
+                        <x-lucide-user class="icon me-1" defer />
+                        {{ $registration->user->nama }}
+                      </a>
                     @else
-                      {{ $registration->user->nama }}
+                      <span class="fw-medium">
+                        <x-lucide-user class="icon me-1" defer />
+                        {{ $registration->user->nama }}
+                      </span>
                     @endif
                   </td>
                   <td>{{ $registration->user->email }}</td>
@@ -109,7 +115,7 @@
                     <x-badge-enum case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
                   </td>
                   <td>{{ $registration->user->branch?->nama }}</td>
-                  <td>{{ $registration->updated_at?->format('d/m/Y H:i') }}<br>{{ $registration->updated_at?->diffForHumans() }}</td>
+                  <td>{{ $registration->updated_at?->diffForHumans() }}<br>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
                   <td>
                     <div class="btn-list flex-nowrap">
                       @if (Gate::check('destroy', $registration) || $registration->step == 'mengisi')

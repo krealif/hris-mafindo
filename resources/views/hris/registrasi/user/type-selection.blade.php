@@ -18,16 +18,16 @@
       <div class="container-xl">
         <div class="vstack gap-2">
           <a href="{{ route('registrasi.showForm', 'relawan-baru') }}" class="btn h3 py-3 m-0 justify-content-start">
-            <x-lucide-arrow-up-right class="icon" />
+            <x-lucide-square-user class="icon" defer />
             Relawan Baru
           </a>
           <a href="{{ route('registrasi.showForm', 'relawan-wilayah') }}" class="btn h3 py-3 m-0 justify-content-start">
-            <x-lucide-arrow-up-right class="icon" />
+            <x-lucide-square-user class="icon" defer />
             Relawan Wilayah
           </a>
           @if (strpos(auth()->user()->email, 'mafindo.or.id'))
             <a href="{{ route('registrasi.showForm', 'pengurus-wilayah') }}" class="btn h3 py-3 m-0 justify-content-start">
-              <x-lucide-arrow-up-right class="icon" />
+              <x-lucide-square-user class="icon" defer />
               Pengurus Wilayah
             </a>
           @endif

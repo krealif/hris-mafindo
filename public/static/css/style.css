@@ -7,6 +7,10 @@
     display: none !important;
 }
 
+.flex-none {
+    flex: none;
+}
+
 .bg-primary .navbar-toggler {
     color: white;
 }
@@ -28,6 +32,10 @@
     font-size: .8125rem !important;
 }
 
+.datatable .icon {
+    --tblr-icon-size: 1.4rem;
+}
+
 .table-responsive .dropdown,
 .table-responsive .btn-group,
 .table-responsive .btn-group-vertical {
@@ -45,8 +53,8 @@
     border-color: var(--tblr-btn-hover-border-color);
 }
 
-.card-title {
-    font-weight: 600;
+.card .icon {
+    flex: none;
 }
 
 .card-mafindo {
@@ -57,6 +65,14 @@
     color: var(--tblr-primary) !important;
     background-color: var(--tblr-primary-lt) !important;
     border-radius: var(--tblr-card-inner-border-radius) var(--tblr-card-inner-border-radius) 0 0 !important;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.card-title.d-flex {
+    flex-wrap: wrap;
 }
 
 .stepper {
@@ -117,11 +133,11 @@ table .datagrid-title {
     padding-right: 1rem;
 }
 
-.only-alert {
+.hidden-if-empty {
     display: none;
 }
 
-.only-alert:has(div) {
+.hidden-if-empty:has(*) {
     display: block;
 }
 

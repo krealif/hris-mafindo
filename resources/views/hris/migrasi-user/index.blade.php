@@ -7,7 +7,7 @@
     <!-- Page header -->
     <div class="page-header d-print-none">
       <div class="container-xl">
-        <div class="d-flex gap-2 justify-content-between align-items-center">
+        <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
           <div>
             <h1 class="page-title">
               Migrasi Data Relawan
@@ -60,8 +60,11 @@
             <tbody>
               @foreach ($tempUsers as $user)
                 <tr x-data="{ id: {{ $user->id }} }">
-                  <td>
-                    <a href="{{ route('migrasi.edit', $user->id) }}" class="text-decoration-underline text-dark">{{ $user->nama }}</a>
+                  <td style="max-width: 220px">
+                    <a href="{{ route('migrasi.edit', $user->id) }}" class="fw-medium">
+                      <x-lucide-user class="icon me-1" defer />
+                      {{ $user->nama }}
+                    </a>
                   </td>
                   <td>{{ $user->email }}</td>
                   <td>{{ $user->branch?->nama }}</td>

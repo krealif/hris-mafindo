@@ -63,14 +63,14 @@
                 </div>
                 <nav class="list-group list-group-flush">
                   <a class="list-group-item list-group-item-action p-2" href="#informasi-pribadi">
-                    <x-lucide-arrow-down-right class="icon" defer />
+                    <x-lucide-chevron-right class="icon" defer />
                     Informasi Wilayah
                   </a>
                 </nav>
               </div>
             </div>
             <div class="col-12 col-md-9">
-              <form method="POST" action="{{ route('registrasi.store', $type) }}" class="vstack gap-3" x-data="{ isDraft: false }" x-bind:novalidate="isDraft"
+              <form method="POST" action="{{ route('registrasi.store', $type->value) }}" class="vstack gap-3" x-data="{ isDraft: false }" x-bind:novalidate="isDraft"
                 enctype="multipart/form-data" autocomplete="off">
                 @csrf
                 <div id="informasi-pribadi" class="card card-mafindo">
@@ -81,11 +81,11 @@
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="nama" class="form-label required">Koordinator</label>
-                        <x-form.input name="nama" type="text" value="{{ old('nama', Auth::user()->nama) }}" required />
+                        <x-form.input name="nama" type="text" value="{{ old('nama', $user->nama) }}" required />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="branch" class="form-label required">Wilayah</label>
-                        <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', Auth::user()->branch_id) }}" placeholder="" />
+                        <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', $user->branch_id) }}" placeholder="" />
                       </div>
                     </div>
                     @if ($errors->has('pengurus.*'))
@@ -104,24 +104,22 @@
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="sekretaris1" class="form-label">Sekretaris 1</label>
                         <x-form.input id="sekretaris1" name="pengurus[sekretaris1]" type="text"
-                          value="{{ old('pengurus.sekretaris1', Auth::user()->branch?->pengurus->sekretaris1) }}" />
+                          value="{{ old('pengurus.sekretaris1', $user->branch?->pengurus->sekretaris1) }}" />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="sekretaris2" class="form-label">Sekretaris 2</label>
                         <x-form.input id="sekretaris2" name="pengurus[sekretaris2]" type="text"
-                          value="{{ old('pengurus.sekretaris2', Auth::user()->branch?->pengurus->sekretaris2) }}" />
+                          value="{{ old('pengurus.sekretaris2', $user->branch?->pengurus->sekretaris2) }}" />
                       </div>
                     </div>
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="bendahara1" class="form-label">Bendahara 1</label>
-                        <x-form.input id="bendahara1" name="pengurus[bendahara1]" type="text"
-                          value="{{ old('pengurus.bendahara1', Auth::user()->branch?->pengurus->bendahara1) }}" />
+                        <x-form.input id="bendahara1" name="pengurus[bendahara1]" type="text" value="{{ old('pengurus.bendahara1', $user->branch?->pengurus->bendahara1) }}" />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="bendahara2" class="form-label">Bendahara 2</label>
-                        <x-form.input id="bendahara2" name="pengurus[bendahara2]" type="text"
-                          value="{{ old('pengurus.bendahara2', Auth::user()->branch?->pengurus->bendahara2) }}" />
+                        <x-form.input id="bendahara2" name="pengurus[bendahara2]" type="text" value="{{ old('pengurus.bendahara2', $user->branch?->pengurus->bendahara2) }}" />
                       </div>
                     </div>
                   </div>

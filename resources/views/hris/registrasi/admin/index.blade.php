@@ -72,8 +72,11 @@
             <tbody>
               @foreach ($registrations as $registration)
                 <tr>
-                  <td>
-                    <a href="{{ route('registrasi.show', $registration->id) }}" class="text-decoration-underline text-dark">{{ $registration->user->nama }}</a>
+                  <td style="max-width: 220px">
+                    <a href="{{ route('registrasi.show', $registration->id) }}" class="fw-medium">
+                      <x-lucide-user class="icon me-1" defer />
+                      {{ $registration->user->nama }}
+                    </a>
                   </td>
                   <td>{{ $registration->user->email }}</td>
                   <td>
@@ -87,7 +90,7 @@
                     @endif
                   </td>
                   <td>{{ $registration->user->branch?->nama }}</td>
-                  <td>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
+                  <td>{{ $registration->updated_at?->diffForHumans() }}<br>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
                   <td>
                     <div class="btn-list flex-nowrap">
                       <a href="{{ route('registrasi.show', $registration->id) }}" class="btn">

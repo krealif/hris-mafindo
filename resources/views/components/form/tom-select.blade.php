@@ -8,10 +8,9 @@
 ])
 
 @php
-  $attributes = $attributes->class(['form-select', 'is-invalid' => $showError && $errors->has($name)]);
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
-  $selectedValue = old($name, $selected);
-  $selectedValue = explode(',', $selectedValue);
+  $selectedValue = explode(',', old($name, $selected ?? ''));
+  $attributes = $attributes->class(['form-select', 'is-invalid' => $showError && $errors->has($name)]);
 @endphp
 
 <select id="{{ $id }}" name="{{ $name }}" autocomplete="off" {{ $attributes }} @required($required)>
@@ -23,17 +22,13 @@
   @endforeach
 </select>
 <script>
-  @if ($attributes['multiple'])
-    document.addEventListener("DOMContentLoaded", function() {
-      window.TomSelect && (new TomSelect({{ Js::from('#' . $id) }}, {
-        plugins: ['caret_position'],
-      }));
-    });
-  @else
-    document.addEventListener("DOMContentLoaded", function() {
-      window.TomSelect && (new TomSelect({{ Js::from('#' . $id) }}));
-    });
-  @endif
+  document.addEventListener("DOMContentLoaded", function() {
+    if (window.TomSelect) {
+      new TomSelect('#{{ $id }}', {
+        plugins: @json($attributes['multiple'] ? ['caret_position'] : []),
+      });
+    }
+  });
 </script>
 @if ($showError)
   @error($name)

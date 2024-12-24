@@ -22,7 +22,7 @@
                 placeholder="{{ $searchPlaceholder ?? 'Pencarian' }}" />
               @if (isset(request()->filter[$search]))
                 <button type="button" id="dt-btn-clear" class="btn btn-icon">
-                  <x-lucide-x class="icon text-red" />
+                  <x-lucide-x class="icon text-red" defer />
                 </button>
               @endif
             </div>
@@ -66,7 +66,7 @@
           </button>
           @if ($totalFilter)
             <button type="button" id="dt-btn-clear" class="btn btn-icon">
-              <x-lucide-x class="icon text-red" />
+              <x-lucide-x class="icon text-red" defer />
             </button>
           @endif
         </div>

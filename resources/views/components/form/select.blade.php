@@ -8,9 +8,9 @@
 ])
 
 @php
-  $attributes = $attributes->class(['form-select', 'is-invalid' => $showError && $errors->has($name)]);
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
   $selectedValue = old($name, $selected);
+  $attributes = $attributes->class(['form-select', 'is-invalid' => $showError && $errors->has($name)]);
 @endphp
 
 <select id="{{ $id }}" name="{{ $name }}" autocomplete="off" {{ $attributes }} @required($required)>
