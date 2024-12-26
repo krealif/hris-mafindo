@@ -1,12 +1,12 @@
-@props(['data' => null, 'step' => null])
+@props(['steps' => null, 'current' => null])
 
 <ol class="stepper divide-x divide-y fw-bold">
-  @foreach ($data as $value => $label)
+  @foreach ($steps as $case => $name)
     <li @class([
         'stepper-item',
-        'active' => $value == $step || ($step == '' && $loop->first),
+        'active' => $case == $current || (empty($current) && $loop->first),
     ])>
-      {{ $label }}
+      {{ $name }}
     </li>
   @endforeach
 </ol>

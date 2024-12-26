@@ -72,22 +72,18 @@
             <tbody>
               @foreach ($registrations as $registration)
                 <tr>
-                  <td style="max-width: 220px">
+                  <td>
                     <a href="{{ route('registrasi.show', $registration->id) }}" class="fw-medium">
-                      <x-lucide-user class="icon me-1" defer />
+                      <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
                       {{ $registration->user->nama }}
                     </a>
                   </td>
                   <td>{{ $registration->user->email }}</td>
                   <td>
-                    <x-badge-enum case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
+                    <x-badge class="fs-4" :case="$registration->type" />
                   </td>
                   <td>
-                    @if ($registration->type == 'relawan-baru')
-                      <x-badge-enum case="{{ $registration->step }}" :enumClass="App\Enums\RegistrationBaruStepEnum::class" />
-                    @else
-                      <x-badge-enum case="{{ $registration->step }}" :enumClass="App\Enums\RegistrationLamaStepEnum::class" />
-                    @endif
+                    <x-badge class="fs-4" :case="$registration->step" />
                   </td>
                   <td>{{ $registration->user->branch?->nama }}</td>
                   <td>{{ $registration->updated_at?->diffForHumans() }}<br>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>

@@ -41,7 +41,16 @@ class UserDetail extends Model
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return array{
+     *     tgl_lahir: 'date:d/m/Y',
+     *     gender: 'App\Enums\GenderEnum',
+     *     agama: 'App\Enums\AgamaEnum',
+     *     bidang_mafindo: 'App\Enums\BidangMafindoEnum',
+     *     medsos: 'object',
+     *     pendidikan: 'object',
+     *     pekerjaan: 'object',
+     *     sertifikat: 'object'
+     * }
      */
     protected function casts(): array
     {

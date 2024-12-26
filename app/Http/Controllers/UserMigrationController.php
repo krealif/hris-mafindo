@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateMigrationRelawanRequest;
 use App\Models\Branch;
 use App\Models\TempUser;
 use App\Models\UserDetail;
-use App\Traits\HandlesArrayInput;
+use App\Traits\FilterArrayInput;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class UserMigrationController extends Controller
 {
-    use HandlesArrayInput;
+    use FilterArrayInput;
 
     /**
      * Display a listing of the temporary users.
@@ -25,8 +25,8 @@ class UserMigrationController extends Controller
     {
         $tempUsers = QueryBuilder::for(TempUser::class)
             ->allowedFilters(['nama', 'email', 'no_relawan'])
-            ->orderBy('updated_at', 'desc')
             ->with('branch')
+            ->latest('updated_at')
             ->paginate(15)
             ->appends(request()->query());
 
@@ -42,7 +42,11 @@ class UserMigrationController extends Controller
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
 
-        return view('hris.migrasi-user.form-migrasi', compact('branches'));
+        return view('hris.migrasi-user.form-migrasi', [
+            'tempUser' => null,
+            'userDetail' => null,
+            'branches' => $branches,
+        ]);
     }
 
     /**
@@ -52,13 +56,14 @@ class UserMigrationController extends Controller
     {
         $validated = $request->validated();
 
-        $validated = $this->handleArrayField($validated, [
+        $validated = $this->filterArrayField($validated, [
             'pendidikan',
             'pekerjaan',
             'sertifikat',
         ]);
 
         DB::transaction(function () use ($validated) {
+            // Simpan detail user ke tabel `UserDetail`.
             $detail = Arr::except($validated, [
                 'nama',
                 'email',
@@ -66,18 +71,18 @@ class UserMigrationController extends Controller
                 'branch_id',
                 'mode',
             ]);
-
             $userDetail = UserDetail::create([...$detail]);
 
+            // Ambil data yang akan disimpan ke tabel `TempUser`.
             $tempData = Arr::only($validated, [
                 'nama',
                 'email',
                 'no_relawan',
                 'branch_id',
             ]);
-
+            // Sebelum menyimpan ke tabel TempUser, hubungkan user dengan detailnya
             $tempData['user_detail_id'] = $userDetail->id;
-
+            // Simpan data user sementara.
             TempUser::create($tempData);
         });
 
@@ -95,11 +100,11 @@ class UserMigrationController extends Controller
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
 
-        $detail = $tempUser->detail;
+        $userDetail = $tempUser->detail;
 
         return view('hris.migrasi-user.form-migrasi', compact(
             'tempUser',
-            'detail',
+            'userDetail',
             'branches'
         ));
     }
@@ -111,7 +116,7 @@ class UserMigrationController extends Controller
     {
         $validated = $request->validated();
 
-        $validated = $this->handleArrayField($validated, [
+        $validated = $this->filterArrayField($validated, [
             'pendidikan',
             'pekerjaan',
             'sertifikat',
@@ -124,23 +129,21 @@ class UserMigrationController extends Controller
                 'no_relawan',
                 'branch_id',
             ]);
-
             $tempUser->update($tempData);
 
-            $detail = Arr::except($validated, [
+            $userDetail = Arr::except($validated, [
                 'nama',
                 'email',
                 'no_relawan',
                 'branch_id',
                 'mode',
             ]);
-
-            $tempUser->detail?->update([...$detail]);
+            $tempUser->detail?->update([...$userDetail]);
         });
 
         flash()->success("Berhasil. Relawan [{$validated['nama']}] telah diperbarui.");
 
-        return to_route('migrasi.edit');
+        return to_route('migrasi.edit', $tempUser->id);
     }
 
     /**
@@ -151,6 +154,7 @@ class UserMigrationController extends Controller
         $userName = $tempUser->nama;
 
         DB::transaction(function () use ($tempUser) {
+            // Hapus data user beserta dengan detailnya
             UserDetail::where('id', $tempUser->id)
                 ->whereNull('user_id')
                 ->delete();
@@ -161,8 +165,9 @@ class UserMigrationController extends Controller
         flash()->success("Berhasil. Relawan [{$userName}] telah dihapus.");
 
         $prevUrlQuery = parse_url(url()->previous(), PHP_URL_QUERY);
-        if (url()->previous() == route('migrasi.index', $prevUrlQuery))
+        if (url()->previous() == route('migrasi.index', $prevUrlQuery)) {
             return to_route('migrasi.index', $prevUrlQuery);
+        }
 
         return to_route('migrasi.index');
     }

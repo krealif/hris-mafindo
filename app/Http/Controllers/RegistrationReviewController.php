@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Branch;
+use App\Enums\RoleEnum;
+use Illuminate\View\View;
+use App\Models\Registration;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Enums\RegistrationTypeEnum;
+use Illuminate\Support\Facades\Gate;
+use App\Enums\RegistrationStatusEnum;
+use Illuminate\Http\RedirectResponse;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
-use App\Enums\RegistrationStatusEnum;
-use App\Enums\RegistrationTypeEnum;
-use App\Enums\RoleEnum;
-use App\Models\Branch;
-use App\Models\Registration;
-use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use Illuminate\View\View;
-use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class RegistrationReviewController extends Controller
 {
@@ -36,7 +35,7 @@ class RegistrationReviewController extends Controller
             ])
             ->where('status', 'diproses')
             ->with('user.branch')
-            ->orderBy('updated_at', 'desc')
+            ->latest('updated_at')
             ->paginate(15)
             ->appends(request()->query());
 
@@ -75,9 +74,6 @@ class RegistrationReviewController extends Controller
 
     /**
      * Display the specified registration submission details.
-     *
-     * This method retrieves the user associated with the given registration
-     * and returns the appropriate view based on the registration type.
      */
     public function show(Registration $registration): View
     {
@@ -85,7 +81,7 @@ class RegistrationReviewController extends Controller
 
         if (
             $registration->type
-            == RegistrationTypeEnum::PENGURUS_WILAYAH->value
+            == RegistrationTypeEnum::PENGURUS_WILAYAH
         ) {
             return view('hris.registrasi.admin.detail-pengurus', compact('registration', 'user'));
         }
@@ -101,13 +97,13 @@ class RegistrationReviewController extends Controller
         Gate::authorize('nextStep', $registration);
 
         $type = $registration->type;
-        $stepEnum = $type == RegistrationTypeEnum::RELAWAN_BARU->value
+        $stepEnum = $type == RegistrationTypeEnum::RELAWAN_BARU
             ? RegistrationBaruStepEnum::class
             : RegistrationLamaStepEnum::class;
 
         $currentStep = $stepEnum::from($registration->step);
 
-        if ($type == RegistrationTypeEnum::RELAWAN_BARU->value) {
+        if ($type == RegistrationTypeEnum::RELAWAN_BARU) {
             if ($currentStep == RegistrationBaruStepEnum::WAWANCARA) {
                 $validated = $request->validate([
                     'no_relawan' => [
@@ -132,7 +128,7 @@ class RegistrationReviewController extends Controller
         $nextStep = $stepEnum::cases()[$currentStep->index() + 1] ?? null;
 
         if ($nextStep) {
-            $registration->update(['step' => $nextStep->value]);
+            $registration->update(['step' => $nextStep]);
         }
 
         flash()->success("Berhasil. Proses registrasi relawan atas nama [{$registration->user->nama}] telah beralih ke tahapan [{$nextStep?->value}].");
@@ -153,7 +149,7 @@ class RegistrationReviewController extends Controller
 
         $registration->update([
             'status' => RegistrationStatusEnum::REVISI,
-            'step' => ($registration->type == RegistrationTypeEnum::RELAWAN_BARU->value)
+            'step' => ($registration->type == RegistrationTypeEnum::RELAWAN_BARU)
                 ? RegistrationBaruStepEnum::MENGISI
                 : RegistrationLamaStepEnum::MENGISI,
             'message' => $validated['message'],
@@ -175,9 +171,9 @@ class RegistrationReviewController extends Controller
 
         $type = $registration->type;
 
-        if ($type == RegistrationTypeEnum::RELAWAN_BARU->value) {
+        if ($type == RegistrationTypeEnum::RELAWAN_BARU) {
             $registration->user->syncRoles(RoleEnum::RELAWAN_WILAYAH);
-        } elseif ($type == RegistrationTypeEnum::RELAWAN_WILAYAH->value) {
+        } elseif ($type == RegistrationTypeEnum::RELAWAN_WILAYAH) {
             $validated = $request->validate([
                 'no_relawan' => [
                     'required',
@@ -232,28 +228,20 @@ class RegistrationReviewController extends Controller
     }
 
     /**
-     * Remove the specified registration and its associated user.
+     * Remove the specified user and its registration.
      */
     public function destroy(Registration $registration): RedirectResponse
     {
         Gate::authorize('destroy', $registration);
 
-        /** @var \App\Models\User $user */
-        $user = $registration->user;
-
-        if ($user->foto) {
-            Storage::disk('public')->delete($user->foto);
-        }
-
-        // Remove role
-        $user->syncRoles([]);
-        $user->delete();
+        $registration->user->delete();
 
         flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah dihapus.");
 
         $prevUrlQuery = parse_url(url()->previous(), PHP_URL_QUERY);
-        if (url()->previous() == route('registrasi.history', $prevUrlQuery))
+        if (url()->previous() == route('registrasi.history', $prevUrlQuery)) {
             return to_route('registrasi.history', $prevUrlQuery);
+        }
 
         return to_route('registrasi.history');
     }
@@ -266,17 +254,25 @@ class RegistrationReviewController extends Controller
         $total = 0;
 
         if ($request->input('step_mengisi')) {
-            $result = Registration::where('step', 'mengisi')
+            $registrations = Registration::where('step', 'mengisi')
                 ->where('updated_at', '<', Carbon::now()->subDays($request->input('lama_mengisi')))
-                ->delete();
-            $total += $result;
+                ->get();
+            $total += $registrations->count();
+
+            foreach ($registrations as $registration) {
+                $registration->user->delete();
+            }
         }
 
         if ($request->input('status_ditolak')) {
-            $result = Registration::where('status', 'ditolak')
+            $registrations = Registration::where('status', 'ditolak')
                 ->where('updated_at', '<', Carbon::now()->subDays($request->input('lama_ditolak')))
-                ->delete();
-            $total += $result;
+                ->get();
+            $total += $registrations->count();
+
+            foreach ($registrations as $registration) {
+                $registration->user->delete();
+            }
         }
 
         if ($total) {
@@ -285,6 +281,6 @@ class RegistrationReviewController extends Controller
             flash()->info('Tidak ada data yang perlu dihapus.');
         }
 
-        return to_route('registrasi.index');
+        return to_route('registrasi.history');
     }
 }

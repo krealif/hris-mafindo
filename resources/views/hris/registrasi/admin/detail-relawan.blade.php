@@ -20,10 +20,12 @@
             </h1>
           </div>
           @can('destroy', $registration)
-            <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $registration->id }} }" x-on:click="$dispatch('set-id', { id })">
-              <x-lucide-trash-2 class="icon text-red" />
-              Hapus
-            </button>
+            @if (url()->previous() == route('registrasi.history'))
+              <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $registration->id }} }" x-on:click="$dispatch('set-id', { id })">
+                <x-lucide-trash-2 class="icon text-red" />
+                Hapus
+              </button>
+            @endif
           @endcan
         </div>
       </div>
@@ -51,10 +53,10 @@
         </div>
         <div class="col-12 col-md-7 col-lg-6 order-1">
           <div class="card card-mafindo overflow-hidden border-top-0">
-            @if ($registration->type == 'relawan-baru')
-              <x-registration-step :data="App\Enums\RegistrationBaruStepEnum::labels()" step="{{ $registration?->step }}" />
+            @if ($registration->type->value == 'relawan-baru')
+              <x-registration-step current="{{ $registration->step }}" :steps="App\Enums\RegistrationBaruStepEnum::steps()" />
             @else
-              <x-registration-step :data="App\Enums\RegistrationLamaStepEnum::labels()" step="{{ $registration?->step }}" />
+              <x-registration-step current="{{ $registration->step }}" :steps="App\Enums\RegistrationLamaStepEnum::steps()" />
             @endif
             <div class="card-body border-top">
               <div class="row g-3">
@@ -67,12 +69,12 @@
                     <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
                   @endif
                   <div class="d-flex flex-wrap gap-2">
-                    <x-badge-enum class="fs-4" case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
-                    <x-badge-enum class="fs-4" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
+                    <x-badge class="fs-4" :case="$registration->type" />
+                    <x-badge class="fs-4" :case="$registration->status" />
                   </div>
                 </div>
               </div>
-              @if (in_array($registration?->status, ['revisi', 'ditolak']))
+              @if (in_array($registration->status->value, ['revisi', 'ditolak']))
                 <div class="card card-body mt-3">
                   <h4 class="text-red text-uppercase">Alasan</h4>
                   <p>{{ $registration->message }}</p>
@@ -91,7 +93,7 @@
                 </table>
               </div>
             </div>
-            @if ($registration->status == 'diproses')
+            @if ($registration->status->value == 'diproses')
               <div class="card-body">
                 <ul class="nav nav-pills gap-2" role="tablist">
                   @can('finish', $registration)
@@ -134,12 +136,12 @@
                     <form method="POST" action="{{ route('registrasi.finish', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
-                      @if ($registration->step == 'verifikasi')
+                      @if ($registration->step->value == 'verifikasi')
                         <div class="mb-4">
                           <label for="no-relawan" class="form-label required">Nomor Kartu Relawan</label>
                           <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan', $user->no_relawan) }}" required />
                         </div>
-                      @elseif ($registration->step == 'pelatihan')
+                      @elseif ($registration->step->value == 'pelatihan')
                         <h5 class="fs-4 m-0 mb-2">Perhatian!</h5>
                         <p class="mb-4">Pastikan relawan telah <strong>mengikuti Pelatihan Dasar Relawan</strong>. Setelah proses registrasi diselesaikan, relawan yang bersangkutan
                           akan <strong>berubah menjadi Relawan Wilayah</strong>.</p>
@@ -153,7 +155,7 @@
                     <form method="POST" action="{{ route('registrasi.nextStep', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
-                      @if ($registration->step == 'wawancara')
+                      @if ($registration->step->value == 'wawancara')
                         <div class="mb-4">
                           <label for="no-relawan" class="form-label required">Nomor Kartu Relawan</label>
                           <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan') }}" required />
@@ -343,6 +345,8 @@
     </div>
   </div>
   @can('destroy', $registration)
-    <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
+    @if (url()->previous() == route('registrasi.history'))
+      <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
+    @endif
   @endcan
 @endsection

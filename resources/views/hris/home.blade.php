@@ -27,7 +27,7 @@
                 Tahapan Registrasi
               </h2>
             </div>
-            <x-registration-step :data="App\Enums\RegistrationBaruStepEnum::labels()" step="{{ Auth::user()->registration?->step }}" />
+            <x-registration-step current="{{ Auth::user()->registration?->step }}" :steps="App\Enums\RegistrationBaruStepEnum::steps()" />
           </div>
         @endrole
       </div>

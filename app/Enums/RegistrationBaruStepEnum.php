@@ -17,7 +17,7 @@ enum RegistrationBaruStepEnum: string
 
     public function label(): string
     {
-        return ucwords(str_replace('-', ' ', $this->value));
+        return ucwords($this->value);
     }
 
     public function badge(): string
@@ -34,7 +34,7 @@ enum RegistrationBaruStepEnum: string
     /**
      * @return array<string, string>
      */
-    public static function labels(): array
+    public static function steps(): array
     {
         return [
             self::MENGISI->value => 'Mengisi Form',

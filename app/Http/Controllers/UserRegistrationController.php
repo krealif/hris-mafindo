@@ -12,7 +12,7 @@ use App\Http\Requests\StoreRegistrationRelawanRequest;
 use App\Models\Branch;
 use App\Models\Registration;
 use App\Models\UserDetail;
-use App\Traits\HandlesArrayInput;
+use App\Traits\FilterArrayInput;
 use App\Traits\HasUploadFile;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -23,7 +23,8 @@ use Illuminate\Support\Facades\Gate;
 
 class UserRegistrationController extends Controller
 {
-    use HandlesArrayInput, HasUploadFile;
+    use FilterArrayInput;
+    use HasUploadFile;
 
     /**
      * Display a form selection page or redirect to the appropriate registration form
@@ -47,15 +48,18 @@ class UserRegistrationController extends Controller
     {
         Gate::authorize('viewForm', [Registration::class, $type]);
 
-        $registration = Auth::user()->registration;
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $registration = $user->registration;
 
         $branches = Branch::select('id', 'nama')
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
 
         $viewData = [
-            'type' => $type->value,
+            'user' => $user,
             'registration' => $registration,
+            'type' => $type,
             'branches' => $branches,
         ];
 
@@ -63,16 +67,13 @@ class UserRegistrationController extends Controller
             return view('hris.registrasi.user.form-pengurus', $viewData);
         }
 
-        $viewData['detail'] = Auth::user()->detail;
+        $viewData['userDetail'] = $user->detail;
 
         return view('hris.registrasi.user.form-relawan', $viewData);
     }
 
     /**
      * Store a new registration based on the given type.
-     *
-     * This method authorizes the creation of a new registration and delegates
-     * the request handling to the appropriate method based on the registration type.
      */
     public function store(RegistrationTypeEnum $type): RedirectResponse
     {
@@ -89,16 +90,13 @@ class UserRegistrationController extends Controller
 
     /**
      * Store a new or draft registration of relawan.
-     *
-     * This method validates the incoming request, processes the uploaded photo if present,
-     * updates the user's registration data, assigns roles based on the registration type,
-     * and saves the data.
      */
     public function storeRelawan(StoreRegistrationRelawanRequest $request, RegistrationTypeEnum $type): RedirectResponse
     {
         $validated = $request->validated();
 
-        $validated = $this->handleArrayField($validated, [
+        // Filter untuk menghapus entri kosong dalam array
+        $validated = $this->filterArrayField($validated, [
             'pendidikan',
             'pekerjaan',
             'sertifikat',
@@ -108,39 +106,39 @@ class UserRegistrationController extends Controller
         $user = Auth::user();
         $registration = $user->registration;
 
+        // Unggah foto profil pengguna
         if ($request->hasFile('foto')) {
             $path = $this->uploadFile('profile', $validated['foto'], 'public');
             $validated['foto'] = $path;
-
-            // remove old photo
-            if ($user->foto) {
-                $this->deleteFile($user->foto, 'public');
-            }
         }
 
         $registrationData = [
             'type' => $type,
+            // Jika disimpan dalam mode 'DRAFT', atur status ke 'DRAFT', jika tidak, atur ke 'DIPROSES'
             'status' => ($request->_mode == 'draft')
                 ? RegistrationStatusEnum::DRAFT
                 : RegistrationStatusEnum::DIPROSES,
             'step' => ($request->_mode == 'draft')
+                // Jika disimpan dalam mode 'DRAFT', atur step ke 'MENGISI' untuk relawan baru atau lama
                 ? ($type == RegistrationTypeEnum::RELAWAN_BARU
                     ? RegistrationBaruStepEnum::MENGISI
                     : RegistrationLamaStepEnum::MENGISI)
                 : ($type == RegistrationTypeEnum::RELAWAN_BARU
+                    // Jika disimpan dalam mode 'SUBMIT', atur step berdasarkan jenis registrasi
                     ? RegistrationBaruStepEnum::PROFILING
                     : RegistrationLamaStepEnum::VERIFIKASI),
         ];
 
+        // Bila status registrasi dalam 'REVISI' dan disimpan sebagai 'DRAFT', pertahankan status sebagai 'REVISI'
         if (
-            $request->_mode == 'draft'
-            && $registration?->status == 'revisi'
+            $registration?->status == RegistrationStatusEnum::REVISI
+            && $request->_mode == 'draft'
         ) {
             $registrationData['status'] = RegistrationStatusEnum::REVISI;
         }
 
-        // Assign roles based on registration type
-        if (! $user->hasAnyRole(['relawan', 'relawan-baru'])) {
+        // Tetapkan role berdasarkan jenis registrasi
+        if (! $user->hasAnyRole([RoleEnum::RELAWAN_BARU, RoleEnum::RELAWAN_WILAYAH])) {
             $role = ($type == RegistrationTypeEnum::RELAWAN_BARU)
                 ? RoleEnum::RELAWAN_BARU
                 : RoleEnum::RELAWAN_WILAYAH;
@@ -165,7 +163,6 @@ class UserRegistrationController extends Controller
                 'branch_id',
                 'mode',
             ]);
-
             UserDetail::updateOrCreate(
                 ['user_id' => $user->id],
                 [
@@ -194,9 +191,6 @@ class UserRegistrationController extends Controller
 
     /**
      * Store a new or draft registration of pengurus.
-     *
-     * This method validates the request, updates the user's information, creates or updates the registration
-     * and branch records in the database. The method also assigns the "pengurus" role to the user.
      */
     public function storePengurus(StoreRegistrationPengurusRequest $request, RegistrationTypeEnum $type): RedirectResponse
     {
@@ -210,22 +204,26 @@ class UserRegistrationController extends Controller
 
         $registrationData = [
             'type' => $type,
+            // Jika disimpan dalam mode 'DRAFT', atur status ke 'DRAFT', jika tidak, atur ke 'DIPROSES'
             'status' => ($request->_mode == 'draft')
                 ? RegistrationStatusEnum::DRAFT
                 : RegistrationStatusEnum::DIPROSES,
+            // Jika disimpan dalam mode 'DRAFT', atur status ke 'MENGISI', jika tidak, atur ke 'VERIFIKASI'
             'step' => ($request->_mode == 'draft')
                 ? RegistrationLamaStepEnum::MENGISI
                 : RegistrationLamaStepEnum::VERIFIKASI,
         ];
 
+        // Bila status registrasi dalam 'REVISI' dan disimpan sebagai 'DRAFT', pertahankan status sebagai 'REVISI'
         if (
-            $request->_mode == 'draft'
-            && $registration?->status == 'revisi'
+            $registration?->status == RegistrationStatusEnum::REVISI
+            && $request->_mode == 'draft'
         ) {
             $registrationData['status'] = RegistrationStatusEnum::REVISI;
         }
 
-        if (! $user->hasRole('pengurus')) {
+        // Tetapkan role pengurus
+        if (! $user->hasRole(RoleEnum::PENGURUS_WILAYAH)) {
             $user->assignRole(RoleEnum::PENGURUS_WILAYAH);
         }
 

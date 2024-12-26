@@ -24,7 +24,7 @@ class Branch extends Model
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return array{pengurus: 'object'}
      */
     protected function casts(): array
     {

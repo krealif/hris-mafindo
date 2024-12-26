@@ -38,23 +38,23 @@
                 <h2 class="card-title d-flex align-items-center gap-2 mb-0">
                   <x-lucide-chevrons-right class="icon" />
                   Tahapan
-                  @if ($registration?->status && $registration?->status != 'selesai')
-                    <x-badge-enum class="fs-4 me-1" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
+                  @if ($registration?->status)
+                    <x-badge class="fs-4 me-1" :case="$registration->status" />
                   @endif
                 </h2>
               </div>
               @if ($type->value == 'relawan-baru')
-                <x-registration-step :data="App\Enums\RegistrationBaruStepEnum::labels()" step="{{ $registration?->step }}" />
+                <x-registration-step current="{{ $registration?->step }}" :steps="App\Enums\RegistrationBaruStepEnum::steps()" />
               @else
-                <x-registration-step :data="App\Enums\RegistrationLamaStepEnum::labels()" step="{{ $registration?->step }}" />
+                <x-registration-step current="{{ $registration?->step }}" :steps="App\Enums\RegistrationLamaStepEnum::steps()" />
               @endif
-              @if (in_array($registration?->status, ['revisi', 'ditolak']))
+              @if (in_array($registration?->status->value, ['revisi', 'ditolak']))
                 <div class="card-body border-top">
-                  <h4 class="fs-3 text-red">{{ strtoupper($registration?->status) }}</h4>
+                  <h4 class="fs-3 text-red">{{ strtoupper($registration?->status->value) }}</h4>
                   <p>{{ $registration->message }}</p>
                 </div>
               @endif
-              @if ($registration?->step && $registration?->step != 'mengisi')
+              @if ($registration?->step && $registration?->step->value != 'mengisi')
                 <div class="card-body border-top">
                   <div class="datagrid">
                     <x-datagrid-item title="Nama" content="{{ $user->nama }}" />
@@ -65,7 +65,7 @@
               @endif
             </div>
           </div>
-          @if (in_array($registration?->status, [null, 'draft', 'revisi']))
+          @if (in_array($registration?->status->value, [null, 'draft', 'revisi']))
             <div class="col-12 col-md-3 mb-3 mb-md-0">
               <div class="card card-mafindo sticky-top">
                 <div class="card-header">

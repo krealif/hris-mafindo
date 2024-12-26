@@ -60,7 +60,7 @@
             <tbody>
               @foreach ($tempUsers as $user)
                 <tr x-data="{ id: {{ $user->id }} }">
-                  <td style="max-width: 220px">
+                  <td>
                     <a href="{{ route('migrasi.edit', $user->id) }}" class="fw-medium">
                       <x-lucide-user class="icon me-1" defer />
                       {{ $user->nama }}

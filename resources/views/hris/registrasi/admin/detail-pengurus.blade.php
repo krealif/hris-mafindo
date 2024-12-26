@@ -20,10 +20,12 @@
             </h1>
           </div>
           @can('destroy', $registration)
-            <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $registration->id }} }" x-on:click="$dispatch('set-id', { id })">
-              <x-lucide-trash-2 class="icon text-red" />
-              Hapus
-            </button>
+            @if (url()->previous() == route('registrasi.history'))
+              <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $registration->id }} }" x-on:click="$dispatch('set-id', { id })">
+                <x-lucide-trash-2 class="icon text-red" />
+                Hapus
+              </button>
+            @endif
           @endcan
         </div>
       </div>
@@ -51,15 +53,15 @@
         </div>
         <div class="col-12 col-md-7 col-lg-6 order-1">
           <div class="card card-mafindo overflow-hidden border-top-0">
-            <x-registration-step :data="App\Enums\RegistrationLamaStepEnum::labels()" step="{{ $registration?->step }}" />
+            <x-registration-step current="{{ $registration->step }}" :steps="App\Enums\RegistrationLamaStepEnum::steps()" />
             <div class="card-body border-top">
               <h2 class="card-title h2 mb-2">{{ $user->nama }}</h2>
               <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
               <div class="d-flex flex-wrap gap-2">
-                <x-badge-enum class="fs-4" case="{{ $registration->type }}" :enumClass="App\Enums\RegistrationTypeEnum::class" />
-                <x-badge-enum class="fs-4" case="{{ $registration->status }}" :enumClass="App\Enums\RegistrationStatusEnum::class" />
+                <x-badge class="fs-4" :case="$registration->type" />
+                <x-badge class="fs-4" :case="$registration->status" />
               </div>
-              @if (in_array($registration?->status, ['revisi', 'ditolak']))
+              @if (in_array($registration->status->value, ['revisi', 'ditolak']))
                 <div class="card card-body mt-3">
                   <h4 class="text-red text-uppercase">Alasan</h4>
                   <p>{{ $registration->message }}</p>
@@ -78,7 +80,7 @@
                 </table>
               </div>
             </div>
-            @if ($registration->status == 'diproses')
+            @if ($registration->status->value == 'diproses')
               <div class="card-body">
                 <ul class="nav nav-pills gap-2" role="tablist">
                   @can('finish', $registration)
@@ -171,6 +173,8 @@
     </div>
   </div>
   @can('destroy', $registration)
-    <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
+    @if (url()->previous() == route('registrasi.history'))
+      <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
+    @endif
   @endcan
 @endsection

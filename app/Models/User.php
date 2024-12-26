@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RoleEnum;
+use App\Observers\UserObserver;
 use App\Notifications\ResetPassword;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -10,12 +11,17 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasRoles, Notifiable;
+    use HasFactory;
+
+    use HasRoles;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -65,12 +71,12 @@ class User extends Authenticatable
      * Get the first role name of the user.
      * If the user has no roles, returns "No Role".
      *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<RoleEnum|null, never>
      */
     protected function role(): Attribute
     {
         return Attribute::make(
-            get: fn() => RoleEnum::tryFrom($this->getRoleNames()->first()),
+            get: fn() => RoleEnum::from($this->getRoleNames()->first()),
         );
     }
 

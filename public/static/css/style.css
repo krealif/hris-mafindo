@@ -15,16 +15,16 @@
     color: white;
 }
 
+.datatable thead {
+    border-color: var(--tblr-border-color) !important;
+}
+
 .datatable th {
     font-size: .875rem !important;
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
     color: var(--tblr-primary) !important;
     background: var(--tblr-primary-lt) !important;
-}
-
-.datatable thead {
-    border-color: var(--tblr-border-color) !important;
 }
 
 .datatable .badge {
@@ -40,6 +40,15 @@
 .table-responsive .btn-group,
 .table-responsive .btn-group-vertical {
     position: static;
+}
+
+table.datagrid {
+    width: auto;
+}
+
+table .datagrid-title {
+    font-size: .875rem;
+    padding-right: 1rem;
 }
 
 .collapsing {
@@ -119,18 +128,6 @@
 .stepper-item.danger~.stepper-item {
     background: #f3f4f6;
     color: var(--tblr-dark);
-}
-
-.datagrid-title {
-    font-size: .875rem;
-}
-
-table.datagrid {
-    width: auto;
-}
-
-table .datagrid-title {
-    padding-right: 1rem;
 }
 
 .hidden-if-empty {

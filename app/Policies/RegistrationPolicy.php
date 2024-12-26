@@ -16,6 +16,7 @@ class RegistrationPolicy
      */
     public function viewForm(User $user, RegistrationTypeEnum $type): bool
     {
+        // Tolak akses ke form PENGURUS_WILAYAH jika emailnya bukan mafindo.or.id
         if (
             $type == RegistrationTypeEnum::PENGURUS_WILAYAH
             && ! strpos($user->email, 'mafindo.or.id')
@@ -23,11 +24,15 @@ class RegistrationPolicy
             return false;
         }
 
-        if ($regisType = $user->registration?->type) {
-            return $regisType == $type->value;
+        $registration = $user->registration;
+
+        // Izinkan melihat formulir jika belum ada data
+        if (! $registration) {
+            return true;
         }
 
-        return true;
+        // Izinkan jika tipe registrasi pengguna cocok dengan tipe formulir
+        return $registration->type == $type;
     }
 
     /**
@@ -35,6 +40,7 @@ class RegistrationPolicy
      */
     public function create(User $user, RegistrationTypeEnum $type): bool
     {
+        // Tolak menyimpan registrasi PENGURUS_WILAYAH jika email bukan mafindo.or.id
         if (
             $type == RegistrationTypeEnum::PENGURUS_WILAYAH
             && ! strpos($user->email, 'mafindo.or.id')
@@ -42,19 +48,23 @@ class RegistrationPolicy
             return false;
         }
 
+        $registration = $user->registration;
+
+        // Izinkan menyimpan registrasi untuk pertama kali
+        if (! $registration) {
+            return true;
+        }
+
+        // Izinkan saat langkah registrasi 'MENGISI' dan statusnya draft atau revisi
         if (
-            $user->registration &&
-            ($user->registration->status == RegistrationStatusEnum::DIPROSES->value
-                || $user->registration->step != 'mengisi')
+            $registration->step->value == 'mengisi'
+            && in_array($registration->status, [
+                RegistrationStatusEnum::DRAFT,
+                RegistrationStatusEnum::REVISI,
+            ])
         ) {
-            return false;
+            return $registration->type == $type;
         }
-
-        if ($regisType = $user->registration?->type) {
-            return $regisType == $type->value;
-        }
-
-        return true;
     }
 
     /*
@@ -68,11 +78,11 @@ class RegistrationPolicy
      */
     public function nextStep(User $user, Registration $registration): bool
     {
-        return $registration->status == RegistrationStatusEnum::DIPROSES->value
+        return $registration->status == RegistrationStatusEnum::DIPROSES
             && in_array($registration->step, [
-                RegistrationBaruStepEnum::PROFILING->value,
-                RegistrationBaruStepEnum::WAWANCARA->value,
-                RegistrationBaruStepEnum::TERHUBUNG->value,
+                RegistrationBaruStepEnum::PROFILING,
+                RegistrationBaruStepEnum::WAWANCARA,
+                RegistrationBaruStepEnum::TERHUBUNG,
             ]);
     }
 
@@ -81,10 +91,10 @@ class RegistrationPolicy
      */
     public function requestRevision(User $user, Registration $registration): bool
     {
-        return $registration->status == RegistrationStatusEnum::DIPROSES->value
+        return $registration->status == RegistrationStatusEnum::DIPROSES
             && in_array($registration->step, [
-                RegistrationBaruStepEnum::PROFILING->value,
-                RegistrationLamaStepEnum::VERIFIKASI->value,
+                RegistrationBaruStepEnum::PROFILING,
+                RegistrationLamaStepEnum::VERIFIKASI,
             ]);
     }
 
@@ -93,10 +103,10 @@ class RegistrationPolicy
      */
     public function finish(User $user, Registration $registration): bool
     {
-        return $registration->status == RegistrationStatusEnum::DIPROSES->value
+        return $registration->status == RegistrationStatusEnum::DIPROSES
             && in_array($registration->step, [
-                RegistrationBaruStepEnum::PELATIHAN->value,
-                RegistrationLamaStepEnum::VERIFIKASI->value,
+                RegistrationBaruStepEnum::PELATIHAN,
+                RegistrationLamaStepEnum::VERIFIKASI,
             ]);
     }
 
@@ -105,11 +115,11 @@ class RegistrationPolicy
      */
     public function reject(User $user, Registration $registration): bool
     {
-        return $registration->status == RegistrationStatusEnum::DIPROSES->value
+        return $registration->status == RegistrationStatusEnum::DIPROSES
             && in_array($registration->step, [
-                RegistrationBaruStepEnum::PROFILING->value,
-                RegistrationBaruStepEnum::WAWANCARA->value,
-                RegistrationLamaStepEnum::VERIFIKASI->value,
+                RegistrationBaruStepEnum::PROFILING,
+                RegistrationBaruStepEnum::WAWANCARA,
+                RegistrationLamaStepEnum::VERIFIKASI,
             ]);
     }
 
@@ -118,10 +128,14 @@ class RegistrationPolicy
      */
     public function destroy(User $user, Registration $registration): bool
     {
+        // Izinkan penghapusan jika statusnya 'DITOLAK'
+        // Izinkan penghapusan 7 hari sejak pembaruan terakhir jika statusnya adalah 'DRAFT' atau 'REVISI'
         if (
-            (in_array($registration->status, ['draft', 'revisi'])
-                && $registration->updated_at?->diffInDays() >= 7)
-            || $registration->status == RegistrationStatusEnum::DITOLAK->value
+            $registration->status == RegistrationStatusEnum::DITOLAK
+            || (in_array($registration->status, [
+                RegistrationStatusEnum::DRAFT,
+                RegistrationStatusEnum::REVISI,
+            ]) && $registration->updated_at?->diffInDays() >= 7)
         ) {
             return true;
         }
