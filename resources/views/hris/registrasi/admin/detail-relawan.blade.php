@@ -61,7 +61,7 @@
             <div class="card-body border-top">
               <div class="row g-3">
                 <div class="col-auto">
-                  <img src="{{ $user->foto ? Storage::url($user->foto) : '' }}" class="avatar avatar-xl" />
+                  <img src="{{ $user->foto ? Storage::url($user->foto) : asset('static/img/profile-placeholder.png') }}" class="avatar avatar-xl" />
                 </div>
                 <div class="col">
                   <h2 class="card-title h2 mb-2">{{ $user->nama }}</h2>

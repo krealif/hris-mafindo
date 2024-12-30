@@ -20,7 +20,7 @@
         @csrf
         <div class="mb-3">
           <label for="email" class="form-label required">Email</label>
-          <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" placeholder="contoh@gmail.com" autocomplete="off" required>
+          <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" autocomplete="off" required>
           @error('email')
             <div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>
           @enderror

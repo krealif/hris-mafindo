@@ -55,11 +55,20 @@
           <div class="card card-mafindo overflow-hidden border-top-0">
             <x-registration-step current="{{ $registration->step }}" :steps="App\Enums\RegistrationLamaStepEnum::steps()" />
             <div class="card-body border-top">
-              <h2 class="card-title h2 mb-2">{{ $user->nama }}</h2>
-              <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
-              <div class="d-flex flex-wrap gap-2">
-                <x-badge class="fs-4" :case="$registration->type" />
-                <x-badge class="fs-4" :case="$registration->status" />
+              <div class="row g-3">
+                <div class="col-auto">
+                  <img src="{{ $user->foto ? Storage::url($user->foto) : asset('static/img/profile-placeholder.png') }}" class="avatar avatar-xl" />
+                </div>
+                <div class="col">
+                  <h2 class="card-title h2 mb-2">{{ $user->nama }}</h2>
+                  @if ($user->branch_id)
+                    <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
+                  @endif
+                  <div class="d-flex flex-wrap gap-2">
+                    <x-badge class="fs-4" :case="$registration->type" />
+                    <x-badge class="fs-4" :case="$registration->status" />
+                  </div>
+                </div>
               </div>
               @if (in_array($registration->status->value, ['revisi', 'ditolak']))
                 <div class="card card-body mt-3">

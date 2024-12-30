@@ -6,7 +6,7 @@
     <!--Logo-->
     <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
       <a href="/">
-        <img src="{{ asset('static/mafindo-logo.png') }}" height="40" alt="Tabler" class="navbar-brand-image">
+        <img src="{{ asset('static/img/mafindo-logo.png') }}" height="40" alt="Mafindo" class="navbar-brand-image">
       </a>
     </h1>
     <!--End Logo-->
@@ -15,7 +15,7 @@
       @if (auth()->user()->is_verified)
         <div class="nav-item dropdown">
           <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Buka menu akun">
-            <img src="{{ auth()->user()->foto ? Storage::url(auth()->user()->foto) : asset('static/img/profile.png') }}" class="avatar avatar-sm">
+            <img src="{{ auth()->user()->foto ? Storage::url(auth()->user()->foto) : asset('static/img/profile-placeholder.png') }}" class="avatar avatar-sm">
             <div class="d-none d-xl-block ps-2 " style="max-width: 96px">
               <span class="text-white fw-medium text-truncate">{{ explode(' ', auth()->user()->nama)[0] }}</span>
             </div>

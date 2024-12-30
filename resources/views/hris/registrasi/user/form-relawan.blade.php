@@ -527,7 +527,7 @@
         Alpine.data('sertifikat', createDynamicList('sertifikat', dataSertifikat));
 
         Alpine.data('imgPreview', () => ({
-          img: {{ Js::from($user->foto ? Storage::url($user->foto) : null) }},
+          img: {{ Js::from($user->foto ? Storage::url($user->foto) : asset('static/img/img-up-placeholder.png')) }},
           newImg: null,
           cancelUpload() {
             this.newImg = null;

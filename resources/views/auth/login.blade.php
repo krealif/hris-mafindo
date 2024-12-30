@@ -12,7 +12,7 @@
         @csrf
         <div class="mb-3">
           <label for="email" class="form-label required">Email</label>
-          <x-form.input name="email" type="email" placeholder="contoh@gmail.com" value="{{ old('email') }}" required />
+          <x-form.input name="email" type="email" value="{{ old('email') }}" required />
         </div>
         <div class="mb-3">
           <label for="password" class="form-label required">
@@ -21,7 +21,7 @@
               <a href="{{ route('password.request') }}">Lupa password?</a>
             </span>
           </label>
-          <x-form.input name="password" type="password" placeholder="Password Anda" :showError=false required />
+          <x-form.input name="password" type="password" :showError=false required />
         </div>
         <div class="form-footer">
           <button type="submit" class="btn btn-primary w-100">Masuk</button>

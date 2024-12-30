@@ -12,15 +12,15 @@
         @csrf
         <div class="mb-3">
           <label for="nama" class="form-label required">Nama Lengkap</label>
-          <x-form.input name="nama" type="text" placeholder="Budi" value="{{ old('nama') }}" required />
+          <x-form.input name="nama" type="text" placeholder="Tuliskan nama Anda sesuai KTP" value="{{ old('nama') }}" required />
         </div>
         <div class="mb-3">
           <label for="email" class="form-label required">Email</label>
-          <x-form.input name="email" type="email" placeholder="contoh@gmail.com" value="{{ old('email') }}" required />
+          <x-form.input name="email" type="email" placeholder="Tuliskan email Anda yang aktif" value="{{ old('email') }}" required />
         </div>
         <div class="mb-3">
           <label for="password" class="form-label required">Password</label>
-          <x-form.input name="password" type="password" placeholder="Password Anda" required />
+          <x-form.input name="password" type="password" placeholder="Tuliskan password Anda" required />
         </div>
         <div class="mb-3">
           <label for="password-confirm" class="form-label required">Konfirmasi Password</label>

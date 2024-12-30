@@ -31,7 +31,7 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dt.datatable search="nama" total="{{ $tempUsers->count() }}">
+        <x-dt.datatable search="nama" searchPlaceholder="Nama relawan" total="{{ $tempUsers->count() }}">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row g-4">
