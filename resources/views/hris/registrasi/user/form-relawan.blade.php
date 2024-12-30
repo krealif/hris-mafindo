@@ -261,8 +261,8 @@
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="tahun-bergabung" class="form-label required">Tahun Bergabung</label>
-                        <x-form.input name="thn_bergabung" type="text" x-mask="9999" pattern="\d{4}" value="{{ old('thn_bergabung', $userDetail?->thn_bergabung) }}"
-                          required />
+                        <x-form.input name="thn_bergabung" type="text" x-mask="9999" pattern="\d{4}" placeholder="xxxx"
+                          value="{{ old('thn_bergabung', $userDetail?->thn_bergabung) }}" required />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="branch" class="form-label required">Wilayah</label>
@@ -405,9 +405,9 @@
                           <div class="col-12 col-md-4">
                             <div class="form-floating">
                               <div class="form-floating">
-                                <x-form.input id="pekerjaan-tahun" x-model="row.tahun" x-bind:name="`pekerjaan[${index}][tahun]`" type="text" pattern="\d{4}-\d{4}"
-                                  x-mask="9999-9999" maxlength="255" placeholder="Tahun" :showError=false required />
-                                <label for="pekerjaan-tahun">Tahun (YYYY-YYYY)</label>
+                                <x-form.input id="pekerjaan-tahun" x-model="row.tahun" x-bind:name="`pekerjaan[${index}][tahun]`" type="text" maxlength="255"
+                                  placeholder="Tahun" :showError=false required />
+                                <label for="pekerjaan-tahun">Tahun (xxxx-xxxx)</label>
                               </div>
                             </div>
                           </div>
@@ -458,9 +458,9 @@
                           <div class="col-12 col-md-6">
                             <div class="form-floating">
                               <div class="form-floating">
-                                <x-form.input id="sertifikat-masa" x-model="row.masa" x-bind:name="`sertifikat[${index}][masa]`" type="text" pattern="\d{4}-\d{4}"
-                                  x-mask="9999-9999" maxlength="255" placeholder="Masa Berlaku" :showError=false required />
-                                <label for="sertifikat-masa">Masa Berlaku</label>
+                                <x-form.input id="sertifikat-masa" x-model="row.masa" x-bind:name="`sertifikat[${index}][masa]`" type="text" maxlength="255"
+                                  placeholder="Masa Berlaku" :showError=false required />
+                                <label for="sertifikat-masa">Masa Berlaku (xxxx-xxxx)</label>
                               </div>
                             </div>
                           </div>
