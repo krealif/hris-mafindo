@@ -46,8 +46,8 @@
               </div>
             </li>
           @endrole
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+          <li @class(['nav-item', 'active' => request()->is('surat/*')])>
+            <a class="nav-link" href="{{ route('surat.index') }}">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <x-lucide-file-text class="icon" />
               </span>
