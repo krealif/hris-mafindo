@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Ajuan Registrasi',
+    'title' => 'Proses Ajuan Registrasi',
 ])
 
 @section('content')
@@ -10,10 +10,10 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <h1 class="page-title">
-              Ajuan Registrasi
+              Proses Ajuan Registrasi
             </h1>
             <p class="text-muted m-0 mt-1">
-              Tindak lanjuti ajuan dari relawan & pengurus.
+              Tindak lanjuti ajuan aktif dari relawan & pengurus.
             </p>
           </div>
         </div>
@@ -27,7 +27,7 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dt.datatable search="user.nama" searchPlaceholder="Pencarian nama" total="{{ $registrations->count() }}">
+        <x-dt.datatable search="user.nama" searchPlaceholder="Nama relawan" total="{{ $registrations->count() }}">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row g-4">

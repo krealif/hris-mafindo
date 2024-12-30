@@ -34,7 +34,7 @@ class UserRegistrationController extends Controller
     {
         $registration = Auth::user()->registration;
 
-        if ($registration) {
+        if ($registration?->type) {
             return to_route('registrasi.showForm', $registration->type);
         }
 

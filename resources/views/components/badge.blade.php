@@ -3,8 +3,8 @@
 ])
 
 @php
-  $badge = $case?->badge() ?? 'bg-blue-lt';
-  $text = $case?->label() ?? 'Badge';
+  $badge = $case?->badge() ?? 'bg-gray text-dark';
+  $text = $case?->label() ?? '-';
 @endphp
 
 <span {{ $attributes->class(['badge text-white text-uppercase', $badge]) }}>{{ $text }}</span>

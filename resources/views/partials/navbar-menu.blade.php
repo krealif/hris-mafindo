@@ -30,11 +30,11 @@
                         'active' =>
                             request()->routeIs('registrasi.index') ||
                             request()->routeIs('registrasi.show'),
-                    ])>Ajuan Registrasi</a>
-                    <a href="{{ route('registrasi.history') }}" @class([
+                    ])>Proses Ajuan</a>
+                    <a href="{{ route('registrasi.indexLog') }}" @class([
                         'dropdown-item',
-                        'active' => request()->routeIs('registrasi.history'),
-                    ])>Histori Ajuan</a>
+                        'active' => request()->routeIs('registrasi.indexLog'),
+                    ])>Log Ajuan</a>
                     <a href="{{ route('migrasi.index') }}" @class([
                         'dropdown-item',
                         'active' =>

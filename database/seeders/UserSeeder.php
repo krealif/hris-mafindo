@@ -28,6 +28,7 @@ class UserSeeder extends Seeder
             'email' => 'Pengurus@mail.com',
             'is_verified' => true,
             'password' => Hash::make('password'),
+            'branch_id' => 1,
         ]);
 
         $pengurus->assignRole('pengurus-wilayah');
@@ -37,6 +38,7 @@ class UserSeeder extends Seeder
             'email' => 'relawan@mail.com',
             'is_verified' => true,
             'password' => Hash::make('password'),
+            'branch_id' => 1,
         ]);
 
         UserDetail::create([

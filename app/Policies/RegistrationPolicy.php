@@ -27,7 +27,7 @@ class RegistrationPolicy
         $registration = $user->registration;
 
         // Izinkan melihat formulir jika belum ada data
-        if (! $registration) {
+        if (! $registration?->type) {
             return true;
         }
 
@@ -51,7 +51,7 @@ class RegistrationPolicy
         $registration = $user->registration;
 
         // Izinkan menyimpan registrasi untuk pertama kali
-        if (! $registration) {
+        if (! $registration?->type) {
             return true;
         }
 
@@ -65,6 +65,8 @@ class RegistrationPolicy
         ) {
             return $registration->type == $type;
         }
+
+        return false;
     }
 
     /*

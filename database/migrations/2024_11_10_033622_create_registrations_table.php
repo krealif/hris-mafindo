@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('registrations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('type', 20);
+            $table->string('type', 20)->nullable();
             $table->string('status', 20);
             $table->string('step', 20);
             $table->string('message')->nullable();

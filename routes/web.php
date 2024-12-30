@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserRegistrationController;
-use App\Http\Controllers\UserMigrationController;
-use App\Http\Controllers\RegistrationReviewController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserMigrationController;
+use App\Http\Controllers\UserRegistrationController;
+use App\Http\Controllers\RegistrationReviewController;
 
 /**
- * Group routes that require authentication but for unverified users only.
+ * Group of routes that require authentication but for unverified users only.
  */
 Route::middleware(['auth', 'unverified'])->group(function () {
     // Routes for user registration forms.
@@ -23,13 +23,13 @@ Route::middleware(['auth', 'unverified'])->group(function () {
 });
 
 /**
- * Group routes that require authentication and verified registrations by admin.
+ * Group of routes that require authentication and verified registrations by admin.
  */
 Route::middleware(['auth', 'verified'])->group(function () {
     // Home route for the dashboard.
     Route::get('/', HomeController::class)->name('home');
 
-    // Group routes for admin-specific registration submissions tasks.
+    // Group of routes for admin to manage & review user registration submissions
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => RegistrationReviewController::class,
@@ -37,7 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'prefix' => 'registrasi',
     ], function () {
         Route::get('ajuan', 'index')->name('index');
-        Route::get('histori', 'indexHistory')->name('history');
+        Route::get('log', 'indexLog')->name('indexLog');
         Route::delete('prune', 'prune')->name('prune');
 
         Route::get('ajuan/{registration}', 'show')->name('show');
@@ -48,7 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('ajuan/{registration}', 'destroy')->name('destroy');
     });
 
-    // Group routes for admin-specific registration verification tasks.
+    // Group of routes for admin to migrate old users data into the system
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => UserMigrationController::class,

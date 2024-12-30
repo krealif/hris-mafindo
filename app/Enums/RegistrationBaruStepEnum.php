@@ -23,7 +23,7 @@ enum RegistrationBaruStepEnum: string
     public function badge(): string
     {
         return match ($this) {
-            self::MENGISI => 'bg-gray text-dark',
+            self::MENGISI => 'bg-dark',
             self::PROFILING => 'bg-cyan',
             self::WAWANCARA => 'bg-purple',
             self::TERHUBUNG => 'bg-lime',

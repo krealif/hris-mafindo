@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Histori Ajuan',
+    'title' => 'Log Ajuan Registrasi',
 ])
 
 @section('content')
@@ -10,10 +10,10 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <h1 class="page-title">
-              Histori Ajuan
+              Log Ajuan Registrasi
             </h1>
             <p class="text-muted m-0 mt-1">
-              Lihat dan hapus seluruh ajuan registrasi.
+              Lihat dan hapus ajuan registrasi.
             </p>
           </div>
         </div>
@@ -27,7 +27,7 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dt.datatable search="user.nama" total="{{ $registrations->count() }}">
+        <x-dt.datatable search="user.nama" searchPlaceholder="Nama relawan" total="{{ $registrations->count() }}">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row g-4">
@@ -88,21 +88,23 @@
               @foreach ($registrations as $registration)
                 <tr x-data="{ id: {{ $registration->id }} }">
                   <td>
-                    @if (Gate::check('destroy', $registration) || $registration->step == 'mengisi')
+                    @if ($registration->type && (Gate::check('destroy', $registration) || $registration->step->value == 'mengisi'))
                       <a href="{{ route('registrasi.show', $registration->id) }}" class="fw-medium">
                         <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
                         {{ $registration->user->nama }}
                       </a>
                     @else
                       <span class="fw-medium">
-                        <x-lucide-user class="icon me-1" defer />
+                        <x-lucide-user-cog class="icon me-1" defer />
                         {{ $registration->user->nama }}
                       </span>
                     @endif
                   </td>
                   <td>{{ $registration->user->email }}</td>
                   <td>
-                    <x-badge class="fs-4" :case="$registration->type" />
+                    @if ($registration->type)
+                      <x-badge class="fs-4" :case="$registration->type" />
+                    @endif
                   </td>
                   <td>
                     <x-badge class="fs-4" :case="$registration->step" />
@@ -114,7 +116,7 @@
                   <td>{{ $registration->updated_at?->diffForHumans() }}<br>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
                   <td>
                     <div class="btn-list flex-nowrap">
-                      @if (Gate::check('destroy', $registration) || $registration->step == 'mengisi')
+                      @if ($registration->type && (Gate::check('destroy', $registration) || $registration->step->value == 'mengisi'))
                         <a href="{{ route('registrasi.show', $registration->id) }}" class="btn btn-icon">
                           <x-lucide-eye class="icon" defer />
                         </a>

@@ -33,7 +33,7 @@ class RegistrationReviewController extends Controller
                 AllowedFilter::exact('step'),
                 AllowedFilter::exact('user.branch_id'),
             ])
-            ->where('status', 'diproses')
+            ->where('status', RegistrationStatusEnum::DIPROSES)
             ->with('user.branch')
             ->latest('updated_at')
             ->paginate(15)
@@ -47,9 +47,9 @@ class RegistrationReviewController extends Controller
     }
 
     /**
-     * Display a listing of the registration submission history.
+     * Display a listing of all registration submission.
      */
-    public function indexHistory(): View
+    public function indexLog(): View
     {
         $registrations = QueryBuilder::for(Registration::class)
             ->allowedFilters([
@@ -69,7 +69,7 @@ class RegistrationReviewController extends Controller
             ->orderBy('nama', 'asc')
             ->pluck('nama', 'id');
 
-        return view('hris.registrasi.admin.histori', compact('registrations', 'branches'));
+        return view('hris.registrasi.admin.index-log', compact('registrations', 'branches'));
     }
 
     /**
@@ -77,6 +77,11 @@ class RegistrationReviewController extends Controller
      */
     public function show(Registration $registration): View
     {
+        if (! $registration->type) {
+            abort(404);
+        }
+
+        /** @var \App\Models\User $user */
         $user = $registration->user;
 
         if (
@@ -97,11 +102,7 @@ class RegistrationReviewController extends Controller
         Gate::authorize('nextStep', $registration);
 
         $type = $registration->type;
-        $stepEnum = $type == RegistrationTypeEnum::RELAWAN_BARU
-            ? RegistrationBaruStepEnum::class
-            : RegistrationLamaStepEnum::class;
-
-        $currentStep = $stepEnum::from($registration->step);
+        $currentStep = $registration->step;
 
         if ($type == RegistrationTypeEnum::RELAWAN_BARU) {
             if ($currentStep == RegistrationBaruStepEnum::WAWANCARA) {
@@ -125,7 +126,7 @@ class RegistrationReviewController extends Controller
             }
         }
 
-        $nextStep = $stepEnum::cases()[$currentStep->index() + 1] ?? null;
+        $nextStep = $currentStep->cases()[$currentStep->index() + 1] ?? null;
 
         if ($nextStep) {
             $registration->update(['step' => $nextStep]);
@@ -239,11 +240,11 @@ class RegistrationReviewController extends Controller
         flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah dihapus.");
 
         $prevUrlQuery = parse_url(url()->previous(), PHP_URL_QUERY);
-        if (url()->previous() == route('registrasi.history', $prevUrlQuery)) {
-            return to_route('registrasi.history', $prevUrlQuery);
+        if (url()->previous() == route('registrasi.indexLog', $prevUrlQuery)) {
+            return to_route('registrasi.indexLog', $prevUrlQuery);
         }
 
-        return to_route('registrasi.history');
+        return to_route('registrasi.indexLog');
     }
 
     /**
@@ -265,7 +266,7 @@ class RegistrationReviewController extends Controller
         }
 
         if ($request->input('status_ditolak')) {
-            $registrations = Registration::where('status', 'ditolak')
+            $registrations = Registration::where('status', RegistrationStatusEnum::DITOLAK)
                 ->where('updated_at', '<', Carbon::now()->subDays($request->input('lama_ditolak')))
                 ->get();
             $total += $registrations->count();
@@ -281,6 +282,6 @@ class RegistrationReviewController extends Controller
             flash()->info('Tidak ada data yang perlu dihapus.');
         }
 
-        return to_route('registrasi.history');
+        return to_route('registrasi.indexLog');
     }
 }

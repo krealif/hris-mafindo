@@ -38,9 +38,7 @@
                 <h2 class="card-title d-flex align-items-center gap-2 mb-0">
                   <x-lucide-chevrons-right class="icon" />
                   Tahapan
-                  @if ($registration?->status)
-                    <x-badge class="fs-4 me-1" :case="$registration->status" />
-                  @endif
+                  <x-badge class="fs-4 me-1" :case="$registration->status" />
                 </h2>
               </div>
               @if ($type->value == 'relawan-baru')
@@ -54,7 +52,7 @@
                   <p>{{ $registration->message }}</p>
                 </div>
               @endif
-              @if ($registration?->step && $registration?->step->value != 'mengisi')
+              @if ($registration?->status->value == 'diproses')
                 <div class="card-body border-top">
                   <div class="datagrid">
                     <x-datagrid-item title="Nama" content="{{ $user->nama }}" />
@@ -65,7 +63,7 @@
               @endif
             </div>
           </div>
-          @if (in_array($registration?->status->value, [null, 'draft', 'revisi']))
+          @can('create', [App\Models\Registration::class, $type])
             <div class="col-12 col-md-3 mb-3 mb-md-0">
               <div class="card card-mafindo sticky-top">
                 <div class="card-header">
@@ -199,8 +197,7 @@
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="no-wa" class="form-label required">Nomor Whatsapp</label>
-                        <x-form.input name="no_wa" type="tel" x-mask="9999999999999" placeholder="08xxxxxxxxxx" value="{{ old('no_wa', $userDetail?->no_wa) }}"
-                          required />
+                        <x-form.input name="no_wa" type="tel" x-mask="9999999999999" placeholder="08xxxxxxxxxx" value="{{ old('no_wa', $userDetail?->no_wa) }}" required />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="no-hp" class="form-label">Nomor HP</label>
@@ -452,8 +449,8 @@
                           <div class="col-12 col-md-6 mb-1 mb-md-0">
                             <div class="form-floating">
                               <div class="form-floating">
-                                <x-form.input id="sertifikat-nama" x-model="row.nama" x-bind:name="`sertifikat[${index}][nama]`" type="text" maxlength="255"
-                                  placeholder="Nama" :showError=false required />
+                                <x-form.input id="sertifikat-nama" x-model="row.nama" x-bind:name="`sertifikat[${index}][nama]`" type="text" maxlength="255" placeholder="Nama"
+                                  :showError=false required />
                                 <label for="sertifikat-nama">Nama</label>
                               </div>
                             </div>
@@ -497,55 +494,57 @@
                 </div>
               </form>
             </div>
-          @endif
+          @endcan
         </div>
       </div>
     </div>
   </div>
-  <script>
-    function createDynamicList(key, data) {
-      return () => ({
-        key,
-        rows: data ?? [],
+  @can('create', [App\Models\Registration::class, $type])
+    <script>
+      function createDynamicList(key, data) {
+        return () => ({
+          key,
+          rows: data ?? [],
 
-        // Actions
-        add() {
-          this.rows.push({});
-        },
-        del(index) {
-          this.rows.splice(index, 1);
-        },
-      });
-    }
+          // Actions
+          add() {
+            this.rows.push({});
+          },
+          del(index) {
+            this.rows.splice(index, 1);
+          },
+        });
+      }
 
-    document.addEventListener('alpine:init', () => {
-      const dataPendidikan = {{ Js::from(old('pendidikan', $userDetail?->pendidikan)) }};
-      Alpine.data('pendidikan', createDynamicList('pendidikan', dataPendidikan));
+      document.addEventListener('alpine:init', () => {
+        const dataPendidikan = {{ Js::from(old('pendidikan', $userDetail?->pendidikan)) }};
+        Alpine.data('pendidikan', createDynamicList('pendidikan', dataPendidikan));
 
-      const dataPekerjaan = {{ Js::from(old('pekerjaan', $userDetail?->pekerjaan)) }};
-      Alpine.data('pekerjaan', createDynamicList('pekerjaan', dataPekerjaan));
+        const dataPekerjaan = {{ Js::from(old('pekerjaan', $userDetail?->pekerjaan)) }};
+        Alpine.data('pekerjaan', createDynamicList('pekerjaan', dataPekerjaan));
 
-      const dataSertifikat = {{ Js::from(old('sertifikat', $userDetail?->sertifikat)) }};
-      Alpine.data('sertifikat', createDynamicList('sertifikat', dataSertifikat));
+        const dataSertifikat = {{ Js::from(old('sertifikat', $userDetail?->sertifikat)) }};
+        Alpine.data('sertifikat', createDynamicList('sertifikat', dataSertifikat));
 
-      Alpine.data('imgPreview', () => ({
-        img: {{ Js::from($user->foto ? Storage::url($user->foto) : null) }},
-        newImg: null,
-        cancelUpload() {
-          this.newImg = null;
-          this.$refs.imgInput.value = '';
-        },
-        handleFileUpload(event) {
-          const file = event.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-              this.newImg = reader.result;
-            };
-            reader.readAsDataURL(file);
+        Alpine.data('imgPreview', () => ({
+          img: {{ Js::from($user->foto ? Storage::url($user->foto) : null) }},
+          newImg: null,
+          cancelUpload() {
+            this.newImg = null;
+            this.$refs.imgInput.value = '';
+          },
+          handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = () => {
+                this.newImg = reader.result;
+              };
+              reader.readAsDataURL(file);
+            }
           }
-        }
-      }));
-    });
-  </script>
+        }));
+      });
+    </script>
+  @endcan
 @endsection

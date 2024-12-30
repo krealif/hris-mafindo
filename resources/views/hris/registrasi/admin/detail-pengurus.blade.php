@@ -10,7 +10,7 @@
         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
           <div>
             <div class="mb-1">
-              <a href="{{ url()->previous() == route('registrasi.history') ? route('registrasi.history') : route('registrasi.index') }}" class="btn btn-link px-0 py-1">
+              <a href="{{ url()->previous() == route('registrasi.indexLog') ? route('registrasi.indexLog') : route('registrasi.index') }}" class="btn btn-link px-0 py-1">
                 <x-lucide-arrow-left class="icon" />
                 Kembali
               </a>
@@ -20,7 +20,7 @@
             </h1>
           </div>
           @can('destroy', $registration)
-            @if (url()->previous() == route('registrasi.history'))
+            @if (url()->previous() == route('registrasi.indexLog'))
               <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $registration->id }} }" x-on:click="$dispatch('set-id', { id })">
                 <x-lucide-trash-2 class="icon text-red" />
                 Hapus
@@ -173,7 +173,7 @@
     </div>
   </div>
   @can('destroy', $registration)
-    @if (url()->previous() == route('registrasi.history'))
+    @if (url()->previous() == route('registrasi.indexLog'))
       <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
     @endif
   @endcan

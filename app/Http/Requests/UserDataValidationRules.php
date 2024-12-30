@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\AgamaEnum;
 use App\Enums\GenderEnum;
+use App\Enums\RoleEnum;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
@@ -80,7 +81,7 @@ trait UserDataValidationRules
                         $query->select(DB::raw(1))
                             ->from('registrations')
                             ->whereRaw('registrations.user_id = users.id')
-                            ->where('type', 'pengurus-wilayah');
+                            ->where('type', RoleEnum::PENGURUS_WILAYAH);
                     });
                 })->ignore($this->user()),
             ],

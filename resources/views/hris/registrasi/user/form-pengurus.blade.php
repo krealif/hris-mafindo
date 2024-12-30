@@ -38,9 +38,7 @@
                 <h2 class="card-title d-flex align-items-center gap-2 mb-0">
                   <x-lucide-chevrons-right class="icon" />
                   Tahapan
-                  @if ($registration?->status)
-                    <x-badge class="fs-4 me-1" :case="$registration->status" />
-                  @endif
+                  <x-badge class="fs-4 me-1" :case="$registration->status" />
                 </h2>
               </div>
               <x-registration-step current="{{ $registration?->step }}" :steps="App\Enums\RegistrationLamaStepEnum::steps()" />
@@ -52,7 +50,7 @@
               @endif
             </div>
           </div>
-          @if (in_array($registration?->status->value, [null, 'draft', 'revisi']))
+          @can('create', [App\Models\Registration::class, $type])
             <div class="col-12 col-md-3 mb-3 mb-md-0">
               <div class="card card-mafindo sticky-top">
                 <div class="card-header">
@@ -103,13 +101,11 @@
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="sekretaris1" class="form-label">Sekretaris 1</label>
-                        <x-form.input id="sekretaris1" name="pengurus[sekretaris1]" type="text"
-                          value="{{ old('pengurus.sekretaris1', $user->branch?->pengurus->sekretaris1) }}" />
+                        <x-form.input id="sekretaris1" name="pengurus[sekretaris1]" type="text" value="{{ old('pengurus.sekretaris1', $user->branch?->pengurus->sekretaris1) }}" />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="sekretaris2" class="form-label">Sekretaris 2</label>
-                        <x-form.input id="sekretaris2" name="pengurus[sekretaris2]" type="text"
-                          value="{{ old('pengurus.sekretaris2', $user->branch?->pengurus->sekretaris2) }}" />
+                        <x-form.input id="sekretaris2" name="pengurus[sekretaris2]" type="text" value="{{ old('pengurus.sekretaris2', $user->branch?->pengurus->sekretaris2) }}" />
                       </div>
                     </div>
                     <div class="row mb-3">
@@ -140,7 +136,7 @@
                 </div>
               </form>
             </div>
-          @endif
+          @endcan
         </div>
       </div>
     </div>
