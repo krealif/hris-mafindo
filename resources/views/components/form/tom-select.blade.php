@@ -25,7 +25,7 @@
   document.addEventListener("DOMContentLoaded", function() {
     if (window.TomSelect) {
       new TomSelect('#{{ $id }}', {
-        plugins: @json($attributes['multiple'] ? ['caret_position'] : []),
+        plugins: @json($attributes['multiple'] ? ['caret_position', 'checkbox_options'] : []),
       });
     }
   });
