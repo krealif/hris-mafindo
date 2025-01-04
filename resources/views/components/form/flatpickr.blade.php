@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="{{ asset('static/vendor/flatpickr.min.css') }}">
   @endpush
   @push('scripts')
-    <script src="{{ asset('static/vendor/flatpickr.min.js') }}"></script>
-    <script src="{{ asset('static/vendor/flatpickr.id.js') }}"></script>
+    <script src="{{ asset('static/vendor/flatpickr.min.js') }}" defer></script>
+    <script src="{{ asset('static/vendor/flatpickr.id.js') }}" defer></script>
   @endpush
 @endonce

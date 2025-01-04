@@ -11,12 +11,6 @@
           <h1 class="page-title">
             Ajuan Relawan Wilayah
           </h1>
-          @can('create-letter')
-            <a href="{{ route('surat.template') }}" class="btn btn-primary">
-              <x-lucide-plus class="icon" />
-              Buat
-            </a>
-          @endcan
         </div>
       </div>
     </div>
@@ -24,59 +18,63 @@
     <div class="page-body">
       <div class="container-xl">
         <x-dt.datatable total="{{ $letters->count() }}">
-          <table class="table table-vcenter card-table table-striped datatable">
+          <table class="table table-vcenter card-table table-mobile-md datatable">
             <thead>
               <tr>
-                <th>Surat</th>
-                <th>Relawan</th>
+                <th>Judul</th>
+                <th>Tipe</th>
+                <th>Pengirim / Tujuan</th>
                 <th>Status</th>
-                <th>Timestamp</th>
+                <th>Tanggal</th>
                 <th class="w-1"></th>
               </tr>
             </thead>
             <tbody>
               @foreach ($letters as $letter)
-                <tr x-data="{ id: {{ $letter->id }} }">
-                  <td>
+                <tr>
+                  <td data-label="Judul" style="max-width: 280px">
                     <a href="{{ route('surat.show', $letter->id) }}" class="fw-medium">
                       <x-lucide-file-text class="d-none d-lg-inline icon me-1" defer />
-                      {{ $letter->template->name }}
-                      @if ($letter->submitted_for_id == Auth::id())
-                        <span class="fw-normal">
-                          {{ "[dari {$letter->submittedBy->role?->label()}]" }}
-                        </span>
-                      @endif
+                      {{ $letter->title }}
                     </a>
                   </td>
-                  <td>
-                    <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
-                    @if ($letter->submitted_for_id)
-                      {{ $letter->submittedFor->nama }}
+                  <td data-label="Tipe">
+                    @if ($letter->recipients->isEmpty())
+                      <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
+                      <span class="fw-medium">AJUAN</span>
                     @else
-                      {{ $letter->submittedBy->nama }}
+                      <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
+                      <span class="fw-medium">DIAJUKAN</span> oleh Admin
                     @endif
                   </td>
                   <td>
+                    @if ($letter->recipients->isNotEmpty())
+                      <div style="max-width: 240px">
+                        @foreach ($letter->recipients as $recipient)
+                          @if ($loop->last)
+                            {{ $recipient->nama }}
+                          @else
+                            {{ $recipient->nama }} |
+                          @endif
+                        @endforeach
+                      </div>
+                    @else
+                      {{ $letter->createdBy->nama }}
+                    @endif
+                  </td>
+                  <td data-label="Status">
                     <x-badge class="fs-4" :case="$letter->status" />
                   </td>
-                  <td>{{ $letter->created_at?->diffForHumans() }}<br>{{ $letter->created_at?->format('d/m/Y H:i') }}</td>
-                  <td>
-                    <div class="btn-list flex-nowrap justify-content-end">
+                  <td data-label="Tanggal">
+                    <div>{{ $letter->created_at?->translatedFormat('d M Y / H:i') }}</div>
+                    <div class="text-muted">{{ $letter->created_at?->diffForHumans() }}</div>
+                  </td>
+                  <td data-label="Aksi">
+                    <div class="btn-list flex-nowrap justify-content-md-end">
                       <a href="{{ route('surat.show', $letter->id) }}" class="btn">
                         <x-lucide-eye class="icon" defer />
                         Lihat
                       </a>
-                      @can('update', $letter)
-                        <a href="{{ route('surat.edit', $letter->id) }}" class="btn">
-                          <x-lucide-pen-line class="icon text-blue" defer />
-                          Edit
-                        </a>
-                      @endcan
-                      @can('destroy', $letter)
-                        <button class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#modal-delete" x-on:click="$dispatch('set-id', { id })">
-                          <x-lucide-trash-2 class="icon text-red" defer />
-                        </button>
-                      @endcan
                     </div>
                   </td>
                 </tr>
@@ -93,5 +91,4 @@
       </div>
     </div>
   </div>
-  <x-modal-delete baseUrl="{{ url('/surat/ajuan') }}" />
 @endsection

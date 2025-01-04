@@ -17,6 +17,6 @@ enum PermissionEnum: string
     case CREATE_LETTER_FOR_PENGURUS = 'create-letter-for-pengurus';
 
     case VIEW_ALL_LETTER = 'view-all-letter';
-    case REVIEW_ALL_LETTER = 'review-all-letter';
+    case HANDLE_LETTER = 'handle-letter';
     case DELETE_ALL_LETTERS = 'delete-all-letter';
 }

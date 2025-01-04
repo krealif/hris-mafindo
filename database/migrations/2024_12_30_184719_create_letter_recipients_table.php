@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('letter_templates', function (Blueprint $table) {
+        Schema::create('letter_recipients', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('view')->unique();
+            $table->foreignId('letter_id')->constrained('letters')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('letter_recipients');
     }
 };

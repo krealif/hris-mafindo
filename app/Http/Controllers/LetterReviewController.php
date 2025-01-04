@@ -29,30 +29,17 @@ class LetterReviewController extends Controller
             LetterStatusEnum::MENUNGGU,
             LetterStatusEnum::DIPROSES,
         ])
-            ->with('template', 'submittedBy', 'submittedFor')
+            ->with('createdBy.roles', 'recipients')
             ->latest('updated_at')
             ->paginate(15);
 
         return view('hris.surat.admin.index', compact('letters'));
     }
 
-    public function review(Letter $letter): View
+
+    public function uploadResult(Request $request, Letter $letter): RedirectResponse
     {
-        Gate::authorize('review', $letter);
-
-        if ($letter->status == LetterStatusEnum::MENUNGGU) {
-            $letter->update(['status' => LetterStatusEnum::DIPROSES]);
-        }
-
-        return view('hris.surat.admin.review', compact('letter'));
-    }
-
-    /**
-     * Review submitted letter by user.
-     */
-    public function upload(Request $request, Letter $letter): RedirectResponse
-    {
-        Gate::authorize('review', $letter);
+        Gate::authorize('handleSubmission', $letter);
 
         $validated = $request->validate([
             'admin' => ['required', 'string', 'max:255'],
@@ -60,28 +47,65 @@ class LetterReviewController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $uploadedPath = $this->uploadFile('surat', $validated['file']);
-        }
-
-        if ($oldFile = $letter->file) {
-            $this->deleteFile($oldFile);
+            $path = $this->uploadFile('surat', $validated['file']);
         }
 
         $letter->update([
-            'file' => $uploadedPath ?? null,
+            'result_file' => $path ?? null,
             'uploaded_by' => $validated['admin'],
             'uploaded_at' => \Carbon\Carbon::now(),
         ]);
 
-        return to_route('surat.rev.review', $letter->id);
+        flash()->success("Berhasil. Ajuan Surat [{$letter->title}] telah dibuat.");
+
+        return to_route('surat.show', $letter->id);
     }
 
-    // public function reject(Request $request, Letter $letter)
-    // {
-    //     $validated = $request->validate([
-    //         'admin' => ['required', 'string', 'max:255'],
-    //         'message' => ['required', 'mimes:pdf,doc,docx', 'max:5120'],
-    //     ]);
-    // }
+    public function requestRevision(Request $request, Letter $letter): RedirectResponse
+    {
+        Gate::authorize('handleSubmission', $letter);
 
+        $validated = $request->validate([
+            'message' => ['required', 'string', 'max:255'],
+        ]);
+
+        $letter->update([
+            'status' => LetterStatusEnum::REVISI,
+            'message' => $validated['message'],
+        ]);
+        flash()->success("Berhasil. Permintaan revisi [{$letter->title}] telah dikirimkan ke pihak terkait.");
+
+        return to_route('surat.show', $letter->id);
+    }
+
+    public function approveSubmission(Letter $letter): RedirectResponse
+    {
+        Gate::authorize('handleSubmission', $letter);
+
+        $letter->update([
+            'status' => LetterStatusEnum::SELESAI,
+        ]);
+
+        flash()->success("Berhasil. Surat [{$letter->title}] telah dikirim ke pihak terkait.");
+
+        return to_route('surat.show', $letter->id);
+    }
+
+    public function rejectSubmission(Request $request, Letter $letter): RedirectResponse
+    {
+        Gate::authorize('handleSubmission', $letter);
+
+        $validated = $request->validate([
+            'message' => ['required', 'string', 'max:255'],
+        ]);
+
+        $letter->update([
+            'status' => LetterStatusEnum::DITOLAK,
+            'message' => $validated['message'],
+        ]);
+
+        flash()->success("Berhasil. Ajuan Surat [{$letter->title}] telah ditolak.");
+
+        return to_route('surat.show', $letter->id);
+    }
 }

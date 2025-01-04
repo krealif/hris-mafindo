@@ -18,10 +18,10 @@ class UserController extends Controller
         $authUser = Auth::user();
 
         // Check permissions
-        if (
-            ! ($authUser->can(PermissionEnum::CREATE_LETTER_FOR_RELAWAN) ||
-                $authUser->can(PermissionEnum::CREATE_LETTER_FOR_PENGURUS))
-        ) {
+        if (! $authUser->canAny([
+            PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
+            PermissionEnum::CREATE_LETTER_FOR_PENGURUS
+        ])) {
             return response()->json([
                 'success' => false,
                 'message' => 'Forbidden',
@@ -42,16 +42,21 @@ class UserController extends Controller
             $roles[] = RoleEnum::PENGURUS_WILAYAH;
         }
 
-        $users = User::select('id', 'nama')
+        $usersQuery = User::select('id', 'nama')
             ->role($roles)
-            ->where('nama', 'like', '%'.$query.'%')
-            ->whereNot('id', $authUser->id)
-            ->get();
+            ->where('nama', 'like', '%' . $query . '%')
+            ->whereNot('id', $authUser->id);
+
+        if ($authUser->branch_id) {
+            $usersQuery->where('branch_id', $authUser->branch_id);
+        }
+
+        $users = $usersQuery->get();
 
         $options = $users->map(function ($user) {
             return [
                 'id' => $user->id,
-                'text' => $user->nama,
+                'nama' => $user->nama,
             ];
         });
 

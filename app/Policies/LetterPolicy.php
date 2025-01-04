@@ -35,19 +35,20 @@ class LetterPolicy
         if ($user->can(PermissionEnum::VIEW_ALL_LETTER)) {
             return true;
         }
+
+        if ($user->can([PermissionEnum::VIEW_LETTER, PermissionEnum::VIEW_RELAWAN_LETTER])) {
+            return $letter->created_by == $user->id
+                || $letter->createdBy?->branch_id == $user->branch_id
+                || $letter->recipients()
+                ->where('users.id', $user->id)
+                ->orWhere('users.branch_id', $user->branch_id)
+                ->exists();
+        }
+
         if ($user->can(PermissionEnum::VIEW_LETTER)) {
-            // Izinkan hanya jika pengguna adalah pengaju atau penerima surat
-            $canView = $user->id == $letter->submitted_by_id
-                || $user->id == $letter->submitted_for_id;
-
-            // Izinkan jika surat tersebut milik relawan dengan cabang yang sama
-            if ($user->can(PermissionEnum::VIEW_RELAWAN_LETTER)) {
-                return $canView
-                    || $user->branch_id == $letter->submittedBy?->branch_id
-                    || $user->branch_id == $letter->submittedFor?->branch_id;
-            }
-
-            return $canView;
+            // Izinkan hanya jika pengguna adalah pengirim atau penerima ajuan surat
+            return $letter->created_by == $user->id
+                || $letter->recipients()->where('users.id', $user->id)->exists();;
         }
 
         return false;
@@ -58,8 +59,7 @@ class LetterPolicy
      */
     public function create(User $user): bool
     {
-        return true;
-        // return $user->can(PermissionEnum::CREATE_LETTER);
+        return $user->can(PermissionEnum::CREATE_LETTER);
     }
 
     /**
@@ -67,10 +67,13 @@ class LetterPolicy
      */
     public function update(User $user, Letter $letter): bool
     {
-        // Izinkan jika pengguna adalah pengaju surat dan statusnya masih 'MENUNGGU'
+        // Izinkan jika pengguna adalah pengirim ajuan surat dan statusnya masih 'MENUNGGU' / 'REVISI'
         if ($user->can(PermissionEnum::EDIT_LETTER)) {
-            return $user->id == $letter->submitted_by_id
-                && $letter->status == LetterStatusEnum::MENUNGGU;
+            return $letter->created_by == $user->id
+                && in_array($letter->status, [
+                    LetterStatusEnum::MENUNGGU,
+                    LetterStatusEnum::REVISI
+                ]);
         }
 
         return false;
@@ -93,8 +96,8 @@ class LetterPolicy
         }
 
         if ($user->can(PermissionEnum::DELETE_LETTER)) {
-            // Izinkan jika pengguna adalah pengaju surat dan statusnya masih 'MENUNGGU'
-            return $user->id == $letter->submitted_by_id
+            // Izinkan jika pengguna adalah pengirim ajuan surat dan statusnya masih 'MENUNGGU'
+            return $letter->created_by == $user->id
                 && $letter->status == LetterStatusEnum::MENUNGGU;
         }
 
@@ -104,21 +107,22 @@ class LetterPolicy
     /**
      * Determine whether the user can review letter.
      */
-    public function review(User $user, Letter $letter): bool
+    public function download(User $user, Letter $letter): bool
     {
-        return $user->can(PermissionEnum::REVIEW_ALL_LETTER)
-            || in_array($letter->status, [LetterStatusEnum::DIPROSES, LetterStatusEnum::REVISI]);
+        if ($user->can(PermissionEnum::HANDLE_LETTER)) {
+            return true;
+        }
+
+        return $this->view($user, $letter)
+            && $letter->status == LetterStatusEnum::SELESAI;
     }
 
     /**
      * Determine whether the user can review letter.
      */
-    public function download(User $user, Letter $letter): bool
+    public function handleSubmission(User $user, Letter $letter): bool
     {
-        if ($user->can(PermissionEnum::REVIEW_ALL_LETTER)) {
-            return true;
-        }
-
-        return $letter->status == LetterStatusEnum::SELESAI;
+        return $user->can(PermissionEnum::HANDLE_LETTER)
+            && in_array($letter->status, [LetterStatusEnum::DIPROSES]);
     }
 }

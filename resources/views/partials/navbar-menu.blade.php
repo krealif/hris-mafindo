@@ -46,14 +46,53 @@
               </div>
             </li>
           @endrole
-          <li @class(['nav-item', 'active' => request()->is('surat/*')])>
-            <a class="nav-link" href="{{ route('surat.index') }}">
-              <span class="nav-link-icon d-md-none d-lg-inline-block">
-                <x-lucide-file-text class="icon" />
-              </span>
-              <span class="nav-link-title">Surat</span>
-            </a>
-          </li>
+          @role(['admin', 'pengurus-wilayah'])
+            <li @class(['nav-item dropdown', 'active' => request()->is('surat/*')])>
+              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <x-lucide-file-text class="icon" />
+                </span>
+                <span class="nav-link-title">Surat</span>
+              </a>
+              <div class="dropdown-menu">
+                <div class="dropdown-menu-columns">
+                  @role('pengurus-wilayah')
+                    <div class="dropdown-menu-column">
+                      <a href="{{ route('surat.index') }}" @class([
+                          'dropdown-item',
+                          'active' => request()->routeIs('surat.index'),
+                      ])>Kotak Surat</a>
+                      <a href="{{ route('surat.indexWilayah') }}" @class([
+                          'dropdown-item',
+                          'active' => request()->routeIs('surat.indexWilayah'),
+                      ])>Ajuan Wilayah</a>
+                    </div>
+                  @else
+                    <div class="dropdown-menu-column">
+                      <a href="{{ route('surat.indexSubmission') }}" @class([
+                          'dropdown-item',
+                          'active' => request()->routeIs('surat.indexSubmission'),
+                      ])>Proses Ajuan</a>
+                      <a href="{{ route('surat.indexWilayah') }}" @class([
+                          'dropdown-item',
+                          'active' => request()->routeIs('surat.indexWilayah'),
+                      ])>Histori Ajuan</a>
+                    </div>
+                  @endrole
+                </div>
+              </div>
+            </li>
+          @else
+            <li @class(['nav-item', 'active' => request()->is('surat/*')])>
+              <a class="nav-link" href="{{ route('surat.index') }}">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <x-lucide-file-text class="icon" />
+                </span>
+                <span class="nav-link-title">Surat</span>
+              </a>
+            </li>
+          @endrole
+
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span class="nav-link-icon d-md-none d-lg-inline-block">

@@ -5,7 +5,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\LetterReviewController;
 use App\Http\Controllers\UserMigrationController;
-use App\Http\Controllers\LetterTemplateController;
 use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\RegistrationReviewController;
 
@@ -66,36 +65,39 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('migrasi/{tempUser}', 'destroy')->name('destroy');
     });
 
-    // Letter template
-    Route::get('surat/ajuan/template', LetterTemplateController::class)->name('surat.template');
-
     // Group of routes related to "Surat", accessible by admin, relawan, and pengurus
     // The actions users can perform are determined by their role
-    // with permission checks done in the controller and views
+    // with permission checks done in the controller, model policy or views
     Route::group([
         'controller' => LetterController::class,
         'as' => 'surat.',
         'prefix' => 'surat',
     ], function () {
-        Route::get('ajuan-saya', 'index')->name('index');
+        Route::get('kotak-surat', 'index')->name('index');
         Route::get('ajuan-wilayah', 'indexByWilayah')->name('indexWilayah');
-        Route::get('ajuan/buat/{template:view}', 'create')->name('create');
-        Route::post('ajuan/buat/{template:view}', 'store')->name('store');
+
+        Route::get('ajuan/buat', 'create')->name('create');
+        Route::post('ajuan/buat', 'store')->name('store');
 
         Route::get('ajuan/{letter}', 'show')->name('show');
         Route::get('ajuan/{letter}/edit', 'edit')->name('edit');
-        Route::post('ajuan/{letter}/edit', 'update')->name('update');
+        Route::patch('ajuan/{letter}', 'update')->name('update');
         Route::delete('ajuan/{letter}', 'destroy')->name('destroy');
         Route::get('ajuan/{letter}/download', 'download')->name('download');
+        Route::get('ajuan/{letter}/attachment', 'downloadAttachment')->name('downloadAttachment');
     });
 
+    // Group of routes for admin to
     Route::group([
+        'middleware' => ['role:admin'],
         'controller' => LetterReviewController::class,
-        'as' => 'surat.rev.',
+        'as' => 'surat.',
         'prefix' => 'surat',
     ], function () {
-        Route::get('ajuan', 'index')->name('index');
-        Route::get('ajuan/{letter}/review', 'review')->name('review');
-        Route::patch('{letter}/upload', 'upload')->name('upload');
+        Route::get('ajuan', 'index')->name('indexSubmission');
+        Route::patch('ajuan/{letter}/upload', 'uploadResult')->name('uploadResult');
+        Route::patch('ajuan/{letter}/revisi', 'requestRevision')->name('requestRevision');
+        Route::patch('ajuan/{letter}/kirim', 'approveSubmission')->name('approve');
+        Route::patch('ajuan/{letter}/tolak', 'rejectSubmission')->name('reject');
     });
 });

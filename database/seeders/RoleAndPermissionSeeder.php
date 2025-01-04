@@ -30,7 +30,7 @@ class RoleAndPermissionSeeder extends Seeder
                 PermissionEnum::CREATE_LETTER,
                 PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
                 PermissionEnum::CREATE_LETTER_FOR_PENGURUS,
-                PermissionEnum::REVIEW_ALL_LETTER,
+                PermissionEnum::HANDLE_LETTER,
                 PermissionEnum::DELETE_ALL_LETTERS,
             ],
             RoleEnum::PENGURUS_WILAYAH->value => [

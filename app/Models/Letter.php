@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use App\Enums\LetterStatusEnum;
+use App\Observers\LetterObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+#[ObservedBy([LetterObserver::class])]
 class Letter extends Model
 {
     /**
@@ -14,13 +18,14 @@ class Letter extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'template_id',
-        'submitted_by_id',
-        'submitted_for_id',
-        'content',
+        'created_by',
+        'title',
+        'body',
+        'attachment',
+        'type',
         'status',
         'message',
-        'file',
+        'result_file',
         'uploaded_by',
         'uploaded_at',
     ];
@@ -28,12 +33,11 @@ class Letter extends Model
     /**
      * Get the attributes that should be cast.
      *
-     * @return array{content: 'object', status: 'App\Enums\LetterStatusEnum'}
+     * @return array{status: 'App\Enums\LetterStatusEnum'}
      */
     protected function casts(): array
     {
         return [
-            'content' => 'object',
             'status' => LetterStatusEnum::class,
         ];
     }
@@ -41,24 +45,16 @@ class Letter extends Model
     /**
      * @return BelongsTo<\App\Models\User, $this>
      */
-    public function submittedBy(): BelongsTo
+    public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'submitted_by_id');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     /**
-     * @return BelongsTo<\App\Models\User, $this>
+     * @return BelongsToMany<\App\Models\User, $this>
      */
-    public function submittedFor(): BelongsTo
+    public function recipients(): BelongsToMany
     {
-        return $this->belongsTo(User::class, 'submitted_for_id');
-    }
-
-    /**
-     * @return BelongsTo<\App\Models\LetterTemplate, $this>
-     */
-    public function template(): BelongsTo
-    {
-        return $this->belongsTo(LetterTemplate::class, 'template_id');
+        return $this->belongsToMany(User::class, 'letter_recipients');
     }
 }

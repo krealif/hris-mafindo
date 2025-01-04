@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('letters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('template_id')->nullable()->constrained('letter_templates')->onDelete('set null');
-            $table->foreignId('submitted_by_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('submitted_for_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->json('content');
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->string('title');
+            $table->text('body');
+            $table->string('attachment')->nullable();
+            $table->string('type', 20);
             $table->string('status', 20);
             $table->string('message')->nullable();
-            $table->string('file')->nullable();
+            $table->string('result_file')->nullable();
             $table->string('uploaded_by')->nullable();
             $table->timestamp('uploaded_at')->nullable();
             $table->timestamps();
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('letters');
     }
 };
