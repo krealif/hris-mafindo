@@ -23,7 +23,7 @@ class LetterController extends Controller
     use HasUploadFile;
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the letters created by the current user or assigned to them.
      */
     public function indexLetter(): View
     {
@@ -55,7 +55,6 @@ class LetterController extends Controller
         $createdByOthers = $letters->where('created_by', '!=', $user->id)->isNotEmpty();
         if ($createdByOthers) {
             // Eager load hanya jika ada data dari orang lain
-
             /** @var \App\Models\Letter $letters */
             $letters->load('createdBy.roles');
         }
@@ -64,7 +63,7 @@ class LetterController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of letters filtered by wilayah (branch) of currently logged in PENGURUS.
      */
     public function indexByWilayah(): View
     {
@@ -100,7 +99,7 @@ class LetterController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new letter.
      */
     public function create(): View
     {
@@ -110,7 +109,8 @@ class LetterController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created letter in storage.
+     * If an attachment is included, it is uploaded.
      */
     public function store(LetterRequest $request): RedirectResponse
     {
@@ -128,12 +128,14 @@ class LetterController extends Controller
 
         $letter = Letter::create([
             'created_by' => Auth::id(),
+            // Jika admin yang membuat, status surat langsung menjadi DIPROSES
             'status' => $user->hasRole(RoleEnum::ADMIN)
                 ? LetterStatusEnum::DIPROSES
                 : LetterStatusEnum::MENUNGGU,
             ...$validated
         ]);
 
+        // Menambahkan penerima surat (recipients) jika ada dalam request
         if (array_key_exists('recipients', $validated)) {
             $letter->recipients()->attach($validated['recipients']);
         }
@@ -148,7 +150,7 @@ class LetterController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the details of a specific letter.
      */
     public function show(Letter $letter): View
     {
@@ -157,6 +159,8 @@ class LetterController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
+        // Jika admin membuka detail surat, status akan diubah menjadi DIPROSES,
+        // yang berarti surat sudah "terkunci" dan tidak bisa diubah atau dihapus lagi.
         if ($user->hasRole('admin')) {
             if ($letter->status == LetterStatusEnum::MENUNGGU) {
                 $letter->update(['status' => LetterStatusEnum::DIPROSES]);
@@ -178,7 +182,7 @@ class LetterController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified letter in storage.
      */
     public function update(LetterRequest $request, Letter $letter): RedirectResponse
     {
@@ -186,6 +190,7 @@ class LetterController extends Controller
 
         $validated = $request->validated();
 
+        // Jika ada permintaan untuk menghapus lampiran, hapus file yang lama
         if (
             $request->boolean('_isDeleteAttachment')
             && $letter->attachment
@@ -205,6 +210,7 @@ class LetterController extends Controller
             'status' => LetterStatusEnum::MENUNGGU,
         ]);
 
+        // Memperbarui penerima surat (recipients)
         if (array_key_exists('recipients', $validated)) {
             $letter->recipients()->sync($validated['recipients']);
         }
@@ -215,7 +221,7 @@ class LetterController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified letter from storage.
      */
     public function destroy(Letter $letter): RedirectResponse
     {
@@ -238,6 +244,10 @@ class LetterController extends Controller
         return to_route($redirectRoute);
     }
 
+    /**
+     * Download the result file of the specified letter.
+     * A temporary URL is generated for the file.
+     */
     public function download(Letter $letter): RedirectResponse
     {
         Gate::authorize('download', $letter);
@@ -254,6 +264,10 @@ class LetterController extends Controller
         return redirect($url);
     }
 
+    /**
+     * Download the attachment of the specified letter submission.
+     * A temporary URL is generated for the attachment.
+     */
     public function downloadAttachment(Letter $letter): RedirectResponse
     {
         Gate::authorize('view', $letter);

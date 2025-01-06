@@ -9,6 +9,9 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class HasRoleRule implements ValidationRule
 {
+    /**
+     * @var string[]
+     */
     protected array $roles;
 
     public function __construct(mixed $roles)
@@ -25,10 +28,10 @@ class HasRoleRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        /** @var \App\Models\User $user */
+        /** @var \App\Models\User|null $user */
         $user = User::with('roles')->find($value);
 
-        if (!$user) {
+        if (! $user) {
             $fail("User not found.");
             return;
         }

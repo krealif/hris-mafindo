@@ -11,7 +11,7 @@ use App\Models\User;
 class LetterPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can view any letters.
      */
     public function viewAny(User $user): bool
     {
@@ -19,7 +19,7 @@ class LetterPolicy
     }
 
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can view letters by their wilayah (branch).
      */
     public function viewByWilayah(User $user): bool
     {
@@ -28,7 +28,7 @@ class LetterPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view the letter.
      */
     public function view(User $user, Letter $letter): bool
     {
@@ -36,6 +36,9 @@ class LetterPolicy
             return true;
         }
 
+        // Izinkan akses untuk role PENGURUS:
+        /// 1. Jika pengguna adalah pengirim atau penerima surat.
+        // 2. Jika surat tersebut milik relawan dengan wilayah yang.
         if ($user->can([PermissionEnum::VIEW_LETTER, PermissionEnum::VIEW_RELAWAN_LETTER])) {
             return $letter->created_by == $user->id
                 || $letter->createdBy?->branch_id == $user->branch_id
@@ -57,7 +60,7 @@ class LetterPolicy
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create a letter.
      */
     public function create(User $user): bool
     {
@@ -65,7 +68,7 @@ class LetterPolicy
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can update the letter.
      */
     public function update(User $user, Letter $letter): bool
     {
@@ -82,7 +85,7 @@ class LetterPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the letter.
      */
     public function destroy(User $user, Letter $letter): bool
     {
@@ -96,7 +99,7 @@ class LetterPolicy
                 return true;
             }
 
-            // Izinkan penghapusan jika surat lebih dari 1 tahun
+            // Izinkan penghapusan surat dengan status 'SELESAI' yang sudah lebih dari 1 tahun
             if (
                 $letter->status === LetterStatusEnum::SELESAI &&
                 $letter->updated_at?->diffInYears() >= 1
@@ -106,7 +109,7 @@ class LetterPolicy
         }
 
         if ($user->can(PermissionEnum::DELETE_LETTER)) {
-            // Izinkan jika pengguna adalah pengirim ajuan surat dan statusnya masih 'MENUNGGU' / 'REVISI
+            // Izinkan jika pengguna adalah pengirim ajuan surat dan statusnya masih 'MENUNGGU' / 'REVISI'
             return $letter->created_by == $user->id
                 && in_array($letter->status, [
                     LetterStatusEnum::MENUNGGU,
@@ -118,7 +121,7 @@ class LetterPolicy
     }
 
     /**
-     * Determine whether the user can review letter.
+     * Determine whether the user can download result file or submission attachment.
      */
     public function download(User $user, Letter $letter): bool
     {
@@ -131,7 +134,7 @@ class LetterPolicy
     }
 
     /**
-     * Determine whether the user can review letter.
+     * Determine whether the user can handle letter submission.
      */
     public function handleSubmission(User $user, Letter $letter): bool
     {

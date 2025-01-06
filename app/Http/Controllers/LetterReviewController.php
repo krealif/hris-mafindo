@@ -23,7 +23,7 @@ class LetterReviewController extends Controller
     use HasUploadFile;
 
     /**
-     * Display a listing of the resource.
+     * Display a list of letter submissions that are either waiting or being processed.
      */
     public function indexSubmission(): View
     {
@@ -53,7 +53,7 @@ class LetterReviewController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a list of letter submission history.
      */
     public function indexHistory(): View
     {
@@ -79,6 +79,9 @@ class LetterReviewController extends Controller
         return view('hris.surat.admin.index-history', compact('letters'));
     }
 
+    /**
+     * Upload the result file for a letter submission.
+     */
     public function uploadResult(Request $request, Letter $letter): RedirectResponse
     {
         Gate::authorize('handleSubmission', $letter);
@@ -108,6 +111,9 @@ class LetterReviewController extends Controller
         return to_route('surat.show', $letter->id);
     }
 
+    /**
+     * Request a revision for a letter submission.
+     */
     public function requestRevision(Request $request, Letter $letter): RedirectResponse
     {
         Gate::authorize('handleSubmission', $letter);
@@ -120,11 +126,17 @@ class LetterReviewController extends Controller
             'status' => LetterStatusEnum::REVISI,
             'message' => $validated['message'],
         ]);
+
+        // TODO: Kirim email
+
         flash()->success("Berhasil. Permintaan revisi [{$letter->title}] telah dikirimkan kepada yang bersangkutan.");
 
         return to_route('surat.show', $letter->id);
     }
 
+    /**
+     * Approve a letter submission and mark it as completed.
+     */
     public function approveSubmission(Letter $letter): RedirectResponse
     {
         Gate::authorize('handleSubmission', $letter);
@@ -133,11 +145,16 @@ class LetterReviewController extends Controller
             'status' => LetterStatusEnum::SELESAI,
         ]);
 
+        // TODO: Kirim email
+
         flash()->success("Berhasil. Surat [{$letter->title}] telah dikirim kepada yang bersangkutan.");
 
         return to_route('surat.show', $letter->id);
     }
 
+    /**
+     * Reject a letter submission and provide a rejection message.
+     */
     public function rejectSubmission(Request $request, Letter $letter): RedirectResponse
     {
         Gate::authorize('handleSubmission', $letter);
@@ -151,13 +168,15 @@ class LetterReviewController extends Controller
             'message' => $validated['message'],
         ]);
 
+        // TODO: Kirim email
+
         flash()->success("Berhasil. Ajuan Surat [{$letter->title}] telah ditolak.");
 
         return to_route('surat.show', $letter->id);
     }
 
     /**
-     * Remove old letter records based on the provided criteria.
+     * Bulk delete old letter records based on provided criteria.
      */
     public function bulkDelete(Request $request): RedirectResponse
     {
