@@ -73,7 +73,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'as' => 'surat.',
         'prefix' => 'surat',
     ], function () {
-        Route::get('kotak-surat', 'index')->name('index');
+        Route::get('kotak-surat', 'indexLetter')->name('letterbox');
         Route::get('ajuan-wilayah', 'indexByWilayah')->name('indexWilayah');
 
         Route::get('ajuan/buat', 'create')->name('create');
@@ -94,10 +94,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'as' => 'surat.',
         'prefix' => 'surat',
     ], function () {
-        Route::get('ajuan', 'index')->name('indexSubmission');
+        Route::get('ajuan', 'indexSubmission')->name('index');
+        Route::get('histori', 'indexHistory')->name('indexHistory');
         Route::patch('ajuan/{letter}/upload', 'uploadResult')->name('uploadResult');
         Route::patch('ajuan/{letter}/revisi', 'requestRevision')->name('requestRevision');
         Route::patch('ajuan/{letter}/kirim', 'approveSubmission')->name('approve');
         Route::patch('ajuan/{letter}/tolak', 'rejectSubmission')->name('reject');
+        Route::delete('bulk-delete', 'bulkDelete')->name('bulkDelete');
     });
 });

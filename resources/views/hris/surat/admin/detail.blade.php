@@ -9,7 +9,7 @@
         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
           <div>
             <div class="mb-1">
-              <a href="{{ route('surat.indexSubmission') }}" class="btn btn-link px-0 py-1">
+              <a href="{{ url()->previous() == route('surat.indexHistory') ? route('surat.indexHistory') : route('surat.index') }}" class="btn btn-link px-0 py-1">
                 <x-lucide-arrow-left class="icon" />
                 Kembali
               </a>
@@ -20,9 +20,11 @@
           </div>
           <div class="btn-list">
             @can('destroy', $letter)
-              <a class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#modal-delete" x-data="{ id: {{ $letter->id }} }" x-on:click="$dispatch('set-id', { id })">
-                <x-lucide-trash-2 class="icon text-red" />
-              </a>
+              @if (url()->previous() == route('surat.indexHistory'))
+                <a class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#modal-delete" x-data="{ id: {{ $letter->id }} }" x-on:click="$dispatch('set-id', { id })">
+                  <x-lucide-trash-2 class="icon text-red" />
+                </a>
+              @endif
             @endcan
           </div>
         </div>
@@ -153,12 +155,14 @@
                         Upload
                       </a>
                     </li>
-                    <li class="nav-item" role="presentation">
-                      <a href="#tab-revisi" class="btn" data-bs-toggle="tab" aria-selected="true" role="tab">
-                        <x-lucide-file-pen-line class="icon text-orange me-2" />
-                        Revisi
-                      </a>
-                    </li>
+                    @if (!$letter->createdBy->hasRole('admin'))
+                      <li class="nav-item" role="presentation">
+                        <a href="#tab-revisi" class="btn" data-bs-toggle="tab" aria-selected="true" role="tab">
+                          <x-lucide-file-pen-line class="icon text-orange me-2" />
+                          Revisi
+                        </a>
+                      </li>
+                    @endif
                     <li class="nav-item" role="presentation">
                       <a href="#tab-tolak" class="btn" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-circle-x class="icon text-red me-2" />
@@ -210,17 +214,19 @@
                       <button class="btn btn-primary" type="submit">Simpan</button>
                     </form>
                   </div>
-                  <div id="tab-revisi" class="tab-pane">
-                    <form method="POST" action="{{ route('surat.requestRevision', $letter->id) }}" class="card-body border-top">
-                      @csrf
-                      @method('PATCH')
-                      <div class="mb-4">
-                        <label for="message" class="form-label required">Alasan</label>
-                        <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan revisi" required />
-                      </div>
-                      <button class="btn btn-primary" type="submit">Kirim</button>
-                    </form>
-                  </div>
+                  @if (!$letter->createdBy->hasRole('admin'))
+                    <div id="tab-revisi" class="tab-pane">
+                      <form method="POST" action="{{ route('surat.requestRevision', $letter->id) }}" class="card-body border-top">
+                        @csrf
+                        @method('PATCH')
+                        <div class="mb-4">
+                          <label for="message" class="form-label required">Alasan</label>
+                          <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan revisi" required />
+                        </div>
+                        <button class="btn btn-primary" type="submit">Kirim</button>
+                      </form>
+                    </div>
+                  @endif
                   <div id="tab-tolak" class="tab-pane">
                     <form method="POST" action="{{ route('surat.reject', $letter->id) }}" class="card-body border-top">
                       @csrf
@@ -316,4 +322,9 @@
       </div>
     </div>
   </div>
+  @can('destroy', $letter)
+    @if (url()->previous() == route('surat.indexHistory'))
+      <x-modal-delete baseUrl="{{ route('surat.index') }}" />
+    @endif
+  @endcan
 @endsection

@@ -22,7 +22,6 @@ class Letter extends Model
         'title',
         'body',
         'attachment',
-        'type',
         'status',
         'message',
         'result_file',

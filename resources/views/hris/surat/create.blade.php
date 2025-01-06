@@ -9,7 +9,7 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <div class="mb-1">
-              <a href="{{ route('surat.index') }}" class="btn btn-link px-0 py-1">
+              <a href="{{ Auth::user()->hasRole('admin') ? route('surat.index') : route('surat.letterbox') }}" class="btn btn-link px-0 py-1">
                 <x-lucide-arrow-left class="icon" />
                 Kembali
               </a>
@@ -25,6 +25,16 @@
   <div class="page-body">
     <div class="container-xl">
       <div class="col-12 col-md-10 col-lg-6">
+        @if ($errors->any())
+          <x-alert class="alert-danger">
+            <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
+            <ul class="mt-2 mb-0" style="margin-left: -1rem">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </x-alert>
+        @endif
         <form class="card" method="POST" x-data="{ _withRecipient: {{ old('_withRecipient', 'false') }} }" enctype="multipart/form-data">
           @csrf
           @if (!Auth::user()->hasRole('admin') && Auth::user()->can('create-letter-for-relawan'))
@@ -41,12 +51,11 @@
             @can('create-letter-for-relawan')
               <div @if (!Auth::user()->hasRole('admin')) x-show="_withRecipient" @endif class="mb-3">
                 <label for="recipients" class="form-label required">Tujuan (Maks. 10)</label>
-                <select id="recipients" name="recipients[]" multiple class="form-select @error('recipients.*') is-invalid @enderror" placeholder="Tuliskan nama relawan"
-                  @required(Auth::user()->hasRole('admin'))>
-                </select>
-                @error('recipients.*')
-                  <div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>
-                @enderror
+                @if (Auth::user()->hasRole('admin'))
+                  <x-form.user-select id="recipients" name="recipients[]" multiple placeholder="Tuliskan nama relawan" required />
+                @else
+                  <x-form.user-select id="recipients" name="recipients[]" multiple placeholder="Tuliskan nama relawan" x-bind:required='_withRecipient' />
+                @endif
               </div>
             @endcan
             <div class="mb-3">
@@ -74,7 +83,7 @@
           </div>
           <div class="card-body btn-list">
             <button type="submit" class="btn btn-primary">Kirim</button>
-            <a href="{{ route('surat.index') }}" class="btn">Batal</a>
+            <a href="{{ Auth::user()->hasRole('admin') ? route('surat.index') : route('surat.letterbox') }}" class="btn">Batal</a>
           </div>
         </form>
       </div>
@@ -95,32 +104,6 @@
       }));
     });
   </script>
-  @can('create-letter-for-relawan')
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        if (window.TomSelect) {
-          new TomSelect('#recipients', {
-            valueField: 'id',
-            labelField: 'nama',
-            searchField: 'nama',
-            maxItems: 10,
-            plugins: ['remove_button'],
-            onItemAdd: function() {
-              this.setTextboxValue('');
-            },
-            load: function(query, callback) {
-              if (query.length < 3) return callback([]);
-
-              fetch(@js(route('api.user')) + '?q=' + encodeURIComponent(query))
-                .then(response => response.json())
-                .then(data => callback(data.data || []))
-                .catch(() => callback([]));
-            }
-          });
-        }
-      })
-    </script>
-  @endcan
 @endsection
 
 @push('styles')

@@ -40,8 +40,10 @@ class LetterPolicy
             return $letter->created_by == $user->id
                 || $letter->createdBy?->branch_id == $user->branch_id
                 || $letter->recipients()
-                ->where('users.id', $user->id)
-                ->orWhere('users.branch_id', $user->branch_id)
+                ->where(function ($query) use ($user) {
+                    $query->where('users.id', $user->id)
+                        ->orWhere('users.branch_id', $user->branch_id);
+                })
                 ->exists();
         }
 
@@ -93,12 +95,23 @@ class LetterPolicy
             ) {
                 return true;
             }
+
+            // Izinkan penghapusan jika surat lebih dari 1 tahun
+            if (
+                $letter->status === LetterStatusEnum::SELESAI &&
+                $letter->updated_at?->diffInYears() >= 1
+            ) {
+                return true;
+            }
         }
 
         if ($user->can(PermissionEnum::DELETE_LETTER)) {
-            // Izinkan jika pengguna adalah pengirim ajuan surat dan statusnya masih 'MENUNGGU'
+            // Izinkan jika pengguna adalah pengirim ajuan surat dan statusnya masih 'MENUNGGU' / 'REVISI
             return $letter->created_by == $user->id
-                && $letter->status == LetterStatusEnum::MENUNGGU;
+                && in_array($letter->status, [
+                    LetterStatusEnum::MENUNGGU,
+                    LetterStatusEnum::REVISI
+                ]);
         }
 
         return false;

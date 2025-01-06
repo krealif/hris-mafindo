@@ -29,6 +29,23 @@
           </x-alert>
         @endif
         <x-dt.datatable search="title" searchPlaceholder="Cari judul surat" total="{{ $letters->count() }}">
+          <x-slot:filterForm>
+            <!-- Table filter -->
+            <div class="row g-4">
+              <div class="col-12 col-md-6 col-lg-3">
+                <label for="type" class="form-label">Tipe</label>
+                <x-form.select name="type" selected="{{ request()->filter['type'] ?? '' }}" :showError=false :options="[
+                    '' => 'Semua',
+                    1 => 'Ajuan',
+                    0 => 'Surat Masuk',
+                ]" />
+              </div>
+              <div class="col-12 col-md-6 col-lg-3">
+                <label for="updated_at" class="form-label">Tanggal</label>
+                <x-dt.date-filter name="updated_at" value="{{ request()->filter['updated_at'] ?? '' }}" />
+              </div>
+            </div>
+          </x-slot>
           <table class="table table-vcenter card-table table-mobile-md datatable">
             <thead>
               <tr>
@@ -52,15 +69,17 @@
                     </a>
                   </td>
                   <td data-label="Tipe">
-                    @if ($letter->recipients->contains('id', Auth::id()))
+                    @if ($letter->created_by == Auth::id())
+                      @if ($letter->recipients->isEmpty())
+                        <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
+                        <strong class="fw-medium">AJUAN</strong> Saya
+                      @else
+                        <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
+                        <strong class="fw-medium">AJUAN</strong> untuk Relawan
+                      @endif
+                    @elseif ($letter->recipients->contains('id', Auth::id()))
                       <x-lucide-square-arrow-down-right class="icon me-1 text-orange" defer />
                       <strong class="fw-medium">SURAT</strong> dari {{ $letter->createdBy->role?->label() }}
-                    @elseif ($letter->recipients->isEmpty())
-                      <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
-                      <strong class="fw-medium">AJUAN</strong> Saya
-                    @else
-                      <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
-                      <strong class="fw-medium">AJUAN</strong> untuk Relawan
                     @endif
                   </td>
                   @can('create-letter-for-relawan')
@@ -86,8 +105,8 @@
                     <x-badge class="fs-4" :case="$letter->status" />
                   </td>
                   <td data-label="Tanggal">
-                    <div>{{ $letter->created_at?->translatedFormat('d M Y / H:i') }}</div>
-                    <div class="text-muted">{{ $letter->created_at?->diffForHumans() }}</div>
+                    <div>{{ $letter->updated_at?->translatedFormat('d M Y / H:i') }}</div>
+                    <div class="text-muted">{{ $letter->updated_at?->diffForHumans() }}</div>
                   </td>
                   <td data-label="Aksi">
                     <div class="btn-list flex-nowrap justify-content-md-end">
@@ -131,5 +150,5 @@
       </div>
     </div>
   </div>
-  <x-modal-delete baseUrl="{{ url('/surat/ajuan') }}" />
+  <x-modal-delete baseUrl="{{ route('surat.index') }}" />
 @endsection

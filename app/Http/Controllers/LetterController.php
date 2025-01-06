@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Letter;
 use App\Enums\RoleEnum;
 use Illuminate\View\View;
-use App\Enums\PermissionEnum;
 use App\Traits\HasUploadFile;
 use App\Enums\LetterStatusEnum;
-use App\Rules\ValidRelawanRule;
+use App\Filters\FilterDate;
+use App\Filters\FilterLetterType;
+use App\Filters\FilterRelawanWilayahLetter;
 use App\Http\Requests\LetterRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
-use App\Rules\ValidPengurusRelawanRule;
 use Illuminate\Support\Facades\Storage;
 
 class LetterController extends Controller
@@ -25,7 +25,7 @@ class LetterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function indexLetter(): View
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
@@ -34,12 +34,19 @@ class LetterController extends Controller
             abort(403);
         }
 
-        $letters = QueryBuilder::for(Letter::whereBelongsTo($user, 'createdBy')
-            ->orWhereHas('recipients', function ($query) use ($user) {
-                $query->where('user_id', $user->id)
-                    ->where('status', LetterStatusEnum::SELESAI);
-            }))
-            ->allowedFilters(['title'])
+        $letters = QueryBuilder::for(Letter::class)
+            ->allowedFilters([
+                'title',
+                AllowedFilter::custom('type', new FilterLetterType),
+                AllowedFilter::custom('updated_at', new FilterDate),
+            ])
+            ->where(function ($query) use ($user) {
+                $query->whereBelongsTo($user, 'createdBy')
+                    ->orWhereHas('recipients', function ($query) use ($user) {
+                        $query->where('user_id', $user->id)
+                            ->where('status', LetterStatusEnum::SELESAI);
+                    });
+            })
             ->with('recipients')
             ->latest('updated_at')
             ->paginate(15);
@@ -66,16 +73,25 @@ class LetterController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        $letters = Letter::where('created_by', '!=', $user->id)
-            ->whereHas('recipients', function ($query) use ($user) {
-                $query->where('user_id', '!=', $user->id)
-                    ->where('users.branch_id', $user->branch_id)
-                    ->where('status', LetterStatusEnum::SELESAI);
+        $letters = QueryBuilder::for(Letter::class)
+            ->allowedFilters([
+                'title',
+                AllowedFilter::custom('relawan', new FilterRelawanWilayahLetter),
+                AllowedFilter::custom('updated_at', new FilterDate),
+            ])
+            ->where('created_by', '!=', $user->id)
+            ->where(function ($query) use ($user) {
+                $query->whereHas('recipients', function ($query) use ($user) {
+                    $query->where('user_id', '!=', $user->id)
+                        ->where('users.branch_id', $user->branch_id)
+                        ->where('status', LetterStatusEnum::SELESAI);
+                })
+                    ->orWhereHas('createdBy', function ($query) use ($user) {
+                        $query->where('users.branch_id', $user->branch_id)
+                            ->where('status', LetterStatusEnum::SELESAI);
+                    });
             })
-            ->orWhereHas('createdBy', function ($query) use ($user) {
-                $query->where('users.branch_id', $user->branch_id)
-                    ->where('status', LetterStatusEnum::SELESAI);
-            })
+            ->with('recipients')
             ->latest('updated_at')
             ->paginate(15);
 
@@ -90,7 +106,7 @@ class LetterController extends Controller
     {
         Gate::authorize('create', Letter::class);
 
-        return view('hris.surat.user.create');
+        return view('hris.surat.create');
     }
 
     /**
@@ -106,7 +122,7 @@ class LetterController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('attachment')) {
-            $path = $this->uploadFile('berkas', $validated['attachment']);
+            $path = $this->uploadFile('lampiran', $validated['attachment']);
             $validated['attachment'] = $path;
         }
 
@@ -118,30 +134,17 @@ class LetterController extends Controller
             ...$validated
         ]);
 
-        if (
-            $user->hasRole('admin') || $request->boolean('_withRecipient')
-            && $user->canAny(
-                [
-                    PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
-                    PermissionEnum::CREATE_LETTER_FOR_PENGURUS
-                ]
-            )
-        ) {
-            $request->validate([
-                'recipients' => ['required', 'array', 'max:10'],
-                'recipients.*' => [
-                    $user->hasRole(RoleEnum::ADMIN)
-                        ? new ValidPengurusRelawanRule()
-                        : new ValidRelawanRule()
-                ]
-            ]);
+        if (array_key_exists('recipients', $validated)) {
+            $letter->recipients()->attach($validated['recipients']);
+        }
 
-            $letter->recipients()->attach($request->recipients);
+        if ($user->hasRole(RoleEnum::ADMIN)) {
+            flash()->success("Berhasil. Ajuan Surat [{$validated['title']}] telah dibuat.");
+            return to_route('surat.index');
         }
 
         flash()->success("Berhasil. Ajuan Surat [{$validated['title']}] telah dibuat. Admin akan segera meninjau dan memprosesnya.");
-
-        return to_route('surat.index');
+        return to_route('surat.letterbox');
     }
 
     /**
@@ -181,9 +184,6 @@ class LetterController extends Controller
     {
         Gate::authorize('update', $letter);
 
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-
         $validated = $request->validated();
 
         if (
@@ -195,34 +195,18 @@ class LetterController extends Controller
         }
 
         if ($request->hasFile('attachment')) {
-            $path = $this->uploadFile('berkas', $validated['attachment']);
+            $path = $this->uploadFile('lampiran', $validated['attachment']);
             $validated['attachment'] = $path;
         }
 
+        $letter->updated_at = \Carbon\Carbon::now();
         $letter->update([
             ...$validated,
             'status' => LetterStatusEnum::MENUNGGU,
         ]);
 
-        if (
-            $request->recipients
-            && $user->canAny(
-                [
-                    PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
-                    PermissionEnum::CREATE_LETTER_FOR_PENGURUS
-                ]
-            )
-        ) {
-            $request->validate([
-                'recipients' => ['required', 'array', 'max:10'],
-                'recipients.*' => [
-                    $user->hasRole(RoleEnum::ADMIN)
-                        ? new ValidPengurusRelawanRule()
-                        : new ValidRelawanRule()
-                ]
-            ]);
-
-            $letter->recipients()->sync($request->recipients);
+        if (array_key_exists('recipients', $validated)) {
+            $letter->recipients()->sync($validated['recipients']);
         }
 
         flash()->success("Berhasil. Ajuan Surat [{$validated['title']}] telah diperbarui. Admin akan segera meninjau dan memprosesnya");
@@ -240,13 +224,18 @@ class LetterController extends Controller
         $letterTitle = $letter->title;
         $letter->delete();
 
-        if ($q = parse_url(url()->previous(), PHP_URL_QUERY)) {
-            return to_route('surat.index', $q);
-        }
-
         flash()->success("Berhasil. Ajuan Surat [{$letterTitle}] telah dihapus.");
 
-        return to_route('surat.index');
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $redirectRoute = $user->hasRole('admin') ? 'surat.indexHistory' : 'surat.letterbox';
+
+        $prevUrlQuery = parse_url(url()->previous(), PHP_URL_QUERY);
+        if (url()->previous() == route($redirectRoute, $prevUrlQuery)) {
+            return to_route($redirectRoute, $prevUrlQuery);
+        }
+
+        return to_route($redirectRoute);
     }
 
     public function download(Letter $letter): RedirectResponse

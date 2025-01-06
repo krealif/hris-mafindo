@@ -9,13 +9,13 @@
         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
           <div>
             <div class="mb-1">
-              @if ($letter->created_by == Auth::id() || $letter->recipients->contains('id', Auth::id()))
-                <a href="{{ route('surat.index') }}" class="btn btn-link px-0 py-1">
+              @if (url()->previous() == route('surat.indexWilayah'))
+                <a href="{{ route('surat.indexWilayah') }}" class="btn btn-link px-0 py-1">
                   <x-lucide-arrow-left class="icon" />
                   Kembali
                 </a>
-              @else
-                <a href="{{ route('surat.indexWilayah') }}" class="btn btn-link px-0 py-1">
+              @elseif ($letter->created_by == Auth::id() || $letter->recipients->contains('id', Auth::id()))
+                <a href="{{ route('surat.letterbox') }}" class="btn btn-link px-0 py-1">
                   <x-lucide-arrow-left class="icon" />
                   Kembali
                 </a>
@@ -67,7 +67,19 @@
                   </div>
                 </div>
                 <div class="btn-list mt-3">
-                  @if ($letter->recipients->contains('id', Auth::id()))
+                  @if ($letter->created_by == Auth::id())
+                    @if ($letter->recipients->isEmpty())
+                      <span class="badge bg-blue text-white hstack gap-2 fs-4">
+                        <x-lucide-arrow-up-right class="icon" />
+                        AJUAN Saya
+                      </span>
+                    @else
+                      <span class="badge bg-blue text-white hstack gap-2 fs-4">
+                        <x-lucide-arrow-up-right class="icon" />
+                        AJUAN untuk Relawan
+                      </span>
+                    @endif
+                  @elseif ($letter->recipients->contains('id', Auth::id()))
                     <span class="badge bg-orange text-white hstack gap-2 fs-4">
                       <x-lucide-arrow-down-right class="icon" />
                       SURAT dari {{ $letter->createdBy->role?->label() }}
@@ -75,19 +87,12 @@
                   @elseif ($letter->recipients->isEmpty())
                     <span class="badge bg-blue text-white hstack gap-2 fs-4">
                       <x-lucide-arrow-up-right class="icon" />
-                      AJUAN @if ($letter->created_by == Auth::id())
-                        Saya
-                      @endif
-                    </span>
-                  @elseif ($letter->created_by == Auth::id() && $letter->recipients->isNotEmpty())
-                    <span class="badge bg-blue text-white hstack gap-2 fs-4">
-                      <x-lucide-arrow-up-right class="icon" />
-                      AJUAN untuk Relawan
+                      AJUAN
                     </span>
                   @else
                     <span class="badge bg-blue text-white hstack gap-2 fs-4">
                       <x-lucide-arrow-up-right class="icon" />
-                      DIAJUKAN oleh Admin
+                      DIBUAT oleh Admin
                     </span>
                   @endif
                   <x-badge class="fs-4" :case="$letter->status" />
@@ -239,4 +244,7 @@
       </div>
     </div>
   </div>
+  @can('destroy', $letter)
+    <x-modal-delete baseUrl="{{ route('surat.index') }}" />
+  @endcan
 @endsection

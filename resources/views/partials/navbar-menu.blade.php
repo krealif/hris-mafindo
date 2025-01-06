@@ -58,9 +58,9 @@
                 <div class="dropdown-menu-columns">
                   @role('pengurus-wilayah')
                     <div class="dropdown-menu-column">
-                      <a href="{{ route('surat.index') }}" @class([
+                      <a href="{{ route('surat.letterbox') }}" @class([
                           'dropdown-item',
-                          'active' => request()->routeIs('surat.index'),
+                          'active' => request()->routeIs('surat.letterbox'),
                       ])>Kotak Surat</a>
                       <a href="{{ route('surat.indexWilayah') }}" @class([
                           'dropdown-item',
@@ -69,13 +69,13 @@
                     </div>
                   @else
                     <div class="dropdown-menu-column">
-                      <a href="{{ route('surat.indexSubmission') }}" @class([
+                      <a href="{{ route('surat.index') }}" @class([
                           'dropdown-item',
-                          'active' => request()->routeIs('surat.indexSubmission'),
+                          'active' => request()->routeIs('surat.index'),
                       ])>Proses Ajuan</a>
-                      <a href="{{ route('surat.indexWilayah') }}" @class([
+                      <a href="{{ route('surat.indexHistory') }}" @class([
                           'dropdown-item',
-                          'active' => request()->routeIs('surat.indexWilayah'),
+                          'active' => request()->routeIs('surat.indexHistory'),
                       ])>Histori Ajuan</a>
                     </div>
                   @endrole
@@ -84,7 +84,7 @@
             </li>
           @else
             <li @class(['nav-item', 'active' => request()->is('surat/*')])>
-              <a class="nav-link" href="{{ route('surat.index') }}">
+              <a class="nav-link" href="{{ route('surat.letterbox') }}">
                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                   <x-lucide-file-text class="icon" />
                 </span>

@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\LetterStatusEnum;
+use Carbon\Carbon;
 use App\Models\Letter;
-use App\Traits\HasUploadFile;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Traits\HasUploadFile;
+use App\Enums\LetterStatusEnum;
+use App\Filters\FilterLetterType;
+use App\Filters\FilterDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\Rules\File;
+use Spatie\QueryBuilder\QueryBuilder;
+use App\Filters\FilterRecipientLetter;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class LetterReviewController extends Controller
 {
@@ -18,17 +25,26 @@ class LetterReviewController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function indexSubmission(): View
     {
         Gate::authorize('viewAny', Letter::class);
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        $letters = Letter::whereIn('status', [
-            LetterStatusEnum::MENUNGGU,
-            LetterStatusEnum::DIPROSES,
-        ])
+        $letters = QueryBuilder::for(Letter::class)
+            ->allowedFilters([
+                'title',
+                'created_by',
+                AllowedFilter::custom('recipient', new FilterRecipientLetter),
+                AllowedFilter::custom('updated_at', new FilterDate),
+            ])
+            ->where(function ($query) {
+                $query->whereIn('status', [
+                    LetterStatusEnum::MENUNGGU,
+                    LetterStatusEnum::DIPROSES,
+                ]);
+            })
             ->with('createdBy.roles', 'recipients')
             ->latest('updated_at')
             ->paginate(15);
@@ -36,6 +52,32 @@ class LetterReviewController extends Controller
         return view('hris.surat.admin.index', compact('letters'));
     }
 
+    /**
+     * Display a listing of the resource.
+     */
+    public function indexHistory(): View
+    {
+        Gate::authorize('viewAny', Letter::class);
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $letters = QueryBuilder::for(Letter::class)
+            ->allowedFilters([
+                'title',
+                'created_by',
+                'status',
+                AllowedFilter::custom('type', new FilterLetterType),
+                AllowedFilter::custom('recipient', new FilterRecipientLetter),
+                AllowedFilter::custom('updated_at', new FilterDate),
+            ])
+            ->whereNotIn('status', [LetterStatusEnum::MENUNGGU, LetterStatusEnum::DIPROSES])
+            ->with('createdBy.roles', 'recipients')
+            ->latest('updated_at')
+            ->paginate(15);
+
+        return view('hris.surat.admin.index-history', compact('letters'));
+    }
 
     public function uploadResult(Request $request, Letter $letter): RedirectResponse
     {
@@ -43,7 +85,12 @@ class LetterReviewController extends Controller
 
         $validated = $request->validate([
             'admin' => ['required', 'string', 'max:255'],
-            'file' => ['required', 'mimes:pdf,doc,docx', 'max:5120'],
+            'file' => [
+                'required',
+                File::types(['pdf', 'doc', 'docx'])
+                    ->min('1kb')
+                    ->max('3mb'),
+            ],
         ]);
 
         if ($request->hasFile('file')) {
@@ -73,7 +120,7 @@ class LetterReviewController extends Controller
             'status' => LetterStatusEnum::REVISI,
             'message' => $validated['message'],
         ]);
-        flash()->success("Berhasil. Permintaan revisi [{$letter->title}] telah dikirimkan ke pihak terkait.");
+        flash()->success("Berhasil. Permintaan revisi [{$letter->title}] telah dikirimkan kepada yang bersangkutan.");
 
         return to_route('surat.show', $letter->id);
     }
@@ -86,7 +133,7 @@ class LetterReviewController extends Controller
             'status' => LetterStatusEnum::SELESAI,
         ]);
 
-        flash()->success("Berhasil. Surat [{$letter->title}] telah dikirim ke pihak terkait.");
+        flash()->success("Berhasil. Surat [{$letter->title}] telah dikirim kepada yang bersangkutan.");
 
         return to_route('surat.show', $letter->id);
     }
@@ -107,5 +154,42 @@ class LetterReviewController extends Controller
         flash()->success("Berhasil. Ajuan Surat [{$letter->title}] telah ditolak.");
 
         return to_route('surat.show', $letter->id);
+    }
+
+    /**
+     * Remove old letter records based on the provided criteria.
+     */
+    public function bulkDelete(Request $request): RedirectResponse
+    {
+        $criteria = [
+            'status_revisi' => [LetterStatusEnum::REVISI, $request->input('lama_revisi')],
+            'status_ditolak' => [LetterStatusEnum::DITOLAK, $request->input('lama_ditolak')],
+            'status_selesai' => [LetterStatusEnum::SELESAI, $request->input('lama_selesai')],
+        ];
+
+        $total = 0;
+
+        foreach ($criteria as $key => [$status, $months]) {
+            if ($request->input($key) && $months) {
+                $letters = Letter::where('status', $status)
+                    ->where('updated_at', '<', Carbon::now()->subMonths($months))
+                    ->get();
+
+                // Menghapus data satu per satu untuk men-trigger observer model
+                $letters->each(function ($letter) {
+                    $letter->delete();
+                });
+
+                $total += $letters->count();
+            }
+        }
+
+        if ($total > 0) {
+            flash()->success("Berhasil. Sebanyak [{$total}] data telah dihapus.");
+        } else {
+            flash()->info('Tidak ada data yang perlu dihapus.');
+        }
+
+        return to_route('surat.indexHistory');
     }
 }
