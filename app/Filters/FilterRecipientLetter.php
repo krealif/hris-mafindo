@@ -2,10 +2,8 @@
 
 namespace App\Filters;
 
-use InvalidArgumentException;
-use Illuminate\Support\Facades\Auth;
-use Spatie\QueryBuilder\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\QueryBuilder\Filters\Filter;
 
 /**
  * @implements Filter<\App\Models\Letter>

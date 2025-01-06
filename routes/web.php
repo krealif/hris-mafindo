@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\LetterReviewController;
+use App\Http\Controllers\RegistrationReviewController;
 use App\Http\Controllers\UserMigrationController;
 use App\Http\Controllers\UserRegistrationController;
-use App\Http\Controllers\RegistrationReviewController;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Group of routes that require authentication but for unverified users only.

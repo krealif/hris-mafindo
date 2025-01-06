@@ -2,9 +2,9 @@
 
 namespace App\Filters;
 
+use Illuminate\Database\Eloquent\Builder;
 use InvalidArgumentException;
 use Spatie\QueryBuilder\Filters\Filter;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @implements Filter<\Illuminate\Database\Eloquent\Model>
@@ -20,17 +20,17 @@ class FilterDate implements Filter
         $date = $matches[2] ?? null; // Use null if no date value is found
 
         // Validate the operator and value
-        if (!in_array($operator, ['', '<=', '>=', '<', '>', '='])) {
+        if (! in_array($operator, ['', '<=', '>=', '<', '>', '='])) {
             throw new InvalidArgumentException("Invalid operator '{$operator}' for filtering.");
         }
 
         // Ensure the date value exists
         if (empty($date)) {
-            throw new InvalidArgumentException("Invalid date value for filtering.");
+            throw new InvalidArgumentException('Invalid date value for filtering.');
         }
 
         // Validate the date format (simple check, can be expanded based on your needs)
-        if (!strtotime($date)) {
+        if (! strtotime($date)) {
             throw new InvalidArgumentException("Invalid date value '{$date}' for filtering.");
         }
 

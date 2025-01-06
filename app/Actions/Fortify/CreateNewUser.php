@@ -47,8 +47,6 @@ class CreateNewUser implements CreatesNewUsers
 
     /**
      * Handle TempUser data and associate it with the newly created user.
-     *
-     * @return void
      */
     private function integrateOldData(User $user, TempUser $tempUser): void
     {
@@ -77,7 +75,7 @@ class CreateNewUser implements CreatesNewUsers
     /**
      * Validate the input data for creating a new user.
      *
-     * @param array<string, mixed> $input The input data to be validated.
+     * @param  array<string, mixed>  $input  The input data to be validated.
      * @return array<string, mixed> The validated input data.
      */
     private function validateInput(array $input): array

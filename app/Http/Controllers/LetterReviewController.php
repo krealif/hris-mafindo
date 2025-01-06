@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Letter;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use App\Traits\HasUploadFile;
 use App\Enums\LetterStatusEnum;
-use App\Filters\FilterLetterType;
 use App\Filters\FilterDate;
+use App\Filters\FilterLetterType;
+use App\Filters\FilterRecipientLetter;
+use App\Models\Letter;
+use App\Traits\HasUploadFile;
+use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rules\File;
-use Spatie\QueryBuilder\QueryBuilder;
-use App\Filters\FilterRecipientLetter;
+use Illuminate\View\View;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class LetterReviewController extends Controller
 {

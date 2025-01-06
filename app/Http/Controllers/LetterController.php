@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Letter;
-use App\Enums\RoleEnum;
-use Illuminate\View\View;
-use App\Traits\HasUploadFile;
 use App\Enums\LetterStatusEnum;
+use App\Enums\RoleEnum;
 use App\Filters\FilterDate;
 use App\Filters\FilterLetterType;
 use App\Filters\FilterRelawanWilayahLetter;
 use App\Http\Requests\LetterRequest;
+use App\Models\Letter;
+use App\Traits\HasUploadFile;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Http\RedirectResponse;
-use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class LetterController extends Controller
 {
@@ -94,7 +94,6 @@ class LetterController extends Controller
             ->latest('updated_at')
             ->paginate(15);
 
-
         return view('hris.surat.user.index-wilayah', compact('letters'));
     }
 
@@ -132,7 +131,7 @@ class LetterController extends Controller
             'status' => $user->hasRole(RoleEnum::ADMIN)
                 ? LetterStatusEnum::DIPROSES
                 : LetterStatusEnum::MENUNGGU,
-            ...$validated
+            ...$validated,
         ]);
 
         // Menambahkan penerima surat (recipients) jika ada dalam request
@@ -142,10 +141,12 @@ class LetterController extends Controller
 
         if ($user->hasRole(RoleEnum::ADMIN)) {
             flash()->success("Berhasil. Ajuan Surat [{$validated['title']}] telah dibuat.");
+
             return to_route('surat.index');
         }
 
         flash()->success("Berhasil. Ajuan Surat [{$validated['title']}] telah dibuat. Admin akan segera meninjau dan memprosesnya.");
+
         return to_route('surat.letterbox');
     }
 
@@ -165,6 +166,7 @@ class LetterController extends Controller
             if ($letter->status == LetterStatusEnum::MENUNGGU) {
                 $letter->update(['status' => LetterStatusEnum::DIPROSES]);
             }
+
             return view('hris.surat.admin.detail', compact('letter'));
         }
 

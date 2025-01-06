@@ -20,7 +20,7 @@ class UserController extends Controller
         // Check permissions
         if (! $authUser->canAny([
             PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
-            PermissionEnum::CREATE_LETTER_FOR_PENGURUS
+            PermissionEnum::CREATE_LETTER_FOR_PENGURUS,
         ])) {
             return response()->json([
                 'success' => false,
@@ -44,7 +44,7 @@ class UserController extends Controller
 
         $usersQuery = User::select('id', 'nama')
             ->role($roles)
-            ->where('nama', 'like', '%' . $query . '%')
+            ->where('nama', 'like', '%'.$query.'%')
             ->whereNot('id', $authUser->id);
 
         if ($authUser->branch_id) {

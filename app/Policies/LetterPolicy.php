@@ -37,23 +37,23 @@ class LetterPolicy
         }
 
         // Izinkan akses untuk role PENGURUS:
-        /// 1. Jika pengguna adalah pengirim atau penerima surat.
+        // 1. Jika pengguna adalah pengirim atau penerima surat.
         // 2. Jika surat tersebut milik relawan dengan wilayah yang.
         if ($user->can([PermissionEnum::VIEW_LETTER, PermissionEnum::VIEW_RELAWAN_LETTER])) {
             return $letter->created_by == $user->id
                 || $letter->createdBy?->branch_id == $user->branch_id
                 || $letter->recipients()
-                ->where(function ($query) use ($user) {
-                    $query->where('users.id', $user->id)
-                        ->orWhere('users.branch_id', $user->branch_id);
-                })
-                ->exists();
+                    ->where(function ($query) use ($user) {
+                        $query->where('users.id', $user->id)
+                            ->orWhere('users.branch_id', $user->branch_id);
+                    })
+                    ->exists();
         }
 
         if ($user->can(PermissionEnum::VIEW_LETTER)) {
             // Izinkan hanya jika pengguna adalah pengirim atau penerima ajuan surat
             return $letter->created_by == $user->id
-                || $letter->recipients()->where('users.id', $user->id)->exists();;
+                || $letter->recipients()->where('users.id', $user->id)->exists();
         }
 
         return false;
@@ -77,7 +77,7 @@ class LetterPolicy
             return $letter->created_by == $user->id
                 && in_array($letter->status, [
                     LetterStatusEnum::MENUNGGU,
-                    LetterStatusEnum::REVISI
+                    LetterStatusEnum::REVISI,
                 ]);
         }
 
@@ -113,7 +113,7 @@ class LetterPolicy
             return $letter->created_by == $user->id
                 && in_array($letter->status, [
                     LetterStatusEnum::MENUNGGU,
-                    LetterStatusEnum::REVISI
+                    LetterStatusEnum::REVISI,
                 ]);
         }
 

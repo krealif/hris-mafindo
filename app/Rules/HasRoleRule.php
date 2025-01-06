@@ -2,9 +2,9 @@
 
 namespace App\Rules;
 
-use Closure;
-use App\Models\User;
 use App\Enums\RoleEnum;
+use App\Models\User;
+use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 class HasRoleRule implements ValidationRule
@@ -17,7 +17,7 @@ class HasRoleRule implements ValidationRule
     public function __construct(mixed $roles)
     {
         $this->roles = is_array($roles)
-            ? array_map(fn($role) => $role instanceof RoleEnum ? $role->value : (string) $role, $roles)
+            ? array_map(fn ($role) => $role instanceof RoleEnum ? $role->value : (string) $role, $roles)
             : [$roles instanceof RoleEnum ? $roles->value : (string) $roles];
     }
 
@@ -32,7 +32,8 @@ class HasRoleRule implements ValidationRule
         $user = User::with('roles')->find($value);
 
         if (! $user) {
-            $fail("User not found.");
+            $fail('User not found.');
+
             return;
         }
 

@@ -2,14 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\RoleEnum;
 use App\Enums\PermissionEnum;
+use App\Enums\RoleEnum;
 use App\Rules\HasRoleRule;
-use App\Rules\ValidRelawanRule;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\File;
-use App\Rules\ValidPengurusRelawanRule;
-use Illuminate\Foundation\Http\FormRequest;
 
 class LetterRequest extends FormRequest
 {
@@ -29,7 +27,7 @@ class LetterRequest extends FormRequest
             && $user->canAny(
                 [
                     PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
-                    PermissionEnum::CREATE_LETTER_FOR_PENGURUS
+                    PermissionEnum::CREATE_LETTER_FOR_PENGURUS,
                 ]
             );
 
@@ -48,13 +46,13 @@ class LetterRequest extends FormRequest
                     ? new HasRoleRule([
                         RoleEnum::PENGURUS_WILAYAH,
                         RoleEnum::RELAWAN_WILAYAH,
-                        RoleEnum::RELAWAN_BARU
+                        RoleEnum::RELAWAN_BARU,
                     ])
                     : new HasRoleRule([
                         RoleEnum::RELAWAN_WILAYAH,
-                        RoleEnum::RELAWAN_BARU
-                    ])
-            ]
+                        RoleEnum::RELAWAN_BARU,
+                    ]),
+            ],
         ];
     }
 }
