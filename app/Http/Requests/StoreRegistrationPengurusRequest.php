@@ -15,7 +15,7 @@ class StoreRegistrationPengurusRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->input('_mode') == 'draft') {
+        if ($this->boolean('_isDraft')) {
             return [
                 ...$this->pengurusRules(false),
             ];

@@ -49,7 +49,7 @@
                     <p class="m-0">Mohon untuk memperbaiki data sesuai dengan arahan berikut</p>
                     <hr class="m-0 mt-2">
                   @endif
-                  <p class="mt-2">{{ $letter->message }}</p>
+                  <p class="mt-2">{{ $registration->message }}</p>
                 </div>
               @endif
             </div>
@@ -126,13 +126,13 @@
                 </div>
 
                 <div class="card bg-primary-lt shadow position-sticky bottom-0 z-3">
-                  <input type="hidden" name="_mode" x-bind:value="isDraft ? 'draft' : 'submit'">
+                  <input type="hidden" name="_isDraft" x-model="isDraft">
                   <div class="card-body btn-list">
-                    <button class="btn btn-primary" @click="isDraft = false">
+                    <button class="btn btn-primary">
                       <x-lucide-send class="icon" />
                       Ajukan
                     </button>
-                    <button class="btn btn-secondary" @click="isDraft = true">
+                    <button class="btn btn-secondary" x-on:click="isDraft = true">
                       <x-lucide-save class="icon" />
                       Simpan Sementara
                     </button>

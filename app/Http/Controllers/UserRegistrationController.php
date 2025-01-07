@@ -115,16 +115,16 @@ class UserRegistrationController extends Controller
         $registrationData = [
             'type' => $type,
             // Jika disimpan dalam mode 'DRAFT', atur status ke 'DRAFT', jika tidak, atur ke 'DIPROSES'
-            'status' => ($request->_mode == 'draft')
+            'status' => ($request->boolean('_isDraft'))
                 ? RegistrationStatusEnum::DRAFT
                 : RegistrationStatusEnum::DIPROSES,
-            'step' => ($request->_mode == 'draft')
+            'step' => ($request->boolean('_isDraft'))
                 // Jika disimpan dalam mode 'DRAFT', atur step ke 'MENGISI' untuk relawan baru atau lama
                 ? ($type == RegistrationTypeEnum::RELAWAN_BARU
                     ? RegistrationBaruStepEnum::MENGISI
                     : RegistrationLamaStepEnum::MENGISI)
                 : ($type == RegistrationTypeEnum::RELAWAN_BARU
-                    // Jika disimpan dalam mode 'SUBMIT', atur step berdasarkan jenis registrasi
+                    // Jika tidak, atur step berdasarkan jenis registrasi
                     ? RegistrationBaruStepEnum::PROFILING
                     : RegistrationLamaStepEnum::VERIFIKASI),
         ];
@@ -132,7 +132,7 @@ class UserRegistrationController extends Controller
         // Bila status registrasi dalam 'REVISI' dan disimpan sebagai 'DRAFT', pertahankan status sebagai 'REVISI'
         if (
             $registration?->status == RegistrationStatusEnum::REVISI
-            && $request->_mode == 'draft'
+            && $request->boolean('_isDraft')
         ) {
             $registrationData['status'] = RegistrationStatusEnum::REVISI;
         }
@@ -180,7 +180,7 @@ class UserRegistrationController extends Controller
             );
         });
 
-        if ($request->_mode == 'draft') {
+        if ($request->boolean('_isDraft')) {
             flash()->success('Berhasil. Data telah disimpan sementara.');
         } else {
             flash()->success('Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.');
@@ -205,11 +205,11 @@ class UserRegistrationController extends Controller
         $registrationData = [
             'type' => $type,
             // Jika disimpan dalam mode 'DRAFT', atur status ke 'DRAFT', jika tidak, atur ke 'DIPROSES'
-            'status' => ($request->_mode == 'draft')
+            'status' => ($request->boolean('_isDraft'))
                 ? RegistrationStatusEnum::DRAFT
                 : RegistrationStatusEnum::DIPROSES,
             // Jika disimpan dalam mode 'DRAFT', atur status ke 'MENGISI', jika tidak, atur ke 'VERIFIKASI'
-            'step' => ($request->_mode == 'draft')
+            'step' => ($request->boolean('_isDraft'))
                 ? RegistrationLamaStepEnum::MENGISI
                 : RegistrationLamaStepEnum::VERIFIKASI,
         ];
@@ -217,7 +217,7 @@ class UserRegistrationController extends Controller
         // Bila status registrasi dalam 'REVISI' dan disimpan sebagai 'DRAFT', pertahankan status sebagai 'REVISI'
         if (
             $registration?->status == RegistrationStatusEnum::REVISI
-            && $request->_mode == 'draft'
+            && $request->boolean('_isDraft')
         ) {
             $registrationData['status'] = RegistrationStatusEnum::REVISI;
         }
@@ -254,7 +254,7 @@ class UserRegistrationController extends Controller
             );
         });
 
-        if ($request->_mode == 'draft') {
+        if ($request->boolean('_isDraft')) {
             flash()->success('Berhasil. Data telah disimpan sementara.');
         } else {
             flash()->success('Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.');

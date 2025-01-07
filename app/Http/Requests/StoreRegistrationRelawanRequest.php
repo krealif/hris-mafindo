@@ -26,7 +26,7 @@ class StoreRegistrationRelawanRequest extends FormRequest
             Rule::unique('users', 'no_relawan')->ignore(Auth::user()),
         ];
 
-        if ($this->input('_mode') == 'draft') {
+        if ($this->boolean('_isDraft')) {
             return [
                 ...$this->relawanRules(false),
                 'no_relawan' => $noRelawanRule,

@@ -115,8 +115,8 @@
               </div>
             </div>
             <div class="col-12 col-md-9">
-              <form method="POST" action="{{ route('registrasi.store', $type->value) }}" class="vstack gap-3" x-data="{ isDraft: false }" x-bind:novalidate="isDraft"
-                enctype="multipart/form-data" autocomplete="off">
+              <form method="POST" action="{{ route('registrasi.store', $type->value) }}" class="vstack gap-3" x-data="{ isDraft: false }" novalidate enctype="multipart/form-data"
+                autocomplete="off">
                 @csrf
                 <div id="informasi-pribadi" class="card card-mafindo">
                   <div class="card-header">
@@ -487,9 +487,9 @@
                 </div>
 
                 <div class="card bg-primary-lt shadow position-sticky bottom-0 z-3">
-                  <input type="hidden" name="_mode" x-bind:value="isDraft ? 'draft' : 'submit'">
+                  <input type="hidden" name="_isDraft" x-model="isDraft">
                   <div class="card-body btn-list">
-                    <button class="btn btn-primary" x-on:click="isDraft = false">
+                    <button class="btn btn-primary">
                       <x-lucide-send class="icon" />
                       Ajukan
                     </button>
