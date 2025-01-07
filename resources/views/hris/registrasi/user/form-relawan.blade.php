@@ -187,7 +187,7 @@
                       </div>
                     </div>
                     <div class="mt-3">
-                      <p class="m-0">Pastikan file foto yang Anda upload memenuhi ketentuan sebagai berikut:</p>
+                      <p class="m-0">Pastikan foto yang Anda upload memenuhi ketentuan berikut:</p>
                       <ul class="mt-1">
                         <li>Dimensi: <strong>1000x1000 pixel</strong> atau memiliki <strong>rasio 1:1</strong></li>
                         <li>Ukuran File: <strong>Maksimal 1 MB</strong></li>

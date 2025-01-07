@@ -12,7 +12,7 @@
   @endif
   <div class="card card-mafindo">
     <div class="card-header d-block">
-      <h2 class="h2 mb-2">Lupa Password</h2>
+      <h1 class="h2 mb-2">Lupa Password</h1>
       <p class="text-muted mb-0">Tuliskan email Anda di bawah ini dan kami akan mengirimkan email yang berisi tautan untuk mengatur ulang password Anda.</p>
     </div>
     <div class="card-body">

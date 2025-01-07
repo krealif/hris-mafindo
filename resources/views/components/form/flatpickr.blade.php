@@ -30,28 +30,32 @@
     </div>
   @enderror
 @endif
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const options = {
-      locale: 'id',
-      altInput: true,
-      altFormat: "d/m/Y",
-      dateFormat: "Y-m-d",
-    };
+@isset($script)
+  {{ $script }}
+@else
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const options = {
+        locale: 'id',
+        altInput: true,
+        altFormat: "d/m/Y",
+        dateFormat: "Y-m-d",
+      };
 
-    @if ($maxDate)
-      options['maxDate'] = @js($maxDate);
-    @endif
+      @if ($maxDate)
+        options['maxDate'] = @js($maxDate);
+      @endif
 
-    @if ($minDate)
-      options['minDate'] = @js($minDate);
-    @endif
+      @if ($minDate)
+        options['minDate'] = @js($minDate);
+      @endif
 
-    if (window.flatpickr) {
-      flatpickr(@js('#' . $id), options);
-    }
-  });
-</script>
+      if (window.flatpickr) {
+        flatpickr(@js('#' . $id), options);
+      }
+    });
+  </script>
+@endisset
 
 @once
   @push('styles')

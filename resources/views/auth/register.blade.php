@@ -5,7 +5,7 @@
 @section('content')
   <div class="card card-mafindo">
     <div class="card-header">
-      <h2 class="h2 mb-0">Registrasi Akun Baru</h2>
+      <h1 class="h2 mb-0">Registrasi Akun Baru</h1>
     </div>
     <div class="card-body">
       <form action="{{ route('register.store') }}" method="POST" autocomplete="off">

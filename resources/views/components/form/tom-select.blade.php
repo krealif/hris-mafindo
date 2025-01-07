@@ -45,6 +45,7 @@
     });
   </script>
 @endisset
+
 @once
   @push('styles')
     <link rel="stylesheet" href="{{ asset('static/vendor/tom-select.min.css') }}">
