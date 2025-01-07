@@ -50,7 +50,7 @@ class Registration extends Model
     protected function step(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => $this->type == RegistrationTypeEnum::RELAWAN_BARU
+            get: fn (string $value) => $this->type == RegistrationTypeEnum::RELAWAN_BARU
                 ? RegistrationBaruStepEnum::from($value)
                 : RegistrationLamaStepEnum::from($value),
         );

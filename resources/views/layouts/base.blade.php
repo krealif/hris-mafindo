@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   <link href="{{ asset('static/vendor/tabler.min.css') }}" rel="stylesheet" />
   <link rel="stylesheet" href="{{ asset('static/css/style.css') }}">
+  <script src="{{ asset('static/vendor/alpine.min.js') }}" defer></script>
   @stack('styles')
 </head>
 
@@ -18,7 +19,6 @@
 
   <!-- Scripts -->
   <script src="{{ asset('static/vendor/tabler.min.js') }}"></script>
-  <script src="{{ asset('static/vendor/alpine.min.js') }}" defer></script>
   <script src="{{ asset('static/vendor/alpine-mask.min.js') }}"></script>
   @stack('scripts')
   <!-- SVG sprites -->

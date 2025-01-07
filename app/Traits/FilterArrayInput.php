@@ -17,7 +17,7 @@ trait FilterArrayInput
             // If the field exists, filter empty values
             if (isset($validated[$field])) {
                 $validated[$field] = array_filter($validated[$field], function ($item) {
-                    return ! empty(array_filter($item, fn($value) => ! is_null($value) && $value !== ''));
+                    return ! empty(array_filter($item, fn ($value) => ! is_null($value) && $value !== ''));
                 });
             } else {
                 // If the field does not exist, set it to null

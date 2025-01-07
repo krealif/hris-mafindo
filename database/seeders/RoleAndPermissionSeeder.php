@@ -22,12 +22,43 @@ class RoleAndPermissionSeeder extends Seeder
         foreach (PermissionEnum::cases() as $permission) {
             Permission::updateOrCreate(['name' => $permission->value]);
         }
-        // Create roles.
-        foreach (RoleEnum::cases() as $permission) {
-            Role::updateOrCreate(['name' => $permission->value]);
-        }
 
-        // Create admin roles and assign permissions.
-        $admin = Role::updateOrCreate(['name' => RoleEnum::ADMIN->value]);
+        // Define roles and their corresponding permissions
+        $rolesPermissions = [
+            RoleEnum::ADMIN->value => [
+                PermissionEnum::VIEW_ALL_LETTER,
+                PermissionEnum::CREATE_LETTER,
+                PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
+                PermissionEnum::CREATE_LETTER_FOR_PENGURUS,
+                PermissionEnum::HANDLE_LETTER,
+                PermissionEnum::DELETE_ALL_LETTERS,
+            ],
+            RoleEnum::PENGURUS_WILAYAH->value => [
+                PermissionEnum::VIEW_LETTER,
+                PermissionEnum::CREATE_LETTER,
+                PermissionEnum::EDIT_LETTER,
+                PermissionEnum::DELETE_LETTER,
+                PermissionEnum::VIEW_RELAWAN_LETTER,
+                PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
+            ],
+            RoleEnum::RELAWAN_WILAYAH->value => [
+                PermissionEnum::VIEW_LETTER,
+                PermissionEnum::CREATE_LETTER,
+                PermissionEnum::EDIT_LETTER,
+                PermissionEnum::DELETE_LETTER,
+            ],
+            RoleEnum::RELAWAN_BARU->value => [
+                PermissionEnum::VIEW_LETTER,
+                PermissionEnum::CREATE_LETTER,
+                PermissionEnum::EDIT_LETTER,
+                PermissionEnum::DELETE_LETTER,
+            ],
+        ];
+
+        // Create roles and sync permissions
+        foreach ($rolesPermissions as $roleName => $permissions) {
+            $role = Role::updateOrCreate(['name' => $roleName]);
+            $role->syncPermissions($permissions);
+        }
     }
 }

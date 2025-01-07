@@ -153,10 +153,50 @@ table .datagrid-title {
     box-shadow: var(--tblr-btn-active-shadow);
 }
 
-/** Button Custom **/
-
 .btn-sec-yellow {
     background-color: var(--secondary-yellow);
+}
+
+trix-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+trix-toolbar .trix-button {
+    background: #fff !important;
+}
+
+trix-editor {
+    min-height: 180px !important;
+}
+
+trix-editor.form-control.is-invalid {
+    background: unset;
+}
+
+@media (max-width: 767.98px) {
+    .table-mobile-md .btn {
+        display: flex;
+    }
+
+    .table-mobile-md tr {
+        padding-top: .25rem;
+        padding-bottom: .25rem;
+    }
+
+    .table-mobile-md tr:not(:last-child) {
+        border-bottom: solid 16px var(--tblr-primary-lt);
+    }
+
+    .table-mobile-md td {
+        font-size: 1rem;
+    }
+
+    .table-mobile-md td[data-label]::before {
+        font-size: .85rem;
+        margin-bottom: .5rem;
+    }
 }
 
 /* * Design System*

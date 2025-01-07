@@ -2,6 +2,7 @@
     'id' => null,
     'name' => null,
     'showError' => true,
+    'showIcon' => true,
     'required' => false,
     'maxDate' => null,
     'minDate' => null,
@@ -12,12 +13,23 @@
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
 @endphp
 
-<div class="input-icon">
-  <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-    <x-lucide-calendar class="icon" />
-  </span>
+@if ($showIcon)
+  <div class="input-icon">
+    <span class="input-icon-addon">
+      <x-lucide-calendar class="icon" />
+    </span>
+    <input id="{{ $id }}" name="{{ $name }}" type="text" autocomplete="off" {{ $attributes }} @required($required)>
+  </div>
+@else
   <input id="{{ $id }}" name="{{ $name }}" type="text" autocomplete="off" {{ $attributes }} @required($required)>
-</div>
+@endif
+@if ($showError)
+  @error($name)
+    <div class="invalid-feedback" role="alert">
+      <strong>{{ $message }}</strong>
+    </div>
+  @enderror
+@endif
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const options = {
@@ -27,29 +39,26 @@
       dateFormat: "Y-m-d",
     };
 
-    @if ($maxDate || $minDate)
-      options['{{ $maxDate ? 'maxDate' : 'minDate' }}'] = '{{ $maxDate ?? $minDate }}';
+    @if ($maxDate)
+      options['maxDate'] = @js($maxDate);
+    @endif
+
+    @if ($minDate)
+      options['minDate'] = @js($minDate);
     @endif
 
     if (window.flatpickr) {
-      flatpickr({{ Js::from('#' . $id) }}, options);
+      flatpickr(@js('#' . $id), options);
     }
   });
 </script>
-@if ($showError)
-  @error($name)
-    <div class="invalid-feedback" role="alert">
-      <strong>{{ $message }}</strong>
-    </div>
-  @enderror
-@endif
 
 @once
   @push('styles')
     <link rel="stylesheet" href="{{ asset('static/vendor/flatpickr.min.css') }}">
   @endpush
   @push('scripts')
-    <script src="{{ asset('static/vendor/flatpickr.min.js') }}"></script>
-    <script src="{{ asset('static/vendor/flatpickr.id.js') }}"></script>
+    <script src="{{ asset('static/vendor/flatpickr.min.js') }}" defer></script>
+    <script src="{{ asset('static/vendor/flatpickr.id.js') }}" defer></script>
   @endpush
 @endonce

@@ -68,7 +68,7 @@ trait HasUploadFile
     public function generateFileName(UploadedFile $file): string
     {
         $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $filename = substr($filename, 0, 20);
+        $filename = Str::kebab(substr($filename, 0, 20));
 
         $extension = $file->getClientOriginalExtension();
         $randomString = Str::random(16);

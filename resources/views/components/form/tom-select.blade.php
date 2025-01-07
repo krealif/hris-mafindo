@@ -5,6 +5,7 @@
     'selected' => null,
     'showError' => true,
     'required' => false,
+    'script' => null,
 ])
 
 @php
@@ -21,28 +22,34 @@
     <option value="{{ $value }}" @selected(in_array($value, $selectedValue))>{{ $label }}</option>
   @endforeach
 </select>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    if (window.TomSelect) {
-      new TomSelect('#{{ $id }}', {
-        plugins: @json($attributes['multiple'] ? ['caret_position', 'checkbox_options'] : []),
-      });
-    }
-  });
-</script>
-@if ($showError)
+@if ($showError && !$attributes['multiple'])
   @error($name)
     <div class="invalid-feedback" role="alert">
       <strong>{{ $message }}</strong>
     </div>
   @enderror
 @endif
-
+@isset($script)
+  {{ $script }}
+@else
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.TomSelect) {
+        new TomSelect(@js('#' . $id), {
+          plugins: @json($attributes['multiple'] ? ['caret_position', 'checkbox_options'] : []),
+          onItemAdd: function() {
+            this.setTextboxValue('');
+          },
+        });
+      }
+    });
+  </script>
+@endisset
 @once
   @push('styles')
     <link rel="stylesheet" href="{{ asset('static/vendor/tom-select.min.css') }}">
   @endpush
   @push('scripts')
-    <script src="{{ asset('static/vendor/tom-select.complete.min.js') }}"></script>
+    <script src="{{ asset('static/vendor/tom-select.complete.min.js') }}" defer></script>
   @endpush
 @endonce
