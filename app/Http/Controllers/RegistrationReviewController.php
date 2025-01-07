@@ -27,11 +27,11 @@ class RegistrationReviewController extends Controller
     {
         $registrations = QueryBuilder::for(Registration::class)
             ->allowedFilters([
-                'user.nama',
-                'user.email',
+                AllowedFilter::partial('nama', 'user.nama'),
+                AllowedFilter::partial('email', 'user.email'),
                 AllowedFilter::exact('type'),
                 AllowedFilter::exact('step'),
-                AllowedFilter::exact('user.branch_id'),
+                AllowedFilter::exact('branch_id', 'user.branch_id'),
             ])
             ->where('status', RegistrationStatusEnum::DIPROSES)
             ->with('user.branch')
@@ -53,12 +53,12 @@ class RegistrationReviewController extends Controller
     {
         $registrations = QueryBuilder::for(Registration::class)
             ->allowedFilters([
-                'user.nama',
-                'user.email',
+                AllowedFilter::partial('nama', 'user.nama'),
+                AllowedFilter::partial('email', 'user.email'),
                 AllowedFilter::exact('type'),
                 AllowedFilter::exact('step'),
                 AllowedFilter::exact('status'),
-                AllowedFilter::exact('user.branch_id'),
+                AllowedFilter::exact('branch_id', 'user.branch_id'),
             ])
             ->with('user.branch')
             ->orderBy('updated_at', 'desc')

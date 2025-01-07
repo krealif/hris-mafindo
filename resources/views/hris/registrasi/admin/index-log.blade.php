@@ -27,13 +27,13 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dt.datatable search="user.nama" searchPlaceholder="Nama relawan" total="{{ $registrations->count() }}">
+        <x-dt.datatable search="nama" searchPlaceholder="Nama relawan" total="{{ $registrations->count() }}">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row g-4">
               <div class="col-12 col-md-6 col-lg-3">
                 <label for="email" class="form-label">Email</label>
-                <x-form.input id="email" name="user.email" type="text" value="{{ request()->filter['user.email'] ?? '' }}" :showError=false />
+                <x-form.input name="email" type="text" value="{{ request()->filter['email'] ?? '' }}" :showError=false />
               </div>
               <div class="col-12 col-md-6 col-lg-3">
                 <label for="type" class="form-label">Tipe</label>
@@ -55,8 +55,8 @@
                 <x-form.tom-select name="status" multiple selected="{{ request()->filter['status'] ?? '' }}" :showError=false :options="App\Enums\RegistrationStatusEnum::labels()" />
               </div>
               <div class="col-12 col-md-6 col-lg-3">
-                <label for="branch" class="form-label">Wilayah</label>
-                <x-form.tom-select id="branch" multiple name="user.branch_id" :options=$branches :showError=false selected="{{ request()->filter['user.branch_id'] ?? '' }}" />
+                <label for="branch-id" class="form-label">Wilayah</label>
+                <x-form.tom-select multiple name="branch_id" :options=$branches :showError=false selected="{{ request()->filter['branch_id'] ?? '' }}" />
               </div>
             </div>
           </x-slot>
