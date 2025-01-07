@@ -228,14 +228,14 @@
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="medsos-facebook" class="form-label">Akun Facebook</label>
                         <x-form.input id="medsos-facebook" name="medsos[facebook]" type="text" placeholder="Nama Akun"
-                          value="{{ old('medsos.facebook', $userDetail?->medsos?->facebook) }}" />
+                          value="{{ old('medsos.facebook', $userDetail?->medsos->facebook) }}" />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="medsos-instagram" class="form-label">Akun Instagram</label>
                         <div class="input-group mb-2">
                           <span class="input-group-text">@</span>
                           <x-form.input id="medsos-instagram" name="medsos[instagram]" type="text" placeholder="username"
-                            value="{{ old('medsos.instagram', $userDetail?->medsos?->instagram) }}" />
+                            value="{{ old('medsos.instagram', $userDetail?->medsos->instagram) }}" />
                         </div>
                       </div>
                     </div>
@@ -245,7 +245,7 @@
                         <div class="input-group mb-2">
                           <span class="input-group-text">@</span>
                           <x-form.input id="medsos-tiktok" name="medsos[tiktok]" type="text" placeholder="username"
-                            value="{{ old('medsos.tiktok', $userDetail?->medsos?->tiktok) }}" />
+                            value="{{ old('medsos.tiktok', $userDetail?->medsos->tiktok) }}" />
                         </div>
                       </div>
                       <div class="col-12 col-md-6">
@@ -253,7 +253,7 @@
                         <div class="input-group mb-2">
                           <span class="input-group-text">@</span>
                           <x-form.input id="medsos-twitter" name="medsos[twitter]" type="text" placeholder="username"
-                            value="{{ old('medsos.twitter', $userDetail?->medsos?->twitter) }}" />
+                            value="{{ old('medsos.twitter', $userDetail?->medsos->twitter) }}" />
                         </div>
                       </div>
                     </div>

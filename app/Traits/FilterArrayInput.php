@@ -11,20 +11,41 @@ trait FilterArrayInput
      * @param  array<string>  $fields
      * @return array<string, mixed>
      */
-    private function filterArrayField(array $validated, array $fields): array
+    private function filterArrayInput(array $validated, array $fields): array
     {
         foreach ($fields as $field) {
-            // If the field exists, filter empty values
             if (isset($validated[$field])) {
-                $validated[$field] = array_filter($validated[$field], function ($item) {
-                    return ! empty(array_filter($item, fn ($value) => ! is_null($value) && $value !== ''));
-                });
+                $filteredValue = $this->filterFieldValue($validated[$field]);
+
+                if ($filteredValue !== null) {
+                    $validated[$field] = [...$filteredValue];
+                } else {
+                    unset($validated[$field]);
+                }
             } else {
-                // If the field does not exist, set it to null
                 $validated[$field] = null;
             }
         }
 
         return $validated;
+    }
+
+    /**
+     * Filter individual field value recursively.
+     *
+     * @param mixed $value
+     * @return mixed|null
+     */
+    private function filterFieldValue($value): mixed
+    {
+        if (is_array($value)) {
+            // Recursively filter nested arrays
+            $filteredArray = array_filter($value, function ($item) {
+                return $this->filterFieldValue($item) !== null;
+            });
+            return !empty($filteredArray) ? $filteredArray : null;
+        }
+
+        return !is_null($value) && $value !== '' ? $value : null;
     }
 }

@@ -223,10 +223,10 @@
                 <div class="datagrid">
                   <x-datagrid-item title="Nomor Whatsapp" content="{{ $user->detail->no_wa }}" />
                   <x-datagrid-item title="Nomor HP" content="{{ $user->detail->no_wa }}" />
-                  <x-datagrid-item title="Akun Facebook" content="{{ $user->detail->medsos?->facebook }}" />
-                  <x-datagrid-item title="Akun Instagram" content="{{ $user->detail->medsos?->instagram }}" />
-                  <x-datagrid-item title="Akun Tiktok" content="{{ $user->detail->medsos?->tiktok }}" />
-                  <x-datagrid-item title="Akun Twitter" content="{{ $user->detail->medsos?->twitter }}" />
+                  <x-datagrid-item title="Akun Facebook" content="{{ $user->detail->medsos->facebook }}" />
+                  <x-datagrid-item title="Akun Instagram" content="{{ $user->detail->medsos->instagram }}" />
+                  <x-datagrid-item title="Akun Tiktok" content="{{ $user->detail->medsos->tiktok }}" />
+                  <x-datagrid-item title="Akun Twitter" content="{{ $user->detail->medsos->twitter }}" />
                 </div>
               </div>
             </div>

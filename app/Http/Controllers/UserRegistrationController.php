@@ -96,7 +96,8 @@ class UserRegistrationController extends Controller
         $validated = $request->validated();
 
         // Filter untuk menghapus entri kosong dalam array
-        $validated = $this->filterArrayField($validated, [
+        $validated = $this->filterArrayInput($validated, [
+            'medsos',
             'pendidikan',
             'pekerjaan',
             'sertifikat',

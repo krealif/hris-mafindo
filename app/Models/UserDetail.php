@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Enums\AgamaEnum;
-use App\Enums\BidangMafindoEnum;
 use App\Enums\GenderEnum;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\BidangMafindoEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserDetail extends Model
 {
@@ -46,7 +47,6 @@ class UserDetail extends Model
      *     gender: 'App\Enums\GenderEnum',
      *     agama: 'App\Enums\AgamaEnum',
      *     bidang_mafindo: 'App\Enums\BidangMafindoEnum',
-     *     medsos: 'object',
      *     pendidikan: 'object',
      *     pekerjaan: 'object',
      *     sertifikat: 'object'
@@ -59,10 +59,29 @@ class UserDetail extends Model
             'gender' => GenderEnum::class,
             'agama' => AgamaEnum::class,
             'bidang_mafindo' => BidangMafindoEnum::class,
-            'medsos' => 'object',
             'pendidikan' => 'object',
             'pekerjaan' => 'object',
             'sertifikat' => 'object',
         ];
+    }
+
+    /**
+     * Get the social media information of the user.
+     * If the user has no social media data, returns default values.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<object, never>
+     */
+    protected function medsos(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value) {
+                $medsos = json_decode($value, true) ?: [];
+                $list = ['facebook', 'instagram', 'tiktok', 'twitter'];
+
+                $medsos = array_merge(array_fill_keys($list, null), $medsos);
+
+                return (object) $medsos;
+            },
+        );
     }
 }

@@ -56,7 +56,8 @@ class UserMigrationController extends Controller
     {
         $validated = $request->validated();
 
-        $validated = $this->filterArrayField($validated, [
+        $validated = $this->filterArrayInput($validated, [
+            'medsos',
             'pendidikan',
             'pekerjaan',
             'sertifikat',
@@ -116,7 +117,8 @@ class UserMigrationController extends Controller
     {
         $validated = $request->validated();
 
-        $validated = $this->filterArrayField($validated, [
+        $validated = $this->filterArrayInput($validated, [
+            'medsos',
             'pendidikan',
             'pekerjaan',
             'sertifikat',
