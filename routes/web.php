@@ -40,12 +40,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ], function () {
         Route::get('ajuan', 'index')->name('index');
         Route::get('log', 'indexLog')->name('indexLog');
-        Route::delete('prune', 'prune')->name('prune');
+        Route::delete('bulk-delete', 'bulkDelete')->name('bulkDelete');
 
         Route::get('ajuan/{registration}', 'show')->name('show');
         Route::patch('ajuan/{registration}/next', 'nextStep')->name('nextStep');
-        Route::patch('ajuan/{registration}/revisi', 'requestRevision')->name('revisi');
-        Route::patch('ajuan/{registration}/selesai', 'finishRegistration')->name('finish');
+        Route::patch('ajuan/{registration}/revisi', 'requestRevision')->name('requestRevision');
+        Route::patch('ajuan/{registration}/selesai', 'approveRegistration')->name('approve');
         Route::patch('ajuan/{registration}/tolak', 'rejectRegistration')->name('reject');
         Route::delete('ajuan/{registration}', 'destroy')->name('destroy');
     });
@@ -87,7 +87,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('ajuan/{letter}/attachment', 'downloadAttachment')->name('downloadAttachment');
     });
 
-    // Group of routes for admin to
+    // Group of routes for admin to handle letter submission
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => LetterReviewController::class,

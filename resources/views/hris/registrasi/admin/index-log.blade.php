@@ -146,7 +146,7 @@
   <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
   <div class="modal fade" id="bulk-delete" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <form method="POST" action="{{ route('registrasi.prune') }}" class="modal-content">
+      <form method="POST" action="{{ route('registrasi.bulkDelete') }}" class="modal-content">
         <div class="modal-status bg-danger"></div>
         <div class="modal-header">
           <h5 class="modal-title">Hapus Masal</h5>

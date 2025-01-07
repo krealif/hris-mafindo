@@ -101,9 +101,9 @@ class RegistrationPolicy
     }
 
     /**
-     * Determine whether the admin can finish the registration step.
+     * Determine whether the admin can approve the registration step.
      */
-    public function finish(User $user, Registration $registration): bool
+    public function approve(User $user, Registration $registration): bool
     {
         return $registration->status == RegistrationStatusEnum::DIPROSES
             && in_array($registration->step, [

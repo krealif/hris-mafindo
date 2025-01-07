@@ -164,11 +164,11 @@ class RegistrationReviewController extends Controller
     }
 
     /**
-     * Complete the registration process for a user.
+     * Approve the registration process for a user.
      */
-    public function finishRegistration(Request $request, Registration $registration): RedirectResponse
+    public function approveRegistration(Request $request, Registration $registration): RedirectResponse
     {
-        Gate::authorize('finish', $registration);
+        Gate::authorize('approve', $registration);
 
         $type = $registration->type;
 
@@ -250,7 +250,7 @@ class RegistrationReviewController extends Controller
     /**
      * Remove old registration records based on the provided criteria.
      */
-    public function prune(Request $request): RedirectResponse
+    public function bulkDelete(Request $request): RedirectResponse
     {
         $total = 0;
 
