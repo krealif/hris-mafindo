@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Buat | Ajuan Surat',
+    'title' => 'Buat Ajuan Surat',
 ])
 
 @section('content')

@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => ($tempUser ? $tempUser->nama : 'Tambah') . ' | Migrasi Data Relawan',
+    'title' => ($tempUser ? $tempUser->nama : 'Tambah') . ' Data Relawan',
 ])
 
 @section('content')
