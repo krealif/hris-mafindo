@@ -35,10 +35,10 @@
             </ul>
           </x-alert>
         @endif
-        <form class="card" method="POST" x-data="{ _withRecipient: {{ old('_withRecipient', 'false') }} }" enctype="multipart/form-data">
+        <form class="card card-mafindo" method="POST" x-data="{ _withRecipient: {{ old('_withRecipient', 'false') }} }" enctype="multipart/form-data">
           @csrf
           @if (!Auth::user()->hasRole('admin') && Auth::user()->can('create-letter-for-relawan'))
-            <div class="card-header d-block">
+            <div class="card-body">
               <div class="btn-group w-100" role="group">
                 <input type="radio" x-model.boolean="_withRecipient" class="btn-check" id="type-pengurus" autocomplete="off" value="false">
                 <label for="type-pengurus" type="button" class="btn">Ajuan Saya</label>
@@ -70,7 +70,9 @@
               <label for="attachment" class="form-label">Upload Lampiran (opsional)</label>
               <div class="row g-2">
                 <div class="col">
-                  <x-form.input name="attachment" x-ref="fileInput" x-on:change="handleFileUpload" type="file" />
+                  <x-form.input name="attachment" x-ref="fileInput" x-on:change="handleFileUpload" type="file"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.jpg,.jpeg,.png" />
+                  <span class="d-block text-muted mt-1">pdf,docx,xlsx,pptx,zip,png,jpg (Max: 2 MB)</span>
                 </div>
                 <div class="col-12 col-sm-auto" x-show="filename">
                   <button x-on:click="cancelUpload" type="button" class="btn">
@@ -82,7 +84,7 @@
             </div>
           </div>
           <div class="card-body btn-list">
-            <button type="submit" class="btn btn-primary">Kirim</button>
+            <button type="submit" class="btn btn-primary">Ajukan</button>
             <a href="{{ Auth::user()->hasRole('admin') ? route('surat.index') : route('surat.letterbox') }}" class="btn">Batal</a>
           </div>
         </form>

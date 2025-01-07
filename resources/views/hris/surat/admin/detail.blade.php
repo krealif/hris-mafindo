@@ -207,11 +207,22 @@
                         <label for="admin" class="form-label required">Nama Admin</label>
                         <x-form.input name="admin" type="text" required />
                       </div>
-                      <div class="mb-4">
-                        <label for="file" class="form-label required">Upload Surat (PDF)</label>
-                        <x-form.input name="file" type="file" required />
+                      <div class="mb-4" x-data="fileUpload">
+                        <label for="file" class="form-label required">File Surat</label>
+                        <div class="row g-2">
+                          <div class="col">
+                            <x-form.input name="file" x-ref="fileInput" x-on:change="handleFileUpload" type="file" accept=".pdf,.doc,.docx" required />
+                            <span class="d-block text-muted mt-1">pdf,docx (Max: 2 MB)</span>
+                          </div>
+                          <div class="col-12 col-sm-auto" x-show="filename">
+                            <button x-on:click="cancelUpload" type="button" class="btn">
+                              <x-lucide-circle-x class="icon text-red" />
+                              Batal
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                      <button class="btn btn-primary" type="submit">Simpan</button>
+                      <button class="btn btn-primary" type="submit">Upload</button>
                     </form>
                   </div>
                   @if (!$letter->createdBy->hasRole('admin'))
@@ -223,7 +234,7 @@
                           <label for="message" class="form-label required">Alasan</label>
                           <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan revisi" required />
                         </div>
-                        <button class="btn btn-primary" type="submit">Kirim</button>
+                        <button class="btn btn-primary" type="submit">Revisi Ajuan</button>
                       </form>
                     </div>
                   @endif
@@ -235,7 +246,7 @@
                         <label for="message" class="form-label required">Alasan</label>
                         <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan penolakan" required />
                       </div>
-                      <button class="btn btn-primary" type="submit">Kirim</button>
+                      <button class="btn btn-primary" type="submit">Tolak Ajuan</button>
                     </form>
                   </div>
                 </div>
@@ -327,4 +338,19 @@
       <x-modal-delete baseUrl="{{ route('surat.index') }}" />
     @endif
   @endcan
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('fileUpload', () => ({
+        filename: '',
+        cancelUpload() {
+          this.filename = '';
+          this.$refs.fileInput.value = '';
+        },
+        handleFileUpload(event) {
+          const fileInput = this.$refs.fileInput;
+          this.filename = fileInput.files.length > 0 ? fileInput.files[0].name : '';
+        }
+      }));
+    });
+  </script>
 @endsection

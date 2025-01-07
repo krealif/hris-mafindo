@@ -36,9 +36,9 @@ class LetterRequest extends FormRequest
             'body' => ['required', 'string', 'max:5000'],
             'attachment' => [
                 'nullable',
-                File::types(['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip'])
+                File::types(['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'png', 'jpg', 'jpeg'])
                     ->min('1kb')
-                    ->max('3mb'),
+                    ->max('2mb'),
             ],
             'recipients' => [$recipientsRequired ? 'required' : 'nullable', 'array', 'max:10'],
             'recipients.*' => [
