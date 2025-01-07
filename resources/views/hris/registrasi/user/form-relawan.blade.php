@@ -47,9 +47,13 @@
                 <x-registration-step current="{{ $registration?->step }}" :steps="App\Enums\RegistrationLamaStepEnum::steps()" />
               @endif
               @if (in_array($registration?->status->value, ['revisi', 'ditolak']))
-                <div class="card-body border-top">
-                  <h4 class="fs-3 text-red">{{ strtoupper($registration?->status->value) }}</h4>
-                  <p>{{ $registration->message }}</p>
+                <div class="card-body border-top bg-orange-lt text-dark">
+                  <h4 class="text-red text-uppercase m-0">Alasan {{ $registration?->status->value }}</h4>
+                  @if ($registration->status->value == 'revisi')
+                    <p class="m-0">Mohon untuk memperbaiki data sesuai dengan arahan berikut</p>
+                    <hr class="m-0 mt-2">
+                  @endif
+                  <p class="mt-2">{{ $registration->message }}</p>
                 </div>
               @endif
               @if ($registration?->status->value == 'diproses')
@@ -58,6 +62,8 @@
                     <x-datagrid-item title="Nama" content="{{ $user->nama }}" />
                     <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
                     <x-datagrid-item title="Nomor Kartu Relawan" content="{{ $user->no_relawan }}" />
+                    <x-datagrid-item title="Mendaftar" content="{{ $registration->created_at?->translatedFormat('d F Y / H:i') }}" />
+                    <x-datagrid-item title="Diperbarui" content="{{ $registration->updated_at?->translatedFormat('d F Y / H:i') }}" />
                   </div>
                 </div>
               @endif
@@ -130,7 +136,7 @@
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="tgl-lahir" class="form-label required">Tanggal Lahir</label>
-                        <x-form.flatpickr name="tgl_lahir" maxDate="today" value="{{ old('tgl_lahir', $userDetail?->tgl_lahir?->format('d-m-Y')) }}" required />
+                        <x-form.flatpickr name="tgl_lahir" maxDate="today" value="{{ old('tgl_lahir', $userDetail?->tgl_lahir) }}" required />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="gender" class="form-label required">Jenis Kelamin</label>
@@ -160,7 +166,7 @@
                   <div class="card-header">
                     <h2 class="card-title">Foto Profil</h2>
                   </div>
-                  <div class="card-body" x-data="imgPreview">
+                  <div class="card-body" x-data="imgPreview(@js($user->foto ? Storage::url($user->foto) : asset('static/img/img-up-placeholder.png')))">
                     <div class="row g-3">
                       <div class="col-auto">
                         <img id="frame" class="avatar avatar-xl" x-bind:src="newImg || img" />
@@ -172,8 +178,9 @@
                             <x-form.input name="foto" type="file" x-ref="imgInput" x-on:change="handleFileUpload" accept=".jpg,.jpeg,.png" :required="!$user?->foto" />
                           </div>
                           <div class="col-auto" x-show="newImg">
-                            <button x-on:click="cancelUpload" type="button" class="btn btn-icon">
-                              <x-lucide-image-minus class="icon text-red" />
+                            <button x-on:click="cancelUpload" type="button" class="btn">
+                              <x-lucide-circle-x class="icon text-red" />
+                              Batal
                             </button>
                           </div>
                         </div>
@@ -306,7 +313,7 @@
                   <div class="card-header">
                     <h2 class="card-title">Riwayat Pendidikan</h2>
                   </div>
-                  <div class="card-body" x-data="pendidikan">
+                  <div class="card-body" x-data="repeater(@js(old('pendidikan', $userDetail?->pendidikan)))">
                     @if ($errors->has('pendidikan.*'))
                       <x-alert class="alert-danger">
                         <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
@@ -368,7 +375,7 @@
                   <div class="card-header">
                     <h2 class="card-title">Riwayat Pekerjaan</h2>
                   </div>
-                  <div class="card-body" x-data="pekerjaan">
+                  <div class="card-body" x-data="repeater(@js(old('pekerjaan', $userDetail?->pekerjaan)))">
                     @if ($errors?->has('pekerjaan.*'))
                       <x-alert class="alert-danger">
                         <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
@@ -430,7 +437,7 @@
                   <div class="card-header">
                     <h2 class="card-title">Sertifikat Keahlian / Kompetensi (Sertifikasi)</h2>
                   </div>
-                  <div class="card-body" x-data="sertifikat">
+                  <div class="card-body" x-data="repeater(@js(old('sertifikat', $userDetail?->sertifikat)))">
                     @if ($errors?->has('sertifikat.*'))
                       <x-alert class="alert-danger">
                         <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
@@ -501,33 +508,20 @@
   </div>
   @can('create', [App\Models\Registration::class, $type])
     <script>
-      function createDynamicList(key, data) {
-        return () => ({
-          key,
+      document.addEventListener('alpine:init', () => {
+        Alpine.data('repeater', (data) => ({
           rows: data ?? [],
 
-          // Actions
           add() {
             this.rows.push({});
           },
           del(index) {
             this.rows.splice(index, 1);
           },
-        });
-      }
+        }));
 
-      document.addEventListener('alpine:init', () => {
-        const dataPendidikan = {{ Js::from(old('pendidikan', $userDetail?->pendidikan)) }};
-        Alpine.data('pendidikan', createDynamicList('pendidikan', dataPendidikan));
-
-        const dataPekerjaan = {{ Js::from(old('pekerjaan', $userDetail?->pekerjaan)) }};
-        Alpine.data('pekerjaan', createDynamicList('pekerjaan', dataPekerjaan));
-
-        const dataSertifikat = {{ Js::from(old('sertifikat', $userDetail?->sertifikat)) }};
-        Alpine.data('sertifikat', createDynamicList('sertifikat', dataSertifikat));
-
-        Alpine.data('imgPreview', () => ({
-          img: {{ Js::from($user->foto ? Storage::url($user->foto) : asset('static/img/img-up-placeholder.png')) }},
+        Alpine.data('imgPreview', (img) => ({
+          img,
           newImg: null,
           cancelUpload() {
             this.newImg = null;

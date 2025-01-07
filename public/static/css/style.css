@@ -175,6 +175,10 @@ trix-editor.form-control.is-invalid {
     background: unset;
 }
 
+.datatable .letter-title {
+    max-width: 280px;
+}
+
 @media (max-width: 767.98px) {
     .table-mobile-md .btn {
         display: flex;
@@ -196,6 +200,10 @@ trix-editor.form-control.is-invalid {
     .table-mobile-md td[data-label]::before {
         font-size: .85rem;
         margin-bottom: .5rem;
+    }
+
+    .datatable .letter-title {
+        max-width: 100%;
     }
 }
 

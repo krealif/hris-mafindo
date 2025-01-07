@@ -43,9 +43,13 @@
               </div>
               <x-registration-step current="{{ $registration?->step }}" :steps="App\Enums\RegistrationLamaStepEnum::steps()" />
               @if (in_array($registration?->status->value, ['revisi', 'ditolak']))
-                <div class="card-body border-top">
-                  <h4 class="fs-3 text-red">{{ strtoupper($registration?->status->value) }}</h4>
-                  <p>{{ $registration->message }}</p>
+                <div class="card-body border-top bg-orange-lt text-dark">
+                  <h4 class="text-red text-uppercase m-0">Alasan {{ $registration?->status->value }}</h4>
+                  @if ($registration->status->value == 'revisi')
+                    <p class="m-0">Mohon untuk memperbaiki data sesuai dengan arahan berikut</p>
+                    <hr class="m-0 mt-2">
+                  @endif
+                  <p class="mt-2">{{ $letter->message }}</p>
                 </div>
               @endif
             </div>

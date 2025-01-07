@@ -77,7 +77,7 @@
             <tbody>
               @foreach ($letters as $letter)
                 <tr x-data="{ id: {{ $letter->id }} }">
-                  <td data-label="Judul" style="max-width: 280px">
+                  <td data-label="Judul" class="letter-title">
                     <a href="{{ route('surat.show', $letter->id) }}" class="fw-medium">
                       <x-lucide-file-text class="d-none d-lg-inline icon me-1" defer />
                       {{ $letter->title }}
@@ -119,7 +119,7 @@
                   </td>
                   <td data-label="Tanggal">
                     <div>{{ $letter->updated_at?->translatedFormat('d M Y / H:i') }}</div>
-                    <div class="text-muted">{{ $letter->updated_at?->diffForHumans() }}</div>
+                    <div class="text-muted d-block d-md-none d-lg-block">{{ $letter->updated_at?->diffForHumans() }}</div>
                   </td>
                   <td data-label="Aksi">
                     <div class="btn-list flex-nowrap justify-content-md-end">

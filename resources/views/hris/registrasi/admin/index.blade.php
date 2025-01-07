@@ -57,7 +57,7 @@
             </div>
           </x-slot>
           <!-- Table Body -->
-          <table class="table table-vcenter card-table table-striped datatable">
+          <table class="table table-vcenter card-table table-mobile-md datatable">
             <thead class="table-primary">
               <tr>
                 <th>Nama</th>
@@ -65,30 +65,33 @@
                 <th>Tipe</th>
                 <th>Tahapan</th>
                 <th>Wilayah</th>
-                <th>Timestamp</th>
+                <th>Tanggal</th>
                 <th class="w-1"></th>
               </tr>
             </thead>
             <tbody>
               @foreach ($registrations as $registration)
                 <tr>
-                  <td>
+                  <td data-label="Nama">
                     <a href="{{ route('registrasi.show', $registration->id) }}" class="fw-medium">
                       <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
                       {{ $registration->user->nama }}
                     </a>
                   </td>
-                  <td>{{ $registration->user->email }}</td>
-                  <td>
+                  <td data-label="Email">{{ $registration->user->email }}</td>
+                  <td data-label="Tipe">
                     <x-badge class="fs-4" :case="$registration->type" />
                   </td>
-                  <td>
+                  <td data-label="Tahapan">
                     <x-badge class="fs-4" :case="$registration->step" />
                   </td>
-                  <td>{{ $registration->user->branch?->nama }}</td>
-                  <td>{{ $registration->updated_at?->diffForHumans() }}<br>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
-                  <td>
-                    <div class="btn-list flex-nowrap">
+                  <td data-label="Wilayah">{{ $registration->user->branch?->nama }}</td>
+                  <td data-label="Tanggal">
+                    <div>{{ $registration->updated_at?->translatedFormat('d M Y / H:i') }}</div>
+                    <div class="text-muted d-block d-md-none d-lg-block">{{ $registration->updated_at?->diffForHumans() }}</div>
+                  </td>
+                  <td data-label="Aksi">
+                    <div class="btn-list flex-nowrap justify-content-md-end">
                       <a href="{{ route('registrasi.show', $registration->id) }}" class="btn">
                         <x-lucide-eye class="icon" defer />
                         Lihat

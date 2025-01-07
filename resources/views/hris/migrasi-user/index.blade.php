@@ -46,32 +46,35 @@
             </div>
           </x-slot>
           <!-- Table Body -->
-          <table class="table table-vcenter card-table table-striped datatable">
+          <table class="table table-vcenter card-table table-mobile-md datatable">
             <thead class="table-primary">
               <tr>
                 <th>Nama</th>
                 <th>Email</th>
                 <th>Wilayah</th>
                 <th>No Relawan</th>
-                <th>Timestamp</th>
+                <th>Tanggal</th>
                 <th class="w-1"></th>
               </tr>
             </thead>
             <tbody>
               @foreach ($tempUsers as $user)
                 <tr x-data="{ id: {{ $user->id }} }">
-                  <td>
+                  <td data-label="Nama">
                     <a href="{{ route('migrasi.edit', $user->id) }}" class="fw-medium">
-                      <x-lucide-user class="icon me-1" defer />
+                      <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
                       {{ $user->nama }}
                     </a>
                   </td>
-                  <td>{{ $user->email }}</td>
-                  <td>{{ $user->branch?->nama }}</td>
-                  <td>{{ $user->no_relawan }}</td>
-                  <td>{{ $user->updated_at }}</td>
-                  <td>
-                    <div class="btn-list flex-nowrap justify-content-end">
+                  <td data-label="Email">{{ $user->email }}</td>
+                  <td data-label="Wilayah">{{ $user->branch?->nama ?? '-' }}</td>
+                  <td data-label="No Relawan">{{ $user->no_relawan ?? '-' }}</td>
+                  <td data-label="Tanggal">
+                    <div>{{ $user->updated_at?->translatedFormat('d M Y / H:i') }}</div>
+                    <div class="text-muted d-block d-md-none d-lg-block">{{ $user->updated_at?->diffForHumans() }}</div>
+                  </td>
+                  <td data-label="Aksi">
+                    <div class="btn-list flex-nowrap justify-content-md-end">
                       <a href="{{ route('migrasi.edit', $user->id) }}" class="btn">
                         <x-lucide-pencil class="icon text-blue" defer />
                         Edit

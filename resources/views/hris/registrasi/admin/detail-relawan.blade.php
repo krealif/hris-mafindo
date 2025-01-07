@@ -60,7 +60,7 @@
             @endif
             <div class="card-body border-top">
               <div class="row g-3">
-                <div class="col-auto">
+                <div class="col-12 col-lg-auto">
                   <img src="{{ $user->foto ? Storage::url($user->foto) : asset('static/img/profile-placeholder.png') }}" class="avatar avatar-xl" />
                 </div>
                 <div class="col">
@@ -74,29 +74,29 @@
                   </div>
                 </div>
               </div>
-              @if (in_array($registration->status->value, ['revisi', 'ditolak']))
-                <div class="card card-body mt-3">
-                  <h4 class="text-red text-uppercase">Alasan</h4>
-                  <p>{{ $registration->message }}</p>
-                </div>
-              @endif
               <div class="mt-3">
                 <table class="datagrid">
                   <tr>
                     <th class="datagrid-title">Mendaftar</th>
-                    <td>{{ $registration->created_at?->format('d/m/Y H:i') }}</td>
+                    <td>{{ $registration->created_at?->translatedFormat('d F Y / H:i') }}</td>
                   </tr>
                   <tr>
                     <th class="datagrid-title">Diperbarui</th>
-                    <td>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
+                    <td>{{ $registration->updated_at?->translatedFormat('d F Y / H:i') }}</td>
                   </tr>
                 </table>
               </div>
             </div>
+            @if (in_array($registration->status->value, ['revisi', 'ditolak']))
+              <div class="card-body bg-orange-lt text-dark">
+                <h4 class="text-red text-uppercase m-0">Alasan {{ $registration?->status->value }}</h4>
+                <p class="mt-2">{{ $registration->message }}</p>
+              </div>
+            @endif
             @if ($registration->status->value == 'diproses')
               <div class="card-body">
                 <ul class="nav nav-pills gap-2" role="tablist">
-                  @can('finish', $registration)
+                  @can('approve', $registration)
                     <li class="nav-item" role="presentation">
                       <a href="#tab-selesai" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-circle-check class="icon text-green me-2" />
@@ -131,9 +131,9 @@
                 </ul>
               </div>
               <div class="tab-content">
-                @can('finish', $registration)
+                @can('approve', $registration)
                   <div id="tab-selesai" class="tab-pane">
-                    <form method="POST" action="{{ route('registrasi.finish', $registration->id) }}" class="card-body border-top">
+                    <form method="POST" action="{{ route('registrasi.approve', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
                       @if ($registration->step->value == 'verifikasi')
@@ -167,12 +167,12 @@
                 @endcan
                 @can('requestRevision', $registration)
                   <div id="tab-revisi" class="tab-pane">
-                    <form method="POST" action="{{ route('registrasi.revisi', $registration->id) }}" class="card-body border-top">
+                    <form method="POST" action="{{ route('registrasi.requestRevision', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
                       <div class="mb-4">
                         <label for="message" class="form-label required">Alasan</label>
-                        <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan revisi" :showError=false required />
+                        <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan revisi" required />
                       </div>
                       <button class="btn btn-primary" type="submit">Kirim</button>
                     </form>
@@ -185,7 +185,7 @@
                       @method('PATCH')
                       <div class="mb-4">
                         <label for="message" class="form-label required">Pesan</label>
-                        <x-form.textarea name="message" rows="5" :showError=false required />
+                        <x-form.textarea name="message" rows="5" required />
                       </div>
                       <button class="btn btn-danger" type="submit">Tolak Registrasi</button>
                     </form>
@@ -207,7 +207,7 @@
                   <x-datagrid-item title="Nama Panggilan" content="{{ $user->detail->panggilan }}" />
                   <x-datagrid-item title="Email" content="{{ $user->email }}" />
                   <x-datagrid-item title="Tanggal Lahir"
-                    content="{{ $user->detail->tgl_lahir?->format('d/m/Y') }} ({{ floor($user->detail->tgl_lahir?->diffInYears()) }} Tahun)" />
+                    content="{{ $user->detail->tgl_lahir?->translatedFormat('d F Y') }} ({{ floor($user->detail->tgl_lahir?->diffInYears()) }} Tahun)" />
                   <x-datagrid-item title="Jenis Kelamin" content="{{ $user->detail->gender?->label() }}" />
                   <x-datagrid-item title="Agama" content="{{ $user->detail->agama?->label() }}" />
                   <x-datagrid-item title="Alamat Domisili Saat Ini" content="{{ $user->detail->alamat }}" />

@@ -260,7 +260,7 @@
                 <div class="card-header">
                   <h2 class="card-title">Riwayat Pendidikan</h2>
                 </div>
-                <div class="card-body" x-data="pendidikan">
+                <div class="card-body" x-data="repeater(@js(old('pendidikan', $userDetail?->pendidikan)))">
                   @if ($errors->has('pendidikan.*'))
                     <x-alert class="alert-danger">
                       <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
@@ -322,7 +322,7 @@
                 <div class="card-header">
                   <h2 class="card-title">Riwayat Pekerjaan</h2>
                 </div>
-                <div class="card-body" x-data="pekerjaan">
+                <div class="card-body" x-data="repeater(@js(old('pekerjaan', $userDetail?->pekerjaan)))">
                   @if ($errors?->has('pekerjaan.*'))
                     <x-alert class="alert-danger">
                       <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
@@ -384,7 +384,7 @@
                 <div class="card-header">
                   <h2 class="card-title">Sertifikat Keahlian / Kompetensi (Sertifikasi)</h2>
                 </div>
-                <div class="card-body" x-data="sertifikat">
+                <div class="card-body" x-data="repeater(@js(old('sertifikat', $userDetail?->sertifikat)))">
                   @if ($errors?->has('sertifikat.*'))
                     <x-alert class="alert-danger">
                       <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
@@ -452,48 +452,16 @@
     <x-modal-delete baseUrl="{{ route('migrasi.index') }}" />
   @endif
   <script>
-    function createDynamicList(key, data) {
-      return () => ({
-        key,
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('repeater', (data) => ({
         rows: data ?? [],
 
-        // Actions
         add() {
           this.rows.push({});
         },
         del(index) {
           this.rows.splice(index, 1);
         },
-      });
-    }
-
-    document.addEventListener('alpine:init', () => {
-      const dataPendidikan = {{ Js::from(old('pendidikan', $userDetail?->pendidikan)) }};
-      Alpine.data('pendidikan', createDynamicList('pendidikan', dataPendidikan));
-
-      const dataPekerjaan = {{ Js::from(old('pekerjaan', $userDetail?->pekerjaan)) }};
-      Alpine.data('pekerjaan', createDynamicList('pekerjaan', dataPekerjaan));
-
-      const dataSertifikat = {{ Js::from(old('sertifikat', $userDetail?->sertifikat)) }};
-      Alpine.data('sertifikat', createDynamicList('sertifikat', dataSertifikat));
-
-      Alpine.data('imgPreview', () => ({
-        img: null,
-        newImg: null,
-        cancelUpload() {
-          this.newImg = null;
-          this.$refs.imgInput.value = '';
-        },
-        handleFileUpload(event) {
-          const file = event.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-              this.newImg = reader.result;
-            };
-            reader.readAsDataURL(file);
-          }
-        }
       }));
     });
   </script>

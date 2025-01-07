@@ -71,7 +71,7 @@
             </div>
           </x-slot>
           <!-- Table Body -->
-          <table class="table table-vcenter card-table table-striped datatable">
+          <table class="table table-vcenter card-table table-mobile-md datatable">
             <thead class="table-primary">
               <tr>
                 <th>Nama</th>
@@ -80,14 +80,14 @@
                 <th>Tahapan</th>
                 <th>Status</th>
                 <th>Wilayah</th>
-                <th>Timestamp</th>
+                <th>Tanggal</th>
                 <th class="w-1"></th>
               </tr>
             </thead>
             <tbody>
               @foreach ($registrations as $registration)
                 <tr x-data="{ id: {{ $registration->id }} }">
-                  <td>
+                  <td data-label="Nama">
                     @if ($registration->type && (Gate::check('destroy', $registration) || $registration->step->value == 'mengisi'))
                       <a href="{{ route('registrasi.show', $registration->id) }}" class="fw-medium">
                         <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
@@ -95,27 +95,30 @@
                       </a>
                     @else
                       <span class="fw-medium">
-                        <x-lucide-user-cog class="icon me-1" defer />
+                        <x-lucide-user-cog class="d-none d-lg-inline icon me-1" defer />
                         {{ $registration->user->nama }}
                       </span>
                     @endif
                   </td>
-                  <td>{{ $registration->user->email }}</td>
-                  <td>
+                  <td data-label="Email">{{ $registration->user->email }}</td>
+                  <td data-label="Tipe">
                     @if ($registration->type)
                       <x-badge class="fs-4" :case="$registration->type" />
                     @endif
                   </td>
-                  <td>
+                  <td data-label="Tahapan">
                     <x-badge class="fs-4" :case="$registration->step" />
                   </td>
-                  <td>
+                  <td data-label="Status">
                     <x-badge class="fs-4" :case="$registration->status" />
                   </td>
-                  <td>{{ $registration->user->branch?->nama }}</td>
-                  <td>{{ $registration->updated_at?->diffForHumans() }}<br>{{ $registration->updated_at?->format('d/m/Y H:i') }}</td>
-                  <td>
-                    <div class="btn-list flex-nowrap">
+                  <td data-label="Wilayah">{{ $registration->user->branch?->nama }}</td>
+                  <td data-label="Tanggal">
+                    <div>{{ $registration->updated_at?->translatedFormat('d M Y / H:i') }}</div>
+                    <div class="text-muted d-block d-md-none d-lg-block">{{ $registration->updated_at?->diffForHumans() }}</div>
+                  </td>
+                  <td data-label="Aksi">
+                    <div class="btn-list flex-nowrap justify-content-md-end">
                       @if ($registration->type && (Gate::check('destroy', $registration) || $registration->step->value == 'mengisi'))
                         <a href="{{ route('registrasi.show', $registration->id) }}" class="btn btn-icon">
                           <x-lucide-eye class="icon" defer />
