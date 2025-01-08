@@ -32,6 +32,10 @@ class RoleAndPermissionSeeder extends Seeder
                 PermissionEnum::CREATE_LETTER_FOR_PENGURUS,
                 PermissionEnum::HANDLE_LETTER,
                 PermissionEnum::DELETE_ALL_LETTERS,
+                PermissionEnum::VIEW_EVENT,
+                PermissionEnum::CREATE_EVENT,
+                PermissionEnum::EDIT_EVENT,
+                PermissionEnum::DELETE_EVENT,
             ],
             RoleEnum::PENGURUS_WILAYAH->value => [
                 PermissionEnum::VIEW_LETTER,
@@ -46,12 +50,16 @@ class RoleAndPermissionSeeder extends Seeder
                 PermissionEnum::CREATE_LETTER,
                 PermissionEnum::EDIT_LETTER,
                 PermissionEnum::DELETE_LETTER,
+                PermissionEnum::VIEW_EVENT,
+                PermissionEnum::JOIN_EVENT,
             ],
             RoleEnum::RELAWAN_BARU->value => [
                 PermissionEnum::VIEW_LETTER,
                 PermissionEnum::CREATE_LETTER,
                 PermissionEnum::EDIT_LETTER,
                 PermissionEnum::DELETE_LETTER,
+                PermissionEnum::VIEW_EVENT,
+                PermissionEnum::JOIN_EVENT,
             ],
         ];
 

@@ -32,7 +32,7 @@
                 Edit
               </a>
             @endcan
-            @can('destroy', $letter)
+            @can('delete', $letter)
               <a class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#modal-delete" x-data="{ id: {{ $letter->id }} }" x-on:click="$dispatch('set-id', { id })">
                 <x-lucide-trash-2 class="icon text-red" />
               </a>
@@ -244,7 +244,7 @@
       </div>
     </div>
   </div>
-  @can('destroy', $letter)
+  @can('delete', $letter)
     <x-modal-delete baseUrl="{{ route('surat.index') }}" />
   @endcan
 @endsection

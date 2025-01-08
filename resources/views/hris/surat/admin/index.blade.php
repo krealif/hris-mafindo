@@ -11,7 +11,7 @@
           <h1 class="page-title">
             Proses Permohonan Surat
           </h1>
-          @can('create-letter')
+          @can('create', App\Models\Letter::class)
             <a href="{{ route('surat.create') }}" class="btn btn-primary">
               <x-lucide-plus class="icon" />
               Buat

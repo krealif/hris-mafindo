@@ -11,7 +11,7 @@
           <h1 class="page-title">
             Kotak Surat
           </h1>
-          @can('create-letter')
+          @can('create', App\Models\Letter::class)
             <a href="{{ route('surat.create') }}" class="btn btn-primary">
               <x-lucide-plus class="icon" />
               Buat Permohonan
@@ -129,7 +129,7 @@
                         <x-lucide-eye class="icon" defer />
                         {{ in_array($letter->status->value, ['diproses', 'ditolak']) ? 'Lihat' : '' }}
                       </a>
-                      @can('destroy', $letter)
+                      @can('delete', $letter)
                         <button class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#modal-delete" x-on:click="$dispatch('set-id', { id })">
                           <x-lucide-trash-2 class="icon text-red" defer />
                         </button>

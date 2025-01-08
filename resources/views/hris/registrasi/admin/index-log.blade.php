@@ -88,7 +88,7 @@
               @foreach ($registrations as $registration)
                 <tr x-data="{ id: {{ $registration->id }} }">
                   <td data-label="Nama">
-                    @if ($registration->type && (Gate::check('destroy', $registration) || $registration->step->value == 'mengisi'))
+                    @if ($registration->type && (Gate::check('delete', $registration) || $registration->step->value == 'mengisi'))
                       <a href="{{ route('registrasi.show', $registration->id) }}" class="fw-medium">
                         <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
                         {{ $registration->user->nama }}
@@ -119,12 +119,12 @@
                   </td>
                   <td data-label="Aksi">
                     <div class="btn-list flex-nowrap justify-content-md-end">
-                      @if ($registration->type && (Gate::check('destroy', $registration) || $registration->step->value == 'mengisi'))
+                      @if ($registration->type && (Gate::check('delete', $registration) || $registration->step->value == 'mengisi'))
                         <a href="{{ route('registrasi.show', $registration->id) }}" class="btn btn-icon">
                           <x-lucide-eye class="icon" defer />
                         </a>
                       @endif
-                      @can('destroy', $registration)
+                      @can('delete', $registration)
                         <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-on:click="$dispatch('set-id', { id })">
                           <x-lucide-trash-2 class="icon text-red" defer />
                           Hapus

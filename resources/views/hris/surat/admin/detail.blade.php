@@ -19,7 +19,7 @@
             </h1>
           </div>
           <div class="btn-list">
-            @can('destroy', $letter)
+            @can('delete', $letter)
               @if (url()->previous() == route('surat.indexHistory'))
                 <a class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#modal-delete" x-data="{ id: {{ $letter->id }} }" x-on:click="$dispatch('set-id', { id })">
                   <x-lucide-trash-2 class="icon text-red" />
@@ -333,7 +333,7 @@
       </div>
     </div>
   </div>
-  @can('destroy', $letter)
+  @can('delete', $letter)
     @if (url()->previous() == route('surat.indexHistory'))
       <x-modal-delete baseUrl="{{ route('surat.index') }}" />
     @endif

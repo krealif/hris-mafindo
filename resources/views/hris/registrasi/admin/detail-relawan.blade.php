@@ -19,7 +19,7 @@
               Detail Permohonan
             </h1>
           </div>
-          @can('destroy', $registration)
+          @can('delete', $registration)
             @if (url()->previous() == route('registrasi.indexLog'))
               <button data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn" x-data="{ id: {{ $registration->id }} }" x-on:click="$dispatch('set-id', { id })">
                 <x-lucide-trash-2 class="icon text-red" />
@@ -345,7 +345,7 @@
       </div>
     </div>
   </div>
-  @can('destroy', $registration)
+  @can('delete', $registration)
     @if (url()->previous() == route('registrasi.indexLog'))
       <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
     @endif

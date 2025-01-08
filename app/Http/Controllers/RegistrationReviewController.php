@@ -233,7 +233,7 @@ class RegistrationReviewController extends Controller
      */
     public function destroy(Registration $registration): RedirectResponse
     {
-        Gate::authorize('destroy', $registration);
+        Gate::authorize('delete', $registration);
 
         $registration->user->delete();
 

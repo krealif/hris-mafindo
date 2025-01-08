@@ -132,7 +132,7 @@
                         <x-lucide-eye class="icon" defer />
                         Lihat
                       </a>
-                      @can('destroy', $letter)
+                      @can('delete', $letter)
                         <button class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#modal-delete" x-on:click="$dispatch('set-id', { id })">
                           <x-lucide-trash-2 class="icon text-red" defer />
                         </button>

@@ -227,7 +227,7 @@ class LetterController extends Controller
      */
     public function destroy(Letter $letter): RedirectResponse
     {
-        Gate::authorize('destroy', $letter);
+        Gate::authorize('delete', $letter);
 
         $letterTitle = $letter->title;
         $letter->delete();

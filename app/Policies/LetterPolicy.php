@@ -87,7 +87,7 @@ class LetterPolicy
     /**
      * Determine whether the user can delete the letter.
      */
-    public function destroy(User $user, Letter $letter): bool
+    public function delete(User $user, Letter $letter): bool
     {
         if ($user->can(PermissionEnum::DELETE_ALL_LETTERS)) {
             // Izinkan penghapusan 7 hari sejak pembaruan terakhir jika statusnya adalah 'DRAFT' atau 'REVISI'

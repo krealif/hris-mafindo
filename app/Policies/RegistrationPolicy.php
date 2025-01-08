@@ -126,9 +126,9 @@ class RegistrationPolicy
     }
 
     /**
-     * Determine whether the admin can destroy the registration.
+     * Determine whether the admin can delete the registration.
      */
-    public function destroy(User $user, Registration $registration): bool
+    public function delete(User $user, Registration $registration): bool
     {
         // Izinkan penghapusan jika statusnya 'DITOLAK'
         // Izinkan penghapusan 7 hari sejak pembaruan terakhir jika statusnya adalah 'DRAFT' atau 'REVISI'
