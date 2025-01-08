@@ -88,7 +88,7 @@ class LetterReviewController extends Controller
 
         $validated = $request->validate([
             'admin' => ['required', 'string', 'max:255'],
-            'attachment' => [
+            'file' => [
                 'required',
                 File::types(['pdf', 'doc', 'docx'])
                     ->min('1kb')
@@ -96,8 +96,8 @@ class LetterReviewController extends Controller
             ],
         ]);
 
-        if ($request->hasFile('attachment')) {
-            $path = $this->uploadFile('surat', $validated['attachment']);
+        if ($request->hasFile('file')) {
+            $path = $this->uploadFile('surat', $validated['file']);
         }
 
         $letter->update([

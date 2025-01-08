@@ -37,7 +37,7 @@ trait UserDataValidationRules
 
             'no_wa' => [$isRequired ? 'required' : 'nullable', 'numeric', 'digits_between:10,15'],
             'no_hp' => ['nullable', 'numeric', 'digits_between:10,15'],
-            'medsos' => ['nullable', 'array'],
+            'medsos' => ['nullable', 'array', 'max:4'],
             'medsos.*' => ['nullable', 'string', 'max:255'],
 
             'thn_bergabung' => [$isRequired ? 'required' : 'nullable', 'numeric', 'min:2010'],
@@ -48,17 +48,17 @@ trait UserDataValidationRules
             'bidang_keahlian' => ['nullable', 'string', 'max:255'],
             'bidang_mafindo' => [$isRequired ? 'required' : 'nullable', 'string'],
 
-            'pendidikan' => ['nullable', 'array'],
+            'pendidikan' => ['nullable', 'array', 'max:20'],
             'pendidikan.*.tingkat' => ['nullable', 'string', 'max:255'],
             'pendidikan.*.institusi' => ['nullable', 'string', 'max:255'],
             'pendidikan.*.jurusan' => ['nullable', 'string', 'max:255'],
 
-            'pekerjaan' => ['nullable', 'array'],
+            'pekerjaan' => ['nullable', 'array', 'max:20'],
             'pekerjaan.*.jabatan' => ['nullable', 'string', 'max:255'],
             'pekerjaan.*.lembaga' => ['nullable', 'string', 'max:255'],
             'pekerjaan.*.tahun' => ['nullable', 'string', 'regex:/^\d{4}-\d{4}$/'],
 
-            'sertifikat' => ['nullable', 'array'],
+            'sertifikat' => ['nullable', 'array', 'max:20'],
             'sertifikat.*.nama' => ['nullable', 'string', 'max:255'],
             'sertifikat.*.masa' => ['nullable', 'string', 'regex:/^\d{4}-\d{4}$/'],
         ];
@@ -85,7 +85,7 @@ trait UserDataValidationRules
                     });
                 })->ignore($this->user()),
             ],
-            'pengurus' => ['nullable', 'array'],
+            'pengurus' => ['nullable', 'array', 'max:4'],
             'pengurus.*' => ['nullable', 'string', 'max:255'],
         ];
     }

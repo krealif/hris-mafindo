@@ -36,7 +36,7 @@ class StoreLetterRequest extends FormRequest
             'body' => ['required', 'string', 'max:5000'],
             'attachment' => [
                 'nullable',
-                File::types(['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'png', 'jpg', 'jpeg'])
+                File::types(['pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg'])
                     ->min('1kb')
                     ->max('2mb'),
             ],
