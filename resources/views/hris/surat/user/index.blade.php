@@ -14,7 +14,7 @@
           @can('create-letter')
             <a href="{{ route('surat.create') }}" class="btn btn-primary">
               <x-lucide-plus class="icon" />
-              Buat Ajuan
+              Buat Permohonan
             </a>
           @endcan
         </div>
@@ -36,7 +36,7 @@
                 <label for="type" class="form-label">Tipe</label>
                 <x-form.select name="type" selected="{{ request()->filter['type'] ?? '' }}" :showError=false :options="[
                     '' => 'Semua',
-                    1 => 'Ajuan',
+                    1 => 'Permohonan',
                     0 => 'Surat Masuk',
                 ]" />
               </div>
@@ -72,10 +72,10 @@
                     @if ($letter->created_by == Auth::id())
                       @if ($letter->recipients->isEmpty())
                         <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
-                        <strong class="fw-medium">AJUAN</strong> Saya
+                        <strong class="fw-medium">PERMOHONAN</strong> Saya
                       @else
                         <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
-                        <strong class="fw-medium">AJUAN</strong> untuk Relawan
+                        <strong class="fw-medium">PERMOHONAN</strong> untuk Relawan
                       @endif
                     @elseif ($letter->recipients->contains('id', Auth::id()))
                       <x-lucide-square-arrow-down-right class="icon me-1 text-orange" defer />

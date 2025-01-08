@@ -38,16 +38,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'as' => 'registrasi.',
         'prefix' => 'registrasi',
     ], function () {
-        Route::get('ajuan', 'index')->name('index');
+        Route::get('permohonan', 'index')->name('index');
         Route::get('log', 'indexLog')->name('indexLog');
         Route::delete('bulk-delete', 'bulkDelete')->name('bulkDelete');
 
-        Route::get('ajuan/{registration}', 'show')->name('show');
-        Route::patch('ajuan/{registration}/next', 'nextStep')->name('nextStep');
-        Route::patch('ajuan/{registration}/revisi', 'requestRevision')->name('requestRevision');
-        Route::patch('ajuan/{registration}/selesai', 'approveRegistration')->name('approve');
-        Route::patch('ajuan/{registration}/tolak', 'rejectRegistration')->name('reject');
-        Route::delete('ajuan/{registration}', 'destroy')->name('destroy');
+        Route::get('permohonan/{registration}', 'show')->name('show');
+        Route::patch('permohonan/{registration}/next', 'nextStep')->name('nextStep');
+        Route::patch('permohonan/{registration}/revisi', 'requestRevision')->name('requestRevision');
+        Route::patch('permohonan/{registration}/selesai', 'approveRegistration')->name('approve');
+        Route::patch('permohonan/{registration}/tolak', 'rejectRegistration')->name('reject');
+        Route::delete('permohonan/{registration}', 'destroy')->name('destroy');
     });
 
     // Group of routes for admin to migrate old users data into the system
@@ -74,32 +74,32 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'prefix' => 'surat',
     ], function () {
         Route::get('kotak-surat', 'indexLetter')->name('letterbox');
-        Route::get('ajuan-wilayah', 'indexByWilayah')->name('indexWilayah');
+        Route::get('permohonan-wilayah', 'indexByWilayah')->name('indexWilayah');
 
-        Route::get('ajuan/buat', 'create')->name('create');
-        Route::post('ajuan/buat', 'store')->name('store');
+        Route::get('permohonan/buat', 'create')->name('create');
+        Route::post('permohonan/buat', 'store')->name('store');
 
-        Route::get('ajuan/{letter}', 'show')->name('show');
-        Route::get('ajuan/{letter}/edit', 'edit')->name('edit');
-        Route::patch('ajuan/{letter}', 'update')->name('update');
-        Route::delete('ajuan/{letter}', 'destroy')->name('destroy');
-        Route::get('ajuan/{letter}/download', 'download')->name('download');
-        Route::get('ajuan/{letter}/attachment', 'downloadAttachment')->name('downloadAttachment');
+        Route::get('permohonan/{letter}', 'show')->name('show');
+        Route::get('permohonan/{letter}/edit', 'edit')->name('edit');
+        Route::patch('permohonan/{letter}', 'update')->name('update');
+        Route::delete('permohonan/{letter}', 'destroy')->name('destroy');
+        Route::get('permohonan/{letter}/download', 'download')->name('download');
+        Route::get('permohonan/{letter}/attachment', 'downloadAttachment')->name('downloadAttachment');
     });
 
-    // Group of routes for admin to handle letter submission
+    // Group of routes for admin to handle letter application
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => LetterReviewController::class,
         'as' => 'surat.',
         'prefix' => 'surat',
     ], function () {
-        Route::get('ajuan', 'indexSubmission')->name('index');
+        Route::get('permohonan', 'indexSubmission')->name('index');
         Route::get('histori', 'indexHistory')->name('indexHistory');
-        Route::patch('ajuan/{letter}/upload', 'uploadResult')->name('uploadResult');
-        Route::patch('ajuan/{letter}/revisi', 'requestRevision')->name('requestRevision');
-        Route::patch('ajuan/{letter}/kirim', 'approveSubmission')->name('approve');
-        Route::patch('ajuan/{letter}/tolak', 'rejectSubmission')->name('reject');
+        Route::patch('permohonan/{letter}/upload', 'uploadResult')->name('uploadResult');
+        Route::patch('permohonan/{letter}/revisi', 'requestRevision')->name('requestRevision');
+        Route::patch('permohonan/{letter}/kirim', 'approveSubmission')->name('approve');
+        Route::patch('permohonan/{letter}/tolak', 'rejectSubmission')->name('reject');
         Route::delete('bulk-delete', 'bulkDelete')->name('bulkDelete');
     });
 });

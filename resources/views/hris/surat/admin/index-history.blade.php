@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Histori Ajuan Surat',
+    'title' => 'Histori Permohonan Surat',
 ])
 
 @section('content')
@@ -9,7 +9,7 @@
       <div class="container-xl">
         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
           <h1 class="page-title">
-            Histori Ajuan Surat
+            Histori Permohonan Surat
           </h1>
         </div>
       </div>
@@ -31,7 +31,7 @@
                 <x-form.select name="type" selected="{{ request()->filter['type'] ?? '' }}" :showError=false :options="[
                     '' => 'Semua',
                     1 => 'Buat',
-                    0 => 'Ajuan',
+                    0 => 'Permohonan',
                 ]" />
               </div>
               <div class="col-12 col-md-6 col-lg-3">
@@ -86,10 +86,10 @@
                   <td data-label="Tipe">
                     @if ($letter->createdBy->hasRole('admin'))
                       <x-lucide-square-arrow-right class="icon me-1 text-pink" defer />
-                      <strong class="fw-medium">BUAT</strong>
+                      <strong class="fw-medium">BUAT PERMOHONAN</strong>
                     @else
                       <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
-                      <strong class="fw-medium">AJUAN</strong> {{ $letter->createdBy->role?->label() }}
+                      <strong class="fw-medium">PERMOHONAN</strong> {{ $letter->createdBy->role?->label() }}
                     @endif
                   </td>
                   <td data-label="Pengirim">

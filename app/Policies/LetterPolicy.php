@@ -37,21 +37,21 @@ class LetterPolicy
         }
 
         // Izinkan akses untuk role PENGURUS:
-        // 1. Jika pengguna adalah pengirim atau penerima surat.
-        // 2. Jika surat tersebut milik relawan dengan wilayah yang.
+        // 1. Jika pengguna adalah pengirim atau tujuan permohonan surat.
+        // 2. Jika permohonan surat tersebut milik relawan dengan wilayah yang.
         if ($user->can([PermissionEnum::VIEW_LETTER, PermissionEnum::VIEW_RELAWAN_LETTER])) {
             return $letter->created_by == $user->id
                 || $letter->createdBy?->branch_id == $user->branch_id
                 || $letter->recipients()
-                    ->where(function ($query) use ($user) {
-                        $query->where('users.id', $user->id)
-                            ->orWhere('users.branch_id', $user->branch_id);
-                    })
-                    ->exists();
+                ->where(function ($query) use ($user) {
+                    $query->where('users.id', $user->id)
+                        ->orWhere('users.branch_id', $user->branch_id);
+                })
+                ->exists();
         }
 
         if ($user->can(PermissionEnum::VIEW_LETTER)) {
-            // Izinkan hanya jika pengguna adalah pengirim atau penerima ajuan surat
+            // Izinkan hanya jika pengguna adalah pengirim atau tujuan permohonan surat
             return $letter->created_by == $user->id
                 || $letter->recipients()->where('users.id', $user->id)->exists();
         }
@@ -72,7 +72,7 @@ class LetterPolicy
      */
     public function update(User $user, Letter $letter): bool
     {
-        // Izinkan jika pengguna adalah pengirim ajuan surat dan statusnya masih 'MENUNGGU' / 'REVISI'
+        // Izinkan jika pengguna adalah pengirim permohonan surat dan statusnya masih 'MENUNGGU' / 'REVISI'
         if ($user->can(PermissionEnum::EDIT_LETTER)) {
             return $letter->created_by == $user->id
                 && in_array($letter->status, [
@@ -99,7 +99,7 @@ class LetterPolicy
                 return true;
             }
 
-            // Izinkan penghapusan surat dengan status 'SELESAI' yang sudah lebih dari 1 tahun
+            // Izinkan penghapusan permohonan surat dengan status 'SELESAI' yang sudah lebih dari 1 tahun
             if (
                 $letter->status === LetterStatusEnum::SELESAI &&
                 $letter->updated_at?->diffInYears() >= 1
@@ -109,7 +109,7 @@ class LetterPolicy
         }
 
         if ($user->can(PermissionEnum::DELETE_LETTER)) {
-            // Izinkan jika pengguna adalah pengirim ajuan surat dan statusnya masih 'MENUNGGU' / 'REVISI'
+            // Izinkan jika pengguna adalah pengirim permohonan surat dan statusnya masih 'MENUNGGU' / 'REVISI'
             return $letter->created_by == $user->id
                 && in_array($letter->status, [
                     LetterStatusEnum::MENUNGGU,

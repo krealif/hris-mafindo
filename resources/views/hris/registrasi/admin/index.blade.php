@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Proses Ajuan Registrasi',
+    'title' => 'Proses Registrasi',
 ])
 
 @section('content')
@@ -10,10 +10,10 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <h1 class="page-title">
-              Proses Ajuan Registrasi
+              Proses Registrasi
             </h1>
             <p class="text-muted m-0 mt-1">
-              Tindak lanjuti ajuan aktif dari relawan & pengurus.
+              Tindak lanjuti permohonan aktif dari relawan & pengurus.
             </p>
           </div>
         </div>

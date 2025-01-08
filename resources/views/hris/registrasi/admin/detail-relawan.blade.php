@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => "{$user->nama} | Ajuan Registrasi",
+    'title' => "{$user->nama} | Permohonan Registrasi",
 ])
 
 @section('content')
@@ -16,7 +16,7 @@
               </a>
             </div>
             <h1 class="page-title">
-              Detail Ajuan
+              Detail Permohonan
             </h1>
           </div>
           @can('destroy', $registration)
@@ -143,10 +143,11 @@
                         </div>
                       @elseif ($registration->step->value == 'pelatihan')
                         <h5 class="fs-4 m-0 mb-2">Perhatian!</h5>
-                        <p class="mb-4">Pastikan relawan telah <strong>mengikuti Pelatihan Dasar Relawan</strong>. Setelah proses registrasi diselesaikan, relawan yang bersangkutan
+                        <p class="mb-4">Pastikan relawan telah <strong>mengikuti Pelatihan Dasar Relawan</strong>. Setelah permohonan registrasi diselesaikan, relawan yang
+                          bersangkutan
                           akan <strong>berubah menjadi Relawan Wilayah</strong>.</p>
                       @endif
-                      <button class="btn btn-primary" type="submit">Selesaikan Registrasi</button>
+                      <button class="btn btn-primary" type="submit">Selesaikan</button>
                     </form>
                   </div>
                 @endcan
@@ -161,7 +162,7 @@
                           <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan') }}" required />
                         </div>
                       @endif
-                      <button class="btn btn-primary" type="submit">Lanjut Tahap Berikutnya</button>
+                      <button class="btn btn-primary" type="submit">Lanjutkan</button>
                     </form>
                   </div>
                 @endcan
@@ -187,7 +188,7 @@
                         <label for="message" class="form-label required">Pesan</label>
                         <x-form.textarea name="message" rows="5" required />
                       </div>
-                      <button class="btn btn-danger" type="submit">Tolak Registrasi</button>
+                      <button class="btn btn-danger" type="submit">Tolak</button>
                     </form>
                   </div>
                 @endcan

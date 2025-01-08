@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => "{$letter->title} | Ajuan Surat",
+    'title' => "{$letter->title} | Permohonan Surat",
 ])
 
 @section('content')
@@ -15,7 +15,7 @@
               </a>
             </div>
             <h1 class="page-title">
-              Detail Ajuan
+              Detail Permohonan
             </h1>
           </div>
           <div class="btn-list">
@@ -69,12 +69,12 @@
                   @if ($letter->createdBy->hasRole('admin'))
                     <span class="badge bg-pink text-white hstack gap-2 fs-4">
                       <x-lucide-arrow-right class="icon" />
-                      BUAT
+                      BUAT PERMOHONAN
                     </span>
                   @else
                     <span class="badge bg-blue text-white hstack gap-2 fs-4">
                       <x-lucide-arrow-up-right class="icon" />
-                      AJUAN {{ $letter->createdBy->role?->label() }}
+                      PERMOHONAN {{ $letter->createdBy->role?->label() }}
                     </span>
                   @endif
                   <x-badge class="fs-4" :case="$letter->status" />
@@ -116,7 +116,7 @@
                 </div>
               </div>
               @if ($letter->result_file && $letter->status->value === 'selesai')
-                <!-- Download hasil ajuan -->
+                <!-- Download hasil permohonan surat -->
                 <div class="card-body">
                   <div class="card card-body mb-3">
                     <a href="{{ route('surat.download', $letter->id) }}" class="fs-3 d-inline-flex flex-wrap align-items-center gap-2" target="_blank">
@@ -234,7 +234,7 @@
                           <label for="message" class="form-label required">Alasan</label>
                           <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan revisi" required />
                         </div>
-                        <button class="btn btn-primary" type="submit">Revisi Ajuan</button>
+                        <button class="btn btn-primary" type="submit">Revisi Permohonan</button>
                       </form>
                     </div>
                   @endif
@@ -246,7 +246,7 @@
                         <label for="message" class="form-label required">Alasan</label>
                         <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan penolakan" required />
                       </div>
-                      <button class="btn btn-primary" type="submit">Tolak Ajuan</button>
+                      <button class="btn btn-primary" type="submit">Tolak Permohonan</button>
                     </form>
                   </div>
                 </div>

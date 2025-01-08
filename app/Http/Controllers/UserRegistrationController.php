@@ -184,7 +184,7 @@ class UserRegistrationController extends Controller
         if ($request->boolean('_isDraft')) {
             flash()->success('Berhasil. Data telah disimpan sementara.');
         } else {
-            flash()->success('Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.');
+            flash()->success('Berhasil. Permohonan registrasi telah dikirim. Mohon tunggu tahapan selanjutnya dari admin.');
         }
 
         return to_route('registrasi.showForm', $type);
@@ -258,7 +258,7 @@ class UserRegistrationController extends Controller
         if ($request->boolean('_isDraft')) {
             flash()->success('Berhasil. Data telah disimpan sementara.');
         } else {
-            flash()->success('Berhasil. Pengajuan telah dikirimkan. Mohon tunggu tahapan selanjutnya dari admin.');
+            flash()->success('Berhasil. Permohonan registrasi telah dikirim. Mohon tunggu tahapan selanjutnya dari admin.');
         }
 
         return to_route('registrasi.showForm', $type);

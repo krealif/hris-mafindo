@@ -7,7 +7,7 @@ use App\Enums\RoleEnum;
 use App\Filters\FilterDate;
 use App\Filters\FilterLetterType;
 use App\Filters\FilterRelawanWilayahLetter;
-use App\Http\Requests\LetterRequest;
+use App\Http\Requests\StoreLetterRequest;
 use App\Models\Letter;
 use App\Traits\HasUploadFile;
 use Illuminate\Http\RedirectResponse;
@@ -51,7 +51,7 @@ class LetterController extends Controller
             ->latest('updated_at')
             ->paginate(15);
 
-        // Periksa apakah ada letter yang dibuat/diajukan oleh orang lain
+        // Periksa apakah ada permohonan surat yang dibuat/diajukan oleh orang lain
         $createdByOthers = $letters->where('created_by', '!=', $user->id)->isNotEmpty();
         if ($createdByOthers) {
             // Eager load hanya jika ada data dari orang lain
@@ -111,7 +111,7 @@ class LetterController extends Controller
      * Store a newly created letter in storage.
      * If an attachment is included, it is uploaded.
      */
-    public function store(LetterRequest $request): RedirectResponse
+    public function store(StoreLetterRequest $request): RedirectResponse
     {
         Gate::authorize('create', Letter::class);
 
@@ -127,25 +127,25 @@ class LetterController extends Controller
 
         $letter = Letter::create([
             'created_by' => Auth::id(),
-            // Jika admin yang membuat, status surat langsung menjadi DIPROSES
+            // Jika admin yang membuat, status permohonan surat langsung menjadi DIPROSES
             'status' => $user->hasRole(RoleEnum::ADMIN)
                 ? LetterStatusEnum::DIPROSES
                 : LetterStatusEnum::MENUNGGU,
             ...$validated,
         ]);
 
-        // Menambahkan penerima surat (recipients) jika ada dalam request
+        // Menambahkan tujuan permohonan surat (recipients) jika ada dalam request
         if (array_key_exists('recipients', $validated)) {
             $letter->recipients()->attach($validated['recipients']);
         }
 
         if ($user->hasRole(RoleEnum::ADMIN)) {
-            flash()->success("Berhasil. Ajuan Surat [{$validated['title']}] telah dibuat.");
+            flash()->success("Berhasil. Permohonan Surat [{$validated['title']}] telah dibuat.");
 
             return to_route('surat.index');
         }
 
-        flash()->success("Berhasil. Ajuan Surat [{$validated['title']}] telah dibuat. Admin akan segera meninjau dan memprosesnya.");
+        flash()->success("Berhasil. Permohonan Surat [{$validated['title']}] telah dibuat. Admin akan segera meninjau dan memprosesnya.");
 
         return to_route('surat.letterbox');
     }
@@ -160,8 +160,8 @@ class LetterController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        // Jika admin membuka detail surat, status akan diubah menjadi DIPROSES,
-        // yang berarti surat sudah "terkunci" dan tidak bisa diubah atau dihapus lagi.
+        // Jika admin membuka detail permohonan surat, status akan diubah menjadi DIPROSES,
+        // yang berarti permohonan surat sudah "terkunci" dan tidak bisa diubah atau dihapus lagi.
         if ($user->hasRole('admin')) {
             if ($letter->status == LetterStatusEnum::MENUNGGU) {
                 $letter->update(['status' => LetterStatusEnum::DIPROSES]);
@@ -186,7 +186,7 @@ class LetterController extends Controller
     /**
      * Update the specified letter in storage.
      */
-    public function update(LetterRequest $request, Letter $letter): RedirectResponse
+    public function update(StoreLetterRequest $request, Letter $letter): RedirectResponse
     {
         Gate::authorize('update', $letter);
 
@@ -212,12 +212,12 @@ class LetterController extends Controller
             'status' => LetterStatusEnum::MENUNGGU,
         ]);
 
-        // Memperbarui penerima surat (recipients)
+        // Memperbarui tujuan permohonan surat (recipients)
         if (array_key_exists('recipients', $validated)) {
             $letter->recipients()->sync($validated['recipients']);
         }
 
-        flash()->success("Berhasil. Ajuan Surat [{$validated['title']}] telah diperbarui. Admin akan segera meninjau dan memprosesnya");
+        flash()->success("Berhasil. Permohonan Surat [{$validated['title']}] telah diperbarui. Admin akan segera meninjau dan memprosesnya");
 
         return to_route('surat.show', $letter->id);
     }
@@ -232,7 +232,7 @@ class LetterController extends Controller
         $letterTitle = $letter->title;
         $letter->delete();
 
-        flash()->success("Berhasil. Ajuan Surat [{$letterTitle}] telah dihapus.");
+        flash()->success("Berhasil. Permohonan Surat [{$letterTitle}] telah dihapus.");
 
         /** @var \App\Models\User $user */
         $user = Auth::user();

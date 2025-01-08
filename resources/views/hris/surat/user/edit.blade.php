@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => "Edit {$letter->title} | Ajuan Surat",
+    'title' => "Edit {$letter->title} | Permohonan Surat",
 ])
 
 @section('content')
@@ -15,7 +15,7 @@
               </a>
             </div>
             <h1 class="page-title">
-              Edit Ajuan Surat
+              Edit Permohonan Surat
             </h1>
           </div>
         </div>
@@ -42,7 +42,7 @@
             <!-- Alasan dari Admin -->
             <div class="card-body bg-orange-lt text-dark">
               <h4 class="text-red text-uppercase m-0">Alasan {{ $letter?->status->value }}</h4>
-              <p class="mb-2">Mohon untuk mengedit ajuan sesuai dengan arahan berikut</p>
+              <p class="mb-2">Mohon untuk mengedit permohonan surat sesuai dengan arahan berikut</p>
               <hr class="my-2">
               <p>{{ $letter->message }}</p>
             </div>

@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => "{$letter->title} | Ajuan Surat",
+    'title' => "{$letter->title} | Permohonan Surat",
 ])
 
 @section('content')
@@ -22,7 +22,7 @@
               @endif
             </div>
             <h1 class="page-title">
-              Detail Ajuan
+              Detail Permohonan
             </h1>
           </div>
           <div class="btn-list">
@@ -71,12 +71,12 @@
                     @if ($letter->recipients->isEmpty())
                       <span class="badge bg-blue text-white hstack gap-2 fs-4">
                         <x-lucide-arrow-up-right class="icon" />
-                        AJUAN Saya
+                        PERMOHONAN Saya
                       </span>
                     @else
                       <span class="badge bg-blue text-white hstack gap-2 fs-4">
                         <x-lucide-arrow-up-right class="icon" />
-                        AJUAN untuk Relawan
+                        PERMOHONAN untuk Relawan
                       </span>
                     @endif
                   @elseif ($letter->recipients->contains('id', Auth::id()))
@@ -87,7 +87,7 @@
                   @elseif ($letter->recipients->isEmpty())
                     <span class="badge bg-blue text-white hstack gap-2 fs-4">
                       <x-lucide-arrow-up-right class="icon" />
-                      AJUAN
+                      PERMOHONAN
                     </span>
                   @else
                     <span class="badge bg-blue text-white hstack gap-2 fs-4">
@@ -103,7 +103,7 @@
                 <div class="card-body bg-orange-lt text-dark">
                   <h4 class="text-red text-uppercase m-0">Alasan {{ $letter?->status->value }}</h4>
                   @if ($letter->status->value == 'revisi')
-                    <p class="m-0">Mohon untuk mengedit ajuan sesuai dengan arahan berikut</p>
+                    <p class="m-0">Mohon untuk mengedit permohonan surat sesuai dengan arahan berikut</p>
                     <hr class="m-0 mt-2">
                   @endif
                   <p class="mt-2">{{ $letter->message }}</p>
@@ -138,7 +138,7 @@
                 </div>
               </div>
               @if ($letter->result_file && $letter->status->value === 'selesai')
-                <!-- Download hasil ajuan -->
+                <!-- Download hasil permohonan surat -->
                 <div class="card-body">
                   <div class="card card-body mb-3">
                     <a href="{{ route('surat.download', $letter->id) }}" class="fs-3 d-inline-flex flex-wrap align-items-center gap-2" target="_blank">

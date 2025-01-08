@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Ajuan Relawan Wilayah',
+    'title' => 'Permohonan Relawan Wilayah',
 ])
 
 @section('content')
@@ -9,7 +9,7 @@
       <div class="container-xl">
         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
           <h1 class="page-title">
-            Ajuan Relawan Wilayah
+            Permohonan Relawan Wilayah
           </h1>
         </div>
       </div>
@@ -53,7 +53,7 @@
                   <td data-label="Tipe">
                     @if ($letter->recipients->isEmpty())
                       <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
-                      <span class="fw-medium">AJUAN</span>
+                      <span class="fw-medium">PERMOHONAN</span>
                     @else
                       <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
                       <span class="fw-medium">DIBUAT</span> oleh Admin

@@ -23,7 +23,7 @@ class LetterReviewController extends Controller
     use HasUploadFile;
 
     /**
-     * Display a list of letter submissions that are either waiting or being processed.
+     * Display a list of letter application that are either waiting or being processed.
      */
     public function indexSubmission(): View
     {
@@ -53,7 +53,7 @@ class LetterReviewController extends Controller
     }
 
     /**
-     * Display a list of letter submission history.
+     * Display a list of letter application history.
      */
     public function indexHistory(): View
     {
@@ -80,7 +80,7 @@ class LetterReviewController extends Controller
     }
 
     /**
-     * Upload the result file for a letter submission.
+     * Upload the result file for a letter application.
      */
     public function uploadResult(Request $request, Letter $letter): RedirectResponse
     {
@@ -106,13 +106,13 @@ class LetterReviewController extends Controller
             'uploaded_at' => \Carbon\Carbon::now(),
         ]);
 
-        flash()->success("Berhasil. Ajuan Surat [{$letter->title}] telah dibuat.");
+        flash()->success("Berhasil. Permohonan Surat [{$letter->title}] telah dibuat.");
 
         return to_route('surat.show', $letter->id);
     }
 
     /**
-     * Request a revision for a letter submission.
+     * Request a revision for a letter application.
      */
     public function requestRevision(Request $request, Letter $letter): RedirectResponse
     {
@@ -135,7 +135,7 @@ class LetterReviewController extends Controller
     }
 
     /**
-     * Approve a letter submission and mark it as completed.
+     * Approve a letter application and mark it as completed.
      */
     public function approveSubmission(Letter $letter): RedirectResponse
     {
@@ -153,7 +153,7 @@ class LetterReviewController extends Controller
     }
 
     /**
-     * Reject a letter submission and provide a rejection message.
+     * Reject a letter application and provide a rejection message.
      */
     public function rejectSubmission(Request $request, Letter $letter): RedirectResponse
     {
@@ -170,13 +170,13 @@ class LetterReviewController extends Controller
 
         // TODO: Kirim email
 
-        flash()->success("Berhasil. Ajuan Surat [{$letter->title}] telah ditolak.");
+        flash()->success("Berhasil. Permohonan Surat [{$letter->title}] telah ditolak.");
 
         return to_route('surat.show', $letter->id);
     }
 
     /**
-     * Bulk delete old letter records based on provided criteria.
+     * Bulk delete old letter application based on provided criteria.
      */
     public function bulkDelete(Request $request): RedirectResponse
     {
@@ -204,7 +204,7 @@ class LetterReviewController extends Controller
         }
 
         if ($total > 0) {
-            flash()->success("Berhasil. Sebanyak [{$total}] data telah dihapus.");
+            flash()->success("Berhasil. Sebanyak [{$total}] permohonan surat telah dihapus.");
         } else {
             flash()->info('Tidak ada data yang perlu dihapus.');
         }

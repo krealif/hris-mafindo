@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Log Ajuan Registrasi',
+    'title' => 'Log Permohonan Registrasi',
 ])
 
 @section('content')
@@ -10,10 +10,10 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <h1 class="page-title">
-              Log Ajuan Registrasi
+              Log Permohonan Registrasi
             </h1>
             <p class="text-muted m-0 mt-1">
-              Lihat dan hapus ajuan registrasi.
+              Lihat dan hapus permohonan registrasi.
             </p>
           </div>
         </div>

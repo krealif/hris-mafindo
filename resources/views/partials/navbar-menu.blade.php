@@ -30,11 +30,11 @@
                         'active' =>
                             request()->routeIs('registrasi.index') ||
                             request()->routeIs('registrasi.show'),
-                    ])>Proses Ajuan</a>
+                    ])>Proses Registrasi</a>
                     <a href="{{ route('registrasi.indexLog') }}" @class([
                         'dropdown-item',
                         'active' => request()->routeIs('registrasi.indexLog'),
-                    ])>Log Ajuan</a>
+                    ])>Log Permohonan</a>
                     <a href="{{ route('migrasi.index') }}" @class([
                         'dropdown-item',
                         'active' =>
@@ -65,18 +65,18 @@
                       <a href="{{ route('surat.indexWilayah') }}" @class([
                           'dropdown-item',
                           'active' => request()->routeIs('surat.indexWilayah'),
-                      ])>Ajuan Wilayah</a>
+                      ])>Permohonan Wilayah</a>
                     </div>
                   @else
                     <div class="dropdown-menu-column">
                       <a href="{{ route('surat.index') }}" @class([
                           'dropdown-item',
                           'active' => request()->routeIs('surat.index'),
-                      ])>Proses Ajuan</a>
+                      ])>Proses Permohonan</a>
                       <a href="{{ route('surat.indexHistory') }}" @class([
                           'dropdown-item',
                           'active' => request()->routeIs('surat.indexHistory'),
-                      ])>Histori Ajuan</a>
+                      ])>Histori Permohonan</a>
                     </div>
                   @endrole
                 </div>

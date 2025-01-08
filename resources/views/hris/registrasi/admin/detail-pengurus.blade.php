@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => "{$user->nama} | Ajuan Registrasi",
+    'title' => "{$user->nama} | Permohonan Registrasi",
 ])
 
 @section('content')
@@ -16,7 +16,7 @@
               </a>
             </div>
             <h1 class="page-title">
-              Detail Ajuan
+              Detail Permohonan
             </h1>
           </div>
           @can('destroy', $registration)
@@ -124,7 +124,7 @@
                     <form method="POST" action="{{ route('registrasi.approve', $registration->id) }}" class="card-body border-top">
                       @csrf
                       @method('PATCH')
-                      <button class="btn btn-primary" type="submit">Selesaikan Registrasi</button>
+                      <button class="btn btn-primary" type="submit">Selesaikan</button>
                     </form>
                   </div>
                 @endcan
@@ -150,7 +150,7 @@
                         <label for="message" class="form-label required">Pesan</label>
                         <x-form.textarea name="message" rows="5" required />
                       </div>
-                      <button class="btn btn-danger" type="submit">Tolak Registrasi</button>
+                      <button class="btn btn-danger" type="submit">Tolak</button>
                     </form>
                   </div>
                 @endcan

@@ -9,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\File;
 
-class LetterRequest extends FormRequest
+class StoreLetterRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -32,7 +32,7 @@ class LetterRequest extends FormRequest
             );
 
         return [
-            'title' => ['required', 'max:255'],
+            'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string', 'max:5000'],
             'attachment' => [
                 'nullable',

@@ -132,7 +132,7 @@ class RegistrationReviewController extends Controller
             $registration->update(['step' => $nextStep]);
         }
 
-        flash()->success("Berhasil. Proses registrasi relawan atas nama [{$registration->user->nama}] telah beralih ke tahapan [{$nextStep?->value}].");
+        flash()->success("Berhasil. Permohonan registrasi relawan atas nama [{$registration->user->nama}] telah berlanjut ke tahapan [{$nextStep?->value}].");
 
         return to_route('registrasi.show', $registration->id);
     }
@@ -277,7 +277,7 @@ class RegistrationReviewController extends Controller
         }
 
         if ($total) {
-            flash()->success("Berhasil. Sebanyak [{$total}] data telah dihapus.");
+            flash()->success("Berhasil. Sebanyak [{$total}] permohonan registrasi telah dihapus.");
         } else {
             flash()->info('Tidak ada data yang perlu dihapus.');
         }
