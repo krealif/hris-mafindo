@@ -51,9 +51,9 @@
               <tr>
                 <th>Judul</th>
                 <th>Tipe</th>
-                @can('create-letter-for-relawan')
+                @haspermission('create-letter-for-relawan')
                   <th>Tujuan (Relawan)</th>
-                @endcan
+                @endhaspermission
                 <th>Status</th>
                 <th>Tanggal</th>
                 <th class="w-1"></th>
@@ -82,7 +82,7 @@
                       <strong class="fw-medium">SURAT</strong> dari {{ $letter->createdBy->role?->label() }}
                     @endif
                   </td>
-                  @can('create-letter-for-relawan')
+                  @haspermission('create-letter-for-relawan')
                     <td>
                       @if ($letter->recipients->contains('id', Auth::id()))
                         <x-lucide-circle-slash-2 class="icon" defer />
@@ -100,7 +100,7 @@
                         <x-lucide-circle-slash-2 class="icon" defer />
                       @endif
                     </td>
-                  @endcan
+                  @endhaspermission
                   <td data-label="Status">
                     <x-badge class="fs-4" :case="$letter->status" />
                   </td>

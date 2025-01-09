@@ -9,10 +9,17 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <div class="mb-1">
-              <a href="{{ Auth::user()->hasRole('admin') ? route('surat.index') : route('surat.letterbox') }}" class="btn btn-link px-0 py-1">
-                <x-lucide-arrow-left class="icon" />
-                Kembali
-              </a>
+              @if (url()->previous() == route('surat.show', $letter->id))
+                <a href="{{ route('surat.show', $letter->id) }}" class="btn btn-link px-0 py-1">
+                  <x-lucide-arrow-left class="icon" />
+                  Kembali
+                </a>
+              @else
+                <a href="{{ Auth::user()->hasRole('admin') ? route('surat.index') : route('surat.letterbox') }}" class="btn btn-link px-0 py-1">
+                  <x-lucide-arrow-left class="icon" />
+                  Kembali
+                </a>
+              @endif
             </div>
             <h1 class="page-title">
               Edit Permohonan Surat
@@ -124,7 +131,11 @@
           </div>
           <div class="card-body btn-list">
             <button type="submit" class="btn btn-primary">Ajukan</button>
-            <a href="{{ Auth::user()->hasRole('admin') ? route('surat.index') : route('surat.letterbox') }}" class="btn">Batal</a>
+            @if (url()->previous() == route('surat.show', $letter->id))
+              <a href="{{ route('surat.show', $letter->id) }}" class="btn">Batal</a>
+            @else
+              <a href="{{ Auth::user()->hasRole('admin') ? route('surat.index') : route('surat.letterbox') }}" class="btn">Batal</a>
+            @endif
           </div>
         </form>
       </div>

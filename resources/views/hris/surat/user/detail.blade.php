@@ -163,7 +163,7 @@
           </div>
           <div class="col-12 col-md-6">
             <div class="vstack gap-3">
-              @can('create-letter-for-relawan')
+              @haspermission('create-letter-for-relawan')
                 @php
                   // Check if the letter info should be visible to the Pengurus
                   $isNotForCurrentUser = !$letter->recipients->contains('id', Auth::id());
@@ -216,7 +216,7 @@
                     @endif
                   </div>
                 @endif
-              @endcan
+              @endhaspermission
               <div class="card card-mafindo">
                 <div class="card-header">
                   <h2 class="card-title d-flex align-items-center gap-2">

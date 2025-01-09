@@ -48,7 +48,7 @@
             </div>
           @endif
           <div class="card-body">
-            @can('create-letter-for-relawan')
+            @haspermission('create-letter-for-relawan')
               <div @if (!Auth::user()->hasRole('admin')) x-show="_withRecipient" @endif class="mb-3">
                 <label for="recipients" class="form-label required">Tujuan (Maks. 10)</label>
                 @if (Auth::user()->hasRole('admin'))
@@ -57,7 +57,7 @@
                   <x-form.user-select id="recipients" name="recipients[]" multiple placeholder="Tuliskan nama relawan" x-bind:required='_withRecipient' />
                 @endif
               </div>
-            @endcan
+            @endhaspermission
             <div class="mb-3">
               <label for="title" class="form-label required">Judul</label>
               <x-form.input name="title" type="text" value="{{ old('title') }}" required />
