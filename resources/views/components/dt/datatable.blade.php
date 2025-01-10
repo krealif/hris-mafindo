@@ -1,7 +1,7 @@
 @props([
     'search' => null,
     'searchPlaceholder' => null,
-    'total' => null,
+    'collection' => null,
 ])
 
 @php
@@ -77,12 +77,12 @@
     <div class="table-responsive">
       {{ $slot }}
     </div>
-    @isset($pagination)
+    @if ($collection->hasPages())
       <div class="card-footer">
-        {{ $pagination }}
+        {{ $collection->links() }}
       </div>
-    @endisset
-    @if (isset($total) && $total == 0)
+    @endif
+    @if ($collection->count() == 0)
       <div class="empty">
         <div class="empty-icon">
           <x-lucide-circle-slash-2 class="icon" />

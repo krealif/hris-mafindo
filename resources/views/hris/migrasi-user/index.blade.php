@@ -31,7 +31,7 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dt.datatable search="nama" searchPlaceholder="Nama relawan" total="{{ $tempUsers->count() }}">
+        <x-dt.datatable search="nama" searchPlaceholder="Nama relawan" :collection="$tempUsers">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row g-4">
@@ -89,12 +89,6 @@
               @endforeach
             </tbody>
           </table>
-          @if ($tempUsers->hasPages())
-            <!-- Pagination -->
-            <x-slot:pagination>
-              {{ $tempUsers->links() }}
-            </x-slot>
-          @endif
         </x-dt.datatable>
       </div>
     </div>
