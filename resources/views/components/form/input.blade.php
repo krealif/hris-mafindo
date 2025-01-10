@@ -4,6 +4,7 @@
     'type' => 'text',
     'showError' => true,
     'required' => false,
+    'disabled' => false,
 ])
 
 @php
@@ -11,7 +12,7 @@
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
 @endphp
 
-<input id="{{ $id }}" name="{{ $name }}" type="{{ $type }}" autocomplete="off" {{ $attributes }} @required($required)>
+<input id="{{ $id }}" name="{{ $name }}" type="{{ $type }}" autocomplete="off" {{ $attributes }} @required($required) @disabled($disabled)>
 @if ($showError)
   @error($name)
     <div class="invalid-feedback" role="alert">

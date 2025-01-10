@@ -3,9 +3,9 @@
     'name' => null,
     'showError' => true,
     'showIcon' => true,
-    'required' => false,
     'maxDate' => null,
     'minDate' => null,
+    'disabled' => false,
 ])
 
 @php
@@ -18,10 +18,10 @@
     <span class="input-icon-addon">
       <x-lucide-calendar class="icon" />
     </span>
-    <input id="{{ $id }}" name="{{ $name }}" type="text" autocomplete="off" {{ $attributes }} @required($required)>
+    <input id="{{ $id }}" name="{{ $name }}" type="text" autocomplete="off" {{ $attributes }} @disabled($disabled)>
   </div>
 @else
-  <input id="{{ $id }}" name="{{ $name }}" type="text" autocomplete="off" {{ $attributes }} @required($required)>
+  <input id="{{ $id }}" name="{{ $name }}" type="text" autocomplete="off" {{ $attributes }} @disabled($disabled)>
 @endif
 @if ($showError)
   @error($name)

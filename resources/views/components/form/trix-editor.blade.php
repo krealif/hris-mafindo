@@ -3,6 +3,7 @@
     'name' => null,
     'showError' => true,
     'required' => false,
+    'disabled' => false,
     'value' => null,
 ])
 
@@ -14,7 +15,7 @@
 <trix-editor id="trix-{{ $id }}" input="{{ $id }}" @class([
     'form-control',
     'is-invalid' => $showError && $errors->has($name),
-]) @required($required)></trix-editor>
+]) @required($required) @disabled($disabled)></trix-editor>
 <script>
   document.addEventListener("trix-initialize", function(e) {
     const actions = [

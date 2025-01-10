@@ -3,6 +3,7 @@
     'name' => null,
     'showError' => true,
     'required' => false,
+    'disabled' => false,
 ])
 
 @php
@@ -10,7 +11,7 @@
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
 @endphp
 
-<textarea id="{{ $id }}" name="{{ $name }}" autocomplete="off" {{ $attributes }} @required($required)>{{ $slot }}</textarea>
+<textarea id="{{ $id }}" name="{{ $name }}" autocomplete="off" {{ $attributes }} @required($required) @disabled($disabled)>{{ $slot }}</textarea>
 @if ($showError)
   @error($name)
     <div class="invalid-feedback" role="alert">
