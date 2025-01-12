@@ -18,5 +18,5 @@ enum PermissionEnum: string
 
     case VIEW_ALL_LETTER = 'view-all-letter';
     case HANDLE_LETTER = 'handle-letter';
-    case DELETE_ALL_LETTERS = 'delete-all-letter';
+    case DELETE_ALL_LETTER = 'delete-all-letter';
 }

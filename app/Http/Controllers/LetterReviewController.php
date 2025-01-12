@@ -137,7 +137,7 @@ class LetterReviewController extends Controller
     /**
      * Approve a letter application and mark it as completed.
      */
-    public function approveSubmission(Letter $letter): RedirectResponse
+    public function approve(Letter $letter): RedirectResponse
     {
         Gate::authorize('handleSubmission', $letter);
 
@@ -155,7 +155,7 @@ class LetterReviewController extends Controller
     /**
      * Reject a letter application and provide a rejection message.
      */
-    public function rejectSubmission(Request $request, Letter $letter): RedirectResponse
+    public function reject(Request $request, Letter $letter): RedirectResponse
     {
         Gate::authorize('handleSubmission', $letter);
 

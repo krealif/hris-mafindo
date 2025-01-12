@@ -55,7 +55,7 @@
             </div>
           @endif
           <div class="card-body">
-            @if (Auth::user()->can('create-letter-for-relawan') && $letter->recipients->isNotEmpty())
+            @if (Auth::user()->hasPermissionTo('create-letter-for-relawan') && $letter->recipients->isNotEmpty())
               <div class="mb-3">
                 <label for="recipients" class="form-label required">Tujuan (Maks. 10)</label>
                 <x-form.user-select id="recipients" name="recipients[]" multiple placeholder="Tuliskan nama relawan" required :selected="$letter->recipients->select(['id', 'nama'])" />

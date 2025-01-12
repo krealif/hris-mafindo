@@ -166,7 +166,7 @@ class RegistrationReviewController extends Controller
     /**
      * Approve the registration process for a user.
      */
-    public function approveRegistration(Request $request, Registration $registration): RedirectResponse
+    public function approve(Request $request, Registration $registration): RedirectResponse
     {
         Gate::authorize('approve', $registration);
 
@@ -208,7 +208,7 @@ class RegistrationReviewController extends Controller
     /**
      * Reject a registration.
      */
-    public function rejectRegistration(Request $request, Registration $registration): RedirectResponse
+    public function reject(Request $request, Registration $registration): RedirectResponse
     {
         Gate::authorize('reject', $registration);
 

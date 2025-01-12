@@ -37,7 +37,7 @@
         @endif
         <form class="card card-mafindo" method="POST" x-data="{ _withRecipient: {{ old('_withRecipient', 'false') }} }" enctype="multipart/form-data">
           @csrf
-          @if (!Auth::user()->hasRole('admin') && Auth::user()->can('create-letter-for-relawan'))
+          @if (!Auth::user()->hasRole('admin') && Auth::user()->hasPermissionTo('create-letter-for-relawan'))
             <div class="card-body">
               <div class="btn-group w-100" role="group">
                 <input type="radio" x-model.boolean="_withRecipient" class="btn-check" id="type-pengurus" autocomplete="off" value="false">
