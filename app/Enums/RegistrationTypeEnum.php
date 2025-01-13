@@ -23,17 +23,8 @@ enum RegistrationTypeEnum: string
     public static function labels(): array
     {
         return array_combine(
-            array_map(fn ($case) => $case->value, self::cases()),
-            array_map(fn ($case) => $case->label(), self::cases())
+            array_map(fn($case) => $case->value, self::cases()),
+            array_map(fn($case) => $case->label(), self::cases())
         );
-    }
-
-    public function badge(): string
-    {
-        return match ($this) {
-            self::RELAWAN_BARU => 'bg-blue',
-            self::RELAWAN_WILAYAH => 'bg-indigo',
-            self::PENGURUS_WILAYAH => 'bg-pink',
-        };
     }
 }

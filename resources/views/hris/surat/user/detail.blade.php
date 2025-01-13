@@ -95,7 +95,7 @@
                       DIBUAT oleh Admin
                     </span>
                   @endif
-                  <x-badge class="fs-4" :case="$letter->status" />
+                  <x-badge class="d-flex fs-4" :case="$letter->status" />
                 </div>
               </div>
               @if (in_array($letter?->status->value, ['revisi', 'ditolak']))

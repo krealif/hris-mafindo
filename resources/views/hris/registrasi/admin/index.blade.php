@@ -60,9 +60,9 @@
             <thead class="table-primary">
               <tr>
                 <th>Nama</th>
-                <th>Email</th>
-                <th>Tipe</th>
                 <th>Tahapan</th>
+                <th>Tipe</th>
+                <th>Email</th>
                 <th>Wilayah</th>
                 <th>Tanggal</th>
                 <th class="w-1"></th>
@@ -77,13 +77,11 @@
                       {{ $registration->user->nama }}
                     </a>
                   </td>
-                  <td data-label="Email">{{ $registration->user->email }}</td>
-                  <td data-label="Tipe">
-                    <x-badge class="fs-4" :case="$registration->type" />
-                  </td>
                   <td data-label="Tahapan">
                     <x-badge class="fs-4" :case="$registration->step" />
                   </td>
+                  <td data-label="Tipe">{{ $registration->type?->label() }}</td>
+                  <td data-label="Email">{{ $registration->user->email }}</td>
                   <td data-label="Wilayah">{{ $registration->user->branch?->nama }}</td>
                   <td data-label="Tanggal">
                     <div>{{ $registration->updated_at?->translatedFormat('d M Y / H:i') }}</div>

@@ -20,8 +20,8 @@ enum RegistrationLamaStepEnum: string
     public function badge(): string
     {
         return match ($this) {
-            self::MENGISI => 'bg-dark',
-            self::VERIFIKASI => 'bg-green',
+            self::MENGISI => 'bg-secondary',
+            self::VERIFIKASI => 'bg-cyan',
         };
     }
 

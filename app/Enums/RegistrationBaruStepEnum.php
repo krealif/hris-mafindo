@@ -23,11 +23,11 @@ enum RegistrationBaruStepEnum: string
     public function badge(): string
     {
         return match ($this) {
-            self::MENGISI => 'bg-dark',
-            self::PROFILING => 'bg-cyan',
+            self::MENGISI => 'bg-secondary',
+            self::PROFILING => 'bg-blue',
             self::WAWANCARA => 'bg-purple',
-            self::TERHUBUNG => 'bg-lime',
-            self::PELATIHAN => 'bg-green',
+            self::TERHUBUNG => 'bg-indigo',
+            self::PELATIHAN => 'bg-cyan',
         };
     }
 

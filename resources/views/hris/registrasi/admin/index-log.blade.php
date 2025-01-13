@@ -75,10 +75,10 @@
             <thead class="table-primary">
               <tr>
                 <th>Nama</th>
-                <th>Email</th>
-                <th>Tipe</th>
                 <th>Tahapan</th>
                 <th>Status</th>
+                <th>Tipe</th>
+                <th>Email</th>
                 <th>Wilayah</th>
                 <th>Tanggal</th>
                 <th class="w-1"></th>
@@ -100,18 +100,18 @@
                       </span>
                     @endif
                   </td>
-                  <td data-label="Email">{{ $registration->user->email }}</td>
-                  <td data-label="Tipe">
-                    @if ($registration->type)
-                      <x-badge class="fs-4" :case="$registration->type" />
-                    @endif
-                  </td>
                   <td data-label="Tahapan">
                     <x-badge class="fs-4" :case="$registration->step" />
                   </td>
                   <td data-label="Status">
                     <x-badge class="fs-4" :case="$registration->status" />
                   </td>
+                  <td data-label="Tipe">
+                    @if ($registration->type)
+                      {{ $registration->type?->label() }}
+                    @endif
+                  </td>
+                  <td data-label="Email">{{ $registration->user->email }}</td>
                   <td data-label="Wilayah">{{ $registration->user->branch?->nama }}</td>
                   <td data-label="Tanggal">
                     <div>{{ $registration->updated_at?->translatedFormat('d M Y / H:i') }}</div>

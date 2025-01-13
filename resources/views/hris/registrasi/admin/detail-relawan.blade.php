@@ -65,13 +65,13 @@
                 </div>
                 <div class="col">
                   <h2 class="card-title h2 mb-2">{{ $user->nama }}</h2>
-                  @if ($user->branch_id)
-                    <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
-                  @endif
-                  <div class="d-flex flex-wrap gap-2">
-                    <x-badge class="fs-4" :case="$registration->type" />
-                    <x-badge class="fs-4" :case="$registration->status" />
-                  </div>
+                  <h4 class="card-subtitle h3 mb-2 text-dark">
+                    {{ $registration->type?->label() }}
+                    @if ($user->branch_id)
+                      {{ "({$user->branch?->nama})" }}
+                    @endif
+                  </h4>
+                  <x-badge class="fs-4" :case="$registration->status" />
                 </div>
               </div>
               <div class="mt-3">
@@ -218,6 +218,19 @@
             </div>
             <div class="card card-mafindo">
               <div class="card-header">
+                <h3 class="card-title">Keanggotaan di Mafindo</h3>
+              </div>
+              <div class="card-body">
+                <div class="datagrid">
+                  <x-datagrid-item title="Tahun Bergabung" content="{{ $user->detail->thn_bergabung }}" />
+                  <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
+                  <x-datagrid-item title="Keikutsertaan PDR" content="{{ $user->detail->pdr }}" />
+                  <x-datagrid-item title="Nomor Kartu Relawan" content="{{ $user->no_relawan }}" />
+                </div>
+              </div>
+            </div>
+            <div class="card card-mafindo">
+              <div class="card-header">
                 <h3 class="card-title">Kontak</h3>
               </div>
               <div class="card-body">
@@ -228,19 +241,6 @@
                   <x-datagrid-item title="Akun Instagram" content="{{ $user->detail->medsos->instagram }}" />
                   <x-datagrid-item title="Akun Tiktok" content="{{ $user->detail->medsos->tiktok }}" />
                   <x-datagrid-item title="Akun Twitter" content="{{ $user->detail->medsos->twitter }}" />
-                </div>
-              </div>
-            </div>
-            <div class="card card-mafindo">
-              <div class="card-header">
-                <h3 class="card-title">Keanggotaan di Mafindo</h3>
-              </div>
-              <div class="card-body">
-                <div class="datagrid">
-                  <x-datagrid-item title="Tahun Bergabung" content="{{ $user->detail->thn_bergabung }}" />
-                  <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
-                  <x-datagrid-item title="Keikutsertaan PDR" content="{{ $user->detail->pdr }}" />
-                  <x-datagrid-item title="Nomor Kartu Relawan" content="{{ $user->no_relawan }}" />
                 </div>
               </div>
             </div>

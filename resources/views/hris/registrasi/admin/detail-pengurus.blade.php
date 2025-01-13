@@ -61,13 +61,13 @@
                 </div>
                 <div class="col">
                   <h2 class="card-title h2 mb-2">{{ $user->nama }}</h2>
-                  @if ($user->branch_id)
-                    <h4 class="card-subtitle h3 mb-2 text-muted">{{ $user->branch?->nama }}</h4>
-                  @endif
-                  <div class="d-flex flex-wrap gap-2">
-                    <x-badge class="fs-4" :case="$registration->type" />
-                    <x-badge class="fs-4" :case="$registration->status" />
-                  </div>
+                  <h4 class="card-subtitle h3 mb-2 text-dark">
+                    {{ $registration->type?->label() }}
+                    @if ($user->branch_id)
+                      {{ "({$user->branch?->nama})" }}
+                    @endif
+                  </h4>
+                  <x-badge class="fs-4" :case="$registration->status" />
                 </div>
               </div>
               <div class="mt-3">
