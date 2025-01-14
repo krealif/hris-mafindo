@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('letter_id')->constrained('letters')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->unique(['letter_id', 'user_id']);
         });
     }
 
