@@ -59,31 +59,31 @@
                 </h2>
               </div>
               <nav class="list-group list-group-flush">
-                <a class="list-group-item list-group-item-action p-2" href="#informasi-pribadi">
+                <a class="list-group-item list-group-item-action toc-item" href="#informasi-pribadi">
                   <x-lucide-chevron-right class="icon" defer />
                   Informasi Pribadi
                 </a>
-                <a class="list-group-item list-group-item-action p-2" href="#kontak">
+                <a class="list-group-item list-group-item-action toc-item" href="#kontak">
                   <x-lucide-chevron-right class="icon" defer />
                   Kontak
                 </a>
-                <a class="list-group-item list-group-item-action p-2" href="#keanggotaan">
+                <a class="list-group-item list-group-item-action toc-item" href="#keanggotaan">
                   <x-lucide-chevron-right class="icon" defer />
                   Keanggotaan Mafindo
                 </a>
-                <a class="list-group-item list-group-item-action p-2" href="#bidang">
+                <a class="list-group-item list-group-item-action toc-item" href="#bidang">
                   <x-lucide-chevron-right class="icon" defer />
                   Bidang
                 </a>
-                <a class="list-group-item list-group-item-action p-2" href="#pendidikan">
+                <a class="list-group-item list-group-item-action toc-item" href="#pendidikan">
                   <x-lucide-chevron-right class="icon" defer />
                   Riwayat Pendidikan
                 </a>
-                <a class="list-group-item list-group-item-action p-2" href="#pekerjaan">
+                <a class="list-group-item list-group-item-action toc-item" href="#pekerjaan">
                   <x-lucide-chevron-right class="icon" defer />
                   Riwayat Pekerjaan
                 </a>
-                <a class="list-group-item list-group-item-action p-2" href="#sertifikat">
+                <a class="list-group-item list-group-item-action toc-item" href="#sertifikat">
                   <x-lucide-chevron-right class="icon" defer />
                   Sertifikat Keahlian
                 </a>

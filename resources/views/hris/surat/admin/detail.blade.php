@@ -91,7 +91,7 @@
               <div class="card-body">
                 <div class="datagrid">
                   <div class="datagrid-item">
-                    <div class="datagrid-title fs-4">Pengirim</div>
+                    <div class="datagrid-title">Pengirim</div>
                     <div class="datagrid-content">
                       {{ $letter->createdBy->nama }}
                       @if ($letter->created_by == Auth::id())
@@ -101,7 +101,7 @@
                   </div>
                   @if ($letter->recipients->isNotEmpty())
                     <div class="datagrid-item">
-                      <div class="datagrid-title fs-4">Tujuan</div>
+                      <div class="datagrid-title">Tujuan</div>
                       <div class="datagrid-content">
                         @if ($letter->recipients->contains('id', Auth::id()))
                           {{ Auth::user()->nama }} <strong class="fw-medium">(Saya)</strong>
@@ -125,11 +125,11 @@
                     </a>
                     <div class="datagrid mt-3">
                       <div class="datagrid-item">
-                        <div class="datagrid-title fs-4">Admin</div>
+                        <div class="datagrid-title">Admin</div>
                         <div class="datagrid-content">{{ $letter->uploaded_by }}</div>
                       </div>
                       <div class="datagrid-item">
-                        <div class="datagrid-title fs-4">Tanggal & Waktu</div>
+                        <div class="datagrid-title">Tanggal & Waktu</div>
                         <div class="datagrid-content">{{ $letter->uploaded_at }}</div>
                       </div>
                     </div>
@@ -184,11 +184,11 @@
                           </a>
                           <div class="datagrid mt-3">
                             <div class="datagrid-item">
-                              <div class="datagrid-title fs-4">Diupload Oleh</div>
+                              <div class="datagrid-title">Diupload Oleh</div>
                               <div class="datagrid-content">{{ $letter->uploaded_by }}</div>
                             </div>
                             <div class="datagrid-item">
-                              <div class="datagrid-title fs-4">Tanggal & Waktu</div>
+                              <div class="datagrid-title">Tanggal & Waktu</div>
                               <div class="datagrid-content">{{ $letter->uploaded_at }}</div>
                             </div>
                           </div>
@@ -246,7 +246,7 @@
                         <label for="message" class="form-label required">Alasan</label>
                         <x-form.textarea name="message" rows="5" placeholder="Tuliskan alasan penolakan" required />
                       </div>
-                      <button class="btn btn-primary" type="submit">Tolak Permohonan</button>
+                      <button class="btn btn-primary" type="submit">Tolak</button>
                     </form>
                   </div>
                 </div>
@@ -318,12 +318,16 @@
                 </div>
                 @if ($letter->attachment)
                   <div class="card-body">
-                    <h4 class="text-uppercase">Lampiran</h4>
-                    <a href="{{ route('surat.downloadAttachment', $letter->id) }}" class="d-inline-flex flex-wrap align-items-center gap-2 text-decoration-underline"
-                      target="_blank">
-                      <x-lucide-file-text class="icon" />
-                      {{ basename($letter->attachment) }} [Download]
-                    </a>
+                    <h4 class="text-uppercase mb-3">Lampiran</h4>
+                    <div class="mb-2">
+                      <a href="{{ route('surat.downloadAttachment', $letter->id) }}" class="d-inline-flex flex-wrap align-items-center gap-2" target="_blank">
+                        <x-lucide-paperclip class="icon" />
+                        {{ basename($letter->attachment) }}
+                      </a>
+                    </div>
+                    <div>
+                      <a href="{{ route('surat.downloadAttachment', $letter->id) }}" class="btn" target="_blank">Buka</a>
+                    </div>
                   </div>
                 @endif
               </div>

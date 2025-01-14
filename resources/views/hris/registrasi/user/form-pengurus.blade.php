@@ -34,7 +34,7 @@
               </x-alert>
             @endif
             <div class="card card-mafindo overflow-hidden">
-              <div class="card-header border-bottom-0">
+              <div class="card-header">
                 <h2 class="card-title d-flex align-items-center gap-2 mb-0">
                   <x-lucide-chevrons-right class="icon" />
                   Tahapan
@@ -43,7 +43,7 @@
               </div>
               <x-registration-step current="{{ $registration?->step }}" :steps="App\Enums\RegistrationLamaStepEnum::steps()" />
               @if (in_array($registration?->status->value, ['revisi', 'ditolak']))
-                <div class="card-body border-top bg-orange-lt text-dark">
+                <div class="card-body bg-orange-lt text-dark">
                   <h4 class="text-red text-uppercase m-0">Alasan {{ $registration?->status->value }}</h4>
                   @if ($registration->status->value == 'revisi')
                     <p class="m-0">Mohon untuk memperbaiki data sesuai dengan arahan berikut</p>
@@ -64,7 +64,7 @@
                   </h3>
                 </div>
                 <nav class="list-group list-group-flush">
-                  <a class="list-group-item list-group-item-action p-2" href="#informasi-pribadi">
+                  <a class="list-group-item list-group-item-action toc-item" href="#informasi-pribadi">
                     <x-lucide-chevron-right class="icon" defer />
                     Informasi Wilayah
                   </a>

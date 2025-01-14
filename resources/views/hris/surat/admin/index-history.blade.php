@@ -150,7 +150,7 @@
   <x-modal-delete baseUrl="{{ route('surat.index') }}" />
   <div class="modal fade" id="bulk-delete" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <form method="POST" action="{{ route('surat.bulkDelete') }}" class="modal-content">
+      <form method="POST" action="{{ route('surat.bulkDelete') }}" class="modal-content" autocomplete="off">
         <div class="modal-status bg-danger"></div>
         <div class="modal-header">
           <h5 class="modal-title">Hapus Masal</h5>
@@ -163,12 +163,11 @@
             <label for="status-revisi" class="form-label">Hapus Surat dengan status REVISI?</label>
             <div class="input-group mb-2">
               <span class="input-group-text">
-                <input id="status-revisi" name="status_revisi" class="form-check-input m-0" type="checkbox">
+                <input id="status-revisi" name="status_revisi" class="form-check-input me-2" type="checkbox">
+                <label for="lama-revisi">Hapus jika lebih dari</label>
               </span>
-              <div class="form-floating">
-                <x-form.input name="lama_revisi" type="number" value="12" />
-                <label for="lama-revisi">Hapus jika lebih dari … bulan</label>
-              </div>
+              <x-form.input name="lama_revisi" type="number" value="12" />
+              <span class="input-group-text">Bulan</span>
               <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus data surat yang statusnya masih revisi dan sudah lama tidak diperbaiki.</small>
             </div>
           </div>
@@ -176,12 +175,11 @@
             <label for="status-ditolak" class="form-label">Hapus Surat yang DITOLAK?</label>
             <div class="input-group mb-2">
               <span class="input-group-text">
-                <input id="status-ditolak" name="status_ditolak" class="form-check-input m-0" type="checkbox">
+                <input id="status-ditolak" name="status_ditolak" class="form-check-input me-2" type="checkbox">
+                <label for="lama-ditolak">Hapus jika lebih dari</label>
               </span>
-              <div class="form-floating">
-                <x-form.input name="lama_ditolak" type="number" value="12" />
-                <label for="lama-ditolak">Hapus jika lebih dari … bulan</label>
-              </div>
+              <x-form.input name="lama_ditolak" type="number" value="12" />
+              <span class="input-group-text">Bulan</span>
               <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus data surat yang statusnya ditolak.</small>
             </div>
           </div>
@@ -189,12 +187,11 @@
             <label for="status-selesai" class="form-label">Hapus Surat yang telah SELESAI?</label>
             <div class="input-group mb-2">
               <span class="input-group-text">
-                <input id="status-selesai" name="status_selesai" class="form-check-input m-0" type="checkbox">
+                <input id="status-selesai" name="status_selesai" class="form-check-input me-2" type="checkbox">
+                <label for="lama-selesai">Hapus jika lebih dari</label>
               </span>
-              <div class="form-floating">
-                <x-form.input name="lama_selesai" type="number" value="12" />
-                <label for="lama-selesai">Hapus jika lebih dari … bulan</label>
-              </div>
+              <x-form.input name="lama_selesai" type="number" value="12" />
+              <span class="input-group-text">Bulan</span>
               <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus data surat yang statusnya telah selesai.</small>
             </div>
           </div>

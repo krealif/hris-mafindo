@@ -5,7 +5,7 @@
 @section('content')
   <div class="card card-mafindo">
     <div class="card-header">
-      <h1 class="h2 mb-0">Masuk ke Akun Anda</h1>
+      <h1 class="card-title">Masuk ke Akun Anda</h1>
     </div>
     <div class="card-body">
       <form action="{{ route('login.store') }}" method="POST" autocomplete="off">
@@ -25,7 +25,7 @@
         </div>
         <div class="form-footer">
           <button type="submit" class="btn btn-primary w-100">Masuk</button>
-          <a href="{{ route('register') }}" class="btn w-100 mt-2">Belum punya akun?&nbsp;<span class="text-primary">Registrasi sekarang</span></a>
+          <a href="{{ route('register') }}" class="btn w-100 mt-2">Belum punya akun?&nbsp;<span class="text-primary">Registrasi</span></a>
         </div>
       </form>
     </div>

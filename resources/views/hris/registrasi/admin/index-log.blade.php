@@ -143,7 +143,7 @@
   <x-modal-delete baseUrl="{{ route('registrasi.index') }}" />
   <div class="modal fade" id="bulk-delete" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <form method="POST" action="{{ route('registrasi.bulkDelete') }}" class="modal-content">
+      <form method="POST" action="{{ route('registrasi.bulkDelete') }}" class="modal-content" autocomplete="off">
         <div class="modal-status bg-danger"></div>
         <div class="modal-header">
           <h5 class="modal-title">Hapus Masal</h5>
@@ -156,12 +156,11 @@
             <label for="step-mengisi" class="form-label">Hapus Relawan yang Belum Selesai Mengisi?</label>
             <div class="input-group mb-2">
               <span class="input-group-text">
-                <input id="step-mengisi" name="step_mengisi" class="form-check-input m-0" type="checkbox">
+                <input id="step-mengisi" name="step_mengisi" class="form-check-input me-2" type="checkbox">
+                <label for="lama-mengisi">Hapus jika lebih dari</label>
               </span>
-              <div class="form-floating">
-                <x-form.input name="lama_mengisi" type="number" value="7" />
-                <label for="lama-mengisi">Hapus jika lebih dari … hari</label>
-              </div>
+              <x-form.input name="lama_mengisi" type="number" value="7" />
+              <span class="input-group-text">Hari</span>
               <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus data relawan yang belum menyelesaikan pengisian formulir.</small>
             </div>
           </div>
@@ -169,12 +168,11 @@
             <label for="status-ditolak" class="form-label">Hapus Data Relawan yang Ditolak?</label>
             <div class="input-group mb-2">
               <span class="input-group-text">
-                <input id="status-ditolak" name="status_ditolak" class="form-check-input m-0" type="checkbox">
+                <input id="status-ditolak" name="status_ditolak" class="form-check-input me-2" type="checkbox">
+                <label for="lama-ditolak">Hapus jika lebih dari</label>
               </span>
-              <div class="form-floating">
-                <x-form.input name="lama_ditolak" type="number" value="30" />
-                <label for="lama-ditolak">Hapus jika lebih dari … hari</label>
-              </div>
+              <x-form.input name="lama_ditolak" type="number" value="30" />
+              <span class="input-group-text">Hari</span>
               <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus data relawan yang status pendaftarannya ditolak.</small>
             </div>
           </div>

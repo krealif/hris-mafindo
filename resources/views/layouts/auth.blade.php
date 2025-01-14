@@ -10,10 +10,10 @@
 
 @section('body')
   <div class="d-flex flex-column">
-    <div class="page page-center">
+    <div class="page my-auto">
       <div class="container container-tight py-4">
         <div class="text-center mb-4">
-          <img src="{{ asset('static/img/mafindo-logo.png') }}" alt="Mafindo Logo" style="height: 56px">
+          <img src="{{ asset('static/img/mafindo-logo.png') }}" alt="Mafindo Logo" style="height: 48px">
         </div>
         @yield('content')
       </div>

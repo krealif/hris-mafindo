@@ -34,7 +34,7 @@
               </x-alert>
             @endif
             <div class="card card-mafindo overflow-hidden">
-              <div class="card-header border-bottom-0">
+              <div class="card-header">
                 <h2 class="card-title d-flex align-items-center gap-2 mb-0">
                   <x-lucide-chevrons-right class="icon" />
                   Tahapan
@@ -47,7 +47,7 @@
                 <x-registration-step current="{{ $registration?->step }}" :steps="App\Enums\RegistrationLamaStepEnum::steps()" />
               @endif
               @if (in_array($registration?->status->value, ['revisi', 'ditolak']))
-                <div class="card-body border-top bg-orange-lt text-dark">
+                <div class="card-body bg-orange-lt text-dark">
                   <h4 class="text-red text-uppercase m-0">Alasan {{ $registration?->status->value }}</h4>
                   @if ($registration->status->value == 'revisi')
                     <p class="m-0">Mohon untuk memperbaiki data sesuai dengan arahan berikut</p>
@@ -57,7 +57,7 @@
                 </div>
               @endif
               @if ($registration?->status->value == 'diproses')
-                <div class="card-body border-top">
+                <div class="card-body">
                   <div class="datagrid">
                     <x-datagrid-item title="Nama" content="{{ $user->nama }}" />
                     <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
@@ -79,35 +79,35 @@
                   </h2>
                 </div>
                 <nav class="list-group list-group-flush">
-                  <a class="list-group-item list-group-item-action p-2" href="#informasi-pribadi">
+                  <a class="list-group-item list-group-item-action toc-item" href="#informasi-pribadi">
                     <x-lucide-chevron-right class="icon" defer />
                     Informasi Pribadi
                   </a>
-                  <a class="list-group-item list-group-item-action p-2" href="#foto-profil">
+                  <a class="list-group-item list-group-item-action toc-item" href="#foto-profil">
                     <x-lucide-chevron-right class="icon" defer />
                     Foto Profil
                   </a>
-                  <a class="list-group-item list-group-item-action p-2" href="#kontak">
+                  <a class="list-group-item list-group-item-action toc-item" href="#kontak">
                     <x-lucide-chevron-right class="icon" defer />
                     Kontak
                   </a>
-                  <a class="list-group-item list-group-item-action p-2" href="#keanggotaan">
+                  <a class="list-group-item list-group-item-action toc-item" href="#keanggotaan">
                     <x-lucide-chevron-right class="icon" defer />
                     Keanggotaan Mafindo
                   </a>
-                  <a class="list-group-item list-group-item-action p-2" href="#bidang">
+                  <a class="list-group-item list-group-item-action toc-item" href="#bidang">
                     <x-lucide-chevron-right class="icon" defer />
                     Bidang
                   </a>
-                  <a class="list-group-item list-group-item-action p-2" href="#pendidikan">
+                  <a class="list-group-item list-group-item-action toc-item" href="#pendidikan">
                     <x-lucide-chevron-right class="icon" defer />
                     Riwayat Pendidikan
                   </a>
-                  <a class="list-group-item list-group-item-action p-2" href="#pekerjaan">
+                  <a class="list-group-item list-group-item-action toc-item" href="#pekerjaan">
                     <x-lucide-chevron-right class="icon" defer />
                     Riwayat Pekerjaan
                   </a>
-                  <a class="list-group-item list-group-item-action p-2" href="#sertifikat">
+                  <a class="list-group-item list-group-item-action toc-item" href="#sertifikat">
                     <x-lucide-chevron-right class="icon" defer />
                     Sertifikat Keahlian
                   </a>

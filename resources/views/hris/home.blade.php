@@ -21,7 +21,7 @@
       <div class="container-xl">
         @role('relawan-baru')
           <div class="card card-mafindo overflow-hidden">
-            <div class="card-header border-bottom-0">
+            <div class="card-header">
               <h2 class="card-title d-flex align-items-center gap-2 mb-0">
                 <x-lucide-chevrons-right class="icon" />
                 Tahapan Registrasi

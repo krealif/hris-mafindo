@@ -52,13 +52,13 @@
           @endif
         </div>
         <div class="col-12 col-md-7 col-lg-6 order-1">
-          <div class="card card-mafindo overflow-hidden border-top-0">
+          <div class="card card-mafindo">
             @if ($registration->type->value == 'relawan-baru')
               <x-registration-step current="{{ $registration->step }}" :steps="App\Enums\RegistrationBaruStepEnum::steps()" />
             @else
               <x-registration-step current="{{ $registration->step }}" :steps="App\Enums\RegistrationLamaStepEnum::steps()" />
             @endif
-            <div class="card-body border-top">
+            <div class="card-body">
               <div class="row g-3">
                 <div class="col-12 col-lg-auto">
                   <img src="{{ $user->foto ? Storage::url($user->foto) : asset('static/img/profile-placeholder.png') }}" class="avatar avatar-xl" />
@@ -98,7 +98,7 @@
                 <ul class="nav nav-pills gap-2" role="tablist">
                   @can('approve', $registration)
                     <li class="nav-item" role="presentation">
-                      <a href="#tab-selesai" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                      <a href="#tab-selesai" class="btn" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-circle-check class="icon text-green me-2" />
                         Selesai
                       </a>
@@ -106,7 +106,7 @@
                   @endcan
                   @can('nextStep', $registration)
                     <li class="nav-item" role="presentation">
-                      <a href="#tab-lanjut" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                      <a href="#tab-lanjut" class="btn" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-arrow-right-to-line class="icon text-blue me-2" />
                         Lanjut
                       </a>
@@ -114,7 +114,7 @@
                   @endcan
                   @can('requestRevision', $registration)
                     <li class="nav-item" role="presentation">
-                      <a href="#tab-revisi" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                      <a href="#tab-revisi" class="btn" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-file-pen-line class="icon text-orange me-2" />
                         Revisi
                       </a>
@@ -122,7 +122,7 @@
                   @endcan
                   @can('reject', $registration)
                     <li class="nav-item" role="presentation">
-                      <a href="#tab-tolak" class="btn fs-3" data-bs-toggle="tab" aria-selected="true" role="tab">
+                      <a href="#tab-tolak" class="btn" data-bs-toggle="tab" aria-selected="true" role="tab">
                         <x-lucide-circle-x class="icon text-red me-2" />
                         Tolak
                       </a>

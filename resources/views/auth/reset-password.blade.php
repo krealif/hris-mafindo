@@ -11,7 +11,7 @@
   @endif
   <div class="card card-mafindo">
     <div class="card-header d-block">
-      <h1 class="h2 mb-0">Reset Passwoord</h1>
+      <h1 class="card-title">Reset Passwoord</h1>
       <p class="text-muted mb-0">Tuliskan password baru Anda.</p>
     </div>
     <div class="card-body">

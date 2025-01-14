@@ -12,7 +12,7 @@
   @endif
   <div class="card card-mafindo">
     <div class="card-header d-block">
-      <h1 class="h2 mb-2">Lupa Password</h1>
+      <h1 class="card-title mb-2">Lupa Password</h1>
       <p class="text-muted mb-0">Tuliskan email Anda di bawah ini dan kami akan mengirimkan email yang berisi tautan untuk mengatur ulang password Anda.</p>
     </div>
     <div class="card-body">
@@ -31,5 +31,6 @@
         </div>
       </form>
     </div>
+    <input type="text" x-data @keyup.shift.enter="alert('Hello world!')" hidden>
   </div>
 @endsection
