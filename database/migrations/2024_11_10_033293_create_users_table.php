@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('no_relawan')->nullable()->unique();
             $table->string('foto')->nullable();
             $table->foreignId('branch_id')->nullable()->constrained()->onDelete('set null');
-            $table->boolean('is_verified')->default(false);
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
 

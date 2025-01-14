@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         $admin = User::create([
             'nama' => 'Admin Mafindo',
             'email' => 'admin@mail.com',
-            'is_verified' => true,
+            'is_approved' => true,
             'password' => Hash::make('password'),
         ]);
 
@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
         $pengurus = User::create([
             'nama' => 'Pengurus Mafindo',
             'email' => 'Pengurus@mail.com',
-            'is_verified' => true,
+            'is_approved' => true,
             'password' => Hash::make('password'),
             'branch_id' => 1,
         ]);
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
         $relawan = User::create([
             'nama' => 'Relawan Mafindo',
             'email' => 'relawan@mail.com',
-            'is_verified' => true,
+            'is_approved' => true,
             'password' => Hash::make('password'),
             'branch_id' => 1,
         ]);

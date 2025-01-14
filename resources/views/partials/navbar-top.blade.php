@@ -12,7 +12,7 @@
     <!--End Logo-->
     <div class="navbar-nav flex-row order-md-last">
       <!--Profile-->
-      @if (auth()->user()->is_verified)
+      @if (auth()->user()->is_approved)
         <div class="nav-item dropdown">
           <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Buka menu akun">
             <img src="{{ auth()->user()->foto ? Storage::url(auth()->user()->foto) : asset('static/img/profile-placeholder.png') }}" class="avatar avatar-sm">

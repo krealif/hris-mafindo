@@ -26,7 +26,7 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                if (Auth::user()?->is_verified) {
+                if (Auth::user()?->is_approved) {
                     return redirect()->intended('/');
                 }
 
@@ -67,7 +67,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureUserIsVerified
+class EnsureUserIsApproved
 {
     /**
-     * This middleware checks if the authenticated user is verified. If the user is not verified,
+     * This middleware checks if the authenticated user is approved. If the user is not approved,
      * they are redirected to the registration form.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
@@ -20,8 +20,8 @@ class EnsureUserIsVerified
         // Get the authenticated user
         $user = Auth::user();
 
-        // If the user is not verified, redirect them to the registration form
-        if (! $user->is_verified) {
+        // If the user is not approved, redirect them to the registration form
+        if (! $user->is_approved) {
             return redirect()->route('registrasi.selectForm');
         }
 

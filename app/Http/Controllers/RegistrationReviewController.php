@@ -120,8 +120,10 @@ class RegistrationReviewController extends Controller
                     'no_relawan' => $validated['no_relawan'],
                 ]);
             } elseif ($currentStep == RegistrationBaruStepEnum::TERHUBUNG) {
+                // Pada relawan baru, status approve menjadi 'TRUE' pada step terhubung
+                // agar dapat segera mengakses dashboard
                 $registration->user->update([
-                    'is_verified' => 1,
+                    'is_approved' => 1,
                 ]);
             }
         }
@@ -187,12 +189,12 @@ class RegistrationReviewController extends Controller
 
             $registration->user->update([
                 'no_relawan' => $validated['no_relawan'],
-                'is_verified' => 1,
+                'is_approved' => 1,
             ]);
         } else {
             // For pengurus
             $registration->user->update([
-                'is_verified' => 1,
+                'is_approved' => 1,
             ]);
         }
 

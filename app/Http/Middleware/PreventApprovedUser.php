@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class PreventVerifiedUser
+class PreventApprovedUser
 {
     /**
-     * Middleware to prevent verified users from accessing certain routes (unverified user route).
+     * Middleware to prevent approved users from accessing user registration route.
      *
-     * This middleware checks if the authenticated user is verified. If the user is verified,
+     * This middleware checks if the authenticated user is approved. If the user is approved,
      * they are redirected to the home page. Otherwise, the request is allowed to proceed.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
@@ -23,8 +23,8 @@ class PreventVerifiedUser
         // Get the authenticated user
         $user = Auth::user();
 
-        // If the user is verified, redirect them to the dashboard
-        if ($user->is_verified) {
+        // If the user is approved, redirect them to the dashboard
+        if ($user->is_approved) {
             return redirect(HomeController::$HOME);
         }
 
