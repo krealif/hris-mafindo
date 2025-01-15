@@ -8,14 +8,6 @@
     flex: none;
 }
 
-.hidden-if-empty {
-    display: none;
-}
-
-.hidden-if-empty:has(*) {
-    display: block;
-}
-
 .line-clamp-3 {
     overflow: hidden;
     display: -webkit-box;

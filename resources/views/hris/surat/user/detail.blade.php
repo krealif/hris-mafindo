@@ -43,14 +43,14 @@
     </div>
     <div class="page-body">
       <div class="container-xl">
+        <div>
+          @if (flash()->message)
+            <x-alert type="{{ flash()->class }}">
+              {{ flash()->message }}
+            </x-alert>
+          @endif
+        </div>
         <div class="row g-3">
-          <div class="col-12 hidden-if-empty order-first">
-            @if (flash()->message)
-              <x-alert type="{{ flash()->class }}" class="m-0">
-                {{ flash()->message }}
-              </x-alert>
-            @endif
-          </div>
           <div class="col-12 col-md-6">
             <div class="card card-mafindo">
               <!-- Judul surat -->

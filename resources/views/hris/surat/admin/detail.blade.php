@@ -32,24 +32,24 @@
     </div>
     <div class="page-body">
       <div class="container-xl">
+        <div>
+          @if (flash()->message)
+            <x-alert type="{{ flash()->class }}">
+              {{ flash()->message }}
+            </x-alert>
+          @endif
+          @if ($errors->any())
+            <x-alert class="alert-danger">
+              <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
+              <ul class="mt-2 mb-0" style="margin-left: -1rem">
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </x-alert>
+          @endif
+        </div>
         <div class="row g-3">
-          <div class="col-12 hidden-if-empty order-first">
-            @if (flash()->message)
-              <x-alert type="{{ flash()->class }}" class="m-0">
-                {{ flash()->message }}
-              </x-alert>
-            @endif
-            @if ($errors->any())
-              <x-alert class="alert-danger m-0">
-                <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
-                <ul class="mt-2 mb-0" style="margin-left: -1rem">
-                  @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </x-alert>
-            @endif
-          </div>
           <div class="col-12 col-md-6">
             <div class="card card-mafindo">
               <!-- Judul surat -->
