@@ -7,7 +7,7 @@
     <!-- Page header -->
     <div class="page-header d-print-none">
       <div class="container-xl">
-        <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <div class="title-wrapper">
           <h1 class="page-title">
             Permohonan Relawan Wilayah
           </h1>

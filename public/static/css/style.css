@@ -183,10 +183,6 @@ table .datagrid-title {
 }
 
 /* Panels */
-.panel-tabs {
-    margin-top: -.25rem;
-}
-
 .panel-tabs .nav-link {
     padding: .75rem 1.25rem;
     font-weight: 500;
@@ -194,13 +190,12 @@ table .datagrid-title {
 }
 
 .panel-tabs .nav-item+.nav-item {
-    margin: 0;
+    margin-left: 0;
+    border-left: var(--tblr-border-width) var(--tblr-border-style) var(--tblr-border-color);
 }
 
 .panel-tabs .nav-link.active {
     background-color: var(--tblr-primary-lt);
-    border-top-left-radius: var(--tblr-border-radius);
-    border-top-right-radius: var(--tblr-border-radius);
 }
 
 .panel-tabs .nav-item:first-child .nav-link {
@@ -230,7 +225,15 @@ trix-editor.form-control.is-invalid {
     background: unset;
 }
 
-/* Miscellaneous */
+/* Misc */
+.title-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .toc-item {
     padding: .75rem 1rem;
 }

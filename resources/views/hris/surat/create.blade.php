@@ -6,8 +6,8 @@
   <div class="page-wrapper">
     <div class="page-header d-print-none">
       <div class="container-xl">
-        <div class="row g-2 align-items-center">
-          <div class="col">
+        <div class="title-wrapper">
+          <div>
             <div class="mb-1">
               <a href="{{ Auth::user()->hasRole('admin') ? route('surat.index') : route('surat.letterbox') }}" class="btn btn-link px-0 py-1">
                 <x-lucide-arrow-left class="icon" />

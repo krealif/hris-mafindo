@@ -7,10 +7,15 @@
     <!-- Page header -->
     <div class="page-header d-print-none">
       <div class="container-xl">
-        <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
-          <h1 class="page-title">
-            Proses Permohonan Surat
-          </h1>
+        <div class="title-wrapper">
+          <div>
+            <h1 class="page-title">
+              Proses Permohonan Surat
+            </h1>
+            <p class="text-muted m-0 mt-1">
+              Tindak lanjuti permohonan surat dari relawan dan pengurus.
+            </p>
+          </div>
           @can('create', App\Models\Letter::class)
             <a href="{{ route('surat.create') }}" class="btn btn-primary">
               <x-lucide-plus class="icon" />

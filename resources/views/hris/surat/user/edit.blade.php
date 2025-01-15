@@ -6,8 +6,8 @@
   <div class="page-wrapper">
     <div class="page-header d-print-none">
       <div class="container-xl">
-        <div class="row g-2 align-items-center">
-          <div class="col">
+        <div class="title-wrapper">
+          <div>
             <div class="mb-1">
               @if (url()->previous() == route('surat.show', $letter->id))
                 <a href="{{ route('surat.show', $letter->id) }}" class="btn btn-link px-0 py-1">
