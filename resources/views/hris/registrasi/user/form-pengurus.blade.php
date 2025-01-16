@@ -80,19 +80,19 @@
                   <div class="card-body">
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
-                        <label for="nama" class="form-label required">Koordinator</label>
-                        <x-form.input name="nama" type="text" value="{{ old('nama', $user->nama) }}" required />
+                        <label for="coordinatorName" class="form-label required">Koordinator</label>
+                        <x-form.input name="coordinatorName" type="text" value="{{ old('coordinatorName', $user->nama) }}" required />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="branch" class="form-label required">Wilayah</label>
                         <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', $user->branch_id) }}" placeholder="" />
                       </div>
                     </div>
-                    @if ($errors->has('pengurus.*'))
+                    @if ($errors->has('staff.*'))
                       <x-alert class="alert-danger">
                         <div>Error! Tolong periksa kembali data yang Anda masukkan.</div>
                         <ul class="mt-2 mb-0" style="margin-left: -1rem">
-                          @foreach ($errors->get('pengurus.*') as $e)
+                          @foreach ($errors->get('staff.*') as $e)
                             @foreach ($e as $error)
                               <li>{{ $error }}</li>
                             @endforeach
@@ -103,21 +103,21 @@
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="sekretaris1" class="form-label">Sekretaris 1</label>
-                        <x-form.input id="sekretaris1" name="pengurus[sekretaris1]" type="text" value="{{ old('pengurus.sekretaris1', $user->staff->sekretaris1) }}" />
+                        <x-form.input id="sekretaris1" name="staff[sekretaris1]" type="text" value="{{ old('staff.sekretaris1', $user->branch?->staff->sekretaris1) }}" />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="sekretaris2" class="form-label">Sekretaris 2</label>
-                        <x-form.input id="sekretaris2" name="pengurus[sekretaris2]" type="text" value="{{ old('pengurus.sekretaris2', $user->staff->sekretaris2) }}" />
+                        <x-form.input id="sekretaris2" name="staff[sekretaris2]" type="text" value="{{ old('staff.sekretaris2', $user->branch?->staff->sekretaris2 ?? '') }}" />
                       </div>
                     </div>
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="bendahara1" class="form-label">Bendahara 1</label>
-                        <x-form.input id="bendahara1" name="pengurus[bendahara1]" type="text" value="{{ old('pengurus.bendahara1', $user->staff->bendahara1) }}" />
+                        <x-form.input id="bendahara1" name="staff[bendahara1]" type="text" value="{{ old('staff.bendahara1', $user->branch?->staff->bendahara1) }}" />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="bendahara2" class="form-label">Bendahara 2</label>
-                        <x-form.input id="bendahara2" name="pengurus[bendahara2]" type="text" value="{{ old('pengurus.bendahara2', $user->staff->bendahara2) }}" />
+                        <x-form.input id="bendahara2" name="staff[bendahara2]" type="text" value="{{ old('staff.bendahara2', $user->branch?->staff->bendahara2) }}" />
                       </div>
                     </div>
                   </div>

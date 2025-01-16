@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Branch extends Model
 {
@@ -22,15 +23,22 @@ class Branch extends Model
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Get the staff information of the branch.
      *
-     * @return array{staff: 'object'}
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<object, never>
      */
-    protected function casts(): array
+    protected function staff(): Attribute
     {
-        return [
-            'staff' => 'object',
-        ];
+        return Attribute::make(
+            get: function (mixed $value) {
+                $staff = json_decode($value, true) ?: [];
+                $list = ['sekretaris1', 'sekretaris2', 'bendahara1', 'bendahara2'];
+
+                $staff = array_merge(array_fill_keys($list, null), $staff);
+
+                return (object) $staff;
+            },
+        );
     }
 
     /**

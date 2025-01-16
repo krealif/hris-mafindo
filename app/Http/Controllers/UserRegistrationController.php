@@ -52,9 +52,9 @@ class UserRegistrationController extends Controller
         $user = Auth::user();
         $registration = $user->registration;
 
-        $branches = Branch::select('id', 'nama')
-            ->orderBy('nama', 'asc')
-            ->pluck('nama', 'id');
+        $branches = Branch::select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->pluck('name', 'id');
 
         $viewData = [
             'user' => $user,
@@ -199,6 +199,9 @@ class UserRegistrationController extends Controller
 
         $validated = $request->validated();
 
+        // Filter untuk menghapus entri kosong dalam array
+        $validated = $this->filterArrayInput($validated, ['staff']);
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $registration = $user->registration;
@@ -229,18 +232,16 @@ class UserRegistrationController extends Controller
         }
 
         DB::transaction(function () use ($user, $registrationData, $validated) {
-            $user->update(
-                Arr::only($validated, [
-                    'nama',
-                    'branch_id',
-                ])
-            );
+            $user->update([
+                'nama' => $validated['coordinatorName'],
+                'branch_id' => $validated['branch_id']
+            ]);
 
             if ($user->branch_id) {
                 Branch::updateOrCreate(
                     ['id' => $user->branch_id],
                     [
-                        'pengurus' => $validated['pengurus'],
+                        'staff' => $validated['staff'],
                         'id' => $user->branch_id,
                     ]
                 );

@@ -168,10 +168,10 @@
                 <div class="datagrid">
                   <x-datagrid-item title="Email" content="{{ $user->email }}" />
                   <x-datagrid-item title="Wilayah" content="{{ $user->branch?->name }}" />
-                  <x-datagrid-item title="Sekretaris 1" content="{{ $user->staff->sekretaris1 }}" />
-                  <x-datagrid-item title="Sekretaris 2" content="{{ $user->staff->sekretaris2 }}" />
-                  <x-datagrid-item title="Bendahara 1" content="{{ $user->staff->bendahara1 }}" />
-                  <x-datagrid-item title="Bendahara 2" content="{{ $user->staff->bendahara2 }}" />
+                  <x-datagrid-item title="Sekretaris 1" content="{{ $user->branch?->staff->sekretaris1 }}" />
+                  <x-datagrid-item title="Sekretaris 2" content="{{ $user->branch?->staff->sekretaris2 }}" />
+                  <x-datagrid-item title="Bendahara 1" content="{{ $user->branch?->staff->bendahara1 }}" />
+                  <x-datagrid-item title="Bendahara 2" content="{{ $user->branch?->staff->bendahara2 }}" />
                 </div>
               </div>
             </div>

@@ -38,9 +38,9 @@ class UserMigrationController extends Controller
      */
     public function create(): View
     {
-        $branches = Branch::select('id', 'nama')
-            ->orderBy('nama', 'asc')
-            ->pluck('nama', 'id');
+        $branches = Branch::select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->pluck('name', 'id');
 
         return view('hris.migrasi-user.form-migrasi', [
             'tempUser' => null,
@@ -97,9 +97,9 @@ class UserMigrationController extends Controller
      */
     public function edit(TempUser $tempUser): View
     {
-        $branches = Branch::select('id', 'nama')
-            ->orderBy('nama', 'asc')
-            ->pluck('nama', 'id');
+        $branches = Branch::select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->pluck('name', 'id');
 
         $userDetail = $tempUser->detail;
 

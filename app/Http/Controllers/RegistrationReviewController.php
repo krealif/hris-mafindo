@@ -39,9 +39,9 @@ class RegistrationReviewController extends Controller
             ->paginate(15)
             ->appends(request()->query());
 
-        $branches = Branch::select('id', 'nama')
-            ->orderBy('nama', 'asc')
-            ->pluck('nama', 'id');
+        $branches = Branch::select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->pluck('name', 'id');
 
         return view('hris.registrasi.admin.index', compact('registrations', 'branches'));
     }
@@ -65,9 +65,9 @@ class RegistrationReviewController extends Controller
             ->paginate(15)
             ->appends(request()->query());
 
-        $branches = Branch::select('id', 'nama')
-            ->orderBy('nama', 'asc')
-            ->pluck('nama', 'id');
+        $branches = Branch::select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->pluck('name', 'id');
 
         return view('hris.registrasi.admin.index-log', compact('registrations', 'branches'));
     }

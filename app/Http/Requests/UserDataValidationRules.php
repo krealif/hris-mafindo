@@ -72,7 +72,7 @@ trait UserDataValidationRules
     protected function pengurusRules(bool $isRequired = true): array
     {
         return [
-            'nama' => ['required', 'string', 'max:255'],
+            'coordinatorName' => ['required', 'string', 'max:255'],
             'branch_id' => [
                 'required',
                 'exists:branches,id',
@@ -85,8 +85,8 @@ trait UserDataValidationRules
                     });
                 })->ignore($this->user()),
             ],
-            'pengurus' => ['nullable', 'array', 'max:4'],
-            'pengurus.*' => ['nullable', 'string', 'max:255'],
+            'staff' => ['nullable', 'array', 'max:4'],
+            'staff.*' => ['nullable', 'string', 'max:255'],
         ];
     }
 }
