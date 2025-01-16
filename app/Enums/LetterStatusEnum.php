@@ -21,19 +21,19 @@ enum LetterStatusEnum: string
     public static function labels(): array
     {
         return array_combine(
-            array_map(fn ($case) => $case->value, self::cases()),
-            array_map(fn ($case) => $case->label(), self::cases())
+            array_map(fn($case) => $case->value, self::cases()),
+            array_map(fn($case) => $case->label(), self::cases())
         );
     }
 
     public function badge(): string
     {
         return match ($this) {
-            self::MENUNGGU => 'badge-outline text-dark',
-            self::DIPROSES => 'badge-outline text-blue',
-            self::REVISI => 'badge-outline text-orange',
-            self::SELESAI => 'badge-outline text-green',
-            self::DITOLAK => 'badge-outline text-red',
+            self::MENUNGGU => 'badge-outline bg-secondary-lt text-dark',
+            self::DIPROSES => 'badge-outline bg-blue-lt text-blue',
+            self::REVISI => 'badge-outline bg-orange-lt text-orange',
+            self::SELESAI => 'badge-outline bg-green-lt text-green',
+            self::DITOLAK => 'badge-outline bg-red-lt text-red',
         };
     }
 }
