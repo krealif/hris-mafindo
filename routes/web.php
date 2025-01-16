@@ -1,17 +1,18 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\LetterReviewController;
-use App\Http\Controllers\RegistrationReviewController;
 use App\Http\Controllers\UserMigrationController;
 use App\Http\Controllers\UserRegistrationController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegistrationReviewController;
+use App\Http\Controllers\UserController;
 
 /**
- * Group of routes that require authentication but for unverified users only.
+ * Group of routes that require authentication but for unapproved users only.
  */
-Route::middleware(['auth', 'unverified'])->group(function () {
+Route::middleware(['auth', 'unapproved'])->group(function () {
     // Routes for user registration forms.
     Route::group([
         'controller' => UserRegistrationController::class,
@@ -27,11 +28,19 @@ Route::middleware(['auth', 'unverified'])->group(function () {
 /**
  * Group of routes that require authentication and verified registrations by admin.
  */
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'approved'])->group(function () {
     // Home route for the dashboard.
     Route::get('/', HomeController::class)->name('home');
 
-    // Group of routes for admin to manage & review user registration submissions
+    Route::group([
+        'controller' => UserController::class,
+        'as' => 'user.',
+    ], function () {
+        Route::get('profil', 'profile')->name('profile');
+        Route::get('profil/sertifikat', 'listCertificate')->name('certificate');
+    });
+
+    // Group of routes for admin to manage & review user registration applications
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => RegistrationReviewController::class,
@@ -45,8 +54,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('permohonan/{registration}', 'show')->name('show');
         Route::patch('permohonan/{registration}/next', 'nextStep')->name('nextStep');
         Route::patch('permohonan/{registration}/revisi', 'requestRevision')->name('requestRevision');
-        Route::patch('permohonan/{registration}/selesai', 'approveRegistration')->name('approve');
-        Route::patch('permohonan/{registration}/tolak', 'rejectRegistration')->name('reject');
+        Route::patch('permohonan/{registration}/selesai', 'approve')->name('approve');
+        Route::patch('permohonan/{registration}/tolak', 'reject')->name('reject');
         Route::delete('permohonan/{registration}', 'destroy')->name('destroy');
     });
 
@@ -98,8 +107,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('histori', 'indexHistory')->name('indexHistory');
         Route::patch('permohonan/{letter}/upload', 'uploadResult')->name('uploadResult');
         Route::patch('permohonan/{letter}/revisi', 'requestRevision')->name('requestRevision');
-        Route::patch('permohonan/{letter}/kirim', 'approveSubmission')->name('approve');
-        Route::patch('permohonan/{letter}/tolak', 'rejectSubmission')->name('reject');
+        Route::patch('permohonan/{letter}/kirim', 'approve')->name('approve');
+        Route::patch('permohonan/{letter}/tolak', 'reject')->name('reject');
         Route::delete('bulk-delete', 'bulkDelete')->name('bulkDelete');
     });
 });
