@@ -103,21 +103,21 @@
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="sekretaris1" class="form-label">Sekretaris 1</label>
-                        <x-form.input id="sekretaris1" name="pengurus[sekretaris1]" type="text" value="{{ old('pengurus.sekretaris1', $user->branch?->pengurus->sekretaris1) }}" />
+                        <x-form.input id="sekretaris1" name="pengurus[sekretaris1]" type="text" value="{{ old('pengurus.sekretaris1', $user->staff->sekretaris1) }}" />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="sekretaris2" class="form-label">Sekretaris 2</label>
-                        <x-form.input id="sekretaris2" name="pengurus[sekretaris2]" type="text" value="{{ old('pengurus.sekretaris2', $user->branch?->pengurus->sekretaris2) }}" />
+                        <x-form.input id="sekretaris2" name="pengurus[sekretaris2]" type="text" value="{{ old('pengurus.sekretaris2', $user->staff->sekretaris2) }}" />
                       </div>
                     </div>
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="bendahara1" class="form-label">Bendahara 1</label>
-                        <x-form.input id="bendahara1" name="pengurus[bendahara1]" type="text" value="{{ old('pengurus.bendahara1', $user->branch?->pengurus->bendahara1) }}" />
+                        <x-form.input id="bendahara1" name="pengurus[bendahara1]" type="text" value="{{ old('pengurus.bendahara1', $user->staff->bendahara1) }}" />
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="bendahara2" class="form-label">Bendahara 2</label>
-                        <x-form.input id="bendahara2" name="pengurus[bendahara2]" type="text" value="{{ old('pengurus.bendahara2', $user->branch?->pengurus->bendahara2) }}" />
+                        <x-form.input id="bendahara2" name="pengurus[bendahara2]" type="text" value="{{ old('pengurus.bendahara2', $user->staff->bendahara2) }}" />
                       </div>
                     </div>
                   </div>

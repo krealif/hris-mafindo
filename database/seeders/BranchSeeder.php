@@ -24,7 +24,7 @@ class BranchSeeder extends Seeder
             'Sorong', 'Kalimantan Utara', 'Jayapura', 'Banyuwangi',
         ];
 
-        $branches = array_map(fn ($branch) => ['nama' => $branch], $branches);
+        $branches = array_map(fn ($branch) => ['name' => $branch], $branches);
 
         // Perform bulk insert
         Branch::insert($branches);

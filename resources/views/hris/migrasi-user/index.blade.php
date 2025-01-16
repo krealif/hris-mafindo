@@ -67,7 +67,7 @@
                     </a>
                   </td>
                   <td data-label="Email">{{ $user->email }}</td>
-                  <td data-label="Wilayah">{{ $user->branch?->nama ?? '-' }}</td>
+                  <td data-label="Wilayah">{{ $user->branch?->name ?? '-' }}</td>
                   <td data-label="No Relawan">{{ $user->no_relawan ?? '-' }}</td>
                   <td data-label="Tanggal">
                     <div>{{ $user->updated_at?->translatedFormat('d M Y / H:i') }}</div>

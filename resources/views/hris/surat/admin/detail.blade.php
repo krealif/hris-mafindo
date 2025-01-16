@@ -266,7 +266,7 @@
                   <div class="card-body">
                     <div class="datagrid">
                       <x-datagrid-item title="Nama" content="{{ $letter->createdBy->nama }}" />
-                      <x-datagrid-item title="Wilayah" content="{{ $letter->createdBy->branch?->nama }}" />
+                      <x-datagrid-item title="Wilayah" content="{{ $letter->createdBy->branch?->name }}" />
                       <x-datagrid-item title="Nomor Relawan" content="{{ $letter->createdBy->no_relawan }}" />
                     </div>
                   </div>
@@ -298,7 +298,7 @@
                         <tr>
                           <td>{{ $recipient->nama }}</td>
                           <td>{{ $recipient->role?->label() }}</td>
-                          <td>{{ $recipient->branch?->nama }}</td>
+                          <td>{{ $recipient->branch?->name }}</td>
                           <td>{{ $recipient->no_relawan }}</td>
                         </tr>
                       @endforeach

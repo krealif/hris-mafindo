@@ -68,7 +68,7 @@
                   <h4 class="card-subtitle h3 mb-2 text-dark">
                     {{ $registration->type?->label() }}
                     @if ($user->branch_id)
-                      {{ "({$user->branch?->nama})" }}
+                      {{ "({$user->branch?->name})" }}
                     @endif
                   </h4>
                   <x-badge class="fs-4" :case="$registration->status" />
@@ -223,7 +223,7 @@
               <div class="card-body">
                 <div class="datagrid">
                   <x-datagrid-item title="Tahun Bergabung" content="{{ $user->detail->thn_bergabung }}" />
-                  <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
+                  <x-datagrid-item title="Wilayah" content="{{ $user->branch?->name }}" />
                   <x-datagrid-item title="Keikutsertaan PDR" content="{{ $user->detail->pdr }}" />
                   <x-datagrid-item title="Nomor Kartu Relawan" content="{{ $user->no_relawan }}" />
                 </div>

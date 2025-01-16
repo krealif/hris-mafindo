@@ -82,7 +82,7 @@
                   </td>
                   <td data-label="Tipe">{{ $registration->type?->label() }}</td>
                   <td data-label="Email">{{ $registration->user->email }}</td>
-                  <td data-label="Wilayah">{{ $registration->user->branch?->nama }}</td>
+                  <td data-label="Wilayah">{{ $registration->user->branch?->name }}</td>
                   <td data-label="Tanggal">
                     <div>{{ $registration->updated_at?->translatedFormat('d M Y / H:i') }}</div>
                     <div class="text-muted d-block d-md-none d-lg-block">{{ $registration->updated_at?->diffForHumans() }}</div>

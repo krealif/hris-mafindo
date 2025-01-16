@@ -58,7 +58,7 @@
                 <div class="card-body">
                   <div class="datagrid">
                     <x-datagrid-item title="Nama" content="{{ $user->nama }}" />
-                    <x-datagrid-item title="Wilayah" content="{{ $user->branch?->nama }}" />
+                    <x-datagrid-item title="Wilayah" content="{{ $user->branch?->name }}" />
                     <x-datagrid-item title="Nomor Kartu Relawan" content="{{ $user->no_relawan }}" />
                     <x-datagrid-item title="Mendaftar" content="{{ $registration->created_at?->translatedFormat('d F Y / H:i') }}" />
                     <x-datagrid-item title="Diperbarui" content="{{ $registration->updated_at?->translatedFormat('d F Y / H:i') }}" />

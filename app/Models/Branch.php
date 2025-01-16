@@ -17,19 +17,19 @@ class Branch extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'nama',
-        'pengurus',
+        'name',
+        'staff',
     ];
 
     /**
      * Get the attributes that should be cast.
      *
-     * @return array{pengurus: 'object'}
+     * @return array{staff: 'object'}
      */
     protected function casts(): array
     {
         return [
-            'pengurus' => 'object',
+            'staff' => 'object',
         ];
     }
 
