@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
@@ -102,5 +103,16 @@ class User extends Authenticatable
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    /**
+     * @return BelongsToMany<\App\Models\Event, $this>
+     */
+    public function certificates(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class, 'event_certificates')
+            ->using(EventCertificate::class)
+            ->withPivot('id', 'created_at', 'file')
+            ->withTimestamps();
     }
 }

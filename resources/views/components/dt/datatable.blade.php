@@ -10,7 +10,7 @@
       ->count();
 @endphp
 
-<div id="dt-datatable" class="col-12">
+<div id="dt-datatable">
   <div class="d-flex flex-column flex-md-row justify-content-between">
     @if ($search)
       <form id="dt-search" class="col-12 col-md-6 col-lg-4">
@@ -56,7 +56,7 @@
   </div>
   @isset($filterForm)
     <div class="collapse mt-2 mt-md-3" id="{{ $collapseFilterId }}">
-      <form id="dt-filter" class="card">
+      <form id="dt-filter" class="card card-mafindo">
         <div class="card-body">
           {{ $filterForm }}
         </div>
@@ -77,7 +77,7 @@
     <div class="table-responsive">
       {{ $slot }}
     </div>
-    @if ($collection->hasPages())
+    @if (method_exists($collection, 'hasPages') && $collection->hasPages())
       <div class="card-footer">
         {{ $collection->links() }}
       </div>

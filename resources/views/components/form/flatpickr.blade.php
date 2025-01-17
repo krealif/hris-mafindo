@@ -45,7 +45,6 @@
       @if ($maxDate)
         options['maxDate'] = @js($maxDate);
       @endif
-
       @if ($minDate)
         options['minDate'] = @js($minDate);
       @endif

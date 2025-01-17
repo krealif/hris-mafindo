@@ -26,7 +26,10 @@
               <span class="d-block text-muted text-truncate">{{ auth()->user()->email }}</span>
             </div>
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
+            <a href="{{ route('user.profile') }}" @class([
+                'dropdown-item',
+                'active' => request()->routeIs('user.profile') || request()->is('profil/*'),
+            ])>
               <x-lucide-user class="icon dropdown-item-icon" />
               Profil
             </a>
