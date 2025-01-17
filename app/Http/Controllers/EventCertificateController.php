@@ -73,7 +73,7 @@ class EventCertificateController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Event $event, EventCertificate $certificate)
+    public function edit(Event $event, EventCertificate $certificate): View
     {
         Gate::authorize('manageCertificate', $event);
 
@@ -107,7 +107,7 @@ class EventCertificateController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event $event, EventCertificate $certificate)
+    public function destroy(Event $event, EventCertificate $certificate): RedirectResponse
     {
         Gate::authorize('manageCertificate', $event);
 
@@ -139,7 +139,7 @@ class EventCertificateController extends Controller
     /**
      * Download the certificate associated with the Relawan for the given event.
      */
-    public function downloadForRelawan(Event $event)
+    public function downloadForRelawan(Event $event): RedirectResponse
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();

@@ -161,6 +161,7 @@ class EventController extends Controller
         Gate::authorize('view-participant', $event);
 
         $participants = $event->participants()
+            ->select('nama', 'email', 'no_relawan')
             ->latest('created_at')
             ->paginate(15);
 
@@ -263,8 +264,8 @@ class EventController extends Controller
         Gate::authorize('view-participant', $event);
 
         $participants = $event->participants()
+            ->select('nama', 'email', 'no_relawan', 'branch_id')
             ->with('branch')
-            ->latest('created_at')
             ->lazy();
 
         $filename = "peserta-kegiatan-{$event->id}-{$event->name}.csv";
@@ -277,7 +278,7 @@ class EventController extends Controller
                 'Email' => $participant->email,
                 'No. Relawan' => $participant->no_relawan,
                 'Wilayah' => $participant->branch?->name,
-                'Tanggal' => $participant->pivot->created_at?->format('Y-m-d H:i'),
+                'Tanggal' => $participant->getRelationValue('pivot')->created_at?->format('Y-m-d H:i'),
             ]);
         }
 
