@@ -32,7 +32,8 @@ class UserController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
+        $eventCertificate = $user->certificates()->paginate(15);
 
-        return view('hris.profil.relawan-sertifikat', compact('user'));
+        return view('hris.profil.relawan-sertifikat', compact('user', 'eventCertificate'));
     }
 }
