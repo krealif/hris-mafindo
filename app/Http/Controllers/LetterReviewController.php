@@ -36,6 +36,7 @@ class LetterReviewController extends Controller
             ->allowedFilters([
                 'title',
                 'created_by',
+                AllowedFilter::custom('type', new FilterLetterType),
                 AllowedFilter::custom('recipient', new FilterRecipientLetter),
                 AllowedFilter::custom('updated_at', new FilterDate),
             ])
