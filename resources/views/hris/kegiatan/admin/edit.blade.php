@@ -14,6 +14,11 @@
                   <x-lucide-arrow-left class="icon" />
                   Kembali
                 </a>
+              @elseif ($event->status->value == 'selesai')
+                <a href="{{ route('kegiatan.indexArchive') }}" class="btn btn-link px-0 py-1">
+                  <x-lucide-arrow-left class="icon" />
+                  Kembali
+                </a>
               @else
                 <a href="{{ route('kegiatan.index') }}" class="btn btn-link px-0 py-1">
                   <x-lucide-arrow-left class="icon" />
@@ -145,6 +150,8 @@
               <button type="submit" class="btn btn-primary">Simpan</button>
               @if (url()->previous() == route('kegiatan.show', $event->id))
                 <a href="{{ route('kegiatan.show', $event->id) }}" class="btn">Batal</a>
+              @elseif ($event->status->value == 'selesai')
+                <a href="{{ route('kegiatan.indexArchive') }}" class="btn">Batal</a>
               @else
                 <a href="{{ route('kegiatan.index') }}" class="btn">Batal</a>
               @endif

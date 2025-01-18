@@ -13,6 +13,11 @@
                 <x-lucide-arrow-left class="icon" />
                 Kembali
               </a>
+            @elseif ($event->status->value == 'selesai')
+              <a href="{{ route('kegiatan.indexArchive') }}" class="btn btn-link px-0 py-1">
+                <x-lucide-arrow-left class="icon" />
+                Kembali
+              </a>
             @elseif ($event->has_joined)
               <a href="{{ route('kegiatan.indexJoined') }}" class="btn btn-link px-0 py-1">
                 <x-lucide-arrow-left class="icon" />
