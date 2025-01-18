@@ -121,8 +121,8 @@ Route::middleware(['auth', 'approved'])->group(function () {
         'prefix' => 'kegiatan',
     ], function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/mengikuti', 'indexJoined')->name('indexJoined');
-        Route::get('/histori', 'index')->name('indexHistory');
+        Route::get('/diikuti', 'indexJoined')->name('indexJoined');
+        Route::get('/arsip', 'indexArchive')->name('indexArchive');
 
         Route::get('tambah', 'create')->name('create');
         Route::post('/', 'store')->name('store');

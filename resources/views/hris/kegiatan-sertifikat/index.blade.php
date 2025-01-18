@@ -8,7 +8,7 @@
       <div class="container-xl">
         <div>
           <div class="mb-1">
-            @if (in_array(url()->previous(), [route('kegiatan.index'), route('kegiatan.indexJoined'), route('kegiatan.indexHistory')]))
+            @if (in_array(url()->previous(), [route('kegiatan.index'), route('kegiatan.indexJoined'), route('kegiatan.indexArchive')]))
               <a href="{{ url()->previous() }}" class="btn btn-link px-0 py-1">
                 <x-lucide-arrow-left class="icon" />
                 Kembali
@@ -34,6 +34,11 @@
     <div class="page-body">
       <div class="container-xl">
         @include('hris.kegiatan._tabs-detail')
+        @if (flash()->message)
+          <x-alert type="{{ flash()->class }}">
+            {{ flash()->message }}
+          </x-alert>
+        @endif
         <div class="row g-3">
           <div class="col-12">
             <div class="card card-mafindo">
@@ -41,17 +46,19 @@
                 <h2 class="m-0">
                   Sertifikat
                 </h2>
-                <h3 class="fw-normal mb-3">{{ $event->name }}</h3>
-                <div class="d-flex flex-wrap gap-2 align-items-center">
-                  <x-lucide-award class="icon" defer />
-                  <span>{{ "{$userCertificates->count()} / {$event->participants_count} Sertifikat Dibuat" }}</span>
-                </div>
+                <h3 class="fw-normal">{{ $event->name }}</h3>
+                @if (empty(request()->filter))
+                  <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+                    <x-lucide-award class="icon" defer />
+                    <span>{{ "{$userCertificates->total()} / {$event->participants_count} Sertifikat Dibuat" }}</span>
+                  </div>
+                @endif
               </div>
             </div>
           </div>
           <div class="col-12">
             <x-dt.datatable search="nama" searchPlaceholder="Nama relawan" :collection="$userCertificates">
-              @if ($userCertificates->count() < $event->participants_count)
+              @if ($userCertificates->total() < $event->participants_count)
                 <x-slot:actions>
                   <a href="{{ route('sertifikat.create', $event->id) }}" class="btn btn-primary">
                     <x-lucide-plus class="icon" />

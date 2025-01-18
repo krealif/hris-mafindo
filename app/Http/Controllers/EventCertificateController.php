@@ -10,6 +10,7 @@ use App\Models\EventCertificate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
+use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreEventCertificateRequest;
 
@@ -26,8 +27,10 @@ class EventCertificateController extends Controller
 
         $event->loadCount(['participants']);
 
-        $userCertificates = $event->certificates()
-            ->paginate(15);
+        $userCertificates = QueryBuilder::for($event->certificates())
+            ->allowedFilters(['nama'])
+            ->paginate(15)
+            ->appends(request()->query());
 
         return view('hris.kegiatan-sertifikat.index', compact('event', 'userCertificates'));
     }
@@ -67,6 +70,7 @@ class EventCertificateController extends Controller
             ]
         );
 
+        flash()->success("Berhasil. Sertifikat telah ditambahkan");
         return to_route('sertifikat.index', $event->id);
     }
 
@@ -101,6 +105,7 @@ class EventCertificateController extends Controller
             'file' => $validated['file']
         ]);
 
+        flash()->success("Berhasil. Sertifikat telah diperbarui");
         return to_route('sertifikat.index', $event->id);
     }
 
@@ -113,6 +118,7 @@ class EventCertificateController extends Controller
 
         $certificate->delete();
 
+        flash()->success("Berhasil. Sertifikat telah dihapus.");
         return to_route('sertifikat.index', $event->id);
     }
 

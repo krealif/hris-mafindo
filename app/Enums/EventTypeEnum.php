@@ -9,10 +9,7 @@ enum EventTypeEnum: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::TERBUKA => 'Terbuka',
-            self::TERBATAS => 'Terbatas',
-        };
+        return ucwords($this->value);
     }
 
     /**

@@ -8,7 +8,7 @@
       <div class="container-xl">
         <div>
           <div class="mb-1">
-            @if (in_array(url()->previous(), [route('kegiatan.index'), route('kegiatan.indexJoined'), route('kegiatan.indexHistory')]))
+            @if (in_array(url()->previous(), [route('kegiatan.index'), route('kegiatan.indexJoined'), route('kegiatan.indexArchive')]))
               <a href="{{ url()->previous() }}" class="btn btn-link px-0 py-1">
                 <x-lucide-arrow-left class="icon" />
                 Kembali
@@ -41,15 +41,17 @@
                 <h2 class="m-0">
                   Daftar Peserta
                 </h2>
-                <h3 class="fw-normal mb-3">{{ $event->name }}</h3>
-                <div class="d-flex flex-wrap gap-2 align-items-center">
-                  <x-lucide-users class="icon" defer />
-                  @if ($event->type->value == 'terbatas' && $event->quota)
-                    <span>{{ "{$participants->count()} / {$event->quota} Peserta" }}</span>
-                  @else
-                    <span>{{ "{$participants->count()} Peserta" }}</span>
-                  @endif
-                </div>
+                <h3 class="fw-normal">{{ $event->name }}</h3>
+                @if (empty(request()->filter))
+                  <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+                    <x-lucide-users class="icon" defer />
+                    @if ($event->type->value == 'terbatas' && $event->quota)
+                      <span>{{ "{$participants->total()} / {$event->quota} Peserta" }}</span>
+                    @else
+                      <span>{{ "{$participants->total()} Peserta" }}</span>
+                    @endif
+                  </div>
+                @endif
               </div>
             </div>
           </div>
@@ -79,7 +81,7 @@
                 </thead>
                 <tbody>
                   @foreach ($participants as $participant)
-                    <tr x-data="{ id: {{ $participant->id }} }">
+                    <tr x-data="{ id: {{ $participant->pivot->id }} }">
                       <td data-label="Nama">
                         <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
                         {{ $participant->nama }}

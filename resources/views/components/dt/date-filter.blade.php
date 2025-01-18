@@ -15,7 +15,7 @@
     <option value=">">Setelah</option>
   </select>
   <input type="hidden" name="{{ $name }}" x-model="modifiedDate">
-  <x-form.flatpickr id="updated_at" x-model="updated_at" maxDate="today" x-model="date" :showIcon=false />
+  <x-form.flatpickr id="updated_at" x-model="updated_at" x-model="date" :showIcon=false />
 </div>
 
 @once

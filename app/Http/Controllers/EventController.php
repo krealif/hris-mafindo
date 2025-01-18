@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\View\View;
+use App\Filters\FilterDate;
 use App\Enums\EventTypeEnum;
 use App\Traits\HasUploadFile;
 use App\Enums\EventStatusEnum;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 use App\Http\Requests\StoreEventRequest;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 
@@ -27,8 +30,15 @@ class EventController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        $eventsQuery = Event::withCount(['participants']);
+        $eventsQuery = QueryBuilder::for(Event::class)
+            ->allowedFilters([
+                'name',
+                'type',
+                AllowedFilter::custom('start_date', new FilterDate)
+            ])
+            ->withCount(['participants']);
 
+        // Cek status keikutsertaan user jika memiliki izin join kegiatan.
         if ($user->hasPermissionTo('join-event')) {
             $eventsQuery->withCount([
                 'participants as has_joined' => function ($query) use ($user) {
@@ -41,9 +51,47 @@ class EventController extends Controller
             ->where('status', EventStatusEnum::AKTIF)
             ->oldest('start_date')
             ->latest('created_at')
-            ->paginate(12);
+            ->paginate(12)
+            ->appends(request()->query());
 
         return view('hris.kegiatan.index', compact('events'));
+    }
+
+    /**
+     * Display a listing of all available events.
+     */
+    public function indexArchive(): View
+    {
+        Gate::authorize('viewAny', Event::class);
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $eventsQuery = QueryBuilder::for(Event::class)
+            ->allowedFilters([
+                'name',
+                'type',
+                AllowedFilter::custom('start_date', new FilterDate)
+            ])
+            ->withCount(['participants']);
+
+        // Cek status keikutsertaan user jika memiliki izin join kegiatan.
+        if ($user->hasPermissionTo('join-event')) {
+            $eventsQuery->withCount([
+                'participants as has_joined' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                },
+            ]);
+        }
+
+        $events = $eventsQuery
+            ->where('status', EventStatusEnum::SELESAI)
+            ->latest('start_date')
+            ->latest('created_at')
+            ->paginate(12)
+            ->appends(request()->query());
+
+        return view('hris.kegiatan.index-archive', compact('events'));
     }
 
     /**
@@ -56,40 +104,20 @@ class EventController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        $events = Event::whereHas('participants', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })->oldest('start_date')->paginate(12);
+        $events = QueryBuilder::for(Event::class)
+            ->allowedFilters([
+                'name',
+                'type',
+                AllowedFilter::custom('start_date', new FilterDate)
+            ])
+            ->whereHas('participants', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->latest('start_date')
+            ->paginate(12)
+            ->appends(request()->query());
 
-        return view('hris.kegiatan.user.indexJoined', compact('events'));
-    }
-
-    /**
-     * Display a listing of all available events.
-     */
-    public function indexHistory(): View
-    {
-        Gate::authorize('viewAny', Event::class);
-
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-
-        $eventsQuery = Event::withCount(['participants']);
-
-        if ($user->hasPermissionTo('join-event')) {
-            $eventsQuery->withCount([
-                'participants as has_joined' => function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                },
-            ]);
-        }
-
-        $events = $eventsQuery
-            ->where('status', EventStatusEnum::AKTIF)
-            ->oldest('start_date')
-            ->latest('created_at')
-            ->paginate(12);
-
-        return view('hris.kegiatan.index', compact('events'));
+        return view('hris.kegiatan.user.index-joined', compact('events'));
     }
 
     /**
@@ -121,6 +149,7 @@ class EventController extends Controller
             'status' => EventStatusEnum::AKTIF,
         ]);
 
+        flash()->success("Berhasil. Kegiatan [{$validated['name']}] telah dibuat.");
         return to_route('kegiatan.index');
     }
 
@@ -139,10 +168,12 @@ class EventController extends Controller
         ];
 
         if ($user->hasPermissionTo('join-event')) {
+            // Cek status keikutsertaan user
             $withCounts['participants as has_joined'] = function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             };
 
+            // Cek apakah sertifikat sudah tersedia
             $withCounts['certificates as has_certificate'] = function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             };
@@ -160,10 +191,12 @@ class EventController extends Controller
     {
         Gate::authorize('view-participant', $event);
 
-        $participants = $event->participants()
+        $participants = QueryBuilder::for($event->participants())
+            ->allowedFilters(['nama'])
             ->select('nama', 'email', 'no_relawan')
             ->latest('created_at')
-            ->paginate(15);
+            ->paginate(15)
+            ->appends(request()->query());
 
         return view('hris.kegiatan.admin.list-participant', compact('event', 'participants'));
     }
@@ -204,6 +237,7 @@ class EventController extends Controller
             ...$validated,
         ]);
 
+        flash()->success("Berhasil. Kegiatan [{$event->name}] telah diperbarui.");
         return to_route('kegiatan.show', $event->id);
     }
 
@@ -215,6 +249,13 @@ class EventController extends Controller
         Gate::authorize('delete', $event);
         // TODO
         $event->delete();
+
+        flash()->success("Berhasil. Kegiatan [{$event->name}] telah dihapus.");
+
+        $prevUrlQuery = parse_url(url()->previous(), PHP_URL_QUERY);
+        if (url()->previous() == route('kegiatan.index', $prevUrlQuery)) {
+            return to_route('kegiatan.index', $prevUrlQuery);
+        }
 
         return to_route('kegiatan.index');
     }
@@ -241,8 +282,10 @@ class EventController extends Controller
                 abort(403);
             }
             $event->participants()->attach($user);
+            flash()->success("Berhasil. Anda telah mengikuti kegiatan [{$event->name}]");
         } else {
             $event->participants()->detach($user);
+            flash()->success("Berhasil. Keikutsertaan Anda dalam kegiatan [{$event->name}] telah dibatalkan");
         }
 
         return to_route('kegiatan.show', $event->id);
@@ -256,6 +299,7 @@ class EventController extends Controller
             'status' => EventStatusEnum::SELESAI,
         ]);
 
+        flash()->success("Berhasil. Status kegiatan [{$event->name}] telah diubah menjadi SELESAI.");
         return to_route('kegiatan.show', $event->id);
     }
 

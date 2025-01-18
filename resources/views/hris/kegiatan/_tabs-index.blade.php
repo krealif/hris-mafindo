@@ -6,7 +6,7 @@
           'active' => request()->routeIs('kegiatan.indexJoined'),
       ])>
         <x-lucide-calendar-plus class="icon me-2" />
-        Mengikuti
+        Diikuti
       </a>
     </li>
     <li class="nav-item">
@@ -24,9 +24,12 @@
     </li>
   @endhaspermission
   <li class="nav-item">
-    <a href="" class="nav-link">
-      <x-lucide-calendar-clock class="icon me-2" />
-      Histori
+    <a href="{{ route('kegiatan.indexArchive') }}" @class([
+        'nav-link',
+        'active' => request()->routeIs('kegiatan.indexArchive'),
+    ])>
+      <x-lucide-archive class="icon me-2" />
+      Arsip
     </a>
   </li>
 </ul>

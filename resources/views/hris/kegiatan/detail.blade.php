@@ -8,7 +8,7 @@
       <div class="container-xl">
         <div>
           <div class="mb-1">
-            @if (in_array(url()->previous(), [route('kegiatan.index'), route('kegiatan.indexJoined'), route('kegiatan.indexHistory')]))
+            @if (in_array(url()->previous(), [route('kegiatan.index'), route('kegiatan.indexJoined'), route('kegiatan.indexArchive')]))
               <a href="{{ url()->previous() }}" class="btn btn-link px-0 py-1">
                 <x-lucide-arrow-left class="icon" />
                 Kembali
@@ -36,6 +36,11 @@
         @haspermission('create-event')
           @include('hris.kegiatan._tabs-detail')
         @endhaspermission
+        @if (flash()->message)
+          <x-alert type="{{ flash()->class }}">
+            {{ flash()->message }}
+          </x-alert>
+        @endif
         <div class="row g-3">
           <div class="col-12 col-md-5 col-lg-4">
             <div class="card card-mafindo">
@@ -108,7 +113,7 @@
                       @endif
                     </div>
                   </div>
-                @elseif ($event->has_joined && $event->status->value == 'selesai')
+                @elseif ($event->has_joined && ($event->has_certificate || $event->recording_url))
                   <div class="card-body">
                     <div class="btn-list">
                       @if ($event->has_certificate)
@@ -129,7 +134,7 @@
                   <div class="card-body">
                     <div class="btn-list">
                       <a href="{{ $event->recording_url }}" class="btn" target="_blank">
-                        <x-lucide-square-play class="icon" />
+                        <x-lucide-square-play class="icon text-red" />
                         Link Rekaman
                       </a>
                     </div>
