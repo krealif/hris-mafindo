@@ -24,18 +24,10 @@
             <h2 class="h3 fw-medium mb-2">Oops! Terjadi Kesalahan Server.</h2>
             <p class="text-muted mb-4">Silakan coba lagi beberapa saat lagi atau kembali ke halaman utama. Jika masalah berlanjut,
               harap hubungi admin untuk bantuan lebih lanjut.</p>
-            <div class="btn-list">
-              @if (url()->previous() != url()->current())
-                <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">
-                  <x-lucide-arrow-left class="icon" />
-                  Halaman Sebelumnya
-                </a>
-              @endif
-              <a href="{{ route('home') }}" class="btn btn-primary w-100">
-                <x-lucide-home class="icon" />
-                Halaman Utama
-              </a>
-            </div>
+            <a href="{{ route('home') }}" class="btn btn-primary w-100">
+              <x-lucide-home class="icon" />
+              Halaman Utama
+            </a>
           </div>
         </div>
       </div>

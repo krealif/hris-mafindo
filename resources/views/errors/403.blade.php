@@ -23,18 +23,10 @@
             <h1 class="m-0">403</h1>
             <h2 class="h3 fw-medium mb-2">Oops! Akses Ditolak.</h2>
             <p class="text-muted mb-4">Anda tidak memiliki izin untuk mengakses halaman ini. Pastikan Anda memiliki hak akses yang sesuai, atau kembali ke halaman utama.</p>
-            <div class="btn-list">
-              @if (url()->previous() != url()->current())
-                <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">
-                  <x-lucide-arrow-left class="icon" />
-                  Halaman Sebelumnya
-                </a>
-              @endif
-              <a href="{{ route('home') }}" class="btn btn-primary w-100">
-                <x-lucide-home class="icon" />
-                Halaman Utama
-              </a>
-            </div>
+            <a href="{{ route('home') }}" class="btn btn-primary w-100">
+              <x-lucide-home class="icon" />
+              Halaman Utama
+            </a>
           </div>
         </div>
       </div>
