@@ -74,6 +74,21 @@
     </div>
   @endisset
   <div @class(['card', 'mt-3' => $search || isset($filterForm)])>
+    @if (!empty(request()->filter))
+      <div class="card-body bg-azure-lt fs-4 px-3 py-2 text-blue">
+        <span class="fw-bold text-uppercase">
+          Filter Diterapkan
+          [{{ count(request()->filter) }}]:
+        </span>
+        @foreach (request()->filter as $filter)
+          @if ($loop->last)
+            {{ $filter }}
+          @else
+            {{ $filter }},
+          @endif
+        @endforeach
+      </div>
+    @endif
     <div class="table-responsive">
       {{ $slot }}
     </div>

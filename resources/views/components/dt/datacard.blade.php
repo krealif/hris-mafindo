@@ -54,6 +54,21 @@
       </div>
     @endif
   </div>
+  @if (!empty(request()->filter))
+    <div class="d-inline-block card card-body text-blue bg-azure-lt mt-3 fs-4 px-2 py-1">
+      <span class="fw-bold text-uppercase">
+        Filter Diterapkan
+        [{{ count(request()->filter) }}]:
+      </span>
+      @foreach (request()->filter as $filter)
+        @if ($loop->last)
+          {{ $filter }}
+        @else
+          {{ $filter }},
+        @endif
+      @endforeach
+    </div>
+  @endif
   @isset($filterForm)
     <div class="collapse mt-2 mt-md-3" id="{{ $collapseFilterId }}">
       <form id="dt-filter" class="card card-mafindo">
