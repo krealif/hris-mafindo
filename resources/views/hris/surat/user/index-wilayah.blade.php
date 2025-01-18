@@ -20,7 +20,7 @@
         <x-dt.datatable search="title" searchPlaceholder="Cari judul surat" :collection="$letters">
           <x-slot:filterForm>
             <!-- Table filter -->
-            <div class="row g-4">
+            <div class="row gx-4 gy-3">
               <div class="col-12 col-md-6 col-lg-3">
                 <label for="relawan" class="form-label">Pengirim / Tujuan</label>
                 <x-dt.user-filter name="relawan" selected="{{ request()->filter['relawan'] ?? '' }}" />

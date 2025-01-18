@@ -30,7 +30,7 @@
         <x-dt.datatable search="nama" searchPlaceholder="Nama relawan" :collection="$registrations">
           <x-slot:filterForm>
             <!-- Table filter -->
-            <div class="row g-4">
+            <div class="row gx-4 gy-3">
               <div class="col-12 col-md-6 col-lg-3">
                 <label for="email" class="form-label">Email</label>
                 <x-form.input name="email" type="text" value="{{ request()->filter['email'] ?? '' }}" :showError=false />

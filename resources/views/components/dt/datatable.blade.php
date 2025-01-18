@@ -61,16 +61,16 @@
       <form id="dt-filter" class="card card-mafindo">
         <div class="card-body">
           {{ $filterForm }}
-        </div>
-        <div class="card-footer bg-white">
-          <button type="submit" class="btn btn-primary me-2">
-            Terapkan
-          </button>
-          @if ($totalFilter)
-            <button type="button" id="dt-btn-clear" class="btn btn-icon">
-              <x-lucide-x class="icon text-red" defer />
+          <div class="btn-list mt-4">
+            <button type="submit" class="btn btn-primary me-2">
+              Terapkan
             </button>
-          @endif
+            @if ($totalFilter)
+              <button type="button" id="dt-btn-clear" class="btn btn-icon">
+                <x-lucide-x class="icon text-red" defer />
+              </button>
+            @endif
+          </div>
         </div>
       </form>
     </div>
