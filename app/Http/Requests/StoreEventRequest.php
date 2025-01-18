@@ -30,7 +30,7 @@ class StoreEventRequest extends FormRequest
                 File::image()
                     ->min(1)
                     ->max(1 * 1024)
-                    ->dimensions(Rule::dimensions()->minWidth(128)->maxWidth(2000)->ratio(1 / 1)),
+                    ->dimensions(Rule::dimensions()->minWidth(128)->maxWidth(1080)->ratio(1 / 1)),
             ],
         ];
 
