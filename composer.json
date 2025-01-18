@@ -15,7 +15,8 @@
         "mallardduck/blade-lucide-icons": "^1.23",
         "spatie/laravel-flash": "^1.10",
         "spatie/laravel-permission": "^6.10",
-        "spatie/laravel-query-builder": "^6.2"
+        "spatie/laravel-query-builder": "^6.2",
+        "spatie/simple-excel": "^3.7"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",

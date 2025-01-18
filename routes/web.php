@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\LetterReviewController;
 use App\Http\Controllers\UserMigrationController;
+use App\Http\Controllers\EventCertificateController;
 use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\RegistrationReviewController;
-use App\Http\Controllers\UserController;
 
 /**
  * Group of routes that require authentication but for unapproved users only.
@@ -37,7 +39,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         'as' => 'user.',
     ], function () {
         Route::get('profil', 'profile')->name('profile');
-        Route::get('profil/sertifikat', 'listCertificate')->name('certificate');
+        Route::get('profil/sertifikat', 'relawanCertificates')->name('relawanCertificate');
     });
 
     // Group of routes for admin to manage & review user registration applications
@@ -110,5 +112,45 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::patch('permohonan/{letter}/kirim', 'approve')->name('approve');
         Route::patch('permohonan/{letter}/tolak', 'reject')->name('reject');
         Route::delete('bulk-delete', 'bulkDelete')->name('bulkDelete');
+    });
+
+    // Group of routes for admin to handle letter application
+    Route::group([
+        'controller' => EventController::class,
+        'as' => 'kegiatan.',
+        'prefix' => 'kegiatan',
+    ], function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/diikuti', 'indexJoined')->name('indexJoined');
+        Route::get('/arsip', 'indexArchive')->name('indexArchive');
+
+        Route::get('tambah', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+
+        Route::get('{event}', 'show')->name('show');
+        Route::get('{event}/peserta', 'showParticipant')->name('showParticipant');
+        Route::get('{event}/ekspor-peserta', 'exportParticipant')->name('exportParticipant');
+
+        Route::get('{event}/edit', 'edit')->name('edit');
+        Route::patch('{event}', 'update')->name('update');
+        Route::delete('{event}', 'destroy')->name('destroy');
+        Route::patch('{event}/finish', 'finish')->name('finish');
+
+        Route::post('{event}/ikuti', 'join')->name('join');
+    });
+
+    Route::group([
+        'controller' => EventCertificateController::class,
+        'as' => 'sertifikat.',
+        'prefix' => 'kegiatan',
+    ], function () {
+        Route::get('{event}/sertifikat', 'index')->name('index');
+        Route::get('{event}/sertifikat/tambah', 'create')->name('create');
+        Route::post('{event}/sertifikat', 'store')->name('store');
+        Route::get('{event}/sertifikat/{certificate}/edit', 'edit')->name('edit');
+        Route::patch('{event}/sertifikat/{certificate}', 'update')->name('update');
+        Route::delete('{event}/sertifikat/{certificate}', 'destroy')->name('destroy');
+        Route::get('{event}/download-sertifikat', 'downloadForRelawan')->name('downloadForRelawan');
+        Route::get('sertifikat/{certificate}/download', 'downloadForAdmin')->name('downloadForAdmin');
     });
 });

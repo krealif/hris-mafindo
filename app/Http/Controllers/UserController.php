@@ -27,4 +27,13 @@ class UserController extends Controller
 
         return view('hris.profil.admin', compact('user'));
     }
+
+    public function relawanCertificates(): View
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $eventCertificate = $user->certificates()->paginate(15);
+
+        return view('hris.profil.relawan-sertifikat', compact('user', 'eventCertificate'));
+    }
 }

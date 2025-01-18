@@ -16,7 +16,7 @@
 
 <select id="{{ $id }}" name="{{ $name }}" autocomplete="off" {{ $attributes }} @required($required) @disabled($disabled)>
   @isset($attributes['placeholder'])
-    <option value="" selected>{{ '' && $attributes['placeholder'] }}</option>
+    <option value="" selected>{{ $attributes['placeholder'] ?? '' }}</option>
   @endisset
   @foreach ($options as $value => $label)
     <option value="{{ $value }}" @selected($selectedValue == $value)>{{ $label }}</option>

@@ -5,4 +5,13 @@
       Profil
     </a>
   </li>
+  <li class="nav-item">
+    <a href="{{ route('user.relawanCertificate') }}" @class([
+        'nav-link',
+        'active' => request()->routeIs('user.relawanCertificate'),
+    ])>
+      <x-lucide-award class="icon me-2" />
+      Sertifikat
+    </a>
+  </li>
 </ul>

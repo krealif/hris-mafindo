@@ -14,7 +14,7 @@ enum RoleEnum: string
         return match ($this) {
             self::ADMIN => 'Admin',
             self::PENGURUS_WILAYAH => 'Pengurus Wilayah',
-            self::RELAWAN_WILAYAH => 'Relawan',
+            self::RELAWAN_WILAYAH => 'Relawan Wilayah',
             self::RELAWAN_BARU => 'Relawan Baru',
         };
     }
@@ -24,6 +24,6 @@ enum RoleEnum: string
      */
     public static function values(): array
     {
-        return array_map(fn ($role) => $role->value, self::cases());
+        return array_map(fn($role) => $role->value, self::cases());
     }
 }

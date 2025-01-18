@@ -92,15 +92,21 @@
               </a>
             </li>
           @endrole
+          @can('viewAny', App\Models\Event::class)
+            <li @class([
+                'nav-item',
+                'active' =>
+                    request()->routeIs('kegiatan.index') || request()->is('kegiatan/*'),
+            ])>
+              <a class="nav-link" href="{{ Auth::user()->hasPermissionTo('join-event') ? route('kegiatan.indexJoined') : route('kegiatan.index') }}">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <x-lucide-calendar-days class="icon" />
+                </span>
+                <span class="nav-link-title">Kegiatan</span>
+              </a>
+            </li>
+          @endcan
 
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span class="nav-link-icon d-md-none d-lg-inline-block">
-                <x-lucide-calendar-days class="icon" />
-              </span>
-              <span class="nav-link-title">Kegiatan</span>
-            </a>
-          </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span class="nav-link-icon d-md-none d-lg-inline-block">

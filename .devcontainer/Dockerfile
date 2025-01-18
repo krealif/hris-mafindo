@@ -15,7 +15,7 @@ RUN addgroup -g $USER_GID $USERNAME \
 
 # Install php modules
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN install-php-extensions redis pdo_mysql pdo_pgsql gd intl opcache xdebug
+RUN install-php-extensions zip pdo_mysql pdo_pgsql gd intl opcache xdebug
 
 # Install composer
 RUN curl -sSL https://getcomposer.org/installer | php \

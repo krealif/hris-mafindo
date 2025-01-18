@@ -3,10 +3,13 @@
     'name' => null,
     'max' => 10,
     'selected' => null,
+    'apiRoute' => null,
 ])
 
 @php
   $id = $id ?? Str::kebab(Str::replace('_', ' ', $name));
+  $apiRoute = $apiRoute ?? route('userApi.getAll');
+
   $selected = explode(',', $selected);
   $selected = App\Models\User::select(['id', 'nama'])
       ->whereIn('id', $selected)
@@ -27,7 +30,7 @@
           load: function(query, callback) {
             if (query.length < 3) return callback([]);
 
-            fetch(@js(route('api.user')) + '?q=' + encodeURIComponent(query))
+            fetch(@js($apiRoute) + '?q=' + encodeURIComponent(query))
               .then(response => response.json())
               .then(data => callback(data.data || []))
               .catch(() => callback([]));

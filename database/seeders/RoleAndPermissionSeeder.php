@@ -26,14 +26,23 @@ class RoleAndPermissionSeeder extends Seeder
         // Define roles and their corresponding permissions
         $rolesPermissions = [
             RoleEnum::ADMIN->value => [
+                PermissionEnum::VIEW_ALL_USER,
                 PermissionEnum::VIEW_ALL_LETTER,
                 PermissionEnum::CREATE_LETTER,
                 PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
                 PermissionEnum::CREATE_LETTER_FOR_PENGURUS,
                 PermissionEnum::HANDLE_LETTER,
                 PermissionEnum::DELETE_ALL_LETTER,
+                PermissionEnum::VIEW_EVENT,
+                PermissionEnum::CREATE_EVENT,
+                PermissionEnum::EDIT_EVENT,
+                PermissionEnum::DELETE_EVENT,
+                PermissionEnum::VIEW_PARTICIPANT,
+                PermissionEnum::VIEW_ALL_CERTIFICATE,
+                PermissionEnum::MANAGE_CERTIFICATE,
             ],
             RoleEnum::PENGURUS_WILAYAH->value => [
+                PermissionEnum::VIEW_RELAWAN_USER,
                 PermissionEnum::VIEW_LETTER,
                 PermissionEnum::CREATE_LETTER,
                 PermissionEnum::EDIT_LETTER,
@@ -46,12 +55,18 @@ class RoleAndPermissionSeeder extends Seeder
                 PermissionEnum::CREATE_LETTER,
                 PermissionEnum::EDIT_LETTER,
                 PermissionEnum::DELETE_LETTER,
+                PermissionEnum::VIEW_EVENT,
+                PermissionEnum::JOIN_EVENT,
+                PermissionEnum::VIEW_CERTIFICATE,
             ],
             RoleEnum::RELAWAN_BARU->value => [
                 PermissionEnum::VIEW_LETTER,
                 PermissionEnum::CREATE_LETTER,
                 PermissionEnum::EDIT_LETTER,
                 PermissionEnum::DELETE_LETTER,
+                PermissionEnum::VIEW_EVENT,
+                PermissionEnum::JOIN_EVENT,
+                PermissionEnum::VIEW_CERTIFICATE,
             ],
         ];
 
