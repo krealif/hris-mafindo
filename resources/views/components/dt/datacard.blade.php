@@ -11,49 +11,51 @@
 @endphp
 
 <div id="dt-datatable">
-  <div class="d-flex flex-column flex-md-row justify-content-between">
-    @if ($search)
-      <form id="dt-search" class="col-12 col-md-6 col-lg-4">
-        <label for="search" class="visually-hidden">Pencarian</label>
-        <div class="row g-2">
-          <div class="col">
-            <div class="input-group">
-              <x-form.input id="search" name="{{ $search }}" type="text" :showError=false value="{{ request()->filter[$search] ?? '' }}"
-                placeholder="{{ $searchPlaceholder ?? 'Pencarian' }}" />
-              @if (isset(request()->filter[$search]))
-                <button type="button" id="dt-btn-clear" class="btn btn-icon">
-                  <x-lucide-x class="icon text-red" defer />
-                </button>
-              @endif
+  @if (isset($search) || isset($filterForm) || isset($actions))
+    <div class="d-flex flex-column flex-md-row justify-content-between">
+      @if ($search)
+        <form id="dt-search" class="col-12 col-md-6 col-lg-4">
+          <label for="search" class="visually-hidden">Pencarian</label>
+          <div class="row g-2">
+            <div class="col">
+              <div class="input-group">
+                <x-form.input id="search" name="{{ $search }}" type="text" :showError=false value="{{ request()->filter[$search] ?? '' }}"
+                  placeholder="{{ $searchPlaceholder ?? 'Pencarian' }}" />
+                @if (isset(request()->filter[$search]))
+                  <button type="button" id="dt-btn-clear" class="btn btn-icon">
+                    <x-lucide-x class="icon text-red" defer />
+                  </button>
+                @endif
+              </div>
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn">
+                <x-lucide-search class="icon" />
+                Cari
+              </button>
             </div>
           </div>
-          <div class="col-auto">
-            <button type="submit" class="btn">
-              <x-lucide-search class="icon" />
-              Cari
-            </button>
+        </form>
+      @endif
+      @if (isset($filterForm) || isset($actions))
+        <div @class(['col-12 col-md-auto', 'mt-md-0 mt-3' => $search])>
+          <div class="btn-list">
+            @isset($filterForm)
+              <button type="button" class="btn btn-filter collapsed" data-bs-toggle="collapse" data-bs-target="#{{ $collapseFilterId = uniqid() }}" aria-expanded="false"
+                aria-controls="false">
+                <x-lucide-filter class="icon" />
+                Filter
+                @if ($totalFilter)
+                  <span class="badge bg-blue-lt ms-2">{{ $totalFilter }}</span>
+                @endif
+              </button>
+            @endisset
+            {{ $actions ?? '' }}
           </div>
         </div>
-      </form>
-    @endif
-    @if (isset($filterForm) || isset($actions))
-      <div @class(['col-12 col-md-auto', 'mt-md-0 mt-3' => $search])>
-        <div class="btn-list">
-          @isset($filterForm)
-            <button type="button" class="btn btn-filter collapsed" data-bs-toggle="collapse" data-bs-target="#{{ $collapseFilterId = uniqid() }}" aria-expanded="false"
-              aria-controls="false">
-              <x-lucide-filter class="icon" />
-              Filter
-              @if ($totalFilter)
-                <span class="badge bg-blue-lt ms-2">{{ $totalFilter }}</span>
-              @endif
-            </button>
-          @endisset
-          {{ $actions ?? '' }}
-        </div>
-      </div>
-    @endif
-  </div>
+      @endif
+    </div>
+  @endif
   @if (!empty(request()->filter))
     <div class="d-inline-block card card-body text-blue bg-azure-lt mt-3 fs-4 px-2 py-1">
       <span class="fw-bold text-uppercase">
