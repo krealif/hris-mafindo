@@ -8,6 +8,7 @@ use App\Filters\FilterDate;
 use App\Enums\EventTypeEnum;
 use App\Traits\HasUploadFile;
 use App\Enums\EventStatusEnum;
+use App\Enums\PermissionEnum;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
@@ -39,7 +40,7 @@ class EventController extends Controller
             ->withCount(['participants']);
 
         // Cek status keikutsertaan user jika memiliki izin join kegiatan.
-        if ($user->hasPermissionTo('join-event')) {
+        if ($user->hasPermissionTo(PermissionEnum::JOIN_EVENT)) {
             $eventsQuery->withCount([
                 'participants as has_joined' => function ($query) use ($user) {
                     $query->where('user_id', $user->id);
@@ -76,7 +77,7 @@ class EventController extends Controller
             ->withCount(['participants']);
 
         // Cek status keikutsertaan user jika memiliki izin join kegiatan.
-        if ($user->hasPermissionTo('join-event')) {
+        if ($user->hasPermissionTo(PermissionEnum::JOIN_EVENT)) {
             $eventsQuery->withCount([
                 'participants as has_joined' => function ($query) use ($user) {
                     $query->where('user_id', $user->id);
@@ -99,7 +100,7 @@ class EventController extends Controller
      */
     public function indexJoined(): View
     {
-        Gate::authorize('join-event');
+        Gate::authorize(PermissionEnum::JOIN_EVENT);
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
@@ -167,7 +168,7 @@ class EventController extends Controller
             'participants'
         ];
 
-        if ($user->hasPermissionTo('join-event')) {
+        if ($user->hasPermissionTo(PermissionEnum::JOIN_EVENT)) {
             // Cek status keikutsertaan user
             $withCounts['participants as has_joined'] = function ($query) use ($user) {
                 $query->where('user_id', $user->id);
