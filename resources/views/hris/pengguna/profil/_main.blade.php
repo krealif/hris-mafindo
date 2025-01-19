@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Profil',
+    'title' => $title ?? ($user->is(Auth::user()) ? 'Profil' : "Profil {$user->nama}"),
 ])
 
 @section('content')
@@ -25,11 +25,16 @@
             <div class="col">
               <h2 class="card-title h2 mb-3">{{ $user->nama }}</h2>
               <h3 class="card-subtitle text-dark mb-2">{{ $user->role?->label() }}</h3>
-              <h3 class="card-subtitle mb-2">{{ $user->email }}</h3>
+              @if ($user->branch?->name)
+                <h3 class="card-subtitle mb-2">{{ $user->branch?->name }}</h3>
+              @else
+                <h3 class="card-subtitle mb-2">{{ $user->email }}</h3>
+              @endif
             </div>
           </div>
         </div>
       </div>
+      @yield('profile-content')
     </div>
   </div>
 @endsection

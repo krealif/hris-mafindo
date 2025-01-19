@@ -38,8 +38,9 @@ Route::middleware(['auth', 'approved'])->group(function () {
         'controller' => UserController::class,
         'as' => 'user.',
     ], function () {
-        Route::get('profil', 'profile')->name('profile');
-        Route::get('profil/sertifikat', 'relawanCertificates')->name('relawanCertificate');
+        Route::get('profil/sertifikat', 'listCertificates')->name('certificate');
+        Route::get('profil/{user}/sertifikat', 'listCertificates')->name('certificateById');
+        Route::get('profil/{user?}', 'profile')->name('profile');
     });
 
     // Group of routes for admin to manage & review user registration applications
