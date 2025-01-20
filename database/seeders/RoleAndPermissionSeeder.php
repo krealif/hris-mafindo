@@ -27,6 +27,7 @@ class RoleAndPermissionSeeder extends Seeder
         $rolesPermissions = [
             RoleEnum::ADMIN->value => [
                 PermissionEnum::VIEW_ALL_USER,
+                PermissionEnum::EDIT_ALL_USER,
                 PermissionEnum::VIEW_ALL_LETTER,
                 PermissionEnum::CREATE_LETTER,
                 PermissionEnum::CREATE_LETTER_FOR_RELAWAN,

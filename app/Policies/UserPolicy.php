@@ -11,26 +11,28 @@ class UserPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $authUser): bool
+    public function viewAny(User $currentUser): bool
     {
-        return $authUser->can(PermissionEnum::VIEW_ALL_USER);
+        return $currentUser->can(PermissionEnum::VIEW_ALL_USER);
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $authUser, User $user): bool|RedirectResponse
+    public function view(User $currentUser, User $user): bool|RedirectResponse
     {
-        if ($authUser->can(PermissionEnum::VIEW_ALL_USER)) {
-            return true;
-        }
+        if ($user->is_approved) {
+            if ($currentUser->can(PermissionEnum::VIEW_ALL_USER)) {
+                return true;
+            }
 
-        if ($authUser->can(PermissionEnum::VIEW_RELAWAN_USER)) {
-            return $authUser->branch_id == $user->branch_id;
-        }
+            if ($currentUser->can(PermissionEnum::VIEW_RELAWAN_USER)) {
+                return $currentUser->branch_id == $user->branch_id;
+            }
 
-        if ($user->is($authUser)) {
-            return true;
+            if ($user->is($currentUser)) {
+                return true;
+            }
         }
 
         return false;
@@ -39,7 +41,7 @@ class UserPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $authUser): bool
+    public function create(User $currentUser): bool
     {
         return false;
     }
@@ -47,15 +49,25 @@ class UserPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $authUser, User $user): bool
+    public function update(User $currentUser, User $user): bool
     {
+        if ($user->is_approved) {
+            if ($currentUser->can(PermissionEnum::EDIT_ALL_USER)) {
+                return !$user->is($currentUser);
+            }
+
+            if ($user->is($currentUser)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $authUser, User $user): bool
+    public function delete(User $currentUser, User $user): bool
     {
         return false;
     }
@@ -63,7 +75,7 @@ class UserPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $authUser, User $user): bool
+    public function restore(User $currentUser, User $user): bool
     {
         return false;
     }
@@ -71,7 +83,7 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $authUser, User $user): bool
+    public function forceDelete(User $currentUser, User $user): bool
     {
         return false;
     }

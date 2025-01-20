@@ -21,6 +21,9 @@
           <img src="{{ asset('static/img/404-img.webp') }}" alt="" class="card-img-top" style="aspect-ratio: 4/1;object-fit: cover">
           <div class="card-body">
             <h1 class="m-0">404</h1>
+            <span class="d-none">
+              {{ $exception->getMessage() }}
+            </span>
             <h2 class="h3 fw-medium mb-2">Oops! Halaman Tidak Ditemukan.</h2>
             <p class="text-muted mb-4">Halaman tersebut mungkin telah dipindahkan atau link yang Anda gunakan salah. Periksa kembali URL
               Anda atau kembali ke halaman utama.</p>

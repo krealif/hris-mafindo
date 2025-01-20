@@ -16,20 +16,42 @@
   </div>
   <div class="page-body">
     <div class="container-xl">
+      @if (flash()->message)
+        <x-alert type="{{ flash()->class }}">
+          {{ flash()->message }}
+        </x-alert>
+      @endif
       <div class="card mb-3">
         <div class="card-body">
-          <div class="row g-3">
-            <div class="col-12 col-lg-auto">
-              <img src="{{ $user->foto ? Storage::url($user->foto) : asset('static/img/profile-placeholder.png') }}" class="avatar avatar-xl" />
+          <div class="d-flex flex-wrap justify-content-between">
+            <div class="row g-3">
+              <div class="col-12 col-lg-auto">
+                <img src="{{ $user->foto ? Storage::url($user->foto) : asset('static/img/profile-placeholder.png') }}" class="avatar avatar-xl" />
+              </div>
+              <div class="col">
+                <h2 class="card-title h2 mb-1">{{ $user->nama }}</h2>
+                <h3 class="card-subtitle text-dark m-0">{{ $user->role?->label() }}</h3>
+                @if ($user->branch?->name)
+                  <h3 class="card-subtitle m-0">{{ $user->branch?->name }}</h3>
+                @else
+                  <h3 class="card-subtitle m-0">{{ $user->email }}</h3>
+                @endif
+              </div>
             </div>
-            <div class="col">
-              <h2 class="card-title h2 mb-3">{{ $user->nama }}</h2>
-              <h3 class="card-subtitle text-dark mb-2">{{ $user->role?->label() }}</h3>
-              @if ($user->branch?->name)
-                <h3 class="card-subtitle mb-2">{{ $user->branch?->name }}</h3>
-              @else
-                <h3 class="card-subtitle mb-2">{{ $user->email }}</h3>
-              @endif
+            <div>
+              @can('update', $user)
+                <div class="btn-list">
+                  @if ($user->is(Auth::user()))
+                    <a href="{{ route('user.editProfile') }}" class="btn">
+                      <x-lucide-pencil class="icon text-blue" defer />
+                      Edit
+                    </a>
+                  @endif
+                  <a href="{{ route('user.settings') }}" class="btn btn-icon">
+                    <x-lucide-settings class="icon" defer />
+                  </a>
+                </div>
+              @endcan
             </div>
           </div>
         </div>
