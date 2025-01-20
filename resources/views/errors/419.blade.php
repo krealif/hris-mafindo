@@ -1,5 +1,5 @@
 @extends('layouts.base', [
-    'title' => '403',
+    'title' => '419',
 ])
 
 @push('styles')
@@ -18,17 +18,16 @@
           <img src="{{ asset('static/img/mafindo-logo.png') }}" alt="Mafindo Logo" style="height: 36px">
         </div>
         <div class="card card-mafindo">
-          <img src="{{ asset('static/img/403-img.webp') }}" alt="" class="card-img-top" style="aspect-ratio: 4/1;object-fit: cover">
           <div class="card-body">
-            <h1 class="m-0">403</h1>
+            <h1 class="m-0">419</h1>
             <span class="d-none">
               {{ $exception->getMessage() }}
             </span>
-            <h2 class="h3 fw-medium mb-2">Oops! Akses Ditolak.</h2>
-            <p class="text-muted mb-4">Anda tidak memiliki izin untuk mengakses halaman ini. Pastikan Anda memiliki hak akses yang sesuai, atau kembali ke halaman utama.</p>
-            <a href="{{ route('home') }}" class="btn btn-primary w-100">
-              <x-lucide-home class="icon" />
-              Halaman Utama
+            <h2 class="h3 fw-medium mb-2">Oops! Sesi Anda Telah Berakhir.</h2>
+            <p class="text-muted mb-4">Hal ini terjadi karena Anda tidak aktif dalam waktu yang lama, atau token telah kedaluwarsa. Silakan login kembali untuk melanjutkan.</p>
+            <a href="{{ route('login') }}" class="btn btn-primary w-100">
+              <x-lucide-log-in class="icon" />
+              Login Kembali
             </a>
           </div>
         </div>
