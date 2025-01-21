@@ -44,7 +44,7 @@
               </div>
             </div>
             <div class="card-body btn-list">
-              <button type="submit" class="btn btn-primary">Kirim</button>
+              <button type="submit" class="btn btn-primary">Simpan</button>
               <a href="{{ route('wilayah.index') }}" class="btn">Batal</a>
             </div>
           </form>
