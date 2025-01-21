@@ -46,10 +46,10 @@
                       <x-lucide-pencil class="icon text-blue" defer />
                       Edit
                     </a>
+                    <a href="{{ route('user.settings') }}" class="btn btn-icon">
+                      <x-lucide-settings class="icon" defer />
+                    </a>
                   @endif
-                  <a href="{{ route('user.settings') }}" class="btn btn-icon">
-                    <x-lucide-settings class="icon" defer />
-                  </a>
                 </div>
               @endcan
             </div>

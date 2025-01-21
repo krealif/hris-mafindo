@@ -37,6 +37,14 @@ Route::middleware(['auth', 'approved'])->group(function () {
     Route::get('/', HomeController::class)->name('home');
 
     Route::group([
+        'controller' => UserController::class,
+        'as' => 'user.',
+    ], function () {
+        Route::get('data/pengguna', 'index')->name('index');
+        Route::get('data/relawan', 'indexWilayah')->name('indexWilayah');
+    });
+
+    Route::group([
         'controller' => UserProfileController::class,
         'as' => 'user.',
     ], function () {
