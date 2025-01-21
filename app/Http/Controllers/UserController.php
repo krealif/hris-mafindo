@@ -3,68 +3,75 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Branch;
 use App\Enums\RoleEnum;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
+use App\Filters\FilterRole;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function profile(User $user = null): View|RedirectResponse
+    public function index(): View
     {
-        // Memastikan agar URL tidak mengandung ID saat melihat profil diri sendiri
-        if ($user && $user->is(Auth::user())) {
-            return redirect()->route('user.profile');
-        }
+        Gate::authorize('viewAny', User::class);
 
-        /** @var \App\Models\User $user */
-        $user = $user ?? Auth::user();
+        $users = QueryBuilder::for(User::class)
+            ->allowedFilters([
+                'nama',
+                AllowedFilter::custom('role', new FilterRole),
+                'email',
+                AllowedFilter::exact('branch_id'),
+                'no_relawan'
+            ])
+            ->select(['id', 'nama', 'email', 'no_relawan', 'branch_id'])
+            ->where('is_approved', true)
+            ->with('branch', 'roles')
+            ->orderBy('nama')
+            ->paginate(15)
+            ->appends(request()->query());
 
-        Gate::authorize('view', $user);
+        $branches = Branch::select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->pluck('name', 'id');
 
-        // Menentukan view berdasarkan role pengguna
-        if ($user->hasRole([
-            RoleEnum::RELAWAN_BARU,
-            RoleEnum::RELAWAN_WILAYAH
-        ])) {
-            return view('hris.pengguna.profil.relawan', compact('user'));
-        } elseif ($user->hasRole(RoleEnum::PENGURUS_WILAYAH)) {
-            return view('hris.pengguna.profil.pengurus', compact('user'));
-        }
+        // Query to count users by role
+        $roleCounts = DB::table('model_has_roles')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->where('model_has_roles.model_type', User::class)
+            ->groupBy('roles.name')
+            ->select('roles.name as role_name', DB::raw('count(*) as count'))
+            ->get();
 
-        return view('hris.pengguna.profil.admin', compact('user'));
+        return view('hris.pengguna.index', compact('users', 'branches', 'roleCounts'));
     }
 
-    /**
-     * Displays the list of certificates owned by the user. 
-     * Only users with the specified roles can have certificates.
-     */
-    public function listCertificates(User $user = null): View|RedirectResponse
+    public function indexWilayah(): View
     {
-        // Memastikan agar URL tidak mengandung ID saat melihat profil diri sendiri
-        if ($user && $user->is(Auth::user())) {
-            return redirect()->route('user.certificate');
-        }
+        Gate::authorize('view-relawan-user');
 
-        /** @var \App\Models\User $user */
-        $user = $user ?? Auth::user();
+        /** @var \App\Models\User $authUser */
+        $user = Auth::user();
 
-        Gate::authorize('view', $user);
+        $users = QueryBuilder::for(User::class)
+            ->allowedFilters([
+                'nama',
+                AllowedFilter::custom('role', new FilterRole),
+                'email',
+                'no_relawan'
+            ])
+            ->select(['id', 'nama', 'email', 'no_relawan'])
+            ->role([RoleEnum::RELAWAN_BARU, RoleEnum::RELAWAN_WILAYAH])
+            ->where('branch_id', $user->branch_id)
+            ->where('is_approved', true)
+            ->with('branch', 'roles')
+            ->orderBy('nama')
+            ->paginate(15)
+            ->appends(request()->query());
 
-        // Hanya relawan yang bisa memiliki sertifikat
-        if (! $user->hasRole([
-            RoleEnum::RELAWAN_BARU,
-            RoleEnum::RELAWAN_WILAYAH
-        ])) {
-            abort(404);
-        }
-
-        $eventCertificate = $user->certificates()->paginate(15);
-
-        return view('hris.pengguna.profil.relawan-sertifikat', compact('user', 'eventCertificate'));
+        return view('hris.pengguna.index-wilayah', compact('users'));
     }
 }

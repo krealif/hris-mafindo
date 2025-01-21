@@ -6,6 +6,7 @@ enum PermissionEnum: string
 {
     case VIEW_ALL_USER = 'view-all-user';
     case VIEW_RELAWAN_USER = 'view-relawan-user';
+    case EDIT_ALL_USER = 'edit-all-user';
 
     case VIEW_LETTER = 'view-letter';
     case CREATE_LETTER = 'create-letter';

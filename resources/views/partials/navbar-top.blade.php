@@ -33,6 +33,13 @@
               <x-lucide-user class="icon dropdown-item-icon" />
               Profil
             </a>
+            <a href="{{ route('user.settings') }}" @class([
+                'dropdown-item',
+                'active' => request()->routeIs('user.settings'),
+            ])>
+              <x-lucide-settings class="icon dropdown-item-icon" />
+              Pengaturan
+            </a>
             <form action="{{ route('logout') }}" method="POST">
               @csrf
               <button type="submit" class="dropdown-item">

@@ -49,7 +49,8 @@ class LetterController extends Controller
             })
             ->with('recipients')
             ->latest('updated_at')
-            ->paginate(15);
+            ->paginate(15)
+            ->appends(request()->query());
 
         // Periksa apakah ada permohonan surat yang dibuat/diajukan oleh orang lain
         $createdByOthers = $letters->where('created_by', '!=', $user->id)->isNotEmpty();
@@ -92,7 +93,8 @@ class LetterController extends Controller
             })
             ->with('recipients')
             ->latest('updated_at')
-            ->paginate(15);
+            ->paginate(15)
+            ->appends(request()->query());
 
         return view('hris.surat.user.index-wilayah', compact('letters'));
     }

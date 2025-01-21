@@ -5,6 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\LetterController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\UserSettingController;
 use App\Http\Controllers\LetterReviewController;
 use App\Http\Controllers\UserMigrationController;
 use App\Http\Controllers\EventCertificateController;
@@ -40,9 +42,31 @@ Route::middleware(['auth', 'approved'])->group(function () {
         'controller' => UserController::class,
         'as' => 'user.',
     ], function () {
+        Route::get('data/pengguna', 'index')->name('index');
+        Route::get('data/relawan', 'indexWilayah')->name('indexWilayah');
+    });
+
+    Route::group([
+        'controller' => UserProfileController::class,
+        'as' => 'user.',
+    ], function () {
+        Route::get('pengaturan', 'settings')->name('settings');
+
+        Route::get('profil/edit', 'editProfile')->name('editProfile');
+        Route::get('profil/{user}/edit', 'editProfile')->name('editProfileById');
         Route::get('profil/sertifikat', 'listCertificates')->name('certificate');
         Route::get('profil/{user}/sertifikat', 'listCertificates')->name('certificateById');
         Route::get('profil/{user?}', 'profile')->name('profile');
+        Route::patch('profil/{user?}', 'updateProfile')->name('updateProfile');
+    });
+
+    Route::group([
+        'controller' => UserSettingController::class,
+        'as' => 'user.',
+    ], function () {
+        Route::get('pengaturan', 'settings')->name('settings');
+        Route::patch('pengaturan/update-email', 'updateEmail')->name('updateEmail');
+        Route::patch('pengaturan/update-password', 'updatePassword')->name('updatePassword');
     });
 
     // Group of routes for admin to manage & review user registration applications

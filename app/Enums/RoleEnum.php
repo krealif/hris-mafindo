@@ -11,12 +11,18 @@ enum RoleEnum: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::ADMIN => 'Admin',
-            self::PENGURUS_WILAYAH => 'Pengurus Wilayah',
-            self::RELAWAN_WILAYAH => 'Relawan Wilayah',
-            self::RELAWAN_BARU => 'Relawan Baru',
-        };
+        return ucwords(str_replace('-', ' ', $this->value));
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function labels(): array
+    {
+        return array_combine(
+            array_map(fn($case) => $case->value, self::cases()),
+            array_map(fn($case) => $case->label(), self::cases())
+        );
     }
 
     /**
@@ -25,5 +31,15 @@ enum RoleEnum: string
     public static function values(): array
     {
         return array_map(fn($role) => $role->value, self::cases());
+    }
+
+    public function badge(): string
+    {
+        return match ($this) {
+            self::ADMIN => 'bg-secondary',
+            self::PENGURUS_WILAYAH => 'bg-indigo',
+            self::RELAWAN_WILAYAH => 'bg-blue',
+            self::RELAWAN_BARU => 'bg-azure',
+        };
     }
 }

@@ -112,6 +112,7 @@
               <span class="nav-link-title">Materi</span>
             </a>
           </li>
+
           @role(['relawan', 'pengurus-wilayah'])
           <li class="nav-item">
             <a class="nav-link" href="https://mafindo.or.id/" target="_blank">
@@ -121,6 +122,41 @@
               <span class="nav-link-title">Tentang Mafindo</span>
             </a>
           </li>
+          @endrole
+
+          @role('admin')
+            <li @class(['nav-item dropdown', 'active' => request()->is('data/*')])>
+              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <x-lucide-database class="icon" />
+                </span>
+                <span class="nav-link-title">Data</span>
+              </a>
+              <div class="dropdown-menu">
+                <div class="dropdown-menu-columns">
+                  <div class="dropdown-menu-column">
+                    <a href="{{ route('user.index') }}" @class([
+                        'dropdown-item',
+                        'active' => request()->routeIs('user.index'),
+                    ])>Pengguna</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+          @endrole
+          @role('pengurus-wilayah')
+            <li @class([
+                'nav-item',
+                'active' => request()->routeIs('user.indexWilayah'),
+            ])>
+              <a class="nav-link" href="{{ route('user.indexWilayah') }}">
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                  <x-lucide-users class="icon" />
+                </span>
+                <span class="nav-link-title">Relawan</span>
+              </a>
+            </li>
+
           @endrole
         </ul>
       </div>

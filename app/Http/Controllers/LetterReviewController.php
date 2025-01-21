@@ -48,7 +48,8 @@ class LetterReviewController extends Controller
             })
             ->with('createdBy.roles', 'recipients')
             ->latest('updated_at')
-            ->paginate(15);
+            ->paginate(15)
+            ->appends(request()->query());
 
         return view('hris.surat.admin.index', compact('letters'));
     }
@@ -75,7 +76,8 @@ class LetterReviewController extends Controller
             ->whereNotIn('status', [LetterStatusEnum::MENUNGGU, LetterStatusEnum::DIPROSES])
             ->with('createdBy.roles', 'recipients')
             ->latest('updated_at')
-            ->paginate(15);
+            ->paginate(15)
+            ->appends(request()->query());
 
         return view('hris.surat.admin.index-history', compact('letters'));
     }
