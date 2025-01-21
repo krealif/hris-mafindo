@@ -7,29 +7,27 @@
     <div class="page-header d-print-none">
       <div class="container-xl">
         <div>
-          <div class="mb-1">
-            @if (in_array(url()->previous(), [route('kegiatan.index'), route('kegiatan.indexJoined'), route('kegiatan.indexArchive')]))
-              <a href="{{ url()->previous() }}" class="btn btn-link px-0 py-1">
-                <x-lucide-arrow-left class="icon" />
-                Kembali
-              </a>
-            @elseif ($event->status->value == 'selesai')
-              <a href="{{ route('kegiatan.indexArchive') }}" class="btn btn-link px-0 py-1">
-                <x-lucide-arrow-left class="icon" />
-                Kembali
-              </a>
-            @elseif ($event->has_joined)
-              <a href="{{ route('kegiatan.indexJoined') }}" class="btn btn-link px-0 py-1">
-                <x-lucide-arrow-left class="icon" />
-                Kembali
-              </a>
-            @else
-              <a href="{{ route('kegiatan.index') }}" class="btn btn-link px-0 py-1">
-                <x-lucide-arrow-left class="icon" />
-                Kembali
-              </a>
-            @endif
-          </div>
+          @if (in_array(url()->previous(), [route('kegiatan.index'), route('kegiatan.indexJoined'), route('kegiatan.indexArchive')]))
+            <a href="{{ url()->previous() }}" class="btn btn-link px-0 py-1 mb-1">
+              <x-lucide-arrow-left class="icon" />
+              Kembali
+            </a>
+          @elseif ($event->status->value == 'selesai')
+            <a href="{{ route('kegiatan.indexArchive') }}" class="btn btn-link px-0 py-1 mb-1">
+              <x-lucide-arrow-left class="icon" />
+              Kembali
+            </a>
+          @elseif ($event->has_joined)
+            <a href="{{ route('kegiatan.indexJoined') }}" class="btn btn-link px-0 py-1 mb-1">
+              <x-lucide-arrow-left class="icon" />
+              Kembali
+            </a>
+          @else
+            <a href="{{ route('kegiatan.index') }}" class="btn btn-link px-0 py-1 mb-1">
+              <x-lucide-arrow-left class="icon" />
+              Kembali
+            </a>
+          @endif
           <h1 class="page-title">
             Detail Kegiatan
           </h1>

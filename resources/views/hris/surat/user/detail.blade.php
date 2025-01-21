@@ -8,19 +8,17 @@
       <div class="container-xl">
         <div class="title-wrapper">
           <div>
-            <div class="mb-1">
-              @if (url()->previous() == route('surat.indexWilayah'))
-                <a href="{{ route('surat.indexWilayah') }}" class="btn btn-link px-0 py-1">
-                  <x-lucide-arrow-left class="icon" />
-                  Kembali
-                </a>
-              @elseif ($letter->created_by == Auth::id() || $letter->recipients->contains('id', Auth::id()))
-                <a href="{{ route('surat.letterbox') }}" class="btn btn-link px-0 py-1">
-                  <x-lucide-arrow-left class="icon" />
-                  Kembali
-                </a>
-              @endif
-            </div>
+            @if (url()->previous() == route('surat.indexWilayah'))
+              <a href="{{ route('surat.indexWilayah') }}" class="btn btn-link px-0 py-1 mb-1">
+                <x-lucide-arrow-left class="icon" />
+                Kembali
+              </a>
+            @elseif ($letter->created_by == Auth::id() || $letter->recipients->contains('id', Auth::id()))
+              <a href="{{ route('surat.letterbox') }}" class="btn btn-link px-0 py-1 mb-1">
+                <x-lucide-arrow-left class="icon" />
+                Kembali
+              </a>
+            @endif
             <h1 class="page-title">
               Detail Permohonan
             </h1>
