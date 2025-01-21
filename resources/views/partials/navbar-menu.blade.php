@@ -131,6 +131,11 @@
                         'dropdown-item',
                         'active' => request()->routeIs('user.index'),
                     ])>Pengguna</a>
+                    <a href="{{ route('wilayah.index') }}" @class([
+                        'dropdown-item',
+                        'active' =>
+                            request()->routeIs('wilayah.index') || request()->is('data/wilayah/*'),
+                    ])>Wilayah</a>
                   </div>
                 </div>
               </div>
