@@ -39,8 +39,8 @@
               </div>
             </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+          <li @class(['nav-item', 'active'=> request()->is('wilayah/*')])>
+            <a class="nav-link" href="{{ route('wilayah.index') }}">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <x-lucide-map class="icon" />
               </span>
@@ -104,7 +104,6 @@
             </a>
           </li>
           @endcan
-
           <li @class(['nav-item', 'active'=> request()->is('materi/*')])>
             <a class="nav-link" href="{{ route('materi.index') }}">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -113,6 +112,7 @@
               <span class="nav-link-title">Materi</span>
             </a>
           </li>
+          @role(['relawan', 'pengurus-wilayah'])
           <li class="nav-item">
             <a class="nav-link" href="https://mafindo.or.id/" target="_blank">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -121,6 +121,7 @@
               <span class="nav-link-title">Tentang Mafindo</span>
             </a>
           </li>
+          @endrole
         </ul>
       </div>
     </div>
