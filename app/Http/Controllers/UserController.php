@@ -53,7 +53,7 @@ class UserController extends Controller
     {
         Gate::authorize('view-relawan-user');
 
-        /** @var \App\Models\User $authUser */
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $users = QueryBuilder::for(User::class)
@@ -64,8 +64,10 @@ class UserController extends Controller
                 'no_relawan'
             ])
             ->select(['id', 'nama', 'email', 'no_relawan'])
-            ->role([RoleEnum::RELAWAN_BARU, RoleEnum::RELAWAN_WILAYAH])
             ->where('branch_id', $user->branch_id)
+            ->whereHas('roles', function ($query) {
+                $query->whereIn('name', [RoleEnum::RELAWAN_BARU, RoleEnum::RELAWAN_WILAYAH]);
+            })
             ->where('is_approved', true)
             ->with('branch', 'roles')
             ->orderBy('nama')
