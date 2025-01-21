@@ -13,6 +13,8 @@ use App\Http\Controllers\UserMigrationController;
 use App\Http\Controllers\EventCertificateController;
 use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\RegistrationReviewController;
+use App\Http\Controllers\MateriController;
+use App\Http\Controllers\WilayahController;
 
 /**
  * Group of routes that require authentication but for unapproved users only.
@@ -193,5 +195,29 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::delete('{event}/sertifikat/{certificate}', 'destroy')->name('destroy');
         Route::get('{event}/download-sertifikat', 'downloadForRelawan')->name('downloadForRelawan');
         Route::get('sertifikat/{certificate}/download', 'downloadForAdmin')->name('downloadForAdmin');
+    });
+
+    // Group of routes for handle materi
+    Route::group([
+        'controller' => MateriController::class,
+        'as' => 'materi.',
+    ], function () {
+        Route::get('materi', 'index')->name('index');
+        Route::get('materi/buat', 'create')->name('create');
+        Route::post('materi/buat', 'store')->name('store');
+        Route::get('materi/{materi}/edit', 'edit')->name('edit');
+        Route::put('materi/{materi}/edit', 'update')->name('update');
+        Route::delete('materi/{materi}', 'destroy')->name('destroy');
+    });
+
+    // Group of routes for admin handle wilayah
+    Route::group([
+        'controller' => WilayahController::class,
+        'as' => 'wilayah.',
+    ], function () {
+        Route::get('wilayah', 'index')->name('index');
+        Route::post('wilayah', 'store')->name('store');
+        Route::put('wilayah/{wilayah}', 'update')->name('update');
+        Route::delete('wilayah/{wilayah}', 'destroy')->name('destroy');
     });
 });
