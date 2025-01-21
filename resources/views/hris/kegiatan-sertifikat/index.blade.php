@@ -45,7 +45,7 @@
             </div>
           </div>
           <div class="col-12">
-            <x-dt.datatable search="nama" searchPlaceholder="Nama relawan" :collection="$userCertificates">
+            <x-dt.datatable search="nama" searchPlaceholder="Nama Relawan" :collection="$userCertificates">
               @if ($userCertificates->total() < $event->participants_count)
                 <x-slot:actions>
                   <a href="{{ route('sertifikat.create', $event->id) }}" class="btn btn-primary">

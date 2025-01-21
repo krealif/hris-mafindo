@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="col-12">
-            <x-dt.datatable search="nama" searchPlaceholder="Nama relawan" :collection="$participants">
+            <x-dt.datatable search="nama" searchPlaceholder="Nama Relawan" :collection="$participants">
               @if ($participants->isNotEmpty())
                 <x-slot:actions>
                   <div class="dropdown">

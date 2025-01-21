@@ -17,7 +17,7 @@
     <!-- Page body -->
     <div class="page-body">
       <div class="container-xl">
-        <x-dt.datatable search="title" searchPlaceholder="Cari judul surat" :collection="$letters">
+        <x-dt.datatable search="title" searchPlaceholder="Cari Judul Surat" :collection="$letters">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row gx-4 gy-3">

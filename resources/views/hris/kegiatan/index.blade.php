@@ -35,7 +35,7 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dt.datacard search="name" searchPlaceholder="Nama kegiatan" :collection="$events">
+        <x-dt.datacard search="name" searchPlaceholder="Nama Kegiatan" :collection="$events">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row gx-4 gy-3">
