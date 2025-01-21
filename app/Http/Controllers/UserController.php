@@ -74,6 +74,14 @@ class UserController extends Controller
             ->paginate(15)
             ->appends(request()->query());
 
-        return view('hris.pengguna.index-wilayah', compact('users'));
+        $roleCounts = DB::table('model_has_roles')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->join('users', 'model_has_roles.model_id', '=', 'users.id')
+            ->where('users.branch_id', $user->branch_id)
+            ->select('roles.name as role_name', DB::raw('count(*) as count'))
+            ->groupBy('roles.name')
+            ->get();
+
+        return view('hris.pengguna.index-wilayah', compact('users', 'roleCounts'));
     }
 }

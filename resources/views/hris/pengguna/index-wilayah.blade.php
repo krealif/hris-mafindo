@@ -22,6 +22,36 @@
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">
+        <div class="row row-deck g-2 mb-3">
+          <div class="col-12 col-sm">
+            <div class="card card-mafindo card-sm">
+              <div class="card-body">
+                <div class="fw-bold text-secondary">
+                  Total Pengguna
+                </div>
+                <div class="fs-2">
+                  {{ $roleCounts->sum('count') }}
+                </div>
+              </div>
+            </div>
+          </div>
+          @foreach ($roleCounts as $roleCount)
+            @unless ($roleCount->role_name == 'pengurus-wilayah')
+              <div class="col">
+                <div class="card card-mafindo card-sm">
+                  <div class="card-body">
+                    <div class="fw-bold text-secondary">
+                      {{ ucwords(str_replace('-', ' ', $roleCount->role_name)) }}
+                    </div>
+                    <div class="fs-2">
+                      {{ $roleCount->count }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            @endunless
+          @endforeach
+        </div>
         <x-dt.datatable search="nama" searchPlaceholder="Nama Relawan" :collection="$users">
           <x-slot:filterForm>
             <!-- Table filter -->
