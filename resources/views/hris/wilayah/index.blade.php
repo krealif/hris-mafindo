@@ -21,6 +21,11 @@
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">
+        @if (flash()->message)
+          <x-alert type="{{ flash()->class }}">
+            {{ flash()->message }}
+          </x-alert>
+        @endif
         <x-dt.datatable search="name" searchPlaceholder="Nama Wilayah" :collection="$branches">
           <!-- Table Body -->
           <table class="table table-vcenter card-table table-mobile-md datatable">
