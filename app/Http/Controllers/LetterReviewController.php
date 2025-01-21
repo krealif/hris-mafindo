@@ -146,6 +146,7 @@ class LetterReviewController extends Controller
 
         $letter->update([
             'status' => LetterStatusEnum::SELESAI,
+            'attachment' => null,
         ]);
 
         // TODO: Kirim email
@@ -169,6 +170,7 @@ class LetterReviewController extends Controller
         $letter->update([
             'status' => LetterStatusEnum::DITOLAK,
             'message' => $validated['message'],
+            'attachment' => null,
         ]);
 
         // TODO: Kirim email
