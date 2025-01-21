@@ -7,6 +7,8 @@ use App\Models\Materi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Enums\RoleEnum;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class MateriController extends Controller
 {
@@ -17,29 +19,12 @@ class MateriController extends Controller
     {
         $user = Auth::user();
         $no = 1;
-        $query = Materi::query();
-
-        if ($request->has('search') && !empty($request->query('search'))) {
-            $search = $request->query('search');
-            $query->where('title', 'like', '%' . $search . '%');
-        }
-
-        switch ($request->query('sort')) {
-            case 'newest':
-                $query->orderBy('created_at', 'desc'); 
-                break;
-            case 'oldest':
-                $query->orderBy('created_at', 'asc'); 
-                break;
-            case 'alphabet':
-                $query->orderBy('title', 'asc'); 
-                break;
-            default:
-                $query->orderBy('created_at', 'desc');
-                break;
-        }
-        
-        $materis = $query->paginate(15);
+        $materis = QueryBuilder::for(Materi::class)
+            ->allowedFilters([
+                'title',
+            ])
+            ->latest('updated_at')
+            ->paginate(15);
 
         if ($user->hasRole(RoleEnum::ADMIN)) {
             return view('hris.materi.admin.index', compact('materis', 'no'));

@@ -17,44 +17,7 @@
     <!-- Page body -->
     <div class="page-body">
         <div class="container-xl">
-            <x-dt.datatable :collection="$materis">
-                <x-slot:actions>
-                    <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
-                        <form id="search-form" method="GET" action="{{ route('materi.index') }}"
-                            class="d-flex align-items-center">
-                            <input type="text" name="search" class="form-control" placeholder="Cari Materi..."
-                                value="{{ request('search') }}" />
-                            @if (request('search'))
-                            <button type="button" class="btn btn-filter collapsed ms-2" onclick="clearSearch()">
-                                <x-lucide-x class="icon text-danger" />
-                            </button>
-                            @endif
-                            <button type="submit" class="btn btn-filter collapsed ms-2">
-                                <x-lucide-search class="icon" />
-                            </button>
-                        </form>
-                        <div class="dropdown">
-                            <button class="btn btn-filter collapsed  dropdown-toggle" type="button" id="sortingDropdown"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Urutkan
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="sortingDropdown">
-                                <li>
-                                    <a class="dropdown-item"
-                                        href="{{ route('materi.index', array_merge(request()->query(), ['sort' => 'newest'])) }}">Terbaru</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                        href="{{ route('materi.index', array_merge(request()->query(), ['sort' => 'oldest'])) }}">Terlama</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                        href="{{ route('materi.index', array_merge(request()->query(), ['sort' => 'alphabet'])) }}">Abjad</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </x-slot:actions>
+            <x-dt.datatable search="title" searchPlaceholder="Cari judul materi" :collection="$materis">
                 <table class="table table-vcenter card-table table-striped datatable">
                     <thead>
                         <tr>
@@ -95,13 +58,5 @@
         </div>
     </div>
 </div>
-<script>
-    function clearSearch() {
-        const form = document.getElementById('search-form');
-        const input = form.querySelector('input[name="search"]');
-        input.value = '';
-        form.submit();
-    }
-</script>
 <x-modal-tautan baseUrl="{{ url('/materi') }}" />
 @endsection
