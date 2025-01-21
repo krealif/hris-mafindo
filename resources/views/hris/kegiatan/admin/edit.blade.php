@@ -49,7 +49,7 @@
       <form method="POST" action="{{ route('kegiatan.update', $event->id) }}" class="row g-3" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
-        <div class="col-6">
+        <div class="col-12 col-lg-7 col-xl-6">
           <div class="card card-mafindo" x-data="@js(['eventType' => old('type', $event->type)])">
             <div class="card-body">
               <div class="mb-3">
@@ -116,7 +116,7 @@
             </div>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-lg-5 col-xl-6">
           <div class="card card-mafindo">
             <div class="card-body" x-data="imgPreview(@js($event->cover ? Storage::url($event->cover) : asset('static/img/event-cover-placeholder.png')))">
               <div class="mb-3">
@@ -125,10 +125,10 @@
               </div>
               <div class="mb-2">
                 <div class="row g-3">
-                  <div class="col-4">
+                  <div class="col-sm-6 col-md-5 col-lg-7 col-xl-6 col-xxl-5">
                     <img class="ratio ratio-1x1 rounded" x-bind:src="newImg || img" />
                   </div>
-                  <div class="col">
+                  <div class="col-12 col-sm">
                     <div>
                       <p class="m-0">Pastikan foto yang Anda upload memenuhi ketentuan berikut:</p>
                       <ul class="mt-1">

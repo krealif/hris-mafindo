@@ -24,17 +24,16 @@ class HasRoleRule implements ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        /** @var \App\Models\User|null $user */
         $userExistsWithRole = User::where('id', $value)
             ->whereHas('roles', function ($query) {
                 $query->whereIn('name', $this->roles);
             })
             ->exists();
-        dd($userExistsWithRole);
+
         if (! $userExistsWithRole) {
             // If user doesn't have any of the roles, fail validation
             $roleList = implode(', ', $this->roles);
