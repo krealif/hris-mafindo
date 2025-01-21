@@ -7,9 +7,17 @@
     <div class="page-header d-print-none">
       <div class="container-xl">
         <div class="title-wrapper">
-          <h1 class="page-title">
-            Profil
-          </h1>
+          <div>
+            @if (url()->previous() != url()->current())
+              <a href="{{ url()->previous() }}" class="btn btn-link px-0 py-1 mb-1">
+                <x-lucide-arrow-left class="icon" />
+                Kembali
+              </a>
+            @endif
+            <h1 class="page-title">
+              Profil
+            </h1>
+          </div>
         </div>
       </div>
     </div>
