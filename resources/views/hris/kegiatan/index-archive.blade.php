@@ -10,7 +10,7 @@
         <div class="title-wrapper">
           <div>
             <h1 class="page-title">
-              Kegiatan
+              Arsip Kegiatan
             </h1>
           </div>
         </div>

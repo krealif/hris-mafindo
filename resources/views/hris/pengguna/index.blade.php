@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Pengguna',
+    'title' => 'Data Pengguna',
 ])
 
 @section('content')
@@ -9,7 +9,7 @@
       <div class="container-xl">
         <div class="title-wrapper">
           <h1 class="page-title">
-            Pengguna
+            Data Pengguna
           </h1>
         </div>
       </div>

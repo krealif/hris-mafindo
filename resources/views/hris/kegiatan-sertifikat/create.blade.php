@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => "Tambah Sertifikat {$event->name}",
+    'title' => "Tambah Sertifikat Kegiatan {$event->name}",
 ])
 
 @section('content')

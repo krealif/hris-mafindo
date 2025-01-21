@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Relawan',
+    'title' => 'Data Relawan Wilayah ' . Auth::user()->branch?->name,
 ])
 
 @section('content')
@@ -8,9 +8,14 @@
     <div class="page-header d-print-none">
       <div class="container-xl">
         <div class="title-wrapper">
-          <h1 class="page-title">
-            Relawan
-          </h1>
+          <div>
+            <h1 class="page-title">
+              Data Relawan
+            </h1>
+            <p class="text-muted m-0 mt-1">
+              Wilayah {{ Auth::user()->branch?->name }}
+            </p>
+          </div>
         </div>
       </div>
     </div>

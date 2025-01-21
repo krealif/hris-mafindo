@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Kegiatan Diikuti',
+    'title' => 'Kegiatan yang Diikuti',
 ])
 
 @section('content')
@@ -10,7 +10,7 @@
         <div class="title-wrapper">
           <div>
             <h1 class="page-title">
-              Kegiatan
+              Kegiatan yang Diikuti
             </h1>
           </div>
         </div>
