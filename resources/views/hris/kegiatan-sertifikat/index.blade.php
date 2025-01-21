@@ -7,12 +7,10 @@
     <div class="page-header d-print-none">
       <div class="container-xl">
         <div>
-          <div class="mb-1">
-            <a href="{{ route('kegiatan.show', $event->id) }}" class="btn btn-link px-0 py-1">
-              <x-lucide-arrow-left class="icon" />
-              Kembali
-            </a>
-          </div>
+          <a href="{{ route('kegiatan.show', $event->id) }}" class="btn btn-link px-0 py-1 mb-1">
+            <x-lucide-arrow-left class="icon" />
+            Kembali
+          </a>
           <h1 class="page-title">
             Detail Kegiatan
           </h1>
@@ -45,7 +43,7 @@
             </div>
           </div>
           <div class="col-12">
-            <x-dt.datatable search="nama" searchPlaceholder="Nama relawan" :collection="$userCertificates">
+            <x-dt.datatable search="nama" searchPlaceholder="Nama Relawan" :collection="$userCertificates">
               @if ($userCertificates->total() < $event->participants_count)
                 <x-slot:actions>
                   <a href="{{ route('sertifikat.create', $event->id) }}" class="btn btn-primary">

@@ -8,19 +8,17 @@
       <div class="container-xl">
         <div class="title-wrapper">
           <div>
-            <div class="mb-1">
-              @if (url()->previous() == route('surat.show', $letter->id))
-                <a href="{{ route('surat.show', $letter->id) }}" class="btn btn-link px-0 py-1">
-                  <x-lucide-arrow-left class="icon" />
-                  Kembali
-                </a>
-              @else
-                <a href="{{ Auth::user()->hasRole('admin') ? route('surat.index') : route('surat.letterbox') }}" class="btn btn-link px-0 py-1">
-                  <x-lucide-arrow-left class="icon" />
-                  Kembali
-                </a>
-              @endif
-            </div>
+            @if (url()->previous() == route('surat.show', $letter->id))
+              <a href="{{ route('surat.show', $letter->id) }}" class="btn btn-link px-0 py-1 mb-1">
+                <x-lucide-arrow-left class="icon" />
+                Kembali
+              </a>
+            @else
+              <a href="{{ Auth::user()->hasRole('admin') ? route('surat.index') : route('surat.letterbox') }}" class="btn btn-link px-0 py-1 mb-1">
+                <x-lucide-arrow-left class="icon" />
+                Kembali
+              </a>
+            @endif
             <h1 class="page-title">
               Edit Permohonan Surat
             </h1>

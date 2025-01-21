@@ -9,12 +9,10 @@
       <div class="container-xl">
         <div class="title-wrapper">
           <div>
-            <div class="mb-1">
-              <a href="{{ route('migrasi.index') }}" class="btn btn-link px-0 py-1">
-                <x-lucide-arrow-left class="icon" />
-                Kembali
-              </a>
-            </div>
+            <a href="{{ route('migrasi.index') }}" class="btn btn-link px-0 py-1 mb-1">
+              <x-lucide-arrow-left class="icon" />
+              Kembali
+            </a>
             @if ($tempUser)
               <h1 class="page-title">Edit Data [{{ $tempUser->nama }}]</h1>
             @else

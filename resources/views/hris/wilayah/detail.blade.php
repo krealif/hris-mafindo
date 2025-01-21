@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Data Relawan Wilayah ' . Auth::user()->branch?->name,
+    'title' => "Wilayah {$branch->name}",
 ])
 
 @section('content')
@@ -9,12 +9,13 @@
       <div class="container-xl">
         <div class="title-wrapper">
           <div>
+            <a href="{{ route('wilayah.index') }}" class="btn btn-link px-0 py-1 mb-1">
+              <x-lucide-arrow-left class="icon" />
+              Kembali
+            </a>
             <h1 class="page-title">
-              Data Relawan
+              Wilayah {{ $branch->name }}
             </h1>
-            <p class="text-muted m-0 mt-1">
-              Wilayah {{ Auth::user()->branch?->name }}
-            </p>
           </div>
         </div>
       </div>
@@ -22,7 +23,7 @@
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">
-        <div class="row row-deck g-2 mb-3">
+        <div class="row row-deck g-2 mb-2">
           <div class="col-12 col-sm">
             <div class="card card-mafindo card-sm">
               <div class="card-body">
@@ -52,24 +53,17 @@
             @endunless
           @endforeach
         </div>
-        <x-dt.datatable search="nama" searchPlaceholder="Nama Relawan" :collection="$users">
-          <x-slot:filterForm>
-            <!-- Table filter -->
-            <div class="row gx-4 gy-3">
-              <div class="col-12 col-md-6 col-lg-3">
-                <label for="role" class="form-label">Role</label>
-                <x-form.select name="role" selected="{{ request()->filter['role'] ?? '' }}" :showError=false placeholder="Semua" :options="Arr::except(App\Enums\RoleEnum::labels(), ['admin', 'pengurus-wilayah'])" />
-              </div>
-              <div class="col-12 col-md-6 col-lg-3">
-                <label for="email" class="form-label">Email</label>
-                <x-form.input name="email" type="text" :showError=false value="{{ request()->filter['email'] ?? '' }}" />
-              </div>
-              <div class="col-12 col-md-6 col-lg-3">
-                <label for="no_relawan" class="form-label">No Relawan</label>
-                <x-form.input name="no_relawan" type="text" :showError=false value="{{ request()->filter['no_relawan'] ?? '' }}" />
-              </div>
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="datagrid">
+              <x-datagrid-item title="Sekretaris 1" content="{{ $branch->staff->sekretaris1 }}" />
+              <x-datagrid-item title="Sekretaris 2" content="{{ $branch->staff->sekretaris2 }}" />
+              <x-datagrid-item title="Bendahara 1" content="{{ $branch->staff->bendahara1 }}" />
+              <x-datagrid-item title="Bendahara 2" content="{{ $branch->staff->bendahara2 }}" />
             </div>
-          </x-slot>
+          </div>
+        </div>
+        <x-dt.datatable :collection="$users">
           <!-- Table Body -->
           <table class="table table-vcenter card-table table-mobile-md datatable">
             <thead class="table-primary">

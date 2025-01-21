@@ -8,12 +8,10 @@
       <div class="container-xl">
         <div class="title-wrapper">
           <div>
-            <div class="mb-1">
-              <a href="{{ route('kegiatan.index') }}" class="btn btn-link px-0 py-1">
-                <x-lucide-arrow-left class="icon" />
-                Kembali
-              </a>
-            </div>
+            <a href="{{ route('kegiatan.index') }}" class="btn btn-link px-0 py-1 mb-1">
+              <x-lucide-arrow-left class="icon" />
+              Kembali
+            </a>
             <h1 class="page-title">
               Tambah Kegiatan
             </h1>
@@ -38,7 +36,7 @@
       </div>
       <form method="POST" action="{{ route('kegiatan.store') }}" class="row g-3" enctype="multipart/form-data">
         @csrf
-        <div class="col-6">
+        <div class="col-12 col-lg-7 col-xl-6">
           <div class="card card-mafindo" x-data="@js(['eventType' => old('type')])">
             <div class="card-body">
               <div class="mb-3">
@@ -93,7 +91,7 @@
             </div>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-lg-5 col-xl-6">
           <div class="card card-mafindo">
             <div class="card-body" x-data="imgPreview(@js(asset('static/img/event-cover-placeholder.png')))">
               <div class="mb-3">
@@ -102,14 +100,14 @@
               </div>
               <div class="mb-2">
                 <div class="row g-3">
-                  <div class="col-4">
+                  <div class="col-sm-6 col-md-5 col-lg-7 col-xl-6 col-xxl-5">
                     <img class="ratio ratio-1x1 rounded" x-bind:src="newImg || img" />
                   </div>
-                  <div class="col">
+                  <div class="col-12 col-sm">
                     <div>
                       <p class="m-0">Pastikan foto yang Anda upload memenuhi ketentuan berikut:</p>
                       <ul class="mt-1">
-                        <li>Dimensi: <strong>1000x1000 pixel</strong> atau memiliki <strong>rasio 1:1</strong></li>
+                        <li>Dimensi: <strong>1000x1000 pixel</strong> atau <strong>rasio 1:1</strong></li>
                         <li>Ukuran File: <strong>Maksimal 2 MB</strong></li>
                       </ul>
                     </div>

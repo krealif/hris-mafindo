@@ -53,7 +53,7 @@ class UserController extends Controller
     {
         Gate::authorize('view-relawan-user');
 
-        /** @var \App\Models\User $authUser */
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $users = QueryBuilder::for(User::class)
@@ -64,14 +64,24 @@ class UserController extends Controller
                 'no_relawan'
             ])
             ->select(['id', 'nama', 'email', 'no_relawan'])
-            ->role([RoleEnum::RELAWAN_BARU, RoleEnum::RELAWAN_WILAYAH])
             ->where('branch_id', $user->branch_id)
+            ->whereHas('roles', function ($query) {
+                $query->whereIn('name', [RoleEnum::RELAWAN_BARU, RoleEnum::RELAWAN_WILAYAH]);
+            })
             ->where('is_approved', true)
             ->with('branch', 'roles')
             ->orderBy('nama')
             ->paginate(15)
             ->appends(request()->query());
 
-        return view('hris.pengguna.index-wilayah', compact('users'));
+        $roleCounts = DB::table('model_has_roles')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->join('users', 'model_has_roles.model_id', '=', 'users.id')
+            ->where('users.branch_id', $user->branch_id)
+            ->select('roles.name as role_name', DB::raw('count(*) as count'))
+            ->groupBy('roles.name')
+            ->get();
+
+        return view('hris.pengguna.index-wilayah', compact('users', 'roleCounts'));
     }
 }

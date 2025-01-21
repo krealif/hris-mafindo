@@ -10,7 +10,11 @@
         <div class="title-wrapper">
           <div>
             <h1 class="page-title">
-              Kegiatan
+              @can('create', App\Models\Event::class)
+                Kegiatan Mendatang
+              @else
+                Temukan Kegiatan
+              @endcan
             </h1>
           </div>
           @can('create', App\Models\Event::class)
@@ -31,7 +35,7 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dt.datacard search="name" searchPlaceholder="Nama kegiatan" :collection="$events">
+        <x-dt.datacard search="name" searchPlaceholder="Nama Kegiatan" :collection="$events">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row gx-4 gy-3">

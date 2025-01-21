@@ -17,32 +17,27 @@ class HasRoleRule implements ValidationRule
     public function __construct(mixed $roles)
     {
         $this->roles = is_array($roles)
-            ? array_map(fn ($role) => $role instanceof RoleEnum ? $role->value : (string) $role, $roles)
+            ? array_map(fn($role) => $role instanceof RoleEnum ? $role->value : (string) $role, $roles)
             : [$roles instanceof RoleEnum ? $roles->value : (string) $roles];
     }
 
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        /** @var \App\Models\User|null $user */
-        $user = User::with('roles')->find($value);
+        $userExistsWithRole = User::where('id', $value)
+            ->whereHas('roles', function ($query) {
+                $query->whereIn('name', $this->roles);
+            })
+            ->exists();
 
-        if (! $user) {
-            $fail('User not found.');
-
-            return;
+        if (! $userExistsWithRole) {
+            // If user doesn't have any of the roles, fail validation
+            $roleList = implode(', ', $this->roles);
+            $fail("The user does not have any of the required roles: {$roleList}.");
         }
-
-        if ($user->hasRole($this->roles)) {
-            return; // User has at least one of the roles, pass validation
-        }
-
-        // If user doesn't have any of the roles, fail validation
-        $roleList = implode(', ', $this->roles);
-        $fail("The user does not have any of the required roles: {$roleList}.");
     }
 }

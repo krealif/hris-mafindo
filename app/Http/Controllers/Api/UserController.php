@@ -54,7 +54,9 @@ class UserController extends Controller
         }
 
         $usersQuery = User::select('id', 'nama')
-            ->role($roles)
+            ->whereHas('roles', function ($query) use ($roles) {
+                $query->whereIn('name', $roles);
+            })
             ->where('nama', 'like', '%' . $searchQuery . '%')
             ->whereNot('id', $authUser->id);
 

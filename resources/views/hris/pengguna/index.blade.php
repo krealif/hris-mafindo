@@ -1,5 +1,5 @@
 @extends('layouts.dashboard', [
-    'title' => 'Pengguna',
+    'title' => 'Data Pengguna',
 ])
 
 @section('content')
@@ -9,7 +9,7 @@
       <div class="container-xl">
         <div class="title-wrapper">
           <h1 class="page-title">
-            Pengguna
+            Data Pengguna
           </h1>
         </div>
       </div>
@@ -17,12 +17,12 @@
     <!-- Body -->
     <div class="page-body">
       <div class="container-xl">
-        <div class="row row-deck row-cards mb-3">
+        <div class="row row-deck g-2 mb-3">
           <div class="col-12 col-sm-8 col-lg-4">
             <div class="card card-mafindo card-sm">
               <div class="card-body">
                 <div class="fw-bold text-secondary">
-                  Total Semua
+                  Total Pengguna
                 </div>
                 <div class="fs-2">
                   {{ $roleCounts->sum('count') }}

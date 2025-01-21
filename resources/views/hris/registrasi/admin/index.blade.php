@@ -27,7 +27,7 @@
             {{ flash()->message }}
           </x-alert>
         @endif
-        <x-dt.datatable search="nama" searchPlaceholder="Nama relawan" :collection="$registrations">
+        <x-dt.datatable search="nama" searchPlaceholder="Nama Relawan" :collection="$registrations">
           <x-slot:filterForm>
             <!-- Table filter -->
             <div class="row gx-4 gy-3">

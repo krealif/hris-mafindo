@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserSettingController;
@@ -67,6 +68,21 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::get('pengaturan', 'settings')->name('settings');
         Route::patch('pengaturan/update-email', 'updateEmail')->name('updateEmail');
         Route::patch('pengaturan/update-password', 'updatePassword')->name('updatePassword');
+    });
+
+    Route::group([
+        'middleware' => ['role:admin'],
+        'controller' => BranchController::class,
+        'as' => 'wilayah.',
+        'prefix' => 'data',
+    ], function () {
+        Route::get('wilayah', 'index')->name('index');
+        Route::get('wilayah/tambah', 'create')->name('create');
+        Route::post('wilayah', 'store')->name('store');
+        Route::get('wilayah/{branch}', 'show')->name('show');
+        Route::get('wilayah/{branch}/edit', 'edit')->name('edit');
+        Route::patch('wilayah/{branch}', 'update')->name('update');
+        Route::delete('wilayah/{branch}', 'destroy')->name('destroy');
     });
 
     // Group of routes for admin to manage & review user registration applications
