@@ -6,7 +6,6 @@ use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
 use App\Enums\RegistrationStatusEnum;
 use App\Enums\RegistrationTypeEnum;
-use App\Enums\RoleEnum;
 use App\Http\Requests\StoreRegistrationPengurusRequest;
 use App\Http\Requests\StoreRegistrationRelawanRequest;
 use App\Models\Branch;
@@ -138,15 +137,6 @@ class UserRegistrationController extends Controller
             $registrationData['status'] = RegistrationStatusEnum::REVISI;
         }
 
-        // Tetapkan role berdasarkan jenis registrasi
-        if (! $user->hasAnyRole([RoleEnum::RELAWAN_BARU, RoleEnum::RELAWAN_WILAYAH])) {
-            $role = ($type == RegistrationTypeEnum::RELAWAN_BARU)
-                ? RoleEnum::RELAWAN_BARU
-                : RoleEnum::RELAWAN_WILAYAH;
-
-            $user->assignRole($role);
-        }
-
         DB::transaction(function () use ($user, $registrationData, $validated) {
             $user->update(
                 Arr::only($validated, [
@@ -224,11 +214,6 @@ class UserRegistrationController extends Controller
             && $request->boolean('_isDraft')
         ) {
             $registrationData['status'] = RegistrationStatusEnum::REVISI;
-        }
-
-        // Tetapkan role pengurus
-        if (! $user->hasRole(RoleEnum::PENGURUS_WILAYAH)) {
-            $user->assignRole(RoleEnum::PENGURUS_WILAYAH);
         }
 
         DB::transaction(function () use ($user, $registrationData, $validated) {

@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Branch;
+use App\Enums\RoleEnum;
+use Illuminate\View\View;
+use App\Models\Registration;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use App\Enums\RegistrationTypeEnum;
+use Illuminate\Support\Facades\Gate;
+use App\Enums\RegistrationStatusEnum;
+use Illuminate\Http\RedirectResponse;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
-use App\Enums\RegistrationStatusEnum;
-use App\Enums\RegistrationTypeEnum;
-use App\Enums\RoleEnum;
-use App\Models\Branch;
-use App\Models\Registration;
-use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rule;
-use Illuminate\View\View;
-use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class RegistrationReviewController extends Controller
 {
@@ -103,6 +104,7 @@ class RegistrationReviewController extends Controller
 
         $type = $registration->type;
         $currentStep = $registration->step;
+        $registrationUser = $registration->user;
 
         if ($type == RegistrationTypeEnum::RELAWAN_BARU) {
             if ($currentStep == RegistrationBaruStepEnum::WAWANCARA) {
@@ -112,19 +114,21 @@ class RegistrationReviewController extends Controller
                         'string',
                         'max:255',
                         'unique:temp_users',
-                        Rule::unique('users')->ignore($registration->user),
+                        Rule::unique('users')->ignore($registrationUser),
                     ],
                 ]);
 
-                $registration->user->update([
+                $registrationUser->update([
                     'no_relawan' => $validated['no_relawan'],
                 ]);
             } elseif ($currentStep == RegistrationBaruStepEnum::TERHUBUNG) {
-                // Pada relawan baru, status approve menjadi 'TRUE' pada step terhubung
-                // agar dapat segera mengakses dashboard
-                $registration->user->update([
-                    'is_approved' => 1,
-                ]);
+                // Menetapkan role dan status approve agar dapat mengakses dashboard
+                DB::transaction(function () use ($registrationUser) {
+                    $registrationUser->assignRole(RoleEnum::RELAWAN_BARU);
+                    $registrationUser->update([
+                        'is_approved' => 1,
+                    ]);
+                });
             }
         }
 
@@ -134,7 +138,7 @@ class RegistrationReviewController extends Controller
             $registration->update(['step' => $nextStep]);
         }
 
-        flash()->success("Berhasil. Permohonan registrasi relawan atas nama [{$registration->user->nama}] telah berlanjut ke tahapan [{$nextStep?->value}].");
+        flash()->success("Berhasil. Permohonan registrasi relawan atas nama [{$registration->user->nama}] telah berlanjut ke tahap [{$nextStep?->value}].");
 
         return to_route('registrasi.show', $registration->id);
     }
@@ -172,12 +176,8 @@ class RegistrationReviewController extends Controller
     {
         Gate::authorize('approve', $registration);
 
-        $type = $registration->type;
-
-        if ($type == RegistrationTypeEnum::RELAWAN_BARU) {
-            $registration->user->syncRoles(RoleEnum::RELAWAN_WILAYAH);
-        } elseif ($type == RegistrationTypeEnum::RELAWAN_WILAYAH) {
-            $validated = $request->validate([
+        if ($registration->type == RegistrationTypeEnum::RELAWAN_WILAYAH) {
+            $request->validate([
                 'no_relawan' => [
                     'required',
                     'string',
@@ -186,19 +186,32 @@ class RegistrationReviewController extends Controller
                     Rule::unique('users')->ignore($registration->user),
                 ],
             ]);
-
-            $registration->user->update([
-                'no_relawan' => $validated['no_relawan'],
-                'is_approved' => 1,
-            ]);
-        } else {
-            // For pengurus
-            $registration->user->update([
-                'is_approved' => 1,
-            ]);
         }
 
-        $registration->delete();
+        DB::transaction(function () use ($request, $registration) {
+            $type = $registration->type;
+            $registrationUser = $registration->user;
+
+            if ($type == RegistrationTypeEnum::RELAWAN_BARU) {
+                // Pada tahap ini, relawan baru telah mengikuti PDR
+                // Maka dari itu, role diubah menjadi Relawan Wilayah
+                $registration->user->syncRoles(RoleEnum::RELAWAN_WILAYAH);
+            } elseif ($type == RegistrationTypeEnum::RELAWAN_WILAYAH) {
+                // Pada tahap ini, admin dapat menambahkan/mengedit no relawan
+                $registrationUser->syncRoles(RoleEnum::RELAWAN_WILAYAH);
+                $registrationUser->update([
+                    'no_relawan' => $request->input('no_relawan'),
+                    'is_approved' => 1,
+                ]);
+            } elseif ($type == RegistrationTypeEnum::PENGURUS_WILAYAH) {
+                $registrationUser->syncRoles(RoleEnum::PENGURUS_WILAYAH);
+                $registrationUser->update([
+                    'is_approved' => 1,
+                ]);
+            }
+
+            $registration->delete();
+        });
 
         // TODO: Kirim email
 
