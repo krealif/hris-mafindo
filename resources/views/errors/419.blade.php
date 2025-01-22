@@ -24,10 +24,10 @@
               {{ $exception->getMessage() }}
             </span>
             <h2 class="h3 fw-medium mb-2">Oops! Sesi Anda Telah Berakhir.</h2>
-            <p class="text-muted mb-4">Hal ini terjadi karena Anda tidak aktif dalam waktu yang lama, atau token telah kedaluwarsa. Silakan login kembali untuk melanjutkan.</p>
-            <a href="{{ route('login') }}" class="btn btn-primary w-100">
-              <x-lucide-log-in class="icon" />
-              Login Kembali
+            <p class="text-muted mb-4">Hal ini terjadi karena Anda tidak aktif dalam waktu yang lama, atau token telah kedaluwarsa. Silakan refresh halaman.</p>
+            <a href="" class="btn btn-primary w-100">
+              <x-lucide-rotate-cw class="icon" />
+              Refresh
             </a>
           </div>
         </div>
