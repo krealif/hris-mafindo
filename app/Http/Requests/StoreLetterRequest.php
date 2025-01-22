@@ -21,15 +21,8 @@ class StoreLetterRequest extends FormRequest
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        $recipientsRequired = ($user->hasRole('admin')
-            || $this->boolean('_withRecipient')
-            || $this->input('recipients'))
-            && $user->canAny(
-                [
-                    PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
-                    PermissionEnum::CREATE_LETTER_FOR_PENGURUS,
-                ]
-            );
+        $recipientsRequired = ($user->can(PermissionEnum::CREATE_LETTER_FOR_RELAWAN) && $this->boolean('_withRecipient'))
+            || $user->can(PermissionEnum::CREATE_LETTER_FOR_ALL);
 
         return [
             'title' => ['required', 'string', 'max:255'],

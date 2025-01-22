@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\LetterStatusEnum;
+use App\Enums\PermissionEnum;
 use App\Enums\RoleEnum;
 use App\Filters\FilterDate;
 use App\Filters\FilterLetterType;
@@ -25,12 +26,12 @@ class LetterController extends Controller
     /**
      * Display a listing of the letters created by the current user or assigned to them.
      */
-    public function indexLetter(): View
+    public function indexLetterBox(): View
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole(RoleEnum::ADMIN)) {
             abort(403);
         }
 
@@ -41,8 +42,9 @@ class LetterController extends Controller
                 AllowedFilter::custom('updated_at', new FilterDate),
             ])
             ->where(function ($query) use ($user) {
-                $query->whereBelongsTo($user, 'createdBy')
+                $query->whereBelongsTo($user, 'createdBy') // Mendapatkan permohonan yang dibuat sendiri
                     ->orWhereHas('recipients', function ($query) use ($user) {
+                        // Mendapatkan surat/permohonan 'SELESAI' yang ditujukkan untuk user ini
                         $query->where('user_id', $user->id)
                             ->where('status', LetterStatusEnum::SELESAI);
                     });
@@ -64,7 +66,7 @@ class LetterController extends Controller
     }
 
     /**
-     * Display a listing of letters filtered by wilayah (branch) of currently logged in PENGURUS.
+     * Displays a list of letters belonging to Relawan in the same area as Pengurus
      */
     public function indexByWilayah(): View
     {
@@ -73,25 +75,32 @@ class LetterController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
+        // Mendapatkan seluruh surat/permohonan Relawan yang satu wilayah dengan Pengurus
         $letters = QueryBuilder::for(Letter::class)
             ->allowedFilters([
                 'title',
                 AllowedFilter::custom('relawan', new FilterRelawanWilayahLetter),
                 AllowedFilter::custom('updated_at', new FilterDate),
             ])
-            ->where('created_by', '!=', $user->id)
+            ->where('created_by', '!=', $user->id) // Bukan permohonan yang dibuat oleh pengurus
             ->where(function ($query) use ($user) {
                 $query->whereHas('recipients', function ($query) use ($user) {
+                    // Permohonan dengan penerimanya adalah relawan satu wilayah (Dibuat oleh Admin)
                     $query->where('user_id', '!=', $user->id)
                         ->where('users.branch_id', $user->branch_id)
                         ->where('status', LetterStatusEnum::SELESAI);
                 })
                     ->orWhereHas('createdBy', function ($query) use ($user) {
+                        // Atau permohonan yang dibuat oleh relawan sendiri
                         $query->where('users.branch_id', $user->branch_id)
                             ->where('status', LetterStatusEnum::SELESAI);
                     });
             })
-            ->with('recipients')
+            ->with([
+                'recipients' => function ($query) use ($user) {
+                    $query->where('branch_id', $user->branch_id);
+                }
+            ])
             ->latest('updated_at')
             ->paginate(15)
             ->appends(request()->query());
@@ -164,12 +173,20 @@ class LetterController extends Controller
 
         // Jika admin membuka detail permohonan surat, status akan diubah menjadi DIPROSES,
         // yang berarti permohonan surat sudah "terkunci" dan tidak bisa diubah atau dihapus lagi.
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole(RoleEnum::ADMIN)) {
             if ($letter->status == LetterStatusEnum::MENUNGGU) {
                 $letter->update(['status' => LetterStatusEnum::DIPROSES]);
             }
 
             return view('hris.surat.admin.detail', compact('letter'));
+        }
+
+        if ($user->hasPermissionTo(PermissionEnum::VIEW_RELAWAN_LETTER)) {
+            $letter->load([
+                'recipients' => function ($query) use ($user) {
+                    $query->where('branch_id', $user->branch_id);
+                }
+            ]);
         }
 
         return view('hris.surat.user.detail', compact('letter'));
@@ -238,7 +255,7 @@ class LetterController extends Controller
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        $redirectRoute = $user->hasRole('admin') ? 'surat.indexHistory' : 'surat.letterbox';
+        $redirectRoute = $user->hasRole(RoleEnum::ADMIN) ? 'surat.indexHistory' : 'surat.letterbox';
 
         $prevUrlQuery = parse_url(url()->previous(), PHP_URL_QUERY);
         if (url()->previous() == route($redirectRoute, $prevUrlQuery)) {

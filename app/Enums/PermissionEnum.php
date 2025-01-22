@@ -15,9 +15,9 @@ enum PermissionEnum: string
 
     case VIEW_RELAWAN_LETTER = 'view-relawan-letter';
     case CREATE_LETTER_FOR_RELAWAN = 'create-letter-for-relawan';
-    case CREATE_LETTER_FOR_PENGURUS = 'create-letter-for-pengurus';
 
     case VIEW_ALL_LETTER = 'view-all-letter';
+    case CREATE_LETTER_FOR_ALL = 'create-letter-for-all';
     case HANDLE_LETTER = 'handle-letter';
     case DELETE_ALL_LETTER = 'delete-all-letter';
 

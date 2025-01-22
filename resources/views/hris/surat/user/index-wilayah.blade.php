@@ -53,7 +53,7 @@
                   <td data-label="Tipe">
                     @if ($letter->recipients->isEmpty())
                       <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
-                      <span class="fw-medium">PERMOHONAN</span>
+                      <span class="fw-medium">PERMOHONAN</span> Relawan
                     @else
                       <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
                       <span class="fw-medium">DIBUAT</span> oleh Admin
@@ -68,9 +68,9 @@
                           @else
                             {{ $recipient->nama }}
                           @endif
-                          @if (!$loop->last)
+                          @unless ($loop->last)
                             |
-                          @endif
+                          @endunless
                         @endforeach
                       </div>
                     @else

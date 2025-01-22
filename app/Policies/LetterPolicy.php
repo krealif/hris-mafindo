@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Enums\LetterStatusEnum;
 use App\Enums\PermissionEnum;
-use App\Enums\RoleEnum;
 use App\Models\Letter;
 use App\Models\User;
 
@@ -23,8 +22,7 @@ class LetterPolicy
      */
     public function viewByWilayah(User $user): bool
     {
-        return $user->hasRole(RoleEnum::PENGURUS_WILAYAH)
-            && $user->can(PermissionEnum::CREATE_LETTER_FOR_RELAWAN);
+        return $user->can(PermissionEnum::VIEW_RELAWAN_LETTER);
     }
 
     /**

@@ -51,10 +51,10 @@
               <tr>
                 <th>Judul</th>
                 <th>Tipe</th>
+                <th>Status</th>
                 @haspermission('create-letter-for-relawan')
                   <th>Tujuan (Relawan)</th>
                 @endhaspermission
-                <th>Status</th>
                 <th>Tanggal</th>
                 <th class="w-1"></th>
               </tr>
@@ -82,6 +82,9 @@
                       <strong class="fw-medium">SURAT</strong> dari {{ $letter->createdBy->role?->label() }}
                     @endif
                   </td>
+                  <td data-label="Status">
+                    <x-badge class="fs-4" :case="$letter->status" />
+                  </td>
                   @haspermission('create-letter-for-relawan')
                     <td>
                       @if ($letter->recipients->contains('id', Auth::id()))
@@ -101,9 +104,6 @@
                       @endif
                     </td>
                   @endhaspermission
-                  <td data-label="Status">
-                    <x-badge class="fs-4" :case="$letter->status" />
-                  </td>
                   <td data-label="Tanggal">
                     <div>{{ $letter->updated_at?->translatedFormat('d M Y / H:i') }}</div>
                     <div class="text-muted d-block d-md-none d-lg-block">{{ $letter->updated_at?->diffForHumans() }}</div>

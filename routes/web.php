@@ -126,7 +126,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         'as' => 'surat.',
         'prefix' => 'surat',
     ], function () {
-        Route::get('kotak-surat', 'indexLetter')->name('letterbox');
+        Route::get('kotak-surat', 'indexLetterBox')->name('letterbox');
         Route::get('permohonan-wilayah', 'indexByWilayah')->name('indexWilayah');
 
         Route::get('permohonan/buat', 'create')->name('create');

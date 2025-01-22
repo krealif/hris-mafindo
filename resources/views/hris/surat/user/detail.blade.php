@@ -161,57 +161,65 @@
           </div>
           <div class="col-12 col-md-6">
             <div class="vstack gap-3">
-              @haspermission('create-letter-for-relawan')
-                @php
-                  // Check if the letter info should be visible to the Pengurus
-                  $isNotForCurrentUser = !$letter->recipients->contains('id', Auth::id());
-                  $isOwnSubmission = $letter->created_by == Auth::id() && $letter->recipients->isEmpty();
-                @endphp
-                @if ($isNotForCurrentUser && !$isOwnSubmission)
+              @haspermission('view-relawan-letter')
+                @if ($letter->recipients->isNotEmpty())
+                  {{-- Ketika Permohonan dibuat oleh Pengurus/Admin untuk Relawan/Pengurus --}}
                   <div class="card card-mafindo">
                     <div class="card-header">
                       <h2 class="card-title d-flex align-items-center gap-2">
-                        @if ($letter->recipients->isEmpty())
-                          <x-lucide-user class="icon" />
-                          Detail Relawan
-                        @else
-                          <x-lucide-forward class="icon" />
-                          Tujuan
-                        @endif
+                        <x-lucide-forward class="icon" />
+                        Tujuan
                       </h2>
                     </div>
-                    @if ($letter->recipients->isEmpty())
-                      <div class="card-body">
-                        <div class="datagrid">
-                          <x-datagrid-item title="Nama" content="{{ $letter->createdBy->nama }}" />
-                          <x-datagrid-item title="Wilayah" content="{{ $letter->createdBy->branch?->name }}" />
-                          <x-datagrid-item title="Nomor Relawan" content="{{ $letter->createdBy->no_relawan }}" />
-                        </div>
-                      </div>
-                    @else
-                      <table class="table table-vcenter card-table">
-                        <thead>
-                          <tr>
-                            <th>Nama</th>
-                            <th>Wilayah</th>
-                            <th>Nomor Relawan</th>
-                            <th class="w-1"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          @php
-                            $letter->recipients->load('branch');
-                          @endphp
-                          @foreach ($letter->recipients as $recipient)
+                    <table class="table table-vcenter card-table">
+                      <thead>
+                        <tr>
+                          <th>Nama</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach ($letter->recipients as $recipient)
+                          @if ($recipient->branch_id == Auth::user()->branch_id)
                             <tr>
-                              <td>{{ $recipient->nama }}</td>
-                              <td>{{ $recipient->branch?->name }}</td>
+                              <td>
+                                @if ($recipient->id == Auth::id())
+                                  {{ $recipient->nama }} <strong class="fw-medium">(Saya)</strong>
+                                @else
+                                  <a href="{{ route('user.profile', $recipient->id) }}" target="_blank">
+                                    {{ $recipient->nama }}
+                                  </a>
+                                @endif
+                              </td>
                               <td>{{ $recipient->no_relawan }}</td>
                             </tr>
-                          @endforeach
-                        </tbody>
-                      </table>
-                    @endif
+                          @endif
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                @elseif ($letter->created_by != Auth::id())
+                  {{-- Ketika Permohonan dibuat oleh Relawan --}}
+                  <div class="card card-mafindo">
+                    <div class="card-header">
+                      <h2 class="card-title d-flex align-items-center gap-2">
+                        <x-lucide-user class="icon" />
+                        Detail Relawan
+                      </h2>
+                    </div>
+                    <div class="card-body">
+                      <div class="datagrid">
+                        <div class="datagrid-item">
+                          <div class="datagrid-title">Nama</div>
+                          <div class="datagrid-content">
+                            <a href="{{ route('user.profile', $letter->created_by) }}" target="_blank">
+                              {{ $letter->createdBy->nama }}
+                            </a>
+                          </div>
+                        </div>
+                        <x-datagrid-item title="Nomor Relawan" content="{{ $letter->createdBy->no_relawan }}" />
+                      </div>
+                    </div>
                   </div>
                 @endif
               @endhaspermission

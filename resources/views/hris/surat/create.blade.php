@@ -36,7 +36,7 @@
           @endif
           <form class="card card-mafindo" method="POST" action="{{ route('surat.store') }}" x-data="{ _withRecipient: {{ old('_withRecipient', 'false') }} }" enctype="multipart/form-data">
             @csrf
-            @if (!Auth::user()->hasRole('admin') && Auth::user()->hasPermissionTo('create-letter-for-relawan'))
+            @haspermission('create-letter-for-relawan')
               <div class="card-body">
                 <div class="btn-group w-100" role="group">
                   <input type="radio" x-model.boolean="_withRecipient" class="btn-check" id="type-pengurus" autocomplete="off" value="false">
@@ -45,16 +45,18 @@
                   <label for="type-relawan" type="button" class="btn">Permohonan untuk Relawan</label>
                 </div>
               </div>
-            @endif
+            @endhaspermission
             <div class="card-body">
-              @haspermission('create-letter-for-relawan')
-                <div @if (!Auth::user()->hasRole('admin')) x-show="_withRecipient" @endif class="mb-3">
+              @haspermission('create-letter-for-all')
+                <div class="mb-3">
                   <label for="recipients" class="form-label required">Tujuan (Maks. 10)</label>
-                  @if (Auth::user()->hasRole('admin'))
-                    <x-form.user-select id="recipients" name="recipients[]" multiple placeholder="Tuliskan nama relawan" required />
-                  @else
-                    <x-form.user-select id="recipients" name="recipients[]" multiple placeholder="Tuliskan nama relawan" x-bind:required='_withRecipient' />
-                  @endif
+                  <x-form.user-select id="recipients" name="recipients[]" multiple placeholder="Tuliskan nama relawan" required />
+                </div>
+              @endhaspermission
+              @haspermission('create-letter-for-relawan')
+                <div x-show="_withRecipient" class="mb-3">
+                  <label for="recipients" class="form-label required">Tujuan (Maks. 10)</label>
+                  <x-form.user-select id="recipients" name="recipients[]" multiple placeholder="Tuliskan nama relawan" x-bind:required='_withRecipient' />
                 </div>
               @endhaspermission
               <div class="mb-3">

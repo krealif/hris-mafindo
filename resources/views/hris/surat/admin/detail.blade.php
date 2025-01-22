@@ -254,6 +254,7 @@
           <div class="col-12 col-md-6">
             <div class="vstack gap-3">
               @if ($letter->created_by != Auth::id())
+                {{-- Menampilkan pengirim/pembuat permohonan --}}
                 <div class="card card-mafindo">
                   <div class="card-header">
                     <h2 class="card-title d-flex align-items-center gap-2">
@@ -263,14 +264,24 @@
                   </div>
                   <div class="card-body">
                     <div class="datagrid">
-                      <x-datagrid-item title="Nama" content="{{ $letter->createdBy->nama }}" />
+                      <div class="datagrid-item">
+                        <div class="datagrid-title">Nama</div>
+                        <div class="datagrid-content">
+                          <a href="{{ route('user.profile', $letter->createdBy->id) }}">
+                            {{ $letter->createdBy->nama }}
+                          </a>
+                        </div>
+                      </div>
                       <x-datagrid-item title="Wilayah" content="{{ $letter->createdBy->branch?->name }}" />
-                      <x-datagrid-item title="Nomor Relawan" content="{{ $letter->createdBy->no_relawan }}" />
+                      @if ($letter->createdBy->no_relawan)
+                        <x-datagrid-item title="Nomor Relawan" content="{{ $letter->createdBy->no_relawan }}" />
+                      @endif
                     </div>
                   </div>
                 </div>
               @endif
               @if ($letter->recipients->isNotEmpty())
+                {{-- Menampilkan tujuan permohonan --}}
                 <div class="card card-mafindo">
                   <div class="card-header">
                     <h2 class="card-title d-flex align-items-center gap-2">
@@ -294,7 +305,11 @@
                       @endphp
                       @foreach ($letter->recipients as $recipient)
                         <tr>
-                          <td>{{ $recipient->nama }}</td>
+                          <td>
+                            <a href="{{ route('user.profile', $recipient->id) }}">
+                              {{ $recipient->nama }}
+                            </a>
+                          </td>
                           <td>{{ $recipient->role?->label() }}</td>
                           <td>{{ $recipient->branch?->name }}</td>
                           <td>{{ $recipient->no_relawan }}</td>

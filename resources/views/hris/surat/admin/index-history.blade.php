@@ -72,9 +72,9 @@
               <tr>
                 <th>Judul</th>
                 <th>Tipe</th>
+                <th>Status</th>
                 <th>Pengirim</th>
                 <th>Tujuan</th>
-                <th>Status</th>
                 <th>Tanggal</th>
                 <th class="w-1"></th>
               </tr>
@@ -97,6 +97,9 @@
                       <strong class="fw-medium">PERMOHONAN</strong> {{ $letter->createdBy->role?->label() }}
                     @endif
                   </td>
+                  <td data-label="Status">
+                    <x-badge class="fs-4" :case="$letter->status" />
+                  </td>
                   <td data-label="Pengirim">
                     @if ($letter->created_by != Auth::id())
                       {{ $letter->createdBy->nama }}
@@ -118,9 +121,6 @@
                     @else
                       <x-lucide-circle-slash-2 class="icon" defer />
                     @endif
-                  </td>
-                  <td data-label="Status">
-                    <x-badge class="fs-4" :case="$letter->status" />
                   </td>
                   <td data-label="Tanggal">
                     <div>{{ $letter->updated_at?->translatedFormat('d M Y / H:i') }}</div>
