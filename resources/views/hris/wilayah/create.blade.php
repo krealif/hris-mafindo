@@ -37,7 +37,7 @@
           <form class="card card-mafindo" method="POST" action="{{ route('wilayah.store') }}">
             @csrf
             <div class="card-body">
-              <div class="mb-3">
+              <div class="mb-2">
                 <label for="name" class="form-label required">Nama Wilayah</label>
                 <x-form.input name="name" type="text" value="{{ old('name') }}" required />
               </div>

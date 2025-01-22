@@ -34,7 +34,7 @@
               </ul>
             </x-alert>
           @endif
-          <form class="card card-mafindo" method="POST" x-data="{ _withRecipient: {{ old('_withRecipient', 'false') }} }" enctype="multipart/form-data">
+          <form class="card card-mafindo" method="POST" action="{{ route('surat.store') }}" x-data="{ _withRecipient: {{ old('_withRecipient', 'false') }} }" enctype="multipart/form-data">
             @csrf
             @if (!Auth::user()->hasRole('admin') && Auth::user()->hasPermissionTo('create-letter-for-relawan'))
               <div class="card-body">

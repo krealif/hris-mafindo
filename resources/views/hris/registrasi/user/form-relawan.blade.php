@@ -113,8 +113,8 @@
               </div>
             </div>
             <div class="col-12 col-md-9">
-              <form method="POST" action="{{ route('registrasi.store', $type->value) }}" class="vstack gap-3" x-data="{ isDraft: false }" novalidate enctype="multipart/form-data"
-                autocomplete="off">
+              <form method="POST" action="{{ route('registrasi.store', $type->value) }}" class="vstack gap-3" x-data="{ isDraft: false }" x-bind:novalidate="isDraft"
+                enctype="multipart/form-data" autocomplete="off">
                 @csrf
                 <div id="informasi-pribadi" class="card card-mafindo">
                   <div class="card-header">
@@ -151,8 +151,8 @@
                         <x-form.input name="alamat" type="text" value="{{ old('alamat', $userDetail?->alamat) }}" required />
                       </div>
                     </div>
-                    <div class="row mb-3">
-                      <div class="col-12 col-md-6 mb-3 mb-md-0">
+                    <div class="row mb-2">
+                      <div class="col-12 col-md-6">
                         <label for="disabilitas" class="form-label">Disabilitas</label>
                         <x-form.input name="disabilitas" type="text" value="{{ old('disabilitas', $userDetail?->disabilitas) }}" />
                       </div>
@@ -230,17 +230,17 @@
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="medsos-instagram" class="form-label">Akun Instagram</label>
-                        <div class="input-group mb-2">
+                        <div class="input-group">
                           <span class="input-group-text">@</span>
                           <x-form.input id="medsos-instagram" name="medsos[instagram]" type="text" placeholder="username"
                             value="{{ old('medsos.instagram', $userDetail?->medsos->instagram) }}" />
                         </div>
                       </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="medsos-tiktok" class="form-label">Akun Tiktok</label>
-                        <div class="input-group mb-2">
+                        <div class="input-group">
                           <span class="input-group-text">@</span>
                           <x-form.input id="medsos-tiktok" name="medsos[tiktok]" type="text" placeholder="username"
                             value="{{ old('medsos.tiktok', $userDetail?->medsos->tiktok) }}" />
@@ -248,7 +248,7 @@
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="medsos-twitter" class="form-label">Akun Twitter</label>
-                        <div class="input-group mb-2">
+                        <div class="input-group">
                           <span class="input-group-text">@</span>
                           <x-form.input id="medsos-twitter" name="medsos[twitter]" type="text" placeholder="username"
                             value="{{ old('medsos.twitter', $userDetail?->medsos->twitter) }}" />
@@ -266,7 +266,7 @@
                     <div class="row mb-3">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="tahun-bergabung" class="form-label required">Tahun Bergabung</label>
-                        <x-form.input name="thn_bergabung" type="text" x-mask="9999" pattern="\d{4}" placeholder="xxxx"
+                        <x-form.input name="thn_bergabung" type="number" min="2000" max="9999" placeholder="xxxx"
                           value="{{ old('thn_bergabung', $userDetail?->thn_bergabung) }}" required />
                       </div>
                       <div class="col-12 col-md-6">
@@ -274,13 +274,13 @@
                         <x-form.tom-select id="branch" name="branch_id" :options=$branches selected="{{ old('branch', $user->branch_id) }}" placeholder="" required />
                       </div>
                     </div>
-                    <div class="row mb-3">
-                      <div class="col-12 col-md-6 mb-3 mb-md-0">
+                    <div class="row mb-2">
+                      <div class="col-12 col-md-6">
                         <label for="pdr" class="form-label required">Keikutsertaan Pelatihan Dasar Relawan</label>
                         <x-form.select name="pdr" :options="[0 => 'Belum Pernah', 1 => '1', 2 => '2', 3 => '3']" selected="{{ old('pdr', $userDetail?->pdr) }}" required />
                       </div>
                       @if ($type->value == 'relawan-wilayah')
-                        <div class="col-12 col-md-6 mb-3 mb-md-0">
+                        <div class="col-12 col-md-6 mt-3 mt-md-0">
                           <label for="no-relawan" class="form-label">Nomor Kartu Relawan</label>
                           <x-form.input name="no_relawan" type="text" value="{{ old('no_relawan', $user->no_relawan) }}" />
                         </div>
@@ -294,7 +294,7 @@
                     <h2 class="card-title">Bidang</h2>
                   </div>
                   <div class="card-body">
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                       <div class="col-12 col-md-6 mb-3 mb-md-0">
                         <label for="bidang-keahlian" class="form-label">Bidang Keahlian (jika ada)</label>
                         <x-form.input name="bidang_keahlian" type="text" value="{{ old('bidang_keahlian', $userDetail?->bidang_keahlian) }}" />
