@@ -84,6 +84,7 @@
                 @endif
               </div>
               @haspermission('join-event')
+                {{-- Aksi yang dilakukan oleh Relawan --}}
                 @can('join', $event)
                   <div class="card-body">
                     <div class="btn-list">
@@ -145,7 +146,7 @@
                 @endcan
               @else
                 @canany(['finish', 'update', 'delete'], $event)
-                  <!-- Admin -->
+                  {{-- Aksi yang dilakukan oleh Admin --}}
                   <div class="card-body">
                     <div class="btn-list">
                       @can('finish', $event)

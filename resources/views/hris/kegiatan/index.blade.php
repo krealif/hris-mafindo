@@ -84,8 +84,8 @@
                   </div>
                 </div>
                 @canany(['update', 'delete'], $event)
+                  {{-- Aksi yang bisa dilakukan oleh Admin --}}
                   <div class="card-footer bg-white">
-                    <!-- Admin -->
                     <div class="btn-list">
                       @can('update', $event)
                         <a href="{{ route('kegiatan.edit', $event->id) }}" class="btn">
