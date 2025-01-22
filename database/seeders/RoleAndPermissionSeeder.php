@@ -41,6 +41,10 @@ class RoleAndPermissionSeeder extends Seeder
                 PermissionEnum::VIEW_PARTICIPANT,
                 PermissionEnum::VIEW_ALL_CERTIFICATE,
                 PermissionEnum::MANAGE_CERTIFICATE,
+                PermissionEnum::VIEW_MATERIAL,
+                PermissionEnum::CREATE_MATERIAL,
+                PermissionEnum::EDIT_MATERIAL,
+                PermissionEnum::DELETE_MATERIAL,
             ],
             RoleEnum::PENGURUS_WILAYAH->value => [
                 PermissionEnum::VIEW_RELAWAN_USER,
@@ -50,6 +54,7 @@ class RoleAndPermissionSeeder extends Seeder
                 PermissionEnum::DELETE_LETTER,
                 PermissionEnum::VIEW_RELAWAN_LETTER,
                 PermissionEnum::CREATE_LETTER_FOR_RELAWAN,
+                PermissionEnum::VIEW_MATERIAL,
             ],
             RoleEnum::RELAWAN_WILAYAH->value => [
                 PermissionEnum::VIEW_LETTER,
@@ -59,6 +64,7 @@ class RoleAndPermissionSeeder extends Seeder
                 PermissionEnum::VIEW_EVENT,
                 PermissionEnum::JOIN_EVENT,
                 PermissionEnum::VIEW_CERTIFICATE,
+                PermissionEnum::VIEW_MATERIAL,
             ],
             RoleEnum::RELAWAN_BARU->value => [
                 PermissionEnum::VIEW_LETTER,
@@ -68,6 +74,7 @@ class RoleAndPermissionSeeder extends Seeder
                 PermissionEnum::VIEW_EVENT,
                 PermissionEnum::JOIN_EVENT,
                 PermissionEnum::VIEW_CERTIFICATE,
+                PermissionEnum::VIEW_MATERIAL,
             ],
         ];
 

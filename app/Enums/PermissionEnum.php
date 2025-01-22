@@ -32,4 +32,10 @@ enum PermissionEnum: string
     case VIEW_ALL_CERTIFICATE = 'view-all-certificate';
     case VIEW_CERTIFICATE = 'view-certificate';
     case MANAGE_CERTIFICATE = 'manage-certificate';
+
+    case VIEW_MATERIAL = 'view-material';
+    case CREATE_MATERIAL = 'create-material';
+    case EDIT_MATERIAL = 'edit-material';
+    case DELETE_MATERIAL = 'delete-material';
+    case JOIN_MATERIAL = 'join-material';
 }

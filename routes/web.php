@@ -13,8 +13,7 @@ use App\Http\Controllers\UserMigrationController;
 use App\Http\Controllers\EventCertificateController;
 use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\RegistrationReviewController;
-use App\Http\Controllers\MateriController;
-use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\MaterialController;
 
 /**
  * Group of routes that require authentication but for unapproved users only.
@@ -131,7 +130,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::get('permohonan-wilayah', 'indexByWilayah')->name('indexWilayah');
 
         Route::get('permohonan/buat', 'create')->name('create');
-        Route::post('permohonan/buat', 'store')->name('store');
+        Route::post('permohonan', 'store')->name('store');
 
         Route::get('permohonan/{letter}', 'show')->name('show');
         Route::get('permohonan/{letter}/edit', 'edit')->name('edit');
@@ -199,14 +198,16 @@ Route::middleware(['auth', 'approved'])->group(function () {
 
     // Group of routes for handle materi
     Route::group([
-        'controller' => MateriController::class,
+        'controller' => MaterialController::class,
         'as' => 'materi.',
+        'prefix' => 'materi'
     ], function () {
-        Route::get('materi', 'index')->name('index');
-        Route::get('materi/buat', 'create')->name('create');
-        Route::post('materi/buat', 'store')->name('store');
-        Route::get('materi/{materi}/edit', 'edit')->name('edit');
-        Route::put('materi/{materi}/edit', 'update')->name('update');
-        Route::delete('materi/{materi}', 'destroy')->name('destroy');
+        Route::get('/', 'index')->name('index');
+        Route::get('tambah', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('{material}', 'show')->name('show');
+        Route::get('{material}/edit', 'edit')->name('edit');
+        Route::patch('{material}', 'update')->name('update');
+        Route::delete('{material}', 'destroy')->name('destroy');
     });
 });

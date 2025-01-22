@@ -107,7 +107,10 @@
             </li>
           @endcan
 
-          <li @class(['nav-item', 'active' => request()->is('materi/*')])>
+          <li @class([
+              'nav-item',
+              'active' => request()->routeIs('materi.index') || request()->is('materi/*'),
+          ])>
             <a class="nav-link" href="{{ route('materi.index') }}">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <x-lucide-book-text class="icon" />
