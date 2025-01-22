@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Branch;
 use App\Enums\RoleEnum;
 use Illuminate\View\View;
@@ -263,31 +264,46 @@ class RegistrationReviewController extends Controller
     }
 
     /**
-     * Remove old registration records based on the provided criteria.
+     * Remove old registration records based on the provided conditions.
      */
     public function bulkDelete(Request $request): RedirectResponse
     {
+        $conditions = [
+            'step_mengisi' => [
+                'field' => 'step',
+                'value' => 'mengisi',
+                'duration' => $request->input('lama_mengisi')
+            ],
+            'status_ditolak' => [
+                'field' => 'status',
+                'value' => RegistrationStatusEnum::DITOLAK,
+                'duration' => $request->input('lama_ditolak')
+            ]
+        ];
+
         $total = 0;
 
-        if ($request->input('step_mengisi')) {
-            $registrations = Registration::where('step', 'mengisi')
-                ->where('updated_at', '<', Carbon::now()->subDays($request->input('lama_mengisi')))
-                ->get();
-            $total += $registrations->count();
+        foreach ($conditions as $key => $condition) {
+            if ($request->input($key)) {
+                $duration = $condition['duration'];
 
-            foreach ($registrations as $registration) {
-                $registration->user->delete();
-            }
-        }
+                // Lazy load users and fire events
+                User::whereHas('registration', function ($query) use ($condition, $duration) {
+                    $query->where($condition['field'], $condition['value'])
+                        ->where('updated_at', '<', Carbon::now()->subDays($duration));
+                })
+                    ->lazy()
+                    ->each(function ($user) {
+                        event('eloquent.deleted: App\Models\User', $user);
+                    });
 
-        if ($request->input('status_ditolak')) {
-            $registrations = Registration::where('status', RegistrationStatusEnum::DITOLAK)
-                ->where('updated_at', '<', Carbon::now()->subDays($request->input('lama_ditolak')))
-                ->get();
-            $total += $registrations->count();
+                // Delete users and count the total
+                $totalDeleted = User::whereHas('registration', function ($query) use ($condition, $duration) {
+                    $query->where($condition['field'], $condition['value'])
+                        ->where('updated_at', '<', Carbon::now()->subDays($duration));
+                })->delete();
 
-            foreach ($registrations as $registration) {
-                $registration->user->delete();
+                $total += $totalDeleted;
             }
         }
 

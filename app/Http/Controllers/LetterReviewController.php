@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\LetterStatusEnum;
-use App\Filters\FilterDate;
-use App\Filters\FilterLetterType;
-use App\Filters\FilterRecipientLetter;
-use App\Models\Letter;
-use App\Traits\HasUploadFile;
 use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Letter;
+use Illuminate\View\View;
+use App\Filters\FilterDate;
 use Illuminate\Http\Request;
+use App\Traits\HasUploadFile;
+use App\Enums\LetterStatusEnum;
+use App\Filters\FilterLetterType;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rules\File;
-use Illuminate\View\View;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Filters\FilterRecipientLetter;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class LetterReviewController extends Controller
 {
@@ -181,11 +182,11 @@ class LetterReviewController extends Controller
     }
 
     /**
-     * Bulk delete old letter application based on provided criteria.
+     * Bulk delete old letter application based on provided conditions.
      */
     public function bulkDelete(Request $request): RedirectResponse
     {
-        $criteria = [
+        $conditions = [
             'status_revisi' => [LetterStatusEnum::REVISI, $request->input('lama_revisi')],
             'status_ditolak' => [LetterStatusEnum::DITOLAK, $request->input('lama_ditolak')],
             'status_selesai' => [LetterStatusEnum::SELESAI, $request->input('lama_selesai')],
@@ -193,18 +194,22 @@ class LetterReviewController extends Controller
 
         $total = 0;
 
-        foreach ($criteria as $key => [$status, $months]) {
+        foreach ($conditions as $key => [$status, $months]) {
             if ($request->input($key) && $months) {
                 $letters = Letter::where('status', $status)
                     ->where('updated_at', '<', Carbon::now()->subMonths($months))
-                    ->get();
+                    ->lazy();
 
-                // Menghapus data satu per satu untuk men-trigger observer model
                 $letters->each(function ($letter) {
-                    $letter->delete();
+                    // Trigger event 'Deleted' secara manual
+                    event('eloquent.deleted: App\Models\Letter', $letter);
                 });
 
-                $total += $letters->count();
+                $totalDeleted = Letter::where('status', $status)
+                    ->where('updated_at', '<', Carbon::now()->subMonths($months))
+                    ->delete();
+
+                $total += $totalDeleted;
             }
         }
 
