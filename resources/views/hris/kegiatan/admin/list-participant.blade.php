@@ -69,8 +69,10 @@
                   @foreach ($participants as $participant)
                     <tr x-data="{ id: {{ $participant->pivot->id }} }">
                       <td data-label="Nama">
-                        <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
-                        {{ $participant->nama }}
+                        <a href="{{ route('user.profile', $participant->id) }}" target="_blank">
+                          <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
+                          {{ $participant->nama }}
+                        </a>
                       </td>
                       <td data-label="Email">{{ $participant->email }}</td>
                       <td data-label="No Relawan">{{ $participant->no_relawan ?? '-' }}</td>

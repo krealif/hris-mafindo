@@ -67,8 +67,10 @@
                   @foreach ($userCertificates as $user)
                     <tr x-data="{ id: {{ $user->pivot->id }} }">
                       <td data-label="Nama">
-                        <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
-                        {{ $user->nama }}
+                        <a href="{{ route('user.profile', $user->id) }}" target="_blank">
+                          <x-lucide-user class="d-none d-lg-inline icon me-1" defer />
+                          {{ $user->nama }}
+                        </a>
                       </td>
                       <td data-label="Email">{{ $user->email }}</td>
                       <td data-label="No Relawan">{{ $user->no_relawan ?? '-' }}</td>
