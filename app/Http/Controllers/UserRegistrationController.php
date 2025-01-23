@@ -96,10 +96,12 @@ class UserRegistrationController extends Controller
 
         // Filter untuk menghapus entri kosong dalam array
         $validated = $this->filterArrayInput($validated, [
-            'medsos',
             'pendidikan',
             'pekerjaan',
             'sertifikat',
+            // Medsos ikut difilter agar tidak ada null pada array
+            // Maka dari itu dibuatkan accesor khusus pada model untuk akses data
+            'medsos',
         ]);
 
         /** @var \App\Models\User $user */
@@ -154,6 +156,7 @@ class UserRegistrationController extends Controller
                 'branch_id',
                 'mode',
             ]);
+
             UserDetail::updateOrCreate(
                 ['user_id' => $user->id],
                 [

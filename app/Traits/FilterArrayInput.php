@@ -20,7 +20,7 @@ trait FilterArrayInput
                 if ($filteredValue !== null) {
                     $validated[$field] = [...$filteredValue];
                 } else {
-                    unset($validated[$field]);
+                    $validated[$field] = null;
                 }
             } else {
                 $validated[$field] = null;
