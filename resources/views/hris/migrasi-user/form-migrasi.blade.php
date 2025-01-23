@@ -216,7 +216,7 @@
                     <div class="col-12 col-md-6 mb-3 mb-md-0">
                       <label for="tahun-bergabung" class="form-label">Tahun Bergabung</label>
                       <x-form.input name="thn_bergabung" type="number" min="2000" max="9999" placeholder="xxxx"
-                        value="{{ old('thn_bergabung', $userDetail?->thn_bergabung) }}" required />
+                        value="{{ old('thn_bergabung', $userDetail?->thn_bergabung) }}" />
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="branch" class="form-label">Wilayah</label>
