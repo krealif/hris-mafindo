@@ -20,9 +20,6 @@
         <div class="card card-mafindo">
           <div class="card-body">
             <h1 class="m-0">419</h1>
-            <span class="d-none">
-              {{ $exception->getMessage() }}
-            </span>
             <h2 class="h3 fw-medium mb-2">Oops! Sesi Anda Telah Berakhir.</h2>
             <p class="text-muted mb-4">Hal ini terjadi karena Anda tidak aktif dalam waktu yang lama, atau token telah kedaluwarsa. Silakan refresh halaman.</p>
             <a href="" class="btn btn-primary w-100">

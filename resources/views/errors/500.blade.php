@@ -21,9 +21,6 @@
           <img src="{{ asset('static/img/500-img.webp') }}" alt="" class="card-img-top" style="aspect-ratio: 4/1;object-fit: cover">
           <div class="card-body">
             <h1 class="m-0">500</h1>
-            <span class="d-none">
-              {{ $exception->getMessage() }}
-            </span>
             <h2 class="h3 fw-medium mb-2">Oops! Terjadi Kesalahan Server.</h2>
             <p class="text-muted mb-4">Silakan coba lagi beberapa saat lagi atau kembali ke halaman utama. Jika masalah berlanjut,
               harap hubungi admin untuk bantuan lebih lanjut.</p>
