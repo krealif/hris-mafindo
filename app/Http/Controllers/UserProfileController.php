@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\UpdateProfileRelawanRequest;
 use App\Http\Requests\UpdateProfilePengurusRequest;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserProfileController extends Controller
 {
@@ -73,7 +74,10 @@ class UserProfileController extends Controller
             abort(404);
         }
 
-        $eventCertificate = $user->certificates()->paginate(15);
+        $eventCertificate = QueryBuilder::for($user->certificates())
+            ->allowedFilters('name')
+            ->paginate(15)
+            ->appends(request()->query());
 
         return view('hris.pengguna.profil.relawan-sertifikat', compact('user', 'eventCertificate'));
     }
