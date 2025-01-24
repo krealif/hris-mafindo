@@ -47,6 +47,7 @@ class UserDetail extends Model
      *     gender: 'App\Enums\GenderEnum',
      *     agama: 'App\Enums\AgamaEnum',
      *     bidang_mafindo: 'App\Enums\BidangMafindoEnum',
+     *     medsos: 'object',
      *     pendidikan: 'object',
      *     pekerjaan: 'object',
      *     sertifikat: 'object'
@@ -70,7 +71,7 @@ class UserDetail extends Model
      * Get the social media information of the user.
      * If the user has no social media data, returns default values.
      * 
-     * This is done because at the time of create there is array filtering
+     * This is done because when inputting data, the array is filtered.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute<object, never>
      */

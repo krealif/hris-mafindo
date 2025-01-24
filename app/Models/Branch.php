@@ -23,7 +23,20 @@ class Branch extends Model
     ];
 
     /**
+     * Get the attributes that should be cast.
+     *
+     * @return array{staff: 'object'}
+     */
+    protected function casts(): array
+    {
+        return [
+            'staff' => 'object',
+        ];
+    }
+
+    /**
      * Get the staff information of the branch.
+     * This is done because when inputting data, the array is filtered.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute<object, never>
      */

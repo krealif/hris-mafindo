@@ -192,7 +192,8 @@ class UserRegistrationController extends Controller
 
         $validated = $request->validated();
 
-        // Filter untuk menghapus entri kosong dalam array
+        // Filter untuk menghapus null dalam array
+        // Maka dari itu dibuatkan accesor khusus pada model untuk akses data
         $validated = $this->filterArrayInput($validated, ['staff']);
 
         /** @var \App\Models\User $user */
