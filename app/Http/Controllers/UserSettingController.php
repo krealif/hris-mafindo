@@ -43,22 +43,20 @@ class UserSettingController extends Controller
                 'max:255',
                 Rule::unique('temp_users'),
                 Rule::unique('users')->ignore($user->id),
-            ]
+            ],
+            'password' => ['required', 'string', 'current_password:web'],
         ]);
 
-        if (!Hash::check($request->password, $user->password)) {
-            // Menambahkan error validasi jika password salah
+        if ($validated['email'] == $user->email) {
             throw ValidationException::withMessages([
-                'password' => ['Password yang dimasukkan salah.'],
+                'email' => ['Email baru tidak boleh sama dengan email saat ini.'],
             ]);
         }
 
         // Saat ini, penggantian email tidak memerlukan kode verifikasi
-        if ($validated['email'] !== $user->email) {
-            $user->forceFill([
-                'email' => $validated['email'],
-            ])->save();
-        }
+        $user->forceFill([
+            'email' => $validated['email'],
+        ])->save();
 
         flash()->success('Berhasil. Email telah diperbarui.');
 
@@ -75,17 +73,15 @@ class UserSettingController extends Controller
             'new_password' => ['required', 'string', Password::default(), 'confirmed'],
         ]);
 
-        if (!Hash::check($request->current_password, $user->password)) {
+        if (Hash::check($validated['new_password'], $user->password)) {
             throw ValidationException::withMessages([
-                'password' => ['Password yang dimasukkan salah.'],
+                'new_password' => ['Password baru tidak boleh sama dengan password saat ini.'],
             ]);
         }
 
-        if ($validated['new_password'] !== $user->email) {
-            $user->forceFill([
-                'password' => $validated['new_password'],
-            ])->save();
-        }
+        $user->forceFill([
+            'password' => $validated['new_password'],
+        ])->save();
 
         flash()->success('Berhasil. Password telah diperbarui.');
 
