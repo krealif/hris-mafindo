@@ -43,6 +43,10 @@
                 <label for="no_relawan" class="form-label">No Relawan</label>
                 <x-form.input name="no_relawan" type="text" :showError=false value="{{ request()->filter['no_relawan'] ?? '' }}" />
               </div>
+              <div class="col-12 col-md-6 col-lg-3">
+                <label for="branch-id" class="form-label">Wilayah</label>
+                <x-form.tom-select name="branch_id" :options=$branches selected="{{ request()->filter['branch_id'] ?? '' }}" :showError=false placeholder="" />
+              </div>
             </div>
           </x-slot>
           <!-- Table Body -->

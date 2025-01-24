@@ -24,13 +24,22 @@ class UserMigrationController extends Controller
     public function index(): View
     {
         $tempUsers = QueryBuilder::for(TempUser::class)
-            ->allowedFilters(['nama', 'email', 'no_relawan'])
+            ->allowedFilters([
+                'nama',
+                'email',
+                'no_relawan',
+                'branch_id'
+            ])
             ->with('branch')
             ->latest('updated_at')
             ->paginate(15)
             ->appends(request()->query());
 
-        return view('hris.migrasi-user.index', compact('tempUsers'));
+        $branches = Branch::select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->pluck('name', 'id');
+
+        return view('hris.migrasi-user.index', compact('tempUsers', 'branches'));
     }
 
     /**
