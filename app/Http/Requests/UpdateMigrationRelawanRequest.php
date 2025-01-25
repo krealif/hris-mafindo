@@ -21,8 +21,10 @@ class UpdateMigrationRelawanRequest extends FormRequest
             'email' => [
                 'required',
                 'string',
-                'email',
                 'max:255',
+                Rule::email()
+                    ->rfcCompliant(strict: true)
+                    ->preventSpoofing(),
                 Rule::unique('temp_users')->ignore($this->tempUser),
                 Rule::unique('users'),
             ],

@@ -21,8 +21,10 @@ class StoreMigrationRelawanRequest extends FormRequest
             'email' => [
                 'required',
                 'string',
-                'email',
                 'max:255',
+                Rule::email()
+                    ->rfcCompliant(strict: true)
+                    ->preventSpoofing(),
                 Rule::unique('temp_users'),
                 Rule::unique('users'),
             ],
