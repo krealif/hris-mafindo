@@ -203,6 +203,22 @@ table .datagrid-title {
     border-top-right-radius: var(--tblr-border-radius);
 }
 
+a.card {
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+/* Card Link */
+a.card:hover {
+    box-shadow: unset;
+    border-color: var(--tblr-border-active-color) !important;
+}
+
+a.card:active {
+    color: var(--tblr-primary);
+    border-color: var(--tblr-primary) !important;
+    background-color: rgba(var(--tblr-primary-rgb), .04);
+}
+
 /* Trix Editor */
 trix-toolbar {
     position: sticky;
