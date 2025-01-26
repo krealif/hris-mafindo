@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
 
         $pengurus = User::create([
             'nama' => 'Pengurus Mafindo',
-            'email' => 'Pengurus@mail.com',
+            'email' => 'pengurus@mail.com',
             'is_approved' => true,
             'password' => Hash::make('password'),
             'branch_id' => 1,
