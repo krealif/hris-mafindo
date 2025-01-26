@@ -2,6 +2,7 @@
     'search' => null,
     'searchPlaceholder' => null,
     'collection' => null,
+    'rowClass' => null,
 ])
 
 @php
@@ -91,7 +92,7 @@
   @endisset
   @if ($collection->isNotEmpty())
     <div class="mt-3">
-      <div class="row row-deck row-cards">
+      <div class="row row-deck {{ $rowClass ?? 'row-cards' }}">
         {{ $slot }}
       </div>
     </div>

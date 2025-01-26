@@ -254,7 +254,7 @@
                   <div class="row align-items-center g-3">
                     <div class="col-auto">
                       <span class="bg-secondary-lt text-white avatar">
-                        <x-lucide-book-text class="icon" />
+                        <x-lucide-map class="icon" />
                       </span>
                     </div>
                     <div class="col">

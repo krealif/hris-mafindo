@@ -2,7 +2,7 @@
 
 @section('profile-content')
   @include('hris.pengguna.profil._tabs-relawan')
-  <x-dt.datacard search="name" searchPlaceholder="Cari Nama Kegiatan" :collection="$eventCertificate">
+  <x-dt.datacard search="name" searchPlaceholder="Cari Nama Kegiatan" :collection="$eventCertificate" rowClass="g-2">
     @foreach ($eventCertificate as $event)
       <div class="col-12">
         <div class="card card-mafindo">

@@ -65,7 +65,7 @@
                       <a href="{{ route('surat.indexWilayah') }}" @class([
                           'dropdown-item',
                           'active' => request()->routeIs('surat.indexWilayah'),
-                      ])>Permohonan Wilayah</a>
+                      ])>Surat Relawan</a>
                     </div>
                   @else
                     <div class="dropdown-menu-column">

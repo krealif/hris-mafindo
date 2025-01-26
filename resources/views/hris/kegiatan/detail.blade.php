@@ -48,6 +48,11 @@
           <div class="col-12 col-md-5 col-lg-4">
             <div class="card card-mafindo">
               <img class="ratio ratio-1x1 rounded" src="{{ Storage::url($event->cover) }}" />
+              @if ($event->has_started && $event->status->value == 'aktif')
+                <div class="ribbon ribbon-start bg-red fs-4">
+                  Saat Ini
+                </div>
+              @endif
             </div>
           </div>
           <div class="col-12 col-md-7 col-lg-8">

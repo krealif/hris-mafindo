@@ -11,7 +11,7 @@
     </li>
     <li class="nav-item">
       <a href="{{ route('kegiatan.index') }}" @class(['nav-link', 'active' => request()->routeIs('kegiatan.index')])>
-        <x-lucide-compass class="icon me-2" />
+        <x-lucide-calendar-search class="icon me-2" />
         Temukan
       </a>
     </li>
