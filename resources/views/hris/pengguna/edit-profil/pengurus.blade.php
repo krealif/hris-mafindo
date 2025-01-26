@@ -27,9 +27,15 @@
             <h2 class="card-title">Informasi Wilayah</h2>
           </div>
           <div class="card-body">
-            <div class="mb-3">
-              <label for="coordinatorName" class="form-label required">Koordinator</label>
-              <x-form.input name="coordinatorName" type="text" value="{{ old('coordinatorName', $user->nama) }}" required />
+            <div class="row mb-3">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <label for="coordinatorName" class="form-label required">Koordinator</label>
+                <x-form.input name="coordinatorName" type="text" value="{{ old('coordinatorName', $user->nama) }}" required />
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="wilayah" class="form-label">Wilayah</label>
+                <x-form.input name="wilayah" type="text" value="{{ $user->branch?->name }}" disabled />
+              </div>
             </div>
             @if ($errors->has('staff.*'))
               <x-alert class="alert-danger">

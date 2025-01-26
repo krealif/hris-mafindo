@@ -209,7 +209,7 @@ class UserProfileController extends Controller
         ]);
 
         Branch::where('id', $user->branch_id)
-            ->update($validated);
+            ->update(Arr::only($validated, ['staff']));
 
         flash()->success("Berhasil. Profil telah diperbarui");
 
