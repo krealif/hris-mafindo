@@ -19,7 +19,7 @@ use App\Http\Controllers\MaterialController;
  * Group of routes that require authentication but for unapproved users only.
  */
 Route::middleware(['auth', 'unapproved'])->group(function () {
-    // Routes for user registration forms.
+    // Route registrasi relawan dan pengurus.
     Route::group([
         'controller' => UserRegistrationController::class,
         'as' => 'registrasi.',
@@ -35,17 +35,21 @@ Route::middleware(['auth', 'unapproved'])->group(function () {
  * Group of routes that require authentication and verified registrations by admin.
  */
 Route::middleware(['auth', 'approved'])->group(function () {
-    // Home route for the dashboard.
+    // Route utama untuk dashboard setelah login dan disetujui.
     Route::get('/', HomeController::class)->name('home');
 
+    // Grup route untuk manajemen data pengguna dan relawan.
     Route::group([
         'controller' => UserController::class,
         'as' => 'user.',
     ], function () {
         Route::get('data/pengguna', 'index')->name('index');
         Route::get('data/relawan', 'indexWilayah')->name('indexWilayah');
+        Route::get('data/pengguna/ekspor-relawan', 'exportRelawan')->name('exportRelawan');
+        Route::get('data/pengguna/ekspor-pengurus', 'exportPengurus')->name('exportPengurus');
     });
 
+    // Grup route terkait menampilkan profil dan edit profil pengguna.
     Route::group([
         'controller' => UserProfileController::class,
         'as' => 'user.',
@@ -60,6 +64,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::patch('profil/{user?}', 'updateProfile')->name('updateProfile');
     });
 
+    // Grup route terkait pengaturan pengguna.
     Route::group([
         'controller' => UserSettingController::class,
         'as' => 'user.',
@@ -69,6 +74,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::patch('pengaturan/update-password', 'updatePassword')->name('updatePassword');
     });
 
+    // Grup route untuk admin dalam mengelola data wilayah (branch).
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => BranchController::class,
@@ -76,6 +82,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         'prefix' => 'data',
     ], function () {
         Route::get('wilayah', 'index')->name('index');
+        Route::get('wilayah/ekspor', 'export')->name('export');
         Route::get('wilayah/tambah', 'create')->name('create');
         Route::post('wilayah', 'store')->name('store');
         Route::get('wilayah/{branch}', 'show')->name('show');
@@ -84,7 +91,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::delete('wilayah/{branch}', 'destroy')->name('destroy');
     });
 
-    // Group of routes for admin to manage & review user registration applications
+    // Grup route untuk admin dalam meninjau dan menangani permohonan registrasi.
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => RegistrationReviewController::class,
@@ -103,7 +110,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::delete('permohonan/{registration}', 'destroy')->name('destroy');
     });
 
-    // Group of routes for admin to migrate old users data into the system
+    // Grup route untuk admin dalam migrasi data pengguna lama.
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => UserMigrationController::class,
@@ -118,9 +125,9 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::delete('migrasi/{tempUser}', 'destroy')->name('destroy');
     });
 
-    // Group of routes related to "Surat", accessible by admin, relawan, and pengurus
-    // The actions users can perform are determined by their role
-    // with permission checks done in the controller, model policy or views
+    // Grup route yang berkaitan dengan "Surat" (dapat diakses oleh admin, relawan, dan pengurus).
+    // Tindakan yang dapat dilakukan pengguna ditentukan oleh role.
+    // Terdapat juga pengecekan permission yang dilakukan di controller, model policy atau views.
     Route::group([
         'controller' => LetterController::class,
         'as' => 'surat.',
@@ -140,7 +147,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::get('permohonan/{letter}/attachment', 'downloadAttachment')->name('downloadAttachment');
     });
 
-    // Group of routes for admin to handle letter application
+    // Grup route untuk admin dalam meninjau dan menangani permohonan surat.
     Route::group([
         'middleware' => ['role:admin'],
         'controller' => LetterReviewController::class,
@@ -156,7 +163,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::delete('bulk-delete', 'bulkDelete')->name('bulkDelete');
     });
 
-    // Group of routes for admin to handle letter application
+    // Grup route untuk mengelola kegiatan (event).
     Route::group([
         'controller' => EventController::class,
         'as' => 'kegiatan.',
@@ -181,6 +188,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::post('{event}/ikuti', 'join')->name('join');
     });
 
+    // Grup route untuk mengelola sertifikat kegiatan.
     Route::group([
         'controller' => EventCertificateController::class,
         'as' => 'sertifikat.',
@@ -196,7 +204,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::get('sertifikat/{certificate}/download', 'downloadForAdmin')->name('downloadForAdmin');
     });
 
-    // Group of routes for handle materi
+    // Grup route untuk mengelola materi (material).
     Route::group([
         'controller' => MaterialController::class,
         'as' => 'materi.',

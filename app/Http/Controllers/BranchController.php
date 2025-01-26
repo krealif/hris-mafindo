@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Branch;
+use App\Enums\RoleEnum;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class BranchController extends Controller
 {
@@ -116,5 +119,36 @@ class BranchController extends Controller
         }
 
         return to_route('wilayah.index');
+    }
+
+    public function export(): void
+    {
+        // Query dilakukan pada model User untuk mendapatkan nama koordinator (user 'pengurus wilayah').
+        // Hanya wilayah yang sudah ada koordinatornya yang ikut diekspor
+        $users = User::whereHas('roles', function ($query) {
+            $query->whereIn('name', [RoleEnum::PENGURUS_WILAYAH]);
+        })
+            ->where('is_approved', true)
+            ->with('branch')
+            ->lazy(500);
+
+        $timestamp = time();
+        $filename = "data-pengurus-{$timestamp}.csv";
+        $writer = SimpleExcelWriter::streamDownload($filename);
+
+        foreach ($users as $user) {
+            $branch = $user->branch;
+
+            $writer->addRow([
+                'Wilayah' => $branch?->name,
+                'Nama Koordinator' => $user->nama,
+                'Sekretaris 1' => $branch?->staff->sekretaris1 ?? '',
+                'Sekretaris 2' => $branch?->staff->sekretaris2 ?? '',
+                'Bendahara 1' => $branch?->staff->bendahara1 ?? '',
+                'Bendahara 2' => $branch?->staff->bendahara2 ?? ''
+            ]);
+        }
+
+        $writer->toBrowser();
     }
 }

@@ -67,6 +67,20 @@
               </div>
             </div>
           </x-slot>
+          <x-slot:actions>
+            <div class="dropdown">
+              <a href="#" class="btn btn-icon" data-bs-toggle="dropdown">
+                <x-lucide-ellipsis-vertical class="icon" />
+              </a>
+              <div class="dropdown-menu">
+                @php
+                  $relawanByWilayah = request()->filter ? Arr::only(request()->filter, 'branch_id') : [];
+                @endphp
+                <a href="{{ route('user.exportRelawan', ['filter' => $relawanByWilayah]) }}" class="dropdown-item">Ekspor Relawan CSV</a>
+                <a href="{{ route('user.exportPengurus') }}" class="dropdown-item">Ekspor Pengurus CSV</a>
+              </div>
+            </div>
+          </x-slot>
           <!-- Table Body -->
           <table class="table table-vcenter card-table table-mobile-md datatable">
             <thead class="table-primary">

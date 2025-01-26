@@ -27,6 +27,16 @@
           </x-alert>
         @endif
         <x-dt.datatable search="name" searchPlaceholder="Nama Wilayah" :collection="$branches">
+          <x-slot:actions>
+            <div class="dropdown">
+              <a href="#" class="btn btn-icon" data-bs-toggle="dropdown">
+                <x-lucide-ellipsis-vertical class="icon" />
+              </a>
+              <div class="dropdown-menu">
+                <a href="{{ route('wilayah.export') }}" class="dropdown-item">Ekspor CSV</a>
+              </div>
+            </div>
+          </x-slot>
           <!-- Table Body -->
           <table class="table table-vcenter card-table table-mobile-md datatable">
             <thead class="table-primary">
