@@ -31,7 +31,7 @@
       @endif
       <div class="card mb-3">
         <div class="card-body">
-          <div class="d-flex flex-wrap justify-content-between">
+          <div class="d-flex flex-wrap gap-4 justify-content-between">
             <div class="row g-3">
               <div class="col-12 col-lg-auto">
                 <img src="{{ $user->foto ? Storage::url($user->foto) : asset('static/img/profile-placeholder.png') }}" class="avatar avatar-xl" />
@@ -56,6 +56,11 @@
                     </a>
                     <a href="{{ route('user.settings') }}" class="btn btn-icon">
                       <x-lucide-settings class="icon" defer />
+                    </a>
+                  @else
+                    <a href="{{ route('user.editProfileById', $user->id) }}" class="btn">
+                      <x-lucide-pencil class="icon text-blue" defer />
+                      Edit
                     </a>
                   @endif
                 </div>

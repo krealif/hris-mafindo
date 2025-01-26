@@ -74,7 +74,7 @@
                   <label for="type" class="form-label required">Tipe</label>
                   <x-form.select name="type" x-model="eventType" :options="App\Enums\EventTypeEnum::labels()" required />
                 </div>
-                <div class="col" x-show="eventType == 'terbatas'">
+                <div class="col-7 col-sm-6" x-show="eventType == 'terbatas'">
                   <label for="quota" class="form-label required">Kuota</label>
                   <div class="input-group mb-2">
                     <x-form.input name="quota" type="number" min="1" value="{{ old('quota') }}" x-bind:required="eventType == 'terbatas'" />
@@ -106,7 +106,7 @@
                   <div class="col-12 col-sm">
                     <div>
                       <p class="m-0">Pastikan foto yang Anda upload memenuhi ketentuan berikut:</p>
-                      <ul class="mt-1">
+                      <ul class="mt-1 mb-0">
                         <li>Dimensi: <strong>1000x1000 pixel</strong> atau <strong>rasio 1:1</strong></li>
                         <li>Ukuran File: <strong>Maksimal 2 MB</strong></li>
                       </ul>

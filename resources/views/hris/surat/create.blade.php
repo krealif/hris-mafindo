@@ -40,9 +40,9 @@
               <div class="card-body">
                 <div class="btn-group w-100" role="group">
                   <input type="radio" x-model.boolean="_withRecipient" class="btn-check" id="type-pengurus" autocomplete="off" value="false">
-                  <label for="type-pengurus" type="button" class="btn">Permohonan Saya</label>
+                  <label for="type-pengurus" type="button" class="btn text-wrap">Permohonan Saya</label>
                   <input type="radio" x-model.boolean="_withRecipient" class="btn-check" id="type-relawan" autocomplete="off" value="true">
-                  <label for="type-relawan" type="button" class="btn">Permohonan untuk Relawan</label>
+                  <label for="type-relawan" type="button" class="btn text-wrap">Permohonan untuk Relawan</label>
                 </div>
               </div>
             @endhaspermission

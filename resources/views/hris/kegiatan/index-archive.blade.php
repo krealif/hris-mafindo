@@ -45,6 +45,9 @@
                 <a href="{{ route('kegiatan.show', $event->id) }}">
                   <img class="card-img-top" src="{{ Storage::url($event->cover) }}">
                 </a>
+                <div class="ribbon ribbon-start bg-green fs-4">
+                  Selesai
+                </div>
                 <div class="card-body d-flex flex-column justify-content-between">
                   <div>
                     <div class="hstack gap-1 mb-2">
@@ -70,8 +73,7 @@
                     <div class="d-flex flex-wrap gap-2 align-items-center">
                       <x-lucide-calendar-days class="icon" defer />
                       <span>
-                        {{ "{$event->start_date?->translatedFormat('d M Y')}, {$event->start_date?->translatedFormat('H:i')}" }}
-                        <strong>(SELESAI)</strong>
+                        {{ "{$event->start_date?->translatedFormat('d M Y')}, Pukul {$event->start_date?->translatedFormat('H:i')}" }}
                       </span>
                     </div>
                   </div>

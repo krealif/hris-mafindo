@@ -38,7 +38,7 @@
 }
 
 .datatable th {
-    font-size: .875rem !important;
+    font-size: .813rem !important;
     padding: .875rem 1rem !important;
     color: var(--tblr-primary) !important;
     background: var(--tblr-primary-lt) !important;
@@ -46,7 +46,7 @@
 
 .datatable .badge {
     user-select: auto;
-    font-size: .8125rem !important;
+    font-size: .813rem !important;
 }
 
 .datatable .icon {
@@ -70,12 +70,12 @@ table.datagrid {
 }
 
 table .datagrid-title {
-    font-size: .875rem;
+    font-size: .813rem;
     padding-right: 1rem;
 }
 
 .datagrid-title {
-    font-size: .875rem;
+    font-size: .813rem;
 }
 
 /* Buttons */
@@ -84,6 +84,11 @@ table .datagrid-title {
     background-color: var(--tblr-btn-active-bg);
     border-color: var(--tblr-btn-active-border-color);
     box-shadow: var(--tblr-btn-active-shadow);
+}
+
+.btn-link:hover {
+    text-decoration: underline !important;
+    background: transparent;
 }
 
 .collapsing {
@@ -221,9 +226,13 @@ trix-editor.form-control.is-invalid {
 .title-wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: .5rem;
+    gap: 1rem;
     justify-content: space-between;
     align-items: center;
+}
+
+.badge {
+    min-width: fit-content;
 }
 
 .toc-item {
@@ -242,6 +251,8 @@ input[type=number] {
 
 /* Media Queries */
 @media (max-width: 767.98px) {
+
+    /* Override datatable for mobile */
     .table-mobile-md .btn {
         display: flex;
     }
@@ -250,8 +261,13 @@ input[type=number] {
         padding: .25rem 0;
     }
 
-    .table-mobile-md tr:not(:last-child) {
-        border-bottom: solid 16px var(--tblr-primary-lt);
+    .table-mobile-md tr:not(:last-child)::after {
+        content: '';
+        padding: .75rem;
+        background-color: var(--tblr-body-bg);
+        margin-top: .25rem;
+        margin-bottom: -4px;
+        border-top: 1px solid var(--tblr-border-color);
     }
 
     .table-mobile-md td[data-label]::before {
@@ -262,6 +278,7 @@ input[type=number] {
         max-width: 100%;
     }
 
+    /* Override navbar mobile */
     .navbar-expand-md .navbar-collapse .dropdown-menu .dropdown-item.active,
     .navbar-expand-md .navbar-collapse .dropdown-menu .dropdown-item:active {
         background: var(--tblr-primary-lt);

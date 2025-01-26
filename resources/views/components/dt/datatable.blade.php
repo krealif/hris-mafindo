@@ -99,7 +99,7 @@
       </div>
     @endif
     @if ($collection->count() == 0)
-      <div class="empty">
+      <div class="empty px-3 py-5">
         <div class="empty-icon">
           <x-lucide-circle-slash-2 class="icon" />
         </div>

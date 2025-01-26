@@ -45,6 +45,15 @@
                 <a href="{{ route('kegiatan.show', $event->id) }}">
                   <img class="card-img-top" src="{{ Storage::url($event->cover) }}">
                 </a>
+                @if ($event->status->value == 'selesai')
+                  <div class="ribbon ribbon-start bg-green fs-4">
+                    Selesai
+                  </div>
+                @elseif($event->has_started)
+                  <div class="ribbon ribbon-start bg-red fs-4">
+                    Saat Ini
+                  </div>
+                @endif
                 <div class="card-body d-flex flex-column justify-content-between">
                   <div>
                     <div class="hstack gap-1 mb-2">
