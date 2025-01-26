@@ -17,22 +17,21 @@ function modifyUrlQueryParams(currentUrl, params) {
 	return url.toString();
 }
 
-function applyFilter(forms) {
+function applyFilter(form) {
 	const queryParams = {};
 
-	forms.forEach(form => {
-		Array.from(form.elements).forEach(input => {
-			if (input.name) {
-				const key = `filter[${input.name}]`;
+	Array.from(form.elements).forEach(input => {
+		if (input.name) {
+			const key = `filter[${input.name}]`;
 
-				if (input.multiple && input.tomselect) {
-					queryParams[key] = input.tomselect.getValue().join();
-				} else {
-					queryParams[key] = input.value;
-				}
+			if (input.multiple && input.tomselect) {
+				queryParams[key] = input.tomselect.getValue().join();
+			} else {
+				queryParams[key] = input.value;
 			}
-		});
+		}
 	});
+
 	const url = new URL(window.location.href);
 	window.location.href = modifyUrlQueryParams(url, queryParams);
 }
@@ -59,7 +58,7 @@ forms.forEach(form => {
 	if (applyFilterBtn) {
 		applyFilterBtn.addEventListener('click', function (event) {
 			event.preventDefault()
-			applyFilter(forms);
+			applyFilter(form);
 		});
 	}
 
