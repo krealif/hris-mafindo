@@ -313,15 +313,16 @@ class EventController extends Controller
             ->with('branch')
             ->lazy();
 
-        $filename = "peserta-kegiatan-{$event->id}-{$event->name}.csv";
+        $timestamp = time();
+        $filename = "peserta-kegiatan-{$event->name}-{$timestamp}.csv";
 
         $writer = SimpleExcelWriter::streamDownload($filename);
 
         foreach ($participants as $participant) {
             $writer->addRow([
+                'No. Relawan' => $participant->no_relawan,
                 'Nama' => $participant->nama,
                 'Email' => $participant->email,
-                'No. Relawan' => $participant->no_relawan,
                 'Wilayah' => $participant->branch?->name,
                 'Tanggal' => $participant->getRelationValue('pivot')->created_at?->format('Y-m-d H:i'),
             ]);
