@@ -17,7 +17,7 @@ class StoreEventCertificateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'relawan' => [
+            'relawan_id' => [
                 $this->isMethod('POST') ? 'required' : 'nullable',
                 new HasRoleRule([
                     RoleEnum::RELAWAN_WILAYAH,

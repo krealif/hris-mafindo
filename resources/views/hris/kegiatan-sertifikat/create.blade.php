@@ -45,8 +45,8 @@
             </div>
             <div class="card-body">
               <div class="mb-3">
-                <label for="relawan" class="form-label required">Nama Relawan</label>
-                <x-form.user-select name="relawan" apiRoute="{{ route('userApi.getRelawanForCertificate', $event->id) }}" placeholder="Tuliskan nama relawan" required />
+                <label for="relawan-id" class="form-label required">Nama Relawan</label>
+                <x-form.user-select name="relawan_id" apiRoute="{{ route('userApi.getRelawanForCertificate', $event->id) }}" placeholder="Tuliskan nama relawan" required />
               </div>
               <div class="mb-2">
                 <label for="file" class="form-label required">Sertifikat</label>

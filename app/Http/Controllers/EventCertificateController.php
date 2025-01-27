@@ -63,7 +63,7 @@ class EventCertificateController extends Controller
         }
 
         $event->certificates()->attach(
-            $validated['relawan'],
+            $validated['relawan_id'],
             [
                 'file' => $validated['file']
             ]
@@ -71,7 +71,7 @@ class EventCertificateController extends Controller
 
         // Send email
         /** @var \App\Models\User|null $userCertificate */
-        $userCertificate = User::find($validated['relawan']);
+        $userCertificate = User::find($validated['relawan_id']);
 
         if ($userCertificate) {
             $userCertificate->notify(new CertificateReceived(
