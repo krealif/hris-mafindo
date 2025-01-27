@@ -78,7 +78,7 @@
                         <strong class="fw-medium">PERMOHONAN</strong> untuk Relawan
                       @endif
                     @elseif ($letter->recipients->contains('id', Auth::id()))
-                      <x-lucide-square-arrow-down-right class="icon me-1 text-orange" defer />
+                      <x-lucide-square-arrow-down-right class="icon me-1 text-pink" defer />
                       <strong class="fw-medium">SURAT</strong> dari {{ $letter->createdBy->role?->label() }}
                     @endif
                   </td>

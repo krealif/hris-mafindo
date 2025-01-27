@@ -36,7 +36,7 @@
               <tr>
                 <th>Judul</th>
                 <th>Tipe</th>
-                <th>Pengirim / Tujuan</th>
+                <th>Relawan</th>
                 <th>Tanggal</th>
                 <th class="w-1"></th>
               </tr>
@@ -55,7 +55,7 @@
                       <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
                       <span class="fw-medium">PERMOHONAN</span> Relawan
                     @else
-                      <x-lucide-square-arrow-up-right class="icon me-1 text-blue" defer />
+                      <x-lucide-square-arrow-down-right class="icon me-1 text-pink" defer />
                       <span class="fw-medium">DIBUAT</span> oleh Admin
                     @endif
                   </td>

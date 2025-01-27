@@ -78,18 +78,18 @@
                       </span>
                     @endif
                   @elseif ($letter->recipients->contains('id', Auth::id()))
-                    <span class="badge bg-orange text-white hstack gap-2 fs-4">
+                    <span class="badge bg-pink text-white hstack gap-2 fs-4">
                       <x-lucide-arrow-down-right class="icon" />
                       SURAT dari {{ $letter->createdBy->role?->label() }}
                     </span>
                   @elseif ($letter->recipients->isEmpty())
                     <span class="badge bg-blue text-white hstack gap-2 fs-4">
                       <x-lucide-arrow-up-right class="icon" />
-                      PERMOHONAN
+                      PERMOHONAN Relawan
                     </span>
                   @else
-                    <span class="badge bg-blue text-white hstack gap-2 fs-4">
-                      <x-lucide-arrow-up-right class="icon" />
+                    <span class="badge bg-pink text-white hstack gap-2 fs-4">
+                      <x-lucide-arrow-down-right class="icon" />
                       DIBUAT oleh Admin
                     </span>
                   @endif
