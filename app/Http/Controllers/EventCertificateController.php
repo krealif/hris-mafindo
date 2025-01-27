@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Event;
 use Illuminate\View\View;
-use App\Enums\PermissionEnum;
 use App\Traits\HasUploadFile;
 use App\Models\EventCertificate;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreEventCertificateRequest;
+use App\Notifications\CertificateReceived;
 
 class EventCertificateController extends Controller
 {
@@ -57,11 +58,9 @@ class EventCertificateController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('file')) {
-            $path = $this->uploadFile('sertifikat', $validated['file']);
+            $path = $this->uploadFile('sertifikat', $validated['file'], 'public');
             $validated['file'] = $path;
         }
-
-        // TODO: Email
 
         $event->certificates()->attach(
             $validated['relawan'],
@@ -69,6 +68,18 @@ class EventCertificateController extends Controller
                 'file' => $validated['file']
             ]
         );
+
+        // Send email
+        /** @var \App\Models\User|null $userCertificate */
+        $userCertificate = User::find($validated['relawan']);
+
+        if ($userCertificate) {
+            $userCertificate->notify(new CertificateReceived(
+                $userCertificate,
+                $event,
+                $validated['file']
+            ));
+        }
 
         flash()->success("Berhasil. Sertifikat telah ditambahkan");
         return to_route('sertifikat.index', $event->id);
@@ -97,7 +108,7 @@ class EventCertificateController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('file')) {
-            $path = $this->uploadFile('sertifikat', $validated['file']);
+            $path = $this->uploadFile('sertifikat', $validated['file'], 'public');
             $validated['file'] = $path;
         }
 
@@ -123,26 +134,6 @@ class EventCertificateController extends Controller
     }
 
     /**
-     * Download the certificate file of the event for a relawan.
-     */
-    public function downloadForAdmin(EventCertificate $certificate): RedirectResponse
-    {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-
-        if (! $user->hasPermissionTo(PermissionEnum::VIEW_ALL_CERTIFICATE)) {
-            abort(403);
-        };
-
-        $url = Storage::temporaryUrl(
-            $certificate->file,
-            now()->addMinutes(60)
-        );
-
-        return redirect($url);
-    }
-
-    /**
      * Download the certificate associated with the Relawan for the given event.
      */
     public function downloadForRelawan(Event $event): RedirectResponse
@@ -155,14 +146,7 @@ class EventCertificateController extends Controller
             ->where('user_id', $user->id)
             ->firstOrFail();
 
-        if (! $user->hasPermissionTo(PermissionEnum::VIEW_CERTIFICATE)) {
-            abort(403);
-        };
-
-        $url = Storage::temporaryUrl(
-            $certificate->file,
-            now()->addMinutes(60)
-        );
+        $url = Storage::url($certificate->file);
 
         return redirect($url);
     }

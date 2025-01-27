@@ -77,9 +77,9 @@
                       <td data-label="Tanggal">{{ $user->pivot->created_at?->format('d M Y / H:i') }}</td>
                       <td data-label="Aksi">
                         <div class="btn-list flex-nowrap justify-content-md-end">
-                          <a href="{{ route('sertifikat.downloadForAdmin', $user->pivot->id) }}" class="btn" target="_blank">
-                            <x-lucide-file-badge class="icon text-green" defer />
-                            Buka
+                          <a href="{{ Storage::url($user->pivot->file) }}" class="btn" target="_blank">
+                            <x-lucide-file-badge class="icon text-orange" defer />
+                            Lihat
                           </a>
                           <a href="{{ route('sertifikat.edit', [$event->id, $user->pivot->id]) }}" class="btn btn-icon">
                             <x-lucide-pencil class="icon text-blue" defer />

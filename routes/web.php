@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Mail\Markdown;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -202,7 +201,6 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::patch('{event}/sertifikat/{certificate}', 'update')->name('update');
         Route::delete('{event}/sertifikat/{certificate}', 'destroy')->name('destroy');
         Route::get('{event}/download-sertifikat', 'downloadForRelawan')->name('downloadForRelawan');
-        Route::get('sertifikat/{certificate}/download', 'downloadForAdmin')->name('downloadForAdmin');
     });
 
     // Grup route untuk mengelola materi (material).
@@ -219,10 +217,4 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::patch('{material}', 'update')->name('update');
         Route::delete('{material}', 'destroy')->name('destroy');
     });
-});
-
-Route::get('mail', function () {
-    $markdown = new Markdown(view(), config('mail.markdown'));
-
-    return $markdown->render('mail.registration-approved');
 });
