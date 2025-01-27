@@ -267,7 +267,7 @@
                       <div class="datagrid-item">
                         <div class="datagrid-title">Nama</div>
                         <div class="datagrid-content">
-                          <a href="{{ route('user.profile', $letter->createdBy->id) }}">
+                          <a href="{{ route('user.profile', $letter->createdBy->id) }}" target="_blank">
                             {{ $letter->createdBy->nama }}
                           </a>
                         </div>
@@ -306,7 +306,7 @@
                       @foreach ($letter->recipients as $recipient)
                         <tr>
                           <td>
-                            <a href="{{ route('user.profile', $recipient->id) }}">
+                            <a href="{{ route('user.profile', $recipient->id) }}" target="_blank">
                               {{ $recipient->nama }}
                             </a>
                           </td>
@@ -339,7 +339,7 @@
                       </a>
                     </div>
                     <div>
-                      <a href="{{ route('surat.downloadAttachment', $letter->id) }}" class="btn" target="_blank">Buka</a>
+                      <a href="{{ route('surat.downloadAttachment', $letter->id) }}" class="btn" target="_blank">Lihat</a>
                     </div>
                   </div>
                 @endif

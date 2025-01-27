@@ -49,7 +49,7 @@
                     <div class="btn-list flex-nowrap justify-content-end">
                       <a href="{{ $material->url }}" class="btn" target="_blank">
                         <x-lucide-square-arrow-out-up-right class="icon" />
-                        Buka
+                        Lihat
                       </a>
                       @canany(['update', 'delete'], $material)
                         <a href="{{ route('materi.edit', $material->id) }}" class="btn btn-icon">

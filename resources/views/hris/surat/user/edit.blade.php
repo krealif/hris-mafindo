@@ -101,7 +101,7 @@
                     </a>
                     <div class="btn-list mt-3" x-data="{ isDelete: false }">
                       <a href="{{ route('surat.downloadAttachment', $letter->id) }}" class="btn" target="_blank">
-                        Buka
+                        Lihat
                       </a>
                       <button x-on:click="isDelete = !isDelete" type="button" class="btn">
                         <input type="hidden" name="_isDeleteAttachment" x-model="isDelete">

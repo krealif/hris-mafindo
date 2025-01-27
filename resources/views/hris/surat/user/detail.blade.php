@@ -243,7 +243,7 @@
                       </a>
                     </div>
                     <div>
-                      <a href="{{ route('surat.downloadAttachment', $letter->id) }}" class="btn" target="_blank">Buka</a>
+                      <a href="{{ route('surat.downloadAttachment', $letter->id) }}" class="btn" target="_blank">Lihat</a>
                     </div>
                   </div>
                 @endif
