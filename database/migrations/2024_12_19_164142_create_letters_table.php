@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('body');
             $table->string('attachment')->nullable();
             $table->string('status', 20);
-            $table->string('message')->nullable();
+            $table->text('message')->nullable();
             $table->string('result_file')->nullable();
             $table->string('uploaded_by')->nullable();
             $table->timestamp('uploaded_at')->nullable();

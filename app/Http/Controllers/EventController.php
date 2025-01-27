@@ -248,7 +248,7 @@ class EventController extends Controller
     public function destroy(Event $event): RedirectResponse
     {
         Gate::authorize('delete', $event);
-        // TODO
+
         $event->delete();
 
         flash()->success("Berhasil. Kegiatan [{$event->name}] telah dihapus.");

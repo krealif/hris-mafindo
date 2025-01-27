@@ -47,7 +47,6 @@ class EventPolicy
      */
     public function delete(User $user, Event $event): bool
     {
-        // TODO: Need Update
         return $user->can(PermissionEnum::DELETE_EVENT)
             && $event->status == EventStatusEnum::AKTIF;
     }

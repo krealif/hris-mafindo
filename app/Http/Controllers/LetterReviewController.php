@@ -9,14 +9,18 @@ use App\Filters\FilterDate;
 use Illuminate\Http\Request;
 use App\Traits\HasUploadFile;
 use App\Enums\LetterStatusEnum;
+use App\Enums\RoleEnum;
 use App\Filters\FilterLetterType;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rules\File;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Filters\FilterRecipientLetter;
+use App\Notifications\LetterApproved;
+use App\Notifications\LetterReceived;
+use App\Notifications\LetterRejected;
+use App\Notifications\LetterRevision;
 use Spatie\QueryBuilder\AllowedFilter;
 
 class LetterReviewController extends Controller
@@ -123,7 +127,7 @@ class LetterReviewController extends Controller
         Gate::authorize('handleSubmission', $letter);
 
         $validated = $request->validate([
-            'message' => ['required', 'string', 'max:255'],
+            'message' => ['required', 'string', 'max:750'],
         ]);
 
         $letter->update([
@@ -131,7 +135,12 @@ class LetterReviewController extends Controller
             'message' => $validated['message'],
         ]);
 
-        // TODO: Kirim email
+        /** @var \App\Models\User $sender */
+        $sender = $letter->createdBy;
+
+        if (! $sender->hasRole(RoleEnum::ADMIN)) {
+            $sender->notify(new LetterRevision($sender, $letter, $validated['message']));
+        }
 
         flash()->success("Berhasil. Permintaan revisi [{$letter->title}] telah dikirimkan kepada yang bersangkutan.");
 
@@ -147,10 +156,22 @@ class LetterReviewController extends Controller
 
         $letter->update([
             'status' => LetterStatusEnum::SELESAI,
+            'message' => null,
             'attachment' => null,
         ]);
 
-        // TODO: Kirim email
+        /** @var \App\Models\User $sender */
+        $sender = $letter->createdBy;
+
+        if (! $sender->hasRole(RoleEnum::ADMIN)) {
+            $sender->notify(new LetterApproved($sender, $letter));
+        }
+
+        if ($letter->recipients->isNotEmpty()) {
+            foreach ($letter->recipients as $recipient) {
+                $recipient->notify(new LetterReceived($recipient, $sender, $letter));
+            }
+        }
 
         flash()->success("Berhasil. Surat [{$letter->title}] telah dikirim kepada yang bersangkutan.");
 
@@ -165,7 +186,7 @@ class LetterReviewController extends Controller
         Gate::authorize('handleSubmission', $letter);
 
         $validated = $request->validate([
-            'message' => ['required', 'string', 'max:255'],
+            'message' => ['required', 'string', 'max:750'],
         ]);
 
         $letter->update([
@@ -174,7 +195,12 @@ class LetterReviewController extends Controller
             'attachment' => null,
         ]);
 
-        // TODO: Kirim email
+        /** @var \App\Models\User $sender */
+        $sender = $letter->createdBy;
+
+        if (! $sender->hasRole(RoleEnum::ADMIN)) {
+            $sender->notify(new LetterRejected($sender, $letter, $validated['message']));
+        }
 
         flash()->success("Berhasil. Permohonan Surat [{$letter->title}] telah ditolak.");
 
