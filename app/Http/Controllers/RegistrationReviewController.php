@@ -19,6 +19,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use App\Enums\RegistrationBaruStepEnum;
 use App\Enums\RegistrationLamaStepEnum;
+use App\Notifications\RegistrationApproved;
+use App\Notifications\RegistrationRejected;
+use App\Notifications\RegistrationRevision;
 
 class RegistrationReviewController extends Controller
 {
@@ -105,6 +108,8 @@ class RegistrationReviewController extends Controller
 
         $type = $registration->type;
         $currentStep = $registration->step;
+
+        /** @var \App\Models\User $registrationUser */
         $registrationUser = $registration->user;
 
         if ($type == RegistrationTypeEnum::RELAWAN_BARU) {
@@ -130,6 +135,11 @@ class RegistrationReviewController extends Controller
                         'is_approved' => 1,
                     ]);
                 });
+
+                $registrationUser->notify(new RegistrationApproved(
+                    $registrationUser,
+                    $registration->type?->label() ?? ''
+                ));
             }
         }
 
@@ -152,7 +162,7 @@ class RegistrationReviewController extends Controller
         Gate::authorize('requestRevision', $registration);
 
         $validated = $request->validate([
-            'message' => ['required', 'string', 'max:255'],
+            'message' => ['required', 'string', 'max:750'],
         ]);
 
         $registration->update([
@@ -163,9 +173,11 @@ class RegistrationReviewController extends Controller
             'message' => $validated['message'],
         ]);
 
-        // TODO: Kirim email
+        /** @var \App\Models\User $registrationUser */
+        $registrationUser = $registration->user;
+        $registrationUser->notify(new RegistrationRevision($registrationUser,  $validated['message']));
 
-        flash()->success("Berhasil. Permintaan revisi telah dikirimkan kepada [{$registration->user->nama}].");
+        flash()->success("Berhasil. Permintaan revisi telah dikirimkan kepada [{$registrationUser->nama}].");
 
         return to_route('registrasi.show', $registration->id);
     }
@@ -214,9 +226,20 @@ class RegistrationReviewController extends Controller
             $registration->delete();
         });
 
-        // TODO: Kirim email
+        /** @var \App\Models\User $registrationUser */
+        $registrationUser = $registration->user;
 
-        flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah diselesaikan.");
+        if (in_array($registration->type, [
+            RegistrationTypeEnum::RELAWAN_WILAYAH,
+            RegistrationTypeEnum::PENGURUS_WILAYAH
+        ])) {
+            $registrationUser->notify(new RegistrationApproved(
+                $registrationUser,
+                $registration->type->label()
+            ));
+        }
+
+        flash()->success("Berhasil. Registrasi atas nama [{$registrationUser->nama}] telah diselesaikan.");
 
         return to_route('registrasi.index');
     }
@@ -229,7 +252,7 @@ class RegistrationReviewController extends Controller
         Gate::authorize('reject', $registration);
 
         $validated = $request->validate([
-            'message' => ['required', 'string', 'max:255'],
+            'message' => ['required', 'string', 'max:750'],
         ]);
 
         $registration->update([
@@ -237,9 +260,16 @@ class RegistrationReviewController extends Controller
             'message' => $validated['message'],
         ]);
 
-        // TODO: Kirim email
+        /** @var \App\Models\User $registrationUser */
+        $registrationUser = $registration->user;
 
-        flash()->success("Berhasil. Registrasi atas nama [{$registration->user->nama}] telah ditolak.");
+        $registrationUser->notify(new RegistrationRejected(
+            $registrationUser,
+            $validated['message'],
+            $registration->type?->label() ?? ''
+        ));
+
+        flash()->success("Berhasil. Registrasi atas nama [{$registrationUser->nama}] telah ditolak.");
 
         return to_route('registrasi.show', $registration->id);
     }

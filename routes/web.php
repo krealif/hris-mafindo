@@ -1,11 +1,13 @@
 <?php
 
+use Illuminate\Mail\Markdown;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\LetterController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserSettingController;
 use App\Http\Controllers\LetterReviewController;
@@ -13,7 +15,6 @@ use App\Http\Controllers\UserMigrationController;
 use App\Http\Controllers\EventCertificateController;
 use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\RegistrationReviewController;
-use App\Http\Controllers\MaterialController;
 
 /**
  * Group of routes that require authentication but for unapproved users only.
@@ -218,4 +219,10 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::patch('{material}', 'update')->name('update');
         Route::delete('{material}', 'destroy')->name('destroy');
     });
+});
+
+Route::get('mail', function () {
+    $markdown = new Markdown(view(), config('mail.markdown'));
+
+    return $markdown->render('mail.registration-approved');
 });
