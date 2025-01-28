@@ -18,7 +18,7 @@
             <x-datagrid-item title="Jenis Kelamin" content="{{ $user->detail->gender?->label() }}" />
             <x-datagrid-item title="Agama" content="{{ $user->detail->agama?->label() }}" />
             <x-datagrid-item title="Alamat Domisili Saat Ini" content="{{ $user->detail->alamat }}" />
-            <x-datagrid-item title="Disabilitas" content="{{ $user->detail->disabilitas }}" />
+            <x-datagrid-item title="Disabilitas" content="{{ $user->detail->disabilitas?->label() }}" />
           </div>
         </div>
       </div>

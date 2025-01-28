@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\AgamaEnum;
 use App\Enums\GenderEnum;
 use App\Enums\BidangMafindoEnum;
+use App\Enums\DisabilitasEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -46,6 +47,7 @@ class UserDetail extends Model
      *     tgl_lahir: 'date:d/m/Y',
      *     gender: 'App\Enums\GenderEnum',
      *     agama: 'App\Enums\AgamaEnum',
+     *     disabilitas : 'App\Enums\DisabilitasEnum',
      *     bidang_mafindo: 'App\Enums\BidangMafindoEnum',
      *     medsos: 'object',
      *     pendidikan: 'object',
@@ -59,6 +61,7 @@ class UserDetail extends Model
             'tgl_lahir' => 'date:d/m/Y',
             'gender' => GenderEnum::class,
             'agama' => AgamaEnum::class,
+            'disabilitas' => DisabilitasEnum::class,
             'bidang_mafindo' => BidangMafindoEnum::class,
             'medsos' => 'object',
             'pendidikan' => 'object',
