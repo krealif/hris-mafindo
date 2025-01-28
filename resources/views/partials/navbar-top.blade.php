@@ -7,9 +7,9 @@
     <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
       <a href="/">
         @role('admin')
-          <img src="{{ asset('static/img/mafindo-admin.png') }}" height="40" alt="Mafindo Admin" class="navbar-brand-image">
+          <img src="{{ asset('static/img/mafindo-admin.png') }}" alt="Mafindo Admin" class="navbar-brand-image">
         @else
-          <img src="{{ asset('static/img/mafindo-logo.png') }}" height="40" alt="Mafindo" class="navbar-brand-image">
+          <img src="{{ asset('static/img/mafindo-logo.png') }}" alt="Mafindo" class="navbar-brand-image">
         @endrole
 
       </a>
