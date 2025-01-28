@@ -22,7 +22,11 @@ class BranchController extends Controller
         $branches = QueryBuilder::for(Branch::class)
             ->allowedFilters('name')
             ->orderBy('name')
-            ->withCount(['users'])
+            ->withCount([
+                'users' => function ($query) {
+                    $query->where('is_approved', true);
+                }
+            ])
             ->paginate(15)
             ->appends(request()->query());
 
@@ -62,6 +66,7 @@ class BranchController extends Controller
                 $join->on('model_has_roles.model_id', '=', 'users.id')
                     ->where('model_has_roles.model_type', '=', 'app\Models\User');
             })
+            ->where('is_approved', true)
             ->with('roles')
             ->orderBy('model_has_roles.role_id')
             ->paginate(15);
