@@ -133,6 +133,7 @@ class LetterReviewController extends Controller
         $letter->update([
             'status' => LetterStatusEnum::REVISI,
             'message' => $validated['message'],
+            'result_file' => null,
         ]);
 
         /** @var \App\Models\User $sender */
@@ -193,6 +194,7 @@ class LetterReviewController extends Controller
             'status' => LetterStatusEnum::DITOLAK,
             'message' => $validated['message'],
             'attachment' => null,
+            'result_file' => null,
         ]);
 
         /** @var \App\Models\User $sender */
