@@ -8,7 +8,12 @@
       <div class="container-xl">
         <div class="title-wrapper">
           <div>
-            @if (url()->previous() != url()->current())
+            @if (Str::startsWith(url()->previous(), [route('user.index'), route('wilayah.index')]))
+              <a href="{{ url()->previous() }}" class="btn btn-link px-0 py-1 mb-1">
+                <x-lucide-arrow-left class="icon" />
+                Kembali
+              </a>
+            @elseif (url()->previous() != url()->current())
               <a href="{{ route('home') }}" class="btn btn-link px-0 py-1 mb-1">
                 <x-lucide-arrow-left class="icon" />
                 Kembali
