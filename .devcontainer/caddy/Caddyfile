@@ -1,9 +1,0 @@
-{
-	frankenphp
-}
-
-:8080 {
-  root * /workspace/app/public/
-	encode zstd br gzip
-	php_server
-}
