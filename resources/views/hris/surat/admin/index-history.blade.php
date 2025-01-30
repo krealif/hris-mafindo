@@ -63,7 +63,7 @@
                 <x-lucide-ellipsis-vertical class="icon" />
               </a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#bulk-delete">Bersihkan</a>
+                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#bulk-delete">Hapus Masal</a>
               </div>
             </div>
           </x-slot>

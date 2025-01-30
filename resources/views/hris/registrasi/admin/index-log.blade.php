@@ -66,7 +66,7 @@
                 <x-lucide-ellipsis-vertical class="icon" />
               </a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#bulk-delete">Bersihkan</a>
+                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#bulk-delete">Hapus Masal</a>
               </div>
             </div>
           </x-slot>
@@ -153,19 +153,31 @@
           @csrf
           @method('DELETE')
           <div class="mb-3">
-            <label for="step-mengisi" class="form-label">Hapus Relawan yang Belum Selesai Mengisi?</label>
+            <label for="status-draft" class="form-label">Hapus Permohonan yang berstatus DRAFT?</label>
             <div class="input-group mb-2">
               <span class="input-group-text">
-                <input id="step-mengisi" name="step_mengisi" class="form-check-input me-2" type="checkbox">
-                <label for="lama-mengisi">Hapus jika lebih dari</label>
+                <input id="status-draft" name="status_draft" class="form-check-input me-2" type="checkbox">
+                <label for="lama-draft">Hapus jika lebih dari</label>
               </span>
-              <x-form.input name="lama_mengisi" type="number" value="7" />
+              <x-form.input name="lama_draft" type="number" value="7" />
               <span class="input-group-text">Hari</span>
-              <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus data relawan yang belum menyelesaikan pengisian formulir.</small>
+              <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus permohonan yang berstatus Draft.</small>
             </div>
           </div>
           <div class="mb-3">
-            <label for="status-ditolak" class="form-label">Hapus Data Relawan yang Ditolak?</label>
+            <label for="status-revisi" class="form-label">Hapus Permohonan yang berstatus REVISI?</label>
+            <div class="input-group mb-2">
+              <span class="input-group-text">
+                <input id="status-revisi" name="status_revisi" class="form-check-input me-2" type="checkbox">
+                <label for="lama-revisi">Hapus jika lebih dari</label>
+              </span>
+              <x-form.input name="lama_revisi" type="number" value="7" />
+              <span class="input-group-text">Hari</span>
+              <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus permohonan yang berstatus Revisi.</small>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="status-ditolak" class="form-label">Hapus Permohonan yang DITOLAK?</label>
             <div class="input-group mb-2">
               <span class="input-group-text">
                 <input id="status-ditolak" name="status_ditolak" class="form-check-input me-2" type="checkbox">
@@ -173,7 +185,7 @@
               </span>
               <x-form.input name="lama_ditolak" type="number" value="30" />
               <span class="input-group-text">Hari</span>
-              <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus data relawan yang status pendaftarannya ditolak.</small>
+              <small class="form-hint mt-1">Centang opsi ini jika Anda ingin menghapus permohonan yang berstatus Ditolak.</small>
             </div>
           </div>
           <p class="mb-1"><strong>Disclaimer:</strong></p>
