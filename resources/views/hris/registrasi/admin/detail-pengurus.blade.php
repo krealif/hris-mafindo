@@ -68,17 +68,9 @@
                   <x-badge class="fs-4" :case="$registration->status" />
                 </div>
               </div>
-              <div class="mt-3">
-                <table class="datagrid">
-                  <tr>
-                    <th class="datagrid-title">Mendaftar</th>
-                    <td>{{ $registration->created_at?->translatedFormat('d F Y / H:i') }}</td>
-                  </tr>
-                  <tr>
-                    <th class="datagrid-title">Diperbarui</th>
-                    <td>{{ $registration->updated_at?->translatedFormat('d F Y / H:i') }}</td>
-                  </tr>
-                </table>
+              <div class="datagrid datagrid-h mt-3">
+                <x-datagrid-item title="Mendaftar" content="{{ $registration->created_at?->translatedFormat('d F Y / H:i') }}" />
+                <x-datagrid-item title="Diperbarui" content="{{ $registration->updated_at?->translatedFormat('d F Y / H:i') }}" />
               </div>
             </div>
             @if (in_array($registration->status->value, ['revisi', 'ditolak']))

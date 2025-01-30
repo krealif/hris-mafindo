@@ -181,14 +181,8 @@
                             {{ basename($letter->result_file) }}
                           </a>
                           <div class="datagrid datagrid-h mt-3">
-                            <div class="datagrid-item">
-                              <div class="datagrid-title">Diupload Oleh</div>
-                              <div class="datagrid-content">{{ $letter->uploaded_by }}</div>
-                            </div>
-                            <div class="datagrid-item">
-                              <div class="datagrid-title">Tanggal & Waktu</div>
-                              <div class="datagrid-content">{{ $letter->uploaded_at?->translatedFormat('d F Y / H:i') }}</div>
-                            </div>
+                            <x-datagrid-item title="Admin" content="{{ $letter->uploaded_by }}" />
+                            <x-datagrid-item title="Tanggal" content="{{ $letter->uploaded_at?->translatedFormat('d F Y / H:i') }}" />
                           </div>
                         </div>
                         <div class="btn-list">
