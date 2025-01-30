@@ -128,7 +128,7 @@
                       </div>
                       <div class="datagrid-item">
                         <div class="datagrid-title">Tanggal & Waktu</div>
-                        <div class="datagrid-content">{{ $letter->uploaded_at }}</div>
+                        <div class="datagrid-content">{{ $letter->uploaded_at?->translatedFormat('d F Y / H:i') }}</div>
                       </div>
                     </div>
                   </div>
@@ -180,14 +180,14 @@
                             <x-lucide-file-text class="icon text-indigo" />
                             {{ basename($letter->result_file) }}
                           </a>
-                          <div class="datagrid mt-3">
+                          <div class="datagrid datagrid-h mt-3">
                             <div class="datagrid-item">
                               <div class="datagrid-title">Diupload Oleh</div>
                               <div class="datagrid-content">{{ $letter->uploaded_by }}</div>
                             </div>
                             <div class="datagrid-item">
                               <div class="datagrid-title">Tanggal & Waktu</div>
-                              <div class="datagrid-content">{{ $letter->uploaded_at }}</div>
+                              <div class="datagrid-content">{{ $letter->uploaded_at?->translatedFormat('d F Y / H:i') }}</div>
                             </div>
                           </div>
                         </div>

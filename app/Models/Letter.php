@@ -32,12 +32,16 @@ class Letter extends Model
     /**
      * Get the attributes that should be cast.
      *
-     * @return array{status: 'App\Enums\LetterStatusEnum'}
+     * @return array{
+     *     status: 'App\Enums\LetterStatusEnum',
+     *     uploaded_at: 'datetime'
+     * }
      */
     protected function casts(): array
     {
         return [
             'status' => LetterStatusEnum::class,
+            'uploaded_at' => 'datetime'
         ];
     }
 

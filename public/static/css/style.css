@@ -65,13 +65,14 @@
 }
 
 /* Datagrid */
-table.datagrid {
-    width: auto;
+.datagrid-h {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 1rem;
 }
 
-table .datagrid-title {
-    font-size: .813rem;
-    padding-right: 1rem;
+.datagrid-h .datagrid-item {
+    display: contents;
 }
 
 .datagrid-title {
