@@ -48,7 +48,8 @@ class EventPolicy
     public function delete(User $user, Event $event): bool
     {
         return $user->can(PermissionEnum::DELETE_EVENT)
-            && $event->status == EventStatusEnum::AKTIF;
+            && $event->status == EventStatusEnum::AKTIF
+            && ! $event->has_started;
     }
 
     public function finish(User $user, Event $event): bool
