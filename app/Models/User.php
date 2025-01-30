@@ -77,7 +77,7 @@ class User extends Authenticatable
     protected function role(): Attribute
     {
         return Attribute::make(
-            get: fn() => RoleEnum::from($this->getRoleNames()->first()),
+            get: fn() => RoleEnum::tryFrom($this->getRoleNames()->first()),
         );
     }
 
