@@ -154,7 +154,7 @@
                     <div class="row mb-2">
                       <div class="col-12 col-md-6">
                         <label for="disabilitas" class="form-label">Disabilitas</label>
-                        <x-form.select name="disabilitas" :options="App\Enums\DisabilitasEnum::labels()" selected="{{ old('disabilitas', $userDetail?->disabilitas) }}" placeholder="" required />
+                        <x-form.select name="disabilitas" :options="App\Enums\DisabilitasEnum::labels()" selected="{{ old('disabilitas', $userDetail?->disabilitas) }}" placeholder="" />
                       </div>
                     </div>
                   </div>
