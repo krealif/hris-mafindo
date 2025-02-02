@@ -15,7 +15,7 @@
               </div>
               <div class="col d-flex flex-column justify-content-between">
                 <h2 class="card-title mb-1">{{ $event->name }}</h2>
-                <span class="text-muted">
+                <span class="text-secondary">
                   {{ "{$event->start_date?->translatedFormat('d M Y')}, Pukul {$event->start_date?->translatedFormat('H:i')}" }}
                 </span>
               </div>

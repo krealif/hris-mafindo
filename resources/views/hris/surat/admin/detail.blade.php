@@ -204,7 +204,7 @@
                         <div class="row g-2">
                           <div class="col">
                             <x-form.input name="file" x-ref="fileInput" x-on:change="handleFileUpload" type="file" accept=".pdf,.doc,.docx" required />
-                            <span class="d-block text-muted mt-1">pdf, docx (Max: 2 MB)</span>
+                            <span class="d-block text-secondary mt-1">pdf, docx (Max: 2 MB)</span>
                           </div>
                           <div class="col-12 col-sm-auto" x-show="filename">
                             <button x-on:click="cancelUpload" type="button" class="btn">

@@ -51,7 +51,7 @@
               <div class="mb-2">
                 <label for="file" class="form-label required">Sertifikat</label>
                 <x-form.input name="file" type="file" accept="pdf" required />
-                <span class="d-block text-muted mt-1">pdf (Max: 2 MB)</span>
+                <span class="d-block text-secondary mt-1">pdf (Max: 2 MB)</span>
               </div>
             </div>
             <div class="card-body btn-list">

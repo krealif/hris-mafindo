@@ -21,7 +21,7 @@
           <div class="card-body">
             <h1 class="m-0">419</h1>
             <h2 class="h3 fw-medium mb-2">Oops! Sesi Anda Telah Berakhir.</h2>
-            <p class="text-muted mb-4">Hal ini terjadi karena Anda tidak aktif dalam waktu yang lama, atau token telah kedaluwarsa.</p>
+            <p class="text-secondary mb-4">Hal ini terjadi karena Anda tidak aktif dalam waktu yang lama, atau token telah kedaluwarsa.</p>
             @php
               $siteDomain = parse_url(route('home'), PHP_URL_HOST);
               $refererDomain = parse_url(request()->header('referer'), PHP_URL_HOST);

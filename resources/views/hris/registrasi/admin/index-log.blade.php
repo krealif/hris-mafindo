@@ -12,7 +12,7 @@
             <h1 class="page-title">
               Log Permohonan Registrasi
             </h1>
-            <p class="text-muted m-0 mt-1">
+            <p class="text-secondary m-0 mt-1">
               Lihat dan hapus permohonan registrasi.
             </p>
           </div>
@@ -115,7 +115,7 @@
                   <td data-label="Wilayah">{{ $registration->user->branch?->name }}</td>
                   <td data-label="Tanggal">
                     <div>{{ $registration->updated_at?->translatedFormat('d M Y / H:i') }}</div>
-                    <div class="text-muted d-block d-md-none d-lg-block">{{ $registration->updated_at?->diffForHumans() }}</div>
+                    <div class="text-secondary d-block d-md-none d-lg-block">{{ $registration->updated_at?->diffForHumans() }}</div>
                   </td>
                   <td data-label="Aksi">
                     <div class="btn-list flex-nowrap justify-content-md-end">

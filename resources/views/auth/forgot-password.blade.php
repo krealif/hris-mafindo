@@ -6,14 +6,14 @@
   @if (session('status'))
     <div class="alert alert-success" role="alert">
       <h4 class="alert-title h3">Sukses</h4>
-      <div class="text-muted">Kami telah mengirimkan email berisi instruksi untuk mereset password Anda. Jika email tidak segera muncul di kotak masuk Anda, harap periksa folder spam
+      <div class="text-secondary">Kami telah mengirimkan email berisi instruksi untuk mereset password Anda. Jika email tidak segera muncul di kotak masuk Anda, harap periksa folder spam
         atau tunggu beberapa saat.</div>
     </div>
   @endif
   <div class="card card-mafindo">
     <div class="card-header d-block">
       <h1 class="card-title mb-2">Lupa Password</h1>
-      <p class="text-muted mb-0">Tuliskan email Anda di bawah ini dan kami akan mengirimkan email yang berisi tautan untuk mengatur ulang password Anda.</p>
+      <p class="text-secondary mb-0">Tuliskan email Anda di bawah ini dan kami akan mengirimkan email yang berisi tautan untuk mengatur ulang password Anda.</p>
     </div>
     <div class="card-body">
       <form action="{{ route('password.email') }}" method="POST" autocomplete="off">

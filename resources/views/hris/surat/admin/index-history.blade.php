@@ -12,7 +12,7 @@
             <h1 class="page-title">
               Histori Permohonan Surat
             </h1>
-            <p class="text-muted m-0 mt-1">
+            <p class="text-secondary m-0 mt-1">
               Lihat seluruh permohonan surat yang telah diproses.
             </p>
           </div>
@@ -124,7 +124,7 @@
                   </td>
                   <td data-label="Tanggal">
                     <div>{{ $letter->updated_at?->translatedFormat('d M Y / H:i') }}</div>
-                    <div class="text-muted d-block d-md-none d-lg-block">{{ $letter->updated_at?->diffForHumans() }}</div>
+                    <div class="text-secondary d-block d-md-none d-lg-block">{{ $letter->updated_at?->diffForHumans() }}</div>
                   </td>
                   <td data-label="Aksi">
                     <div class="btn-list flex-nowrap justify-content-md-end">

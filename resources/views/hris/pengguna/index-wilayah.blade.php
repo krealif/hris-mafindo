@@ -12,7 +12,7 @@
             <h1 class="page-title">
               Data Relawan
             </h1>
-            <p class="text-muted m-0 mt-1">
+            <p class="text-secondary m-0 mt-1">
               Wilayah {{ Auth::user()->branch?->name }}
             </p>
           </div>

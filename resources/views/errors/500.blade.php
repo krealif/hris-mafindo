@@ -22,7 +22,7 @@
           <div class="card-body">
             <h1 class="m-0">500</h1>
             <h2 class="h3 fw-medium mb-2">Oops! Terjadi Kesalahan Server.</h2>
-            <p class="text-muted mb-4">Silakan coba lagi beberapa saat lagi atau kembali ke halaman utama. Jika masalah berlanjut,
+            <p class="text-secondary mb-4">Silakan coba lagi beberapa saat lagi atau kembali ke halaman utama. Jika masalah berlanjut,
               harap hubungi admin untuk bantuan lebih lanjut.</p>
             <a href="{{ route('home') }}" class="btn btn-primary w-100">
               <x-lucide-home class="icon" />

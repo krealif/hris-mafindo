@@ -28,7 +28,7 @@
           <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="width: 200px;">
             <div class="px-3 py-2">
               <span class="d-block text-truncate">{{ auth()->user()->nama }}</span>
-              <span class="d-block text-muted text-truncate">{{ auth()->user()->email }}</span>
+              <span class="d-block text-secondary text-truncate">{{ auth()->user()->email }}</span>
             </div>
             <div class="dropdown-divider"></div>
             <a href="{{ route('user.profile') }}" @class([

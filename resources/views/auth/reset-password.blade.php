@@ -6,13 +6,13 @@
   @if (session('status'))
     <div class="alert alert-success" role="alert">
       <h4 class="alert-title h3">Berhasil!</h4>
-      <div class="text-muted">Password Anda telah berhasil direset. Silakan kembali ke halaman masuk.</div>
+      <div class="text-secondary">Password Anda telah berhasil direset. Silakan kembali ke halaman masuk.</div>
     </div>
   @endif
   <div class="card card-mafindo">
     <div class="card-header d-block">
       <h1 class="card-title">Reset Passwoord</h1>
-      <p class="text-muted mb-0">Tuliskan password baru Anda.</p>
+      <p class="text-secondary mb-0">Tuliskan password baru Anda.</p>
     </div>
     <div class="card-body">
       <form action="{{ route('password.update') }}" method="POST" autocomplete="off">

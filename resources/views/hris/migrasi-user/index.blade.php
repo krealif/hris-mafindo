@@ -12,7 +12,7 @@
             <h1 class="page-title">
               Migrasi Data Relawan
             </h1>
-            <p class="text-muted m-0 mt-1">
+            <p class="text-secondary m-0 mt-1">
               Integrasikan data lama relawan ke dalam sistem.
             </p>
           </div>
@@ -75,7 +75,7 @@
                   <td data-label="No Relawan">{{ $user->no_relawan ?? '-' }}</td>
                   <td data-label="Tanggal">
                     <div>{{ $user->updated_at?->translatedFormat('d M Y / H:i') }}</div>
-                    <div class="text-muted d-block d-md-none d-lg-block">{{ $user->updated_at?->diffForHumans() }}</div>
+                    <div class="text-secondary d-block d-md-none d-lg-block">{{ $user->updated_at?->diffForHumans() }}</div>
                   </td>
                   <td data-label="Aksi">
                     <div class="btn-list flex-nowrap justify-content-md-end">

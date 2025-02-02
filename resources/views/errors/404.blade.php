@@ -22,7 +22,7 @@
           <div class="card-body">
             <h1 class="m-0">404</h1>
             <h2 class="h3 fw-medium mb-2">Oops! Halaman Tidak Ditemukan.</h2>
-            <p class="text-muted mb-4">Halaman tersebut mungkin telah dipindahkan atau link yang Anda gunakan salah. Periksa kembali URL
+            <p class="text-secondary mb-4">Halaman tersebut mungkin telah dipindahkan atau link yang Anda gunakan salah. Periksa kembali URL
               Anda atau kembali ke halaman utama.</p>
             <a href="{{ route('home') }}" class="btn btn-primary w-100">
               <x-lucide-home class="icon" />
