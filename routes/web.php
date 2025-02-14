@@ -14,6 +14,7 @@ use App\Http\Controllers\UserMigrationController;
 use App\Http\Controllers\EventCertificateController;
 use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\RegistrationReviewController;
+use App\Http\Controllers\SuperAdminController;
 
 /**
  * Group of routes that require authentication but for unapproved users only.
@@ -216,5 +217,14 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::get('{material}/edit', 'edit')->name('edit');
         Route::patch('{material}', 'update')->name('update');
         Route::delete('{material}', 'destroy')->name('destroy');
+    });
+
+    Route::group([
+        'controller' => SuperAdminController::class,
+        'as' => 'superadmin.',
+    ], function () {
+        Route::get('panel', 'panel')->name('panel');
+        Route::post('panel/create-admin', 'createAdmin')->name('createAdmin');
+        Route::post('panel/delete-user', 'destroyUser')->name('deleteUser');
     });
 });
