@@ -90,7 +90,6 @@ php artisan serve
 By default, the project will be accessible at `http://127.0.0.1:8000`.
 
 ### 9. Running Queue Worker (To Send an Email)
-If the application uses queues, run the following command:
 ```bash
 php artisan queue:work
 ```
